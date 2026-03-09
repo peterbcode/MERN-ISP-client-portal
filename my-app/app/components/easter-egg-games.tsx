@@ -13,8 +13,7 @@ type NodeItem = {
 type Obstacle = {
   x: number
   w: number
-  gapY: number
-  gapH: number
+  openLane: number
   passed: boolean
 }
 
@@ -22,7 +21,11 @@ const NETWORK_W = 760
 const NETWORK_H = 360
 const PACKET_W = 760
 const PACKET_H = 360
+const PACKET_LANES = 4
+const PACKET_PLAYER_X = 120
 const GLOBAL_BEST_KEY = 'vc_global_game_best'
+const NETWORK_BEST_KEY = 'vc_network_best'
+const PACKET_BEST_KEY = 'vc_packet_best'
 
 const EasterEggGames = () => {
   const [activeGame, setActiveGame] = useState<GameMode>('network')
@@ -34,6 +37,7 @@ const EasterEggGames = () => {
 
   const [networkRunning, setNetworkRunning] = useState(false)
   const [networkScore, setNetworkScore] = useState(0)
+  const [networkBest, setNetworkBest] = useState(0)
   const [networkTime, setNetworkTime] = useState(30)
 
   const [packetRunning, setPacketRunning] = useState(false)
@@ -51,15 +55,17 @@ const EasterEggGames = () => {
 
   const networkNodes = useRef<NodeItem[]>([])
   const networkMouse = useRef({ x: -999, y: -999 })
-  const networkBreakTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+  const networkBreakTimer = useRef<number | null>(null)
   const networkFrame = useRef<number | null>(null)
-  const networkCountdown = useRef<ReturnType<typeof setInterval> | null>(null)
+  const networkCountdown = useRef<number | null>(null)
 
   const packetFrame = useRef<number | null>(null)
   const packetPlayerY = useRef(PACKET_H / 2)
-  const packetVel = useRef(0)
+  const packetLane = useRef(1)
+  const packetTargetLane = useRef(1)
+  const packetPulse = useRef(0)
   const packetObstacles = useRef<Obstacle[]>([])
-  const packetSpeed = useRef(3.4)
+  const packetSpeed = useRef(3.8)
   const packetTick = useRef(0)
 
   const canShowNetwork = activeGame === 'network'
@@ -81,11 +87,11 @@ const EasterEggGames = () => {
     () =>
       packetRunning
         ? touchDevice
-          ? 'Tap the canvas or Flap button to stay airborne and pass through gaps.'
-          : 'Press Space or Arrow Up to flap and pass through the pipe gaps.'
+          ? 'Tap upper/lower areas to reroute the packet through each green lane.'
+          : 'Use Arrow Up/Down or W/S to reroute the packet through each open lane.'
         : touchDevice
-          ? 'Tap Start, then tap to flap.'
-          : 'Click Start, then use Space / Arrow Up to flap.',
+          ? 'Tap Start, then route up or down to avoid blocked lanes.'
+          : 'Click Start, then route with Arrow Up/Down or W/S.',
     [packetRunning, touchDevice],
   )
 
@@ -100,15 +106,16 @@ const EasterEggGames = () => {
     }
 
     setTouchDevice(window.matchMedia('(pointer: coarse)').matches)
-    const storedBest = Number(window.localStorage.getItem('vc_packet_best') ?? '0')
+    // Load best scores for both games
+    const storedNetworkBest = Number(window.localStorage.getItem(NETWORK_BEST_KEY) ?? '0')
+    const storedPacketBest = Number(window.localStorage.getItem(PACKET_BEST_KEY) ?? '0')
     const storedGames = Number(window.localStorage.getItem('vc_packet_games') ?? '0')
     const storedGlobal = Number(window.localStorage.getItem(GLOBAL_BEST_KEY) ?? '0')
-    setPacketBest(storedBest)
+    setNetworkBest(storedNetworkBest)
+    setPacketBest(storedPacketBest)
     setPacketGames(storedGames)
     setGlobalBest(storedGlobal)
   }, [])
-
-  if (shouldRenderGames !== true) return null
 
   const registerGlobalScore = (score: number, game: string) => {
     if (score <= 0) return
@@ -219,6 +226,12 @@ const EasterEggGames = () => {
       setNetworkTime((t) => {
         if (t <= 1) {
           registerGlobalScore(networkScoreRef.current, 'Network Repair')
+          // Save best score for network game
+          setNetworkBest((best) => {
+            const next = Math.max(best, networkScoreRef.current)
+            window.localStorage.setItem(NETWORK_BEST_KEY, String(next))
+            return next
+          })
           setNetworkRunning(false)
           return 0
         }
@@ -238,16 +251,26 @@ const EasterEggGames = () => {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const flap = () => {
+    const laneHeight = PACKET_H / PACKET_LANES
+    const laneCenter = (lane: number) => lane * laneHeight + laneHeight / 2
+    const clampLane = (lane: number) => Math.max(0, Math.min(PACKET_LANES - 1, lane))
+
+    const reroute = (direction: -1 | 1) => {
       if (!packetRunning) return
-      packetVel.current = -5.15
+      const next = clampLane(packetTargetLane.current + direction)
+      packetTargetLane.current = next
+      packetPulse.current = 8
     }
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (!packetRunning) return
-      if (event.key === 'ArrowUp' || event.key === ' ' || event.key === 'Spacebar') {
+      if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
         event.preventDefault()
-        flap()
+        reroute(-1)
+      }
+      if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
+        event.preventDefault()
+        reroute(1)
       }
     }
 
@@ -258,54 +281,78 @@ const EasterEggGames = () => {
       ctx.fillStyle = '#09090b'
       ctx.fillRect(0, 0, PACKET_W, PACKET_H)
 
-      for (let i = 0; i < 22; i += 1) {
-        ctx.strokeStyle = 'rgba(249,115,22,0.06)'
+      for (let i = 0; i <= PACKET_LANES; i += 1) {
+        ctx.strokeStyle = 'rgba(249,115,22,0.12)'
         ctx.beginPath()
-        ctx.moveTo(i * 38, 0)
-        ctx.lineTo(i * 38, PACKET_H)
+        ctx.moveTo(0, i * laneHeight)
+        ctx.lineTo(PACKET_W, i * laneHeight)
         ctx.stroke()
       }
 
-      for (let i = 0; i < 12; i += 1) {
-        ctx.strokeStyle = 'rgba(249,115,22,0.05)'
+      for (let i = 0; i < 24; i += 1) {
+        const x = i * 34
+        ctx.strokeStyle = 'rgba(249,115,22,0.06)'
         ctx.beginPath()
-        ctx.moveTo(0, i * 34)
-        ctx.lineTo(PACKET_W, i * 34)
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x, PACKET_H)
         ctx.stroke()
+      }
+
+      ctx.fillStyle = 'rgba(245,245,245,0.72)'
+      ctx.font = 'bold 11px Arial'
+      for (let lane = 0; lane < PACKET_LANES; lane += 1) {
+        ctx.fillText(`Lane ${lane + 1}`, 16, laneCenter(lane) - 12)
       }
 
       if (packetRunning) {
         packetTick.current += 1
-        packetVel.current += 0.28
-        packetPlayerY.current += packetVel.current
+        packetSpeed.current = Math.min(6.2, packetSpeed.current + 0.0009)
 
-        if (packetTick.current % 90 === 0) {
-          const gapH = 100
-          const gapY = 55 + Math.random() * (PACKET_H - 150)
+        if (packetTick.current % 78 === 0) {
+          const openLane = Math.floor(Math.random() * PACKET_LANES)
           packetObstacles.current.push({
             x: PACKET_W + 8,
-            w: 54,
-            gapY,
-            gapH,
+            w: 70,
+            openLane,
             passed: false,
           })
         }
       }
 
-      const playerX = 120
+      const targetY = laneCenter(packetTargetLane.current)
+      packetPlayerY.current += (targetY - packetPlayerY.current) * 0.24
+      if (Math.abs(packetPlayerY.current - targetY) < 0.5) {
+        packetPlayerY.current = targetY
+      }
+
+      if (packetPulse.current > 0) {
+        packetPulse.current -= 0.35
+      }
+
+      const playerX = PACKET_PLAYER_X
       const playerY = packetPlayerY.current
 
       for (const obstacle of packetObstacles.current) {
-        obstacle.x -= packetSpeed.current
-        ctx.fillStyle = '#ef4444'
-        ctx.fillRect(obstacle.x, 0, obstacle.w, obstacle.gapY)
-        ctx.fillRect(obstacle.x, obstacle.gapY + obstacle.gapH, obstacle.w, PACKET_H - (obstacle.gapY + obstacle.gapH))
+        if (packetRunning) {
+          obstacle.x -= packetSpeed.current
+        }
 
-        ctx.fillStyle = '#b91c1c'
-        ctx.fillRect(obstacle.x - 2, obstacle.gapY - 10, obstacle.w + 4, 10)
-        ctx.fillRect(obstacle.x - 2, obstacle.gapY + obstacle.gapH, obstacle.w + 4, 10)
+        for (let lane = 0; lane < PACKET_LANES; lane += 1) {
+          const y = lane * laneHeight
+          if (lane === obstacle.openLane) {
+            ctx.fillStyle = 'rgba(34,197,94,0.22)'
+            ctx.fillRect(obstacle.x, y + 6, obstacle.w, laneHeight - 12)
+            continue
+          }
+          ctx.fillStyle = '#b91c1c'
+          ctx.fillRect(obstacle.x, y, obstacle.w, laneHeight)
+        }
 
-        if (!obstacle.passed && obstacle.x + obstacle.w < playerX) {
+        ctx.fillStyle = 'rgba(248,113,113,0.5)'
+        ctx.fillRect(obstacle.x - 2, 0, 2, PACKET_H)
+        ctx.fillRect(obstacle.x + obstacle.w, 0, 2, PACKET_H)
+
+        if (packetRunning && !obstacle.passed && obstacle.x + obstacle.w < playerX - 12) {
           obstacle.passed = true
           packetScoreRef.current += 1
           setPacketScore(packetScoreRef.current)
@@ -315,16 +362,10 @@ const EasterEggGames = () => {
       packetObstacles.current = packetObstacles.current.filter((o) => o.x + o.w > -20)
 
       if (packetRunning) {
-        if (playerY < 10 || playerY > PACKET_H - 10) {
-          registerGlobalScore(packetScoreRef.current, 'Packet Rush')
-          setPacketRunning(false)
-        }
-
+        const currentLane = clampLane(Math.floor(playerY / laneHeight))
         for (const obstacle of packetObstacles.current) {
-          const hit =
-            playerX + 10 > obstacle.x &&
-            playerX - 11 < obstacle.x + obstacle.w &&
-            (playerY - 10 < obstacle.gapY || playerY + 10 > obstacle.gapY + obstacle.gapH)
+          const hitX = playerX + 10 > obstacle.x && playerX - 10 < obstacle.x + obstacle.w
+          const hit = hitX && currentLane !== obstacle.openLane
           if (hit) {
             registerGlobalScore(packetScoreRef.current, 'Packet Rush')
             setPacketRunning(false)
@@ -335,13 +376,24 @@ const EasterEggGames = () => {
 
       ctx.fillStyle = '#f97316'
       ctx.beginPath()
-      ctx.arc(playerX, playerY, 11, 0, Math.PI * 2)
+      ctx.moveTo(playerX - 13, playerY - 9)
+      ctx.lineTo(playerX + 11, playerY)
+      ctx.lineTo(playerX - 13, playerY + 9)
+      ctx.closePath()
       ctx.fill()
+
+      if (packetPulse.current > 0) {
+        ctx.strokeStyle = `rgba(249,115,22,${Math.min(0.75, packetPulse.current / 8)})`
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.arc(playerX - 18, playerY, 11 + packetPulse.current * 1.2, 0, Math.PI * 2)
+        ctx.stroke()
+      }
 
       ctx.fillStyle = '#f5f5f5'
       ctx.font = 'bold 14px Arial'
       ctx.fillText(`Score: ${packetScoreRef.current}`, 20, 28)
-      ctx.fillText('Mode: Flap', 20, 48)
+      ctx.fillText('Mode: Routed Transit', 20, 48)
 
       packetFrame.current = window.requestAnimationFrame(draw)
     }
@@ -365,29 +417,47 @@ const EasterEggGames = () => {
     })
     setPacketBest((best) => {
       const next = Math.max(best, packetScore)
-      window.localStorage.setItem('vc_packet_best', String(next))
+      window.localStorage.setItem(PACKET_BEST_KEY, String(next))
       return next
     })
   }, [packetRunning, packetScore])
 
   const startNetworkGame = () => {
+    // Reset all nodes to working state
     networkNodes.current.forEach((n) => {
       n.broken = false
     })
+    // Reset score - update ref FIRST before state
     networkScoreRef.current = 0
     setNetworkScore(0)
     setNetworkTime(30)
     setBeatPrompt({ open: false, score: 0, game: '' })
+    // Clear any existing intervals to prevent race conditions
+    if (networkBreakTimer.current) {
+      clearInterval(networkBreakTimer.current)
+      networkBreakTimer.current = null
+    }
+    if (networkCountdown.current) {
+      clearInterval(networkCountdown.current)
+      networkCountdown.current = null
+    }
     setNetworkRunning(true)
   }
 
   const startPacketGame = () => {
+    // Reset score - update ref FIRST before state
     packetScoreRef.current = 0
     setPacketScore(0)
-    packetPlayerY.current = PACKET_H / 2
-    packetVel.current = 0
-    packetSpeed.current = 3.4
+    // Reset lane positions properly
+    packetLane.current = 1
+    packetTargetLane.current = 1
+    // Calculate correct Y position based on lane (center of lane)
+    const laneHeight = PACKET_H / PACKET_LANES
+    packetPlayerY.current = (1 + 0.5) * laneHeight // Lane 1 center
+    packetPulse.current = 0
+    packetSpeed.current = 3.8
     packetTick.current = 0
+    // Clear existing obstacles
     packetObstacles.current = []
     setBeatPrompt({ open: false, score: 0, game: '' })
     setPacketRunning(true)
@@ -405,14 +475,19 @@ const EasterEggGames = () => {
     networkMouse.current.y = (clientY - rect.top) * scaleY
   }
 
-  const moveUp = () => {
+  const routePacketUp = () => {
     if (!packetRunning) return
-    packetVel.current = -5.15
+    packetTargetLane.current = Math.max(0, packetTargetLane.current - 1)
+    packetPulse.current = 8
   }
 
-  const stopMove = () => {
-    return
+  const routePacketDown = () => {
+    if (!packetRunning) return
+    packetTargetLane.current = Math.min(PACKET_LANES - 1, packetTargetLane.current + 1)
+    packetPulse.current = 8
   }
+
+  if (shouldRenderGames !== true) return null
 
   return (
     <section className="relative overflow-hidden border-y border-zinc-900 bg-[radial-gradient(circle_at_16%_15%,rgba(249,115,22,0.12),transparent_38%),radial-gradient(circle_at_82%_80%,rgba(249,115,22,0.09),transparent_36%),linear-gradient(to_bottom,#070708,#0a0a0c)] py-20 text-white">
@@ -454,6 +529,7 @@ const EasterEggGames = () => {
               <div className="flex items-center gap-3 text-sm">
                 <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Time: {networkTime}s</span>
                 <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Score: {networkScore}</span>
+                <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Best: {networkBest}</span>
                 <button
                   type="button"
                   onClick={startNetworkGame}
@@ -521,29 +597,52 @@ const EasterEggGames = () => {
                 height={PACKET_H}
                 className="block h-auto w-full"
                 onTouchStart={(event) => {
-                  if (!touchDevice || !packetRunning) return
-                  event.preventDefault()
-                  moveUp()
-                }}
-                onClick={() => {
                   if (!packetRunning) return
-                  moveUp()
+                  event.preventDefault()
+                  const touch = event.touches[0]
+                  if (!touch) return
+                  const rect = event.currentTarget.getBoundingClientRect()
+                  const scaleY = PACKET_H / rect.height
+                  const y = (touch.clientY - rect.top) * scaleY
+                  const laneHeight = PACKET_H / PACKET_LANES
+                  if (y < laneHeight * 2) {
+                    routePacketUp()
+                    return
+                  }
+                  routePacketDown()
+                }}
+                onClick={(event) => {
+                  if (!packetRunning) return
+                  const rect = event.currentTarget.getBoundingClientRect()
+                  const scaleY = PACKET_H / rect.height
+                  const y = (event.clientY - rect.top) * scaleY
+                  const laneHeight = PACKET_H / PACKET_LANES
+                  if (y < laneHeight * 2) {
+                    routePacketUp()
+                    return
+                  }
+                  routePacketDown()
                 }}
               />
             </div>
 
             {touchDevice ? (
-              <div className="mt-4 grid grid-cols-1 gap-3">
+              <div className="mt-4 grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onTouchStart={moveUp}
-                  onTouchEnd={stopMove}
-                  onMouseDown={moveUp}
-                  onMouseUp={stopMove}
-                  onMouseLeave={stopMove}
+                  onTouchStart={routePacketUp}
+                  onMouseDown={routePacketUp}
                   className="rounded-xl border border-zinc-700 bg-zinc-900/90 px-4 py-3 text-sm font-bold text-zinc-100 active:scale-[0.98]"
                 >
-                  Flap
+                  Route Up
+                </button>
+                <button
+                  type="button"
+                  onTouchStart={routePacketDown}
+                  onMouseDown={routePacketDown}
+                  className="rounded-xl border border-zinc-700 bg-zinc-900/90 px-4 py-3 text-sm font-bold text-zinc-100 active:scale-[0.98]"
+                >
+                  Route Down
                 </button>
               </div>
             ) : null}
@@ -555,18 +654,33 @@ const EasterEggGames = () => {
             <p className="text-sm font-bold text-emerald-300">
               New Global High Score! {beatPrompt.score} on {beatPrompt.game}
             </p>
-            <button
-              type="button"
-              onClick={() => {
-                const msg = encodeURIComponent(
-                  `Hi Valley Computers! I just beat the global high score with ${beatPrompt.score} points on ${beatPrompt.game}.`,
-                )
-                window.open(`https://wa.me/27799381260?text=${msg}`, '_blank', 'noopener,noreferrer')
-              }}
-              className="mt-3 rounded-lg bg-[#f97316] px-4 py-2 text-sm font-bold text-white transition hover:brightness-110"
-            >
-              Let you know on WhatsApp
-            </button>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  const scoreMsg = `Hi Valley Computers! I just beat the global high score with ${beatPrompt.score} points on ${beatPrompt.game}.`
+                  // Use WhatsApp API format with proper encoding
+                  const whatsappUrl = `https://wa.me/27799381260?text=${encodeURIComponent(scoreMsg)}`
+                  window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+                }}
+                className="rounded-lg bg-[#25D366] hover:bg-[#20BD5A] px-4 py-2 text-sm font-bold text-white transition"
+              >
+                Send via WhatsApp
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const subject = encodeURIComponent('New high score submission')
+                  const body = encodeURIComponent(
+                    `Hi Valley Computers,%0D%0A%0D%0AI just beat the global high score with ${beatPrompt.score} points on ${beatPrompt.game}.`,
+                  )
+                  window.location.href = `mailto:info@valleycomputers.co.za?subject=${subject}&body=${body}`
+                }}
+                className="rounded-lg border border-zinc-600 bg-zinc-900/80 px-4 py-2 text-sm font-bold text-zinc-100 transition hover:border-zinc-500"
+              >
+                Send Score to Us
+              </button>
+            </div>
           </div>
         ) : null}
       </div>
