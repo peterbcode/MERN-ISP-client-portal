@@ -1,0 +1,6 @@
+- [x] Update navbar wrapper to overlay hero on initial page load
+- [x] Make entire header sticky with black background on scroll
+- [x] Keep smooth transition and stable stacking (z-index) without layout jump
+- [x] Verify behavior against page structure (Navbar before Hero)
+- [x] Separate sticky behavior: top contact strip non-sticky, nav menu sticky
+- [x] Add spacing (margin-bottom) between nav menu and hero content
