@@ -98,6 +98,23 @@ body.no-custom-cursor *::after {
   cursor: auto !important;
 }
 
+@media (hover: none), (pointer: coarse) {
+  .Cursor {
+    display: none !important;
+  }
+
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  [role="button"] {
+    cursor: auto !important;
+  }
+}
+
 h1,
 h2,
 h3,
@@ -254,14 +271,14 @@ h6 {
 @keyframes wifi-flash {
   0%,
   100% {
-    opacity: 0.95;
+    opacity: 0.7;
     filter: drop-shadow(0 0 0 rgba(243, 111, 0, 0));
     transform: scale(1);
   }
   50% {
     opacity: 1;
-    filter: drop-shadow(0 0 12px rgba(243, 111, 0, 0.65));
-    transform: scale(1.08);
+    filter: drop-shadow(0 0 18px rgba(243, 111, 0, 0.95));
+    transform: scale(1.16);
   }
 }
 

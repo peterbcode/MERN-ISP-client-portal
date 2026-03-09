@@ -60,7 +60,16 @@ const OurWork = () => {
                 onClick={() => setActiveIndex(index)}
                 className="relative h-full border-0 p-0 transition-[flex] duration-700 ease-out focus:outline-none"
                 style={{
-                  flexGrow: activeIndex === null ? 1 : activeIndex === index ? 3.8 : 2.2,
+                  flexGrow:
+                    activeIndex === null
+                      ? 1
+                      : isHovered
+                        ? activeIndex === index
+                          ? 12
+                          : 0.55
+                        : activeIndex === index
+                          ? 1.25
+                          : 1,
                   flexShrink: 1,
                   flexBasis: 0,
                   backgroundImage: `url(${item.src})`,
