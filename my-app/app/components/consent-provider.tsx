@@ -10,6 +10,7 @@ export const OPEN_COOKIE_SETTINGS_EVENT = 'vc-open-cookie-settings'
 type ConsentContextValue = {
   consent: ConsentChoice
   bannerOpen: boolean
+  isMounted: boolean
   setConsent: (choice: Exclude<ConsentChoice, null>) => void
   openBanner: () => void
   closeBanner: () => void
@@ -18,20 +19,25 @@ type ConsentContextValue = {
 const ConsentContext = createContext<ConsentContextValue | undefined>(undefined)
 
 export const ConsentProvider = ({ children }: { children: React.ReactNode }) => {
-  const [consent, setConsentState] = useState<ConsentChoice>(null)
-  const [bannerOpen, setBannerOpen] = useState(false)
+  // Initialize state from localStorage to avoid setState in useEffect
+  const getInitialConsent = (): ConsentChoice => {
+    if (typeof window === 'undefined') return null
+    const savedChoice = window.localStorage.getItem(COOKIE_CHOICE_KEY) as ConsentChoice
+    return (savedChoice === 'accepted' || savedChoice === 'essential') ? savedChoice : null
+  }
+
+  const [consent, setConsentState] = useState<ConsentChoice>(getInitialConsent)
+  const [isMounted, setIsMounted] = useState(false)
+  const [bannerOpen, setBannerOpen] = useState(() => getInitialConsent() === null)
 
   useEffect(() => {
-    const savedChoice = window.localStorage.getItem(COOKIE_CHOICE_KEY) as ConsentChoice
-    if (savedChoice === 'accepted' || savedChoice === 'essential') {
-      setConsentState(savedChoice)
-      setBannerOpen(false)
-      return
+    setIsMounted(true)
+    // Only set up timer if no consent was given
+    if (consent === null) {
+      const timer = window.setTimeout(() => setBannerOpen(true), 1200)
+      return () => window.clearTimeout(timer)
     }
-
-    const timer = window.setTimeout(() => setBannerOpen(true), 1200)
-    return () => window.clearTimeout(timer)
-  }, [])
+  }, [consent])
 
   useEffect(() => {
     const openFromEvent = () => setBannerOpen(true)
@@ -49,11 +55,12 @@ export const ConsentProvider = ({ children }: { children: React.ReactNode }) => 
     () => ({
       consent,
       bannerOpen,
+      isMounted,
       setConsent,
       openBanner: () => setBannerOpen(true),
       closeBanner: () => setBannerOpen(false),
     }),
-    [consent, bannerOpen],
+    [consent, bannerOpen, isMounted],
   )
 
   return <ConsentContext.Provider value={value}>{children}</ConsentContext.Provider>

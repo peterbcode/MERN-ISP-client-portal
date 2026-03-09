@@ -64,7 +64,7 @@ svg#cursorFilter {
 .Cursor {
   pointer-events: none;
   position: fixed;
-  display: block;
+  display: none;
   top: 0;
   left: 0;
   z-index: 99999;
@@ -73,6 +73,7 @@ svg#cursorFilter {
   will-change: transform;
   mix-blend-mode: normal;
   filter: none;
+  transition: transform 0.1s ease-out;
 }
 
 .Cursor span {
@@ -99,6 +100,38 @@ body.custom-cursor-enabled * {
 
 body.custom-cursor-enabled .Cursor {
   display: block !important;
+}
+
+.cursor-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+  padding: 4px 8px;
+  background-color: rgba(11, 11, 12, 0.9);
+  color: #f5f5f5;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 140ms ease;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.Cursor--with-label .cursor-label {
+  opacity: 1;
+}
+
+.Cursor--dark .cursor-label {
+  background-color: rgba(245, 245, 245, 0.9);
+  color: #0b0b0c;
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
 body.no-custom-cursor *,

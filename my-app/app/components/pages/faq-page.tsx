@@ -1,3 +1,8 @@
+'use client'
+
+import { useState } from 'react'
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
+
 const faqItems = [
   {
     question: "What services do you offer?",
@@ -143,6 +148,20 @@ const faqItems = [
 ]
 
 const FaqPage = () => {
+  const [openItems, setOpenItems] = useState<Set<number>>(new Set([0]))
+
+  const toggleItem = (index: number) => {
+    setOpenItems(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(index)) {
+        newSet.delete(index)
+      } else {
+        newSet.add(index)
+      }
+      return newSet
+    })
+  }
+
   return (
     <main className="bg-black text-white">
       <section className="mx-auto max-w-4xl px-4 pb-14 pt-32 text-center sm:px-6 lg:pt-40">
@@ -155,18 +174,43 @@ const FaqPage = () => {
 
       <section className="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
         <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-2 sm:p-3">
-          {faqItems.map((item, index) => (
-            <details
-              key={item.question}
-              open={index === 0}
-              className="border-b border-zinc-800/80 px-4 py-4 last:border-b-0 sm:px-5"
-            >
-              <summary className="cursor-pointer list-none pr-8 text-left text-base font-semibold text-zinc-100">
-                {index + 1}. {item.question}
-              </summary>
-              <p className="mt-3 text-sm leading-relaxed text-zinc-300">{item.answer}</p>
-            </details>
-          ))}
+          {faqItems.map((item, index) => {
+            const isOpen = openItems.has(index)
+            return (
+              <div
+                key={item.question}
+                className="border-b border-zinc-800/80 px-4 py-4 last:border-b-0 sm:px-5"
+              >
+                <button
+                  onClick={() => toggleItem(index)}
+                  className="flex w-full items-center justify-between text-left transition-colors hover:text-[#f97316] focus:outline-none focus:ring-2 focus:ring-[#f97316]/50 focus:ring-inset rounded-lg"
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
+                >
+                  <span className="text-base font-semibold text-zinc-100 pr-4">
+                    {index + 1}. {item.question}
+                  </span>
+                  <div className="flex-shrink-0">
+                    {isOpen ? (
+                      <ChevronUpIcon className="h-5 w-5 text-[#f97316] transition-transform duration-200" />
+                    ) : (
+                      <ChevronDownIcon className="h-5 w-5 text-zinc-400 transition-transform duration-200 hover:text-[#f97316]" />
+                    )}
+                  </div>
+                </button>
+                <div
+                  id={`faq-answer-${index}`}
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <p className="mt-3 text-sm leading-relaxed text-zinc-300 pr-8">
+                    {item.answer}
+                  </p>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </section>
     </main>

@@ -3,12 +3,26 @@
 import { useEffect, useState } from 'react'
 
 const loadingMessages = [
-  'Negotiating peace with the WiFi gremlins...',
-  'Teaching packets to avoid traffic jams...',
-  'Untangling ethernet cables emotionally...',
-  'Polishing routers so they run faster...',
-  'Convincing the internet to behave today...',
-  'Rebooting things we already rebooted...',
+  'Optimizing network pathways for peak performance...',
+  'Calibrating fiber optic signals with precision...',
+  'Deploying enterprise-grade security protocols...',
+  'Synchronizing distributed network nodes...',
+  'Validating ISP service level agreements...',
+  'Configuring advanced routing algorithms...',
+  'Establishing secure VPN tunnels...',
+  'Performing bandwidth optimization analysis...',
+  'Implementing network traffic shaping policies...',
+  'Verifying DNS resolution across all zones...',
+  'Activating redundant failover systems...',
+  'Fine-tuning wireless antenna alignments...',
+  'Conducting latency reduction protocols...',
+  'Establishing peer-to-peer network connections...',
+  'Optimizing cloud infrastructure resources...',
+  'Validating network topology mappings...',
+  'Configuring Quality of Service parameters...',
+  'Performing comprehensive network diagnostics...',
+  'Establishing secure firewall rulesets...',
+  'Optimizing database query performance...',
 ]
 
 const PageLoader = () => {

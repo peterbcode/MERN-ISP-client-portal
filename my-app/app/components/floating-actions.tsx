@@ -30,8 +30,11 @@ const FloatingActions = () => {
   const [showBackToTop, setShowBackToTop] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
   const [message, setMessage] = useState('')
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
+    
     let ticking = false
     const onScroll = () => {
       if (ticking) return
@@ -66,7 +69,7 @@ const FloatingActions = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-[70] flex max-w-[calc(100vw-2rem)] flex-col items-end gap-3 sm:bottom-6 sm:right-6">
-      {showBackToTop ? (
+      {isMounted && showBackToTop ? (
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

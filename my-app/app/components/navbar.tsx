@@ -75,24 +75,19 @@ export default function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between sm:h-20">
-            <button
-              type="button"
-              aria-label="Valley Computers Home"
-              className="-ml-1 flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-2.5 py-1.5 text-left leading-none transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.03] hover:border-[#f97316]/55 hover:bg-white/[0.05] hover:shadow-[0_10px_24px_rgba(249,115,22,0.2)] sm:ml-0 sm:gap-3.5 sm:px-3 sm:py-2"
+            <div
+              className="-ml-1 flex items-center gap-3 px-3 py-1.5 text-left leading-none transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-105 hover:bg-white/[0.05] hover:shadow-[0_10px_24px_rgba(249,115,22,0.2)] hover:px-4 cursor-pointer sm:ml-0 sm:gap-4 sm:px-3.5 sm:py-2 hover:sm:px-4.5"
               onClick={() => router.push('/')}
             >
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f97316] text-sm font-black tracking-tight text-white shadow-[0_10px_24px_rgba(249,115,22,0.45)] sm:h-10 sm:w-10">
-                VC
-              </span>
-              <span className="flex flex-col">
-                <span className="text-[1rem] font-black tracking-tight text-[#f97316] sm:text-[1.08rem] lg:text-[1.15rem]">
+              <span className="flex items-center transition-all duration-300 ease-out hover:scale-110">
+                <span className="text-[1.1rem] font-black tracking-tight text-[#f97316] sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out hover:tracking-widest hover:text-orange-400">
                   VALLEY
                 </span>
-                <span className="-mt-0.5 text-[0.86rem] font-extrabold tracking-tight text-zinc-100 sm:text-[0.94rem] lg:text-[1rem]">
+                <span className="ml-1.5 text-[0.95rem] font-extrabold tracking-tight text-zinc-100 sm:text-[1.05rem] lg:text-[1.15rem] transition-all duration-300 ease-out hover:tracking-wider hover:text-white">
                   COMPUTERS
                 </span>
               </span>
-            </button>
+            </div>
 
             <div className="hidden items-center gap-8 lg:gap-10 md:flex">
               {navigation.map((item) => (

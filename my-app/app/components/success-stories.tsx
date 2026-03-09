@@ -7,8 +7,9 @@ import {
   ChevronRightIcon,
   CpuChipIcon,
   MapIcon,
-  StarIcon,
 } from '@heroicons/react/24/solid'
+import Image from 'next/image'
+import { StarIcon } from '@heroicons/react/24/solid'
 
 const stories = [
   {
@@ -137,10 +138,12 @@ const SuccessStories = () => {
                     </div>
                     <p className="mt-5 text-base leading-relaxed text-zinc-200">&ldquo;{story.quote}&rdquo;</p>
                     <div className="mt-6 flex items-center gap-3 border-t border-zinc-800 pt-4">
-                      <img
+                      <Image
                         src={story.avatar}
                         alt={`${story.author} profile`}
                         className="h-11 w-11 rounded-full border border-zinc-700 object-cover"
+                        width={44}
+                        height={44}
                         loading="lazy"
                       />
                       <div>

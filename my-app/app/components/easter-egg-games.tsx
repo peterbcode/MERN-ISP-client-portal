@@ -28,25 +28,57 @@ const NETWORK_BEST_KEY = 'vc_network_best'
 const PACKET_BEST_KEY = 'vc_packet_best'
 
 const EasterEggGames = () => {
+  // Helper functions for lazy initialization
+  const getInitialGameShow = (): boolean | null => {
+    if (typeof window === 'undefined') return null
+    const existingRoll = window.sessionStorage.getItem('vc_games_roll')
+    if (existingRoll === 'show' || existingRoll === 'hide') {
+      return existingRoll === 'show'
+    }
+    return null // Will be determined in useEffect
+  }
+
+  const getInitialScores = () => {
+    if (typeof window === 'undefined') {
+      return {
+        networkBest: 0,
+        packetBest: 0,
+        packetGames: 0,
+        globalBest: 0,
+      }
+    }
+    return {
+      networkBest: Number(window.localStorage.getItem(NETWORK_BEST_KEY) ?? '0'),
+      packetBest: Number(window.localStorage.getItem(PACKET_BEST_KEY) ?? '0'),
+      packetGames: Number(window.localStorage.getItem('vc_packet_games') ?? '0'),
+      globalBest: Number(window.localStorage.getItem(GLOBAL_BEST_KEY) ?? '0'),
+    }
+  }
+
   const [activeGame, setActiveGame] = useState<GameMode>('network')
-  const [touchDevice, setTouchDevice] = useState(false)
-  const [shouldRenderGames, setShouldRenderGames] = useState<boolean | null>(null)
+  const [touchDevice] = useState(() => 
+    typeof window !== 'undefined' ? window.matchMedia('(pointer: coarse)').matches : false
+  )
+  const [shouldRenderGames, setShouldRenderGames] = useState<boolean | null>(getInitialGameShow)
 
   const networkCanvasRef = useRef<HTMLCanvasElement | null>(null)
   const packetCanvasRef = useRef<HTMLCanvasElement | null>(null)
 
   const [networkRunning, setNetworkRunning] = useState(false)
   const [networkScore, setNetworkScore] = useState(0)
-  const [networkBest, setNetworkBest] = useState(0)
+  const initialScores = getInitialScores()
+  const [networkBest, setNetworkBest] = useState(initialScores.networkBest)
   const [networkTime, setNetworkTime] = useState(30)
 
   const [packetRunning, setPacketRunning] = useState(false)
   const [packetScore, setPacketScore] = useState(0)
-  const [packetBest, setPacketBest] = useState(0)
-  const [packetGames, setPacketGames] = useState(0)
+  const [packetBest, setPacketBest] = useState(initialScores.packetBest)
+  const [packetGames, setPacketGames] = useState(initialScores.packetGames)
   const packetScoreRef = useRef(0)
+  const packetGamesRef = useRef(initialScores.packetGames)
+  const packetBestRef = useRef(initialScores.packetBest)
   const networkScoreRef = useRef(0)
-  const [globalBest, setGlobalBest] = useState(0)
+  const [globalBest, setGlobalBest] = useState(initialScores.globalBest)
   const [beatPrompt, setBeatPrompt] = useState<{ open: boolean; score: number; game: string }>({
     open: false,
     score: 0,
@@ -55,9 +87,11 @@ const EasterEggGames = () => {
 
   const networkNodes = useRef<NodeItem[]>([])
   const networkMouse = useRef({ x: -999, y: -999 })
-  const networkBreakTimer = useRef<number | null>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const networkBreakTimer = useRef<any>(null)
   const networkFrame = useRef<number | null>(null)
-  const networkCountdown = useRef<number | null>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const networkCountdown = useRef<any>(null)
 
   const packetFrame = useRef<number | null>(null)
   const packetPlayerY = useRef(PACKET_H / 2)
@@ -96,26 +130,14 @@ const EasterEggGames = () => {
   )
 
   useEffect(() => {
-    const existingRoll = window.sessionStorage.getItem('vc_games_roll')
-    if (existingRoll === 'show' || existingRoll === 'hide') {
-      setShouldRenderGames(existingRoll === 'show')
-    } else {
+    // Only determine random show/hide if it wasn't already set
+    if (shouldRenderGames === null) {
       const show = Math.random() < 0.5
       window.sessionStorage.setItem('vc_games_roll', show ? 'show' : 'hide')
-      setShouldRenderGames(show)
+      // Defer setState to avoid cascading renders
+      setTimeout(() => setShouldRenderGames(show), 0)
     }
-
-    setTouchDevice(window.matchMedia('(pointer: coarse)').matches)
-    // Load best scores for both games
-    const storedNetworkBest = Number(window.localStorage.getItem(NETWORK_BEST_KEY) ?? '0')
-    const storedPacketBest = Number(window.localStorage.getItem(PACKET_BEST_KEY) ?? '0')
-    const storedGames = Number(window.localStorage.getItem('vc_packet_games') ?? '0')
-    const storedGlobal = Number(window.localStorage.getItem(GLOBAL_BEST_KEY) ?? '0')
-    setNetworkBest(storedNetworkBest)
-    setPacketBest(storedPacketBest)
-    setPacketGames(storedGames)
-    setGlobalBest(storedGlobal)
-  }, [])
+  }, [shouldRenderGames])
 
   const registerGlobalScore = (score: number, game: string) => {
     if (score <= 0) return
@@ -410,17 +432,21 @@ const EasterEggGames = () => {
     if (packetRunning) return
     if (packetScore <= 0) return
 
-    setPacketGames((games) => {
-      const next = games + 1
-      window.localStorage.setItem('vc_packet_games', String(next))
-      return next
-    })
-    setPacketBest((best) => {
-      const next = Math.max(best, packetScore)
-      window.localStorage.setItem(PACKET_BEST_KEY, String(next))
-      return next
-    })
-  }, [packetRunning, packetScore])
+    // Use refs to avoid setState in useEffect
+    const currentGames = packetGamesRef.current || packetGames
+    const nextGames = currentGames + 1
+    packetGamesRef.current = nextGames
+    window.localStorage.setItem('vc_packet_games', String(nextGames))
+    // Defer setState to avoid cascading renders
+    setTimeout(() => setPacketGames(nextGames), 0)
+
+    const currentBest = packetBestRef.current || packetBest
+    const nextBest = Math.max(currentBest, packetScore)
+    packetBestRef.current = nextBest
+    window.localStorage.setItem(PACKET_BEST_KEY, String(nextBest))
+    // Defer setState to avoid cascading renders
+    setTimeout(() => setPacketBest(nextBest), 0)
+  }, [packetRunning, packetScore, packetGames, packetBest])
 
   const startNetworkGame = () => {
     // Reset all nodes to working state

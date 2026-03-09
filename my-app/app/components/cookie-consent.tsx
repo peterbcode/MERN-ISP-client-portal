@@ -3,8 +3,8 @@
 import { useConsent } from './consent-provider'
 
 const CookieConsent = () => {
-  const { bannerOpen, setConsent, closeBanner } = useConsent()
-  if (!bannerOpen) return null
+  const { bannerOpen, isMounted, setConsent, closeBanner } = useConsent()
+  if (!isMounted || !bannerOpen) return null
 
   return (
     <div className="fixed bottom-4 left-4 z-[65] w-[min(430px,92vw)] rounded-2xl border border-zinc-700 bg-zinc-900/95 p-4 text-zinc-200 shadow-[0_20px_40px_rgba(0,0,0,0.45)] sm:bottom-6 sm:left-6 sm:p-5">
