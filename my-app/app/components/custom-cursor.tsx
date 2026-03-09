@@ -54,7 +54,8 @@ class Dot {
 
 const CustomCursor = () => {
   useEffect(() => {
-    const supportsCustomCursor = window.matchMedia('(any-pointer: fine)').matches
+    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
+    const supportsCustomCursor = mediaQuery.matches
     const cursor = document.getElementById('cursor')
 
     if (!supportsCustomCursor || !cursor) {
@@ -75,6 +76,57 @@ const CustomCursor = () => {
     let timeoutID: ReturnType<typeof setTimeout> | null = null
     let idle = false
     let frameId = 0
+    let isDarkTone = false
+
+    const resolveBackgroundColor = (el: Element | null): string | null => {
+      let current: Element | null = el
+      while (current && current !== document.documentElement) {
+        const bg = window.getComputedStyle(current).backgroundColor
+        if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
+          return bg
+        }
+        current = current.parentElement
+      }
+      return window.getComputedStyle(document.body).backgroundColor
+    }
+
+    const isLightColor = (color: string | null) => {
+      if (!color) return false
+      const match = color.match(/rgba?\(([^)]+)\)/)
+      if (!match) return false
+      const parts = match[1].split(',').map((part) => Number.parseFloat(part.trim()))
+      const [r = 0, g = 0, b = 0, a = 1] = parts
+      if (a === 0) return false
+      const luminance = 0.299 * r + 0.587 * g + 0.114 * b
+      return luminance > 120
+    }
+
+    const isOrangeAccent = (color: string | null) => {
+      if (!color) return false
+      const match = color.match(/rgba?\(([^)]+)\)/)
+      if (!match) return false
+      const parts = match[1].split(',').map((part) => Number.parseFloat(part.trim()))
+      const [r = 0, g = 0, b = 0, a = 1] = parts
+      if (a === 0) return false
+      // Detect orange-like brand accent tones (e.g. rgb(249,115,22)).
+      return r >= 180 && g >= 70 && g <= 170 && b <= 90
+    }
+
+    const syncCursorTone = () => {
+      const probeX = mousePosition.x + width / 2
+      const probeY = mousePosition.y + width / 2
+      const hovered = document.elementFromPoint(probeX, probeY)
+      const textColor = hovered ? window.getComputedStyle(hovered).color : null
+      const lightSurface = isLightColor(resolveBackgroundColor(hovered))
+      const overOrangeText = isOrangeAccent(textColor)
+
+      const shouldUseBlack = lightSurface || overOrangeText
+
+      if (shouldUseBlack !== isDarkTone) {
+        isDarkTone = shouldUseBlack
+        cursor.classList.toggle('Cursor--dark', isDarkTone)
+      }
+    }
 
     const startIdleTimer = () => {
       timeoutID = setTimeout(() => {
@@ -115,6 +167,7 @@ const CustomCursor = () => {
 
     const render = () => {
       positionCursor()
+      syncCursorTone()
       frameId = window.requestAnimationFrame(render)
     }
 
@@ -132,8 +185,17 @@ const CustomCursor = () => {
       resetIdleTimer()
     }
 
+    const onMediaChange = (event: MediaQueryListEvent) => {
+      if (!event.matches) {
+        document.body.classList.remove('custom-cursor-enabled')
+        document.body.classList.add('no-custom-cursor')
+        document.documentElement.classList.remove('has-custom-cursor')
+      }
+    }
+
     window.addEventListener('mousemove', onMouseMove, { passive: true })
     window.addEventListener('touchmove', onTouchMove, { passive: true })
+    mediaQuery.addEventListener('change', onMediaChange)
 
     buildDots()
     startIdleTimer()
@@ -142,6 +204,7 @@ const CustomCursor = () => {
     return () => {
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('touchmove', onTouchMove)
+      mediaQuery.removeEventListener('change', onMediaChange)
       if (timeoutID) clearTimeout(timeoutID)
       window.cancelAnimationFrame(frameId)
       if (cursor) cursor.innerHTML = ''

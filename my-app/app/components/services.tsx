@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import { ArrowRightIcon, ComputerDesktopIcon, CpuChipIcon, WifiIcon } from '@heroicons/react/24/outline'
 
 const services = [
@@ -53,16 +53,16 @@ const Services = () => {
           {services.map((service) => (
             <article
               key={service.title}
-              className="rounded-3xl border border-[#f36f00]/25 bg-[linear-gradient(135deg,rgba(243,111,0,0.09),rgba(255,255,255,0.03)_56%,rgba(255,255,255,0.015))] p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] backdrop-blur-sm transition hover:-translate-y-1 hover:border-[#f36f00]/45"
+              className="rounded-3xl border border-[#f97316]/25 bg-[linear-gradient(135deg,rgba(243,111,0,0.09),rgba(255,255,255,0.03)_56%,rgba(255,255,255,0.015))] p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] backdrop-blur-sm transition hover:-translate-y-1 hover:border-[#f97316]/45"
             >
-              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f36f00] text-white shadow-[0_10px_25px_rgba(243,111,0,0.25)]">
+              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f97316] text-white shadow-[0_10px_25px_rgba(243,111,0,0.25)]">
                 <service.icon className="h-8 w-8" />
               </div>
               <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{service.title}</h3>
               <p className="mt-5 text-base leading-relaxed text-zinc-300 sm:text-lg">{service.description}</p>
               <Link
                 href={service.href}
-                className="mt-7 inline-flex items-center gap-2 text-lg font-bold text-[#f36f00] transition hover:text-[#ff8a2a] sm:text-xl"
+                className="mt-7 inline-flex items-center gap-2 text-lg font-bold text-[#f97316] transition hover:text-[#f97316] sm:text-xl"
               >
                 {service.cta}
                 <ArrowRightIcon className="h-5 w-5" />
@@ -75,7 +75,7 @@ const Services = () => {
           {stats.map((item) => (
             <div key={item.label}>
               <p
-                className={`font-black tracking-tight text-[#f36f00] ${
+                className={`font-black tracking-tight text-[#f97316] ${
                   item.value.includes(' ') ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl lg:text-5xl'
                 }`}
               >
@@ -91,3 +91,4 @@ const Services = () => {
 }
 
 export default Services
+

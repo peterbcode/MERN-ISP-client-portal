@@ -60,6 +60,7 @@ const Hero = () => {
 
   return (
     <section
+      id="hero-section"
       className="relative min-h-[76vh] overflow-hidden bg-[#050505] text-white lg:min-h-[84vh]"
       onMouseMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect()
@@ -82,8 +83,8 @@ const Hero = () => {
           transform: `translate3d(${pointer.x * 8}px, ${pointer.y * 8}px, 0)`,
         }}
       >
-        <div className="absolute left-[10%] top-[20%] h-56 w-56 rounded-full bg-[#f36f00]/20 blur-3xl" />
-        <div className="absolute bottom-[14%] right-[12%] h-72 w-72 rounded-full bg-[#f36f00]/15 blur-3xl" />
+        <div className="absolute left-[10%] top-[20%] h-56 w-56 rounded-full bg-[#f97316]/20 blur-3xl" />
+        <div className="absolute bottom-[14%] right-[12%] h-72 w-72 rounded-full bg-[#f97316]/15 blur-3xl" />
       </div>
 
       <div
@@ -92,25 +93,25 @@ const Hero = () => {
           transform: `translate3d(${pointer.x * -10}px, ${pointer.y * -10}px, 0)`,
         }}
       >
-        <div className="absolute left-[16%] top-[31%] h-px w-[23%] rotate-6 bg-gradient-to-r from-transparent via-[#f36f00]/30 to-transparent" />
-        <div className="absolute left-[30%] top-[58%] h-px w-[30%] -rotate-12 bg-gradient-to-r from-transparent via-[#f36f00]/26 to-transparent" />
-        <div className="absolute right-[18%] top-[38%] h-px w-[18%] -rotate-6 bg-gradient-to-r from-transparent via-[#f36f00]/30 to-transparent" />
+        <div className="absolute left-[16%] top-[31%] h-px w-[23%] rotate-6 bg-gradient-to-r from-transparent via-[#f97316]/30 to-transparent" />
+        <div className="absolute left-[30%] top-[58%] h-px w-[30%] -rotate-12 bg-gradient-to-r from-transparent via-[#f97316]/26 to-transparent" />
+        <div className="absolute right-[18%] top-[38%] h-px w-[18%] -rotate-6 bg-gradient-to-r from-transparent via-[#f97316]/30 to-transparent" />
         {nodes.map((node) => (
           <span
             key={node.id}
-            className={`node-pulse absolute rounded-full border border-[#f8a258]/45 bg-[#f36f00]/70 shadow-[0_0_16px_rgba(243,111,0,0.65)] ${node.size}`}
+            className={`node-pulse absolute rounded-full border border-[#f8a258]/45 bg-[#f97316]/70 shadow-[0_0_16px_rgba(243,111,0,0.65)] ${node.size}`}
             style={{ left: node.x, top: node.y, animationDelay: node.delay }}
           />
         ))}
       </div>
 
       <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-6 pt-32 text-center sm:px-6 lg:px-8 lg:pb-10 lg:pt-40">
-        <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#f36f00]" />
+        <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#f97316]" />
         <h1 className="mt-6 max-w-5xl text-4xl font-black leading-[0.9] tracking-[-0.02em] sm:text-5xl lg:text-8xl">
-          <span className="block text-[#f36f00] drop-shadow-[0_0_24px_rgba(243,111,0,0.35)]">We Build</span>
+          <span className="block text-[#f97316] drop-shadow-[0_0_24px_rgba(243,111,0,0.35)]">We Build</span>
           <span className="block min-h-[1.05em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]">
             {displayText}
-            <span className="ml-1 inline-block h-[0.9em] w-[0.08em] animate-[cursor-blink_1s_steps(1,end)_infinite] bg-[#f36f00] align-[-0.08em]" />
+            <span className="ml-1 inline-block h-[0.9em] w-[0.08em] animate-[cursor-blink_1s_steps(1,end)_infinite] bg-[#f97316] align-[-0.08em]" />
           </span>
         </h1>
 
@@ -119,10 +120,10 @@ const Hero = () => {
         </p>
 
         <div className="mt-8 flex w-full max-w-2xl flex-col gap-3 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4">
-          <button className="w-full rounded-full bg-[#f36f00] px-6 py-3 text-base font-bold text-white shadow-[0_0_28px_rgba(243,111,0,0.45)] transition hover:-translate-y-0.5 hover:brightness-110 sm:w-auto sm:px-8 sm:py-4 sm:text-lg">
+          <button className="w-full rounded-full bg-[#f97316] px-6 py-3 text-base font-bold text-white shadow-[0_0_28px_rgba(243,111,0,0.45)] transition hover:-translate-y-0.5 hover:brightness-110 sm:w-auto sm:px-8 sm:py-4 sm:text-lg">
             Get Connected
           </button>
-          <button className="w-full rounded-full border border-zinc-700 bg-zinc-900/70 px-6 py-3 text-base font-bold text-zinc-100 transition hover:border-[#f36f00]/70 hover:bg-zinc-800/85 sm:w-auto sm:px-8 sm:py-4 sm:text-lg">
+          <button className="w-full rounded-full border border-zinc-700 bg-zinc-900/70 px-6 py-3 text-base font-bold text-zinc-100 transition hover:border-[#f97316]/70 hover:bg-zinc-800/85 sm:w-auto sm:px-8 sm:py-4 sm:text-lg">
             Explore Services
           </button>
         </div>
@@ -133,5 +134,6 @@ const Hero = () => {
 }
 
 export default Hero
+
 
 

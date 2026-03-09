@@ -1,7 +1,14 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { ChevronLeftIcon, ChevronRightIcon, StarIcon } from '@heroicons/react/24/solid'
+import {
+  BuildingOffice2Icon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CpuChipIcon,
+  MapIcon,
+  StarIcon,
+} from '@heroicons/react/24/solid'
 
 const stories = [
   {
@@ -43,6 +50,24 @@ const stories = [
     role: 'Retail Owner',
     location: 'Wellington',
     avatar: 'https://i.pravatar.cc/96?img=20',
+  },
+]
+
+const footprintItems = [
+  {
+    title: 'Riebeek Kasteel',
+    description: 'Core support hub and fibre backbone operations.',
+    icon: BuildingOffice2Icon,
+  },
+  {
+    title: 'Malmesbury',
+    description: 'Business and residential ISP coverage and support.',
+    icon: CpuChipIcon,
+  },
+  {
+    title: 'Swartland',
+    description: 'Reliable connectivity across surrounding towns and farms.',
+    icon: MapIcon,
   },
 ]
 
@@ -89,7 +114,7 @@ const SuccessStories = () => {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f36f00]">Client Testimonials</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f97316]">Client Testimonials</p>
           <h2 className="mt-3 text-3xl font-extrabold sm:text-5xl">Success Stories</h2>
           <p className="mt-4 text-base text-zinc-300 sm:text-lg">
             Trusted by local homes and businesses for reliable internet and practical IT support.
@@ -105,7 +130,7 @@ const SuccessStories = () => {
               {stories.map((story) => (
                 <div key={`${story.author}-${story.location}`} className="w-full shrink-0 px-2 sm:w-1/2 lg:w-1/3">
                   <article className="h-full rounded-3xl border border-zinc-800 bg-zinc-950 p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-                    <div className="flex items-center gap-1 text-[#f36f00]">
+                    <div className="flex items-center gap-1 text-[#f97316]">
                       {Array.from({ length: 5 }).map((_, starIndex) => (
                         <StarIcon key={starIndex} className="h-4 w-4" />
                       ))}
@@ -138,7 +163,7 @@ const SuccessStories = () => {
                 const clamped = Math.min(current, maxIndex)
                 return clamped <= 0 ? maxIndex : clamped - 1
               })}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 transition hover:border-[#f36f00] hover:text-[#f36f00]"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 transition hover:border-[#f97316] hover:text-[#f97316]"
               aria-label="Previous testimonial"
             >
               <ChevronLeftIcon className="h-5 w-5" />
@@ -149,7 +174,7 @@ const SuccessStories = () => {
                   key={dotIndex}
                   type="button"
                   onClick={() => setIndex(dotIndex)}
-                  className={`h-2.5 rounded-full transition-all ${dotIndex === activeIndex ? 'w-7 bg-[#f36f00]' : 'w-2.5 bg-zinc-600'}`}
+                  className={`h-2.5 rounded-full transition-all ${dotIndex === activeIndex ? 'w-7 bg-[#f97316]' : 'w-2.5 bg-zinc-600'}`}
                   aria-label={`Go to slide ${dotIndex + 1}`}
                 />
               ))}
@@ -160,7 +185,7 @@ const SuccessStories = () => {
                 const clamped = Math.min(current, maxIndex)
                 return clamped >= maxIndex ? 0 : clamped + 1
               })}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 transition hover:border-[#f36f00] hover:text-[#f36f00]"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-zinc-200 transition hover:border-[#f97316] hover:text-[#f97316]"
               aria-label="Next testimonial"
             >
               <ChevronRightIcon className="h-5 w-5" />
@@ -168,24 +193,60 @@ const SuccessStories = () => {
           </div>
         </div>
 
-        <div className="mx-auto mt-12 max-w-5xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f36f00]">Why Choose Valley Computers</p>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-5">
-              <p className="text-3xl font-black text-[#f36f00]">99%</p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">Service Reliability</p>
+        <div className="mt-14 border-t border-zinc-800/70 pt-10">
+          <div className="mx-auto mb-10 max-w-3xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f97316]">Coverage</p>
+            <h3 className="mt-3 text-3xl font-extrabold sm:text-4xl">Our Local Footprint</h3>
+            <p className="mt-4 text-base text-zinc-300">
+              Focused coverage across key Swartland areas.
+            </p>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              {footprintItems.map((item) => (
+                <article
+                  key={item.title}
+                  className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#f97316] text-white">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-extrabold tracking-tight">{item.title}</h4>
+                      <p className="mt-1 text-sm leading-relaxed text-zinc-300">{item.description}</p>
+                    </div>
+                  </div>
+                </article>
+              ))}
             </div>
-            <div className="rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-5">
-              <p className="text-3xl font-black text-[#f36f00]">24/7</p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">Team Support</p>
-            </div>
-            <div className="rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-5">
-              <p className="text-3xl font-black text-[#f36f00]">Same Day</p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">Fast Response</p>
-            </div>
-            <div className="rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-5">
-              <p className="text-3xl font-black text-[#f36f00]">4.9/5</p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">Client Rating</p>
+
+            <div className="relative self-center overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950 shadow-[0_22px_45px_rgba(0,0,0,0.45)]">
+              <div className="absolute left-4 top-4 z-10">
+                <a
+                  href="https://maps.google.com/?q=Riebeek+Kasteel+Malmesbury+Chatsworth+Swartland"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-semibold text-zinc-100 shadow hover:border-[#f97316]"
+                >
+                  Open in Maps
+                </a>
+              </div>
+
+              <div className="absolute left-4 right-4 top-20 z-10 rounded-2xl border border-zinc-700 bg-zinc-900/95 px-4 py-3 shadow">
+                <p className="text-sm font-bold uppercase tracking-wide text-zinc-300">
+                  Coverage: Riebeek Kasteel, Malmesbury, Chatsworth and wider Swartland.
+                </p>
+              </div>
+
+              <iframe
+                title="Swartland coverage map"
+                src="https://maps.google.com/maps?q=Riebeek+Kasteel+Malmesbury+Chatsworth+Swartland&t=&z=11&ie=UTF8&iwloc=&output=embed"
+                className="h-[420px] w-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
         </div>
@@ -195,3 +256,4 @@ const SuccessStories = () => {
 }
 
 export default SuccessStories
+

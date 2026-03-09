@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import {
@@ -38,7 +38,7 @@ export default function Navbar() {
 
   return (
     <header className="relative z-50 w-full">
-      <div data-cursor-invert className="bg-[#f36f00] text-white">
+      <div data-cursor-invert className="bg-[#f97316] text-white">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-3 text-[10px] font-medium sm:px-6 sm:text-xs lg:px-8">
           <div className="hidden items-center gap-5 md:flex">
             <span className="flex items-center gap-1.5 whitespace-nowrap text-white/95">
@@ -78,11 +78,20 @@ export default function Navbar() {
             <button
               type="button"
               aria-label="Valley Computers Home"
-              className="-ml-1 flex items-center gap-1 text-lg font-black leading-none tracking-tight transition-transform duration-300 ease-out hover:scale-[1.02] sm:ml-0 sm:text-xl lg:text-2xl"
+              className="-ml-1 flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-2.5 py-1.5 text-left leading-none transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.03] hover:border-[#f97316]/55 hover:bg-white/[0.05] hover:shadow-[0_10px_24px_rgba(249,115,22,0.2)] sm:ml-0 sm:gap-3.5 sm:px-3 sm:py-2"
               onClick={() => router.push('/')}
             >
-              <span className="text-[#f36f00]">VALLEY</span>
-              <span className="text-white">COMPUTERS</span>
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f97316] text-sm font-black tracking-tight text-white shadow-[0_10px_24px_rgba(249,115,22,0.45)] sm:h-10 sm:w-10">
+                VC
+              </span>
+              <span className="flex flex-col">
+                <span className="text-[1rem] font-black tracking-tight text-[#f97316] sm:text-[1.08rem] lg:text-[1.15rem]">
+                  VALLEY
+                </span>
+                <span className="-mt-0.5 text-[0.86rem] font-extrabold tracking-tight text-zinc-100 sm:text-[0.94rem] lg:text-[1rem]">
+                  COMPUTERS
+                </span>
+              </span>
             </button>
 
             <div className="hidden items-center gap-8 lg:gap-10 md:flex">
@@ -90,11 +99,11 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`relative text-[15px] font-semibold transition-colors after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-0 after:bg-[#f36f00] after:transition-all hover:text-[#f36f00] hover:after:w-full ${
+                  className={`relative text-[15px] font-semibold transition-colors after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-0 after:bg-[#f97316] after:transition-all hover:text-[#f97316] hover:after:w-full ${
                     (item.href === '/#services' || item.href === '/#success-stories') && pathname === '/'
                       ? 'text-white/95'
                       : pathname === item.href
-                        ? 'text-[#f36f00] after:w-full'
+                        ? 'text-[#f97316] after:w-full'
                         : 'text-white/90'
                   }`}
                 >
@@ -102,7 +111,7 @@ export default function Navbar() {
                 </Link>
               ))}
               <Menu as="div" className="relative">
-                <MenuButton className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 bg-white/5 text-white/95 transition hover:border-[#f36f00]/60 hover:bg-white/10 hover:text-[#f36f00]">
+                <MenuButton className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 bg-white/5 text-white/95 transition hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]">
                   <ChevronDownIcon className="h-5 w-5" />
                 </MenuButton>
                 <MenuItems className="absolute right-0 z-50 mt-3 w-44 rounded-xl border border-white/20 bg-zinc-950 p-2 shadow-[0_14px_30px_rgba(0,0,0,0.5)]">
@@ -111,7 +120,7 @@ export default function Navbar() {
                       <Link
                         href="/faq"
                         className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white ${
-                          focus ? 'bg-white/12 text-[#f36f00]' : 'text-white/95'
+                          focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
                         }`}
                       >
                         FAQ
@@ -123,7 +132,7 @@ export default function Navbar() {
                       <Link
                         href="/login"
                         className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white ${
-                          focus ? 'bg-white/12 text-[#f36f00]' : 'text-white/95'
+                          focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
                         }`}
                       >
                         Login
@@ -137,7 +146,7 @@ export default function Navbar() {
             <div className="hidden md:block">
               <button
                 type="button"
-                className="rounded-full bg-[#f36f00] px-6 py-2.5 text-sm font-bold text-white shadow-[0_10px_24px_rgba(243,111,0,0.3)] ring-1 ring-[#f8a258]/40 transition-all hover:-translate-y-0.5 hover:brightness-110 lg:px-7 lg:py-3"
+                className="rounded-full bg-[#f97316] px-6 py-2.5 text-sm font-bold text-white shadow-[0_10px_24px_rgba(243,111,0,0.3)] ring-1 ring-[#f8a258]/40 transition-all hover:-translate-y-0.5 hover:brightness-110 lg:px-7 lg:py-3"
               >
                 Partner With Us
               </button>
@@ -168,7 +177,7 @@ export default function Navbar() {
             </Link>
             <button
               type="button"
-              className="mt-2 w-full rounded-full bg-[#f36f00] px-6 py-3 text-sm font-bold text-white transition hover:brightness-110"
+              className="mt-2 w-full rounded-full bg-[#f97316] px-6 py-3 text-sm font-bold text-white transition hover:brightness-110"
             >
               Partner With Us
             </button>
@@ -178,4 +187,5 @@ export default function Navbar() {
     </header>
   )
 }
+
 

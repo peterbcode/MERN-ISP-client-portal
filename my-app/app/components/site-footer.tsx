@@ -1,85 +1,136 @@
 import Link from 'next/link'
+import { MapPinIcon, PhoneIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid'
+import { Facebook, Instagram, Linkedin } from 'lucide-react'
+import ManageCookiesButton from './manage-cookies-button'
+
+const services = [
+  'Fibre to the Home',
+  'Wireless Business Internet',
+  'PC Repairs',
+  'Network Security',
+  'Managed IT Support',
+]
+
+const supportHub = [
+  'Remote Support Tool',
+  'Speed Test',
+  'Privacy Policy',
+  'Terms & Conditions',
+  'AUP Policy',
+]
 
 const SiteFooter = () => {
   return (
-    <footer className="border-t border-zinc-800 bg-[#060606] text-zinc-300">
+    <footer className="border-t border-zinc-800 bg-[#060607] text-zinc-300">
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 border-b border-zinc-800/80 pb-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="text-2xl font-black tracking-tight text-white">
-              <span className="text-[#f36f00]">VALLEY</span> COMPUTERS
+            <p className="text-3xl font-black tracking-tight text-zinc-100">
+              <span className="text-[#f97316]">RV</span>COMPUTERS
             </p>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-400">
-              Professional ISP and IT services for homes and businesses across the Western Cape.
+            <p className="mt-5 max-w-sm text-base leading-relaxed text-zinc-400">
+              Powering the Riebeek Valley with high-speed connectivity and precision IT engineering.
+              Your local partner for a digital future.
             </p>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-white">Navigation</h3>
-            <ul className="mt-4 space-y-2 text-sm">
-              <li><Link href="/" className="transition hover:text-[#f36f00]">Home</Link></li>
-              <li><Link href="/#services" className="transition hover:text-[#f36f00]">Services</Link></li>
-              <li><Link href="/#success-stories" className="transition hover:text-[#f36f00]">Success Stories</Link></li>
-              <li><Link href="/contact" className="transition hover:text-[#f36f00]">Contact</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-white">Core Services</h3>
-            <ul className="mt-4 space-y-2 text-sm">
-              <li>Fibre Internet</li>
-              <li>Wireless Internet</li>
-              <li>PC Repairs</li>
-              <li>Network Engineering</li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-white">Contact</h3>
-            <ul className="mt-4 space-y-2 text-sm">
-              <li>Riebeek Kasteel, Western Cape</li>
-              <li>
-                <a href="tel:+27799381260" className="transition hover:text-[#f36f00]">079 938 1260</a>
-              </li>
-              <li>
-                <a href="mailto:info@valley-computers.co.za" className="transition hover:text-[#f36f00]">
-                  info@valley-computers.co.za
-                </a>
-              </li>
-              <li>
-                <a href="https://wa.me/27799381260" className="transition hover:text-[#f36f00]">WhatsApp Support</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5 sm:p-6">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-white">Subscribe to our mailing list</h3>
-              <p className="mt-1 text-sm text-zinc-400">
-                Get updates on coverage rollouts, network upgrades, and service offers.
-              </p>
+            <div className="mt-6 flex items-center gap-3">
+              <a
+                href="#"
+                aria-label="Facebook"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-lg font-bold text-zinc-200 transition hover:border-[#f97316] hover:bg-zinc-800 hover:text-zinc-100"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a
+                href="#"
+                aria-label="Instagram"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-sm font-bold text-zinc-200 transition hover:border-[#f97316] hover:bg-zinc-800 hover:text-zinc-100"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-sm font-bold text-zinc-200 transition hover:border-[#f97316] hover:bg-zinc-800 hover:text-zinc-100"
+              >
+                <Linkedin className="h-5 w-5" />
+              </a>
             </div>
-            <form className="flex w-full max-w-xl flex-col gap-3 sm:flex-row">
+          </div>
+
+          <div>
+            <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Services</h3>
+            <div className="mt-3 h-0.5 w-[4.5rem] bg-[#f97316]" />
+            <ul className="mt-5 space-y-3 text-base text-zinc-400">
+              {services.map((item) => (
+                <li key={item}>
+                  <Link href="/#services" className="transition hover:text-[#f97316]">
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Support Hub</h3>
+            <div className="mt-3 h-0.5 w-28 bg-[#f97316]" />
+            <ul className="mt-5 space-y-3 text-base text-zinc-400">
+              {supportHub.map((item) => (
+                <li key={item}>
+                  <Link href="/faq" className="transition hover:text-[#f97316]">
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Stay Connected</h3>
+            <div className="mt-3 h-0.5 w-32 bg-[#f97316]" />
+            <p className="mt-8 text-sm font-bold uppercase tracking-[0.14em] text-zinc-300">
+              Join our mailing list
+            </p>
+            <form className="mt-4 flex w-full max-w-sm overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900">
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-[#f36f00] focus:outline-none"
+                placeholder="Email Address"
+                className="w-full bg-transparent px-4 py-3 text-sm text-zinc-200 placeholder:text-zinc-500 focus:outline-none"
               />
               <button
-                type="submit"
-                className="rounded-xl bg-[#f36f00] px-5 py-2.5 text-sm font-bold text-white transition hover:brightness-110"
+                type="button"
+                aria-label="Subscribe"
+                className="inline-flex w-14 items-center justify-center bg-[#f97316] text-white transition hover:brightness-110"
               >
-                Subscribe
+                <PaperAirplaneIcon className="h-5 w-5" />
               </button>
             </form>
+
+            <div className="mt-16 space-y-3 text-base text-zinc-300">
+              <p className="flex items-center gap-2">
+                <MapPinIcon className="h-5 w-5 text-[#f97316]" />
+                6 Church Rd, Riebeek-Kasteel, 7307
+              </p>
+              <a href="tel:+27799381260" className="flex items-center gap-2 transition hover:text-[#f97316]">
+                <PhoneIcon className="h-5 w-5 text-[#f97316]" />
+                079 938 1260
+              </a>
+            </div>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-zinc-800 pt-5 text-xs text-zinc-500 sm:flex sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Valley Computers. All rights reserved.</p>
-          <p className="mt-2 sm:mt-0">Built for reliable local connectivity.</p>
+        <div className="pt-7 text-sm text-zinc-500 sm:flex sm:items-center sm:justify-between">
+          <p className="flex flex-wrap items-center gap-3">
+            <span>(c) 2026 Riebeek Valley Computers (Pty) Ltd.</span>
+            <span>|</span>
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[#f97316]" />
+              Network Status: Online
+            </span>
+            <span>|</span>
+            <ManageCookiesButton />
+          </p>
+          <p className="mt-3 sm:mt-0">Reg No: 20XX/XXXXXX/07 | ICASA Licensed Provider</p>
         </div>
       </div>
     </footer>
