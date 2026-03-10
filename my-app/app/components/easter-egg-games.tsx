@@ -220,14 +220,8 @@ const EasterEggGames = () => {
   useEffect(() => {
     if (!isClient) return
     const isHomepage = window.location.pathname === '/' || window.location.pathname === ''
-    const roll = window.sessionStorage.getItem('vc_games_roll')
-    let show: boolean
-    if (roll === 'show' || roll === 'hide') {
-      show = roll === 'show'
-    } else {
-      show = Math.random() < 0.5
-      window.sessionStorage.setItem('vc_games_roll', show ? 'show' : 'hide')
-    }
+    // Always use random chance on each page load (don't store in sessionStorage)
+    const show = Math.random() < 0.8 // 80% chance on each page load
     setTimeout(() => setShouldRenderGames(show && isHomepage), 0)
   }, [isClient])
 
