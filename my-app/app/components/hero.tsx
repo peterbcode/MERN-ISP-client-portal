@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { WifiIcon } from '@heroicons/react/24/solid'
+import PremiumButton from './ui/premium-button'
 
 const rotatingWords = ['Connections', 'Networks', 'Coverage', 'Solutions']
 
@@ -120,12 +121,20 @@ const Hero = () => {
         </p>
 
         <div className="mt-8 flex w-full max-w-2xl flex-col gap-3 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4">
-          <button className="w-full rounded-full bg-[#f97316] px-6 py-3 text-base font-bold text-white shadow-[0_0_28px_rgba(243,111,0,0.45)] transition hover:-translate-y-0.5 hover:brightness-110 sm:w-auto sm:px-8 sm:py-4 sm:text-lg">
+          <PremiumButton 
+            variant="primary" 
+            size="lg"
+            onClick={() => window.location.href = '/contact'}
+          >
             Get Connected
-          </button>
-          <button className="w-full rounded-full border border-zinc-700 bg-zinc-900/70 px-6 py-3 text-base font-bold text-zinc-100 transition hover:border-[#f97316]/70 hover:bg-zinc-800/85 sm:w-auto sm:px-8 sm:py-4 sm:text-lg">
+          </PremiumButton>
+          <PremiumButton 
+            variant="secondary" 
+            size="lg"
+            onClick={() => window.location.href = '#services'}
+          >
             Explore Services
-          </button>
+          </PremiumButton>
         </div>
 
       </div>
@@ -134,6 +143,3 @@ const Hero = () => {
 }
 
 export default Hero
-
-
-

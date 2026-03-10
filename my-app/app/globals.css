@@ -82,7 +82,7 @@ svg#cursorFilter {
   width: 26px;
   height: 26px;
   border-radius: 20px;
-  background-color: #f97316;
+  background-color: rgba(249, 115, 22, 0.75);
   transition: background-color 140ms ease;
   transform-origin: center center;
   will-change: transform;
@@ -91,7 +91,7 @@ svg#cursorFilter {
 }
 
 .Cursor.Cursor--dark span {
-  background-color: #0b0b0c;
+  background-color: rgba(255, 255, 255, 0.75);
 }
 
 body.custom-cursor-enabled * {
@@ -720,6 +720,116 @@ body :where(p, li, label, input, textarea, select, button):not(#hero-section *) 
 
 .float-depth {
   animation: float-depth 6s ease-in-out infinite;
+}
+
+/* Premium Animations - SaaS Quality */
+@keyframes node-pulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+
+@keyframes float-depth {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(0, -8px, 0);
+  }
+  75% {
+    transform: translate3d(0, 4px, 0);
+  }
+}
+
+@keyframes cursor-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-wifi-flash {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale3d(1.2, 1.2, 1);
+  }
+}
+
+/* Premium Micro-interactions */
+.will-change-transform {
+  will-change: transform;
+}
+
+.gpu-accelerated {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Smooth focus states */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-[#f97316]/50 focus:ring-offset-2 focus:ring-offset-transparent;
+}
+
+/* Premium hover effects */
+.hover-lift {
+  @apply transition-transform duration-300 ease-out hover:-translate-y-1;
+}
+
+.hover-scale {
+  @apply transition-transform duration-300 ease-out hover:scale-105;
+}
+
+/* Accessibility - Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Premium loading states */
+.loading-skeleton {
+  @apply animate-pulse bg-zinc-800 rounded;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 @layer base {

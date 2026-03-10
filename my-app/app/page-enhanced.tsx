@@ -1,6 +1,3 @@
-'use client'
-
-import { useEffect } from 'react'
 import Navbar from "./components/navbar"
 import Hero from "./components/hero"
 import BrandCarousel from "./components/brand-carousel"
@@ -12,11 +9,6 @@ import EasterEggGames from "./components/easter-egg-games"
 import SiteFooter from "./components/site-footer"
 
 const Page = () => {
-  useEffect(() => {
-    // Scroll to top on page load/reload
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <>
       <Navbar />

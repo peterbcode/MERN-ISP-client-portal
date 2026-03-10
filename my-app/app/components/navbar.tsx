@@ -17,7 +17,6 @@ import { useEffect, useState } from 'react'
 const navigation = [
   { name: 'Services', href: '/#services' },
   { name: 'ISP', href: '/isp' },
-  { name: 'Success Stories', href: '/#success-stories' },
   { name: 'Contact Us', href: '/contact' },
 ]
 
@@ -141,6 +140,7 @@ export default function Navbar() {
             <div className="hidden md:block">
               <button
                 type="button"
+                onClick={() => router.push('/signup')}
                 className="rounded-full bg-[#f97316] px-6 py-2.5 text-sm font-bold text-white shadow-[0_10px_24px_rgba(243,111,0,0.3)] ring-1 ring-[#f8a258]/40 transition-all hover:-translate-y-0.5 hover:brightness-110 lg:px-7 lg:py-3"
               >
                 Partner With Us
@@ -172,6 +172,7 @@ export default function Navbar() {
             </Link>
             <button
               type="button"
+              onClick={() => router.push('/signup')}
               className="mt-2 w-full rounded-full bg-[#f97316] px-6 py-3 text-sm font-bold text-white transition hover:brightness-110"
             >
               Partner With Us

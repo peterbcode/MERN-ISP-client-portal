@@ -31,9 +31,13 @@ const EasterEggGames = () => {
   // Helper functions for lazy initialization
   const getInitialGameShow = (): boolean | null => {
     if (typeof window === 'undefined') return null
+    
+    // Check if we're on the homepage
+    const isHomepage = window.location.pathname === '/' || window.location.pathname === ''
+    
     const existingRoll = window.sessionStorage.getItem('vc_games_roll')
     if (existingRoll === 'show' || existingRoll === 'hide') {
-      return existingRoll === 'show'
+      return existingRoll === 'show' && isHomepage
     }
     return null // Will be determined in useEffect
   }
@@ -102,8 +106,8 @@ const EasterEggGames = () => {
   const packetSpeed = useRef(3.8)
   const packetTick = useRef(0)
 
-  const canShowNetwork = activeGame === 'network'
-  const canShowPacket = activeGame === 'packet'
+  const canShowNetwork = shouldRenderGames === true && activeGame === 'network'
+  const canShowPacket = shouldRenderGames === true && activeGame === 'packet'
 
   const networkInstructions = useMemo(
     () =>
@@ -130,14 +134,13 @@ const EasterEggGames = () => {
   )
 
   useEffect(() => {
-    // Only determine random show/hide if it wasn't already set
-    if (shouldRenderGames === null) {
-      const show = Math.random() < 0.5
-      window.sessionStorage.setItem('vc_games_roll', show ? 'show' : 'hide')
-      // Defer setState to avoid cascading renders
-      setTimeout(() => setShouldRenderGames(show), 0)
-    }
-  }, [shouldRenderGames])
+    // Always determine random show/hide for each session
+    const isHomepage = window.location.pathname === '/' || window.location.pathname === ''
+    const show = Math.random() < 0.5 // 50% chance
+    window.sessionStorage.setItem('vc_games_roll', show ? 'show' : 'hide')
+    // Defer setState to avoid cascading renders
+    setTimeout(() => setShouldRenderGames(show && isHomepage), 0)
+  }, [])
 
   const registerGlobalScore = (score: number, game: string) => {
     if (score <= 0) return
@@ -171,10 +174,11 @@ const EasterEggGames = () => {
 
     const draw = () => {
       ctx.clearRect(0, 0, NETWORK_W, NETWORK_H)
-
+      
+      // Always draw background and nodes (preview or game)
       ctx.fillStyle = '#09090b'
       ctx.fillRect(0, 0, NETWORK_W, NETWORK_H)
-
+      
       for (let i = 0; i < networkNodes.current.length; i += 1) {
         const nodeA = networkNodes.current[i]
         for (let j = i + 1; j < networkNodes.current.length; j += 1) {
@@ -191,6 +195,18 @@ const EasterEggGames = () => {
             ctx.stroke()
           }
         }
+      }
+
+      // Only draw interactive elements and game logic when running
+      if (!networkRunning) {
+        // Draw preview state
+        ctx.fillStyle = 'rgba(249,115,22,0.1)'
+        ctx.font = 'bold 16px Arial'
+        ctx.textAlign = 'center'
+        ctx.fillText('Click Start to begin repairing network nodes!', NETWORK_W / 2, NETWORK_H / 2)
+        ctx.font = '14px Arial'
+        ctx.fillText('Move your mouse over red nodes to fix them', NETWORK_W / 2, NETWORK_H / 2 + 30)
+        return
       }
 
       for (const node of networkNodes.current) {
@@ -311,6 +327,19 @@ const EasterEggGames = () => {
         ctx.stroke()
       }
 
+      // Only draw game elements when running
+      if (!packetRunning) {
+        // Draw preview state
+        ctx.fillStyle = 'rgba(249,115,22,0.1)'
+        ctx.font = 'bold 16px Arial'
+        ctx.textAlign = 'center'
+        ctx.fillText('Click Start to begin packet routing!', PACKET_W / 2, PACKET_H / 2)
+        ctx.font = '14px Arial'
+        ctx.fillText('Use Arrow Keys or W/S to move between lanes', PACKET_W / 2, PACKET_H / 2 + 30)
+        ctx.fillText('Avoid red obstacles, go through green gaps', PACKET_W / 2, PACKET_H / 2 + 60)
+        return
+      }
+
       for (let i = 0; i < 24; i += 1) {
         const x = i * 34
         ctx.strokeStyle = 'rgba(249,115,22,0.06)'
@@ -330,7 +359,7 @@ const EasterEggGames = () => {
         packetTick.current += 1
         packetSpeed.current = Math.min(6.2, packetSpeed.current + 0.0009)
 
-        if (packetTick.current % 78 === 0) {
+        if (packetTick.current % 60 === 0) { // Changed from 78 to 60 for better obstacle frequency
           const openLane = Math.floor(Math.random() * PACKET_LANES)
           packetObstacles.current.push({
             x: PACKET_W + 8,
@@ -358,7 +387,6 @@ const EasterEggGames = () => {
         if (packetRunning) {
           obstacle.x -= packetSpeed.current
         }
-
         for (let lane = 0; lane < PACKET_LANES; lane += 1) {
           const y = lane * laneHeight
           if (lane === obstacle.openLane) {
@@ -369,32 +397,58 @@ const EasterEggGames = () => {
           ctx.fillStyle = '#b91c1c'
           ctx.fillRect(obstacle.x, y, obstacle.w, laneHeight)
         }
-
         ctx.fillStyle = 'rgba(248,113,113,0.5)'
         ctx.fillRect(obstacle.x - 2, 0, 2, PACKET_H)
         ctx.fillRect(obstacle.x + obstacle.w, 0, 2, PACKET_H)
-
-        if (packetRunning && !obstacle.passed && obstacle.x + obstacle.w < playerX - 12) {
-          obstacle.passed = true
-          packetScoreRef.current += 1
-          setPacketScore(packetScoreRef.current)
-        }
       }
 
-      packetObstacles.current = packetObstacles.current.filter((o) => o.x + o.w > -20)
+      // Stop drawing if game is not running
+      if (!packetRunning) {
+        return
+      }
 
+      const currentLane = clampLane(Math.floor(playerY / laneHeight))
+      
       if (packetRunning) {
-        const currentLane = clampLane(Math.floor(playerY / laneHeight))
         for (const obstacle of packetObstacles.current) {
-          const hitX = playerX + 10 > obstacle.x && playerX - 10 < obstacle.x + obstacle.w
-          const hit = hitX && currentLane !== obstacle.openLane
-          if (hit) {
+          const packetLeft = playerX - 12
+          const packetRight = playerX + 12
+          const packetTop = playerY - 9
+          const packetBottom = playerY + 9
+          const obstacleLeft = obstacle.x
+          const obstacleRight = obstacle.x + obstacle.w
+          const obstacleTop = obstacle.openLane * laneHeight + 6
+          const obstacleBottom = obstacleTop + laneHeight - 12
+          
+          // Check if packet overlaps with obstacle
+          const hitX = packetRight > obstacleLeft && packetLeft < obstacleRight
+          const hitY = packetBottom > obstacleTop && packetTop < obstacleBottom
+          
+          if (hitX && hitY && currentLane !== obstacle.openLane) {
+            obstacle.passed = true
+            packetScoreRef.current += 1
+            setPacketScore(packetScoreRef.current)
+          }
+          
+          // Check if packet hits red obstacle (game over)
+          if (hitX && currentLane !== obstacle.openLane) {
             registerGlobalScore(packetScoreRef.current, 'Packet Rush')
             setPacketRunning(false)
             break
           }
         }
       }
+      packetObstacles.current = packetObstacles.current.filter((o) => o.x + o.w > -20);
+      }
+
+      // Stop drawing if game is not running
+      if (!packetRunning) {
+        return
+      }
+
+      const playerX = PACKET_PLAYER_X
+      const playerY = packetPlayerY.current
+      const currentLane = clampLane(Math.floor(playerY / laneHeight))
 
       ctx.fillStyle = '#f97316'
       ctx.beginPath()
@@ -418,9 +472,6 @@ const EasterEggGames = () => {
       ctx.fillText('Mode: Routed Transit', 20, 48)
 
       packetFrame.current = window.requestAnimationFrame(draw)
-    }
-
-    draw()
 
     return () => {
       if (packetFrame.current) window.cancelAnimationFrame(packetFrame.current)
@@ -551,7 +602,25 @@ const EasterEggGames = () => {
         {canShowNetwork ? (
           <div className="mt-8 rounded-2xl border border-zinc-800 bg-[linear-gradient(145deg,rgba(15,15,16,0.92),rgba(8,8,9,0.98))] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.42)] sm:p-6">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-zinc-300">{networkInstructions}</p>
+              <p className="text-sm text-zinc-300">
+                {!networkRunning ? (
+                  <span className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse inline-block"></span>
+                      <span>Move your mouse over red nodes to repair them!</span>
+                    </span>
+                    <span className="text-xs text-zinc-400">(or use arrow keys)</span>
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2 w-2 rounded-full bg-green-500 inline-block"></span>
+                      <span>Click Start to begin repairing!</span>
+                    </span>
+                    <span className="text-xs text-zinc-400">Score points by fixing nodes quickly</span>
+                  </span>
+                )}
+              </p>
               <div className="flex items-center gap-3 text-sm">
                 <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Time: {networkTime}s</span>
                 <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Score: {networkScore}</span>
@@ -601,7 +670,25 @@ const EasterEggGames = () => {
         {canShowPacket ? (
           <div className="mt-8 rounded-2xl border border-zinc-800 bg-[linear-gradient(145deg,rgba(15,15,16,0.92),rgba(8,8,9,0.98))] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.42)] sm:p-6">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-zinc-300">{packetInstructions}</p>
+              <p className="text-sm text-zinc-300">
+                {!packetRunning ? (
+                  <span className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse inline-block"></span>
+                      <span>Use Arrow Keys or W/S to move between lanes!</span>
+                    </span>
+                    <span className="text-xs text-zinc-400">Avoid red obstacles, go through green gaps</span>
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1">
+                      <span className="h-2 w-2 rounded-full bg-green-500 inline-block"></span>
+                      <span>Click Start to begin racing!</span>
+                    </span>
+                    <span className="text-xs text-zinc-400">Score points by avoiding obstacles</span>
+                  </span>
+                )}
+              </p>
               <div className="flex items-center gap-3 text-sm">
                 <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Score: {packetScore}</span>
                 <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Best: {packetBest}</span>

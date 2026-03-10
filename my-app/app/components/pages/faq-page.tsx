@@ -183,18 +183,18 @@ const FaqPage = () => {
               >
                 <button
                   onClick={() => toggleItem(index)}
-                  className="flex w-full items-center justify-between text-left transition-colors hover:text-[#f97316] focus:outline-none focus:ring-2 focus:ring-[#f97316]/50 focus:ring-inset rounded-lg"
+                  className="group flex w-full items-center justify-between text-left transition-all duration-300 ease-out hover:bg-zinc-800/50 hover:pl-2 focus:outline-none focus:ring-2 focus:ring-[#f97316]/50 focus:ring-inset rounded-lg hover:shadow-lg hover:shadow-[#f97316]/10 transform hover:-translate-y-0.5"
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${index}`}
                 >
-                  <span className="text-base font-semibold text-zinc-100 pr-4">
+                  <span className="text-base font-semibold text-zinc-100 pr-4 transition-colors duration-300 group-hover:text-[#f97316]">
                     {index + 1}. {item.question}
                   </span>
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 transform transition-transform duration-300 group-hover:scale-110">
                     {isOpen ? (
-                      <ChevronUpIcon className="h-5 w-5 text-[#f97316] transition-transform duration-200" />
+                      <ChevronUpIcon className="h-5 w-5 text-[#f97316] transform transition-transform duration-300" />
                     ) : (
-                      <ChevronDownIcon className="h-5 w-5 text-zinc-400 transition-transform duration-200 hover:text-[#f97316]" />
+                      <ChevronDownIcon className="h-5 w-5 text-zinc-400 transition-all duration-300 group-hover:text-[#f97316] group-hover:translate-x-1" />
                     )}
                   </div>
                 </button>
