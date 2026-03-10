@@ -115,11 +115,20 @@ const LoginPage = () => {
             </div>
           )}
 
-          <div className="mt-6 text-sm text-orange-100/80">
-            Need help?{" "}
-            <Link href="/contact" className="font-semibold text-orange-400 hover:text-orange-300 transition-colors duration-300">
-              Contact support
-            </Link>
+          <div className="mt-6 space-y-4">
+            <div className="text-sm text-orange-100/80 text-center">
+              Don't have an account?{" "}
+              <Link href="/signup" className="font-semibold text-orange-400 hover:text-orange-300 transition-colors duration-300">
+                Sign up as a partner
+              </Link>
+            </div>
+            
+            <div className="text-sm text-orange-100/80 text-center">
+              Need help?{" "}
+              <Link href="/contact" className="font-semibold text-orange-400 hover:text-orange-300 transition-colors duration-300">
+                Contact support
+              </Link>
+            </div>
           </div>
         </section>
       </AnimatedSection>

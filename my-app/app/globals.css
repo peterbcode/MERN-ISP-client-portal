@@ -575,6 +575,162 @@ h6 {
   mask-image: radial-gradient(circle at center, black 28%, transparent 78%);
 }
 
+.hero-circuit {
+  background-image:
+    linear-gradient(90deg, transparent 24%, rgba(34, 197, 94, 0.1) 25%, rgba(34, 197, 94, 0.1) 26%, transparent 27%),
+    linear-gradient(0deg, transparent 24%, rgba(59, 130, 246, 0.08) 25%, rgba(59, 130, 246, 0.08) 26%, transparent 27%),
+    linear-gradient(45deg, transparent 24%, rgba(249, 115, 22, 0.06) 25%, rgba(249, 115, 22, 0.06) 26%, transparent 27%),
+    linear-gradient(-45deg, transparent 24%, rgba(34, 197, 94, 0.04) 25%, rgba(34, 197, 94, 0.04) 26%, transparent 27%);
+  background-size: 80px 80px, 60px 60px, 100px 100px, 90px 90px;
+  background-position: 0 0, 20px 20px, 40px 40px, 60px 60px;
+  animation: circuit-buzz 20s linear infinite;
+}
+
+.hero-dataflow {
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(34, 197, 94, 0.1) 2px, transparent 2px),
+    radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.08) 2px, transparent 2px),
+    radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.06) 2px, transparent 2px);
+  background-size: 120px 120px, 150px 150px, 100px 100px;
+  animation: data-flow-shift 15s ease-in-out infinite;
+}
+
+@keyframes circuit-buzz {
+  0% {
+    background-position: 0 0, 20px 20px, 40px 40px, 60px 60px;
+  }
+  100% {
+    background-position: 80px 80px, 100px 100px, 120px 120px, 140px 140px;
+  }
+}
+
+@keyframes data-flow-shift {
+  0%, 100% {
+    background-position: 0 0, 150px 150px, 100px 100px;
+    opacity: 0.3;
+  }
+  50% {
+    background-position: 60px 60px, 75px 75px, 50px 50px;
+    opacity: 0.5;
+  }
+}
+
+@keyframes data-flow {
+  0%, 100% {
+    opacity: 0.2;
+    stroke-dasharray: 5, 10;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    opacity: 0.8;
+    stroke-dasharray: 10, 5;
+    stroke-dashoffset: 15;
+  }
+}
+
+/* Packet travel animations for each connection */
+@keyframes packet-travel-0 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(200px, -100px);
+    opacity: 0;
+  }
+}
+
+@keyframes packet-travel-1 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(180px, -120px);
+    opacity: 0;
+  }
+}
+
+@keyframes packet-travel-2 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(220px, -80px);
+    opacity: 0;
+  }
+}
+
+@keyframes packet-travel-3 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(160px, -60px);
+    opacity: 0;
+  }
+}
+
+@keyframes packet-travel-4 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(200px, 100px);
+    opacity: 0;
+  }
+}
+
+@keyframes packet-travel-5 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(180px, 180px);
+    opacity: 0;
+  }
+}
+
 /* Global contrast tuning for existing utility-heavy components */
 .text-white {
   color: #f5f5f5 !important;

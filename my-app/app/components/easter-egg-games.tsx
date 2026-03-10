@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type GameMode = 'network' | 'packet'
 
@@ -17,130 +17,259 @@ type Obstacle = {
   passed: boolean
 }
 
-const NETWORK_W = 760
-const NETWORK_H = 360
-const PACKET_W = 760
-const PACKET_H = 360
-const PACKET_LANES = 4
+// ─── Logical (design) dimensions ─────────────────────────────────────────────
+// All game coordinates are written against these values.
+// At runtime we compute scale = containerWidth / BASE_W and multiply
+// everything by it, so the game fills any screen width perfectly.
+const BASE_W = 760
+const BASE_H = 360
+const PACKET_LANES    = 4
 const PACKET_PLAYER_X = 120
-const GLOBAL_BEST_KEY = 'vc_global_game_best'
+
+const GLOBAL_BEST_KEY  = 'vc_global_game_best'
 const NETWORK_BEST_KEY = 'vc_network_best'
-const PACKET_BEST_KEY = 'vc_packet_best'
+const PACKET_BEST_KEY  = 'vc_packet_best'
 
-const EasterEggGames = () => {
-  // Helper functions for lazy initialization
-  const getInitialGameShow = (): boolean | null => {
-    if (typeof window === 'undefined') return null
-    
-    // Check if we're on the homepage
-    const isHomepage = window.location.pathname === '/' || window.location.pathname === ''
-    
-    const existingRoll = window.sessionStorage.getItem('vc_games_roll')
-    if (existingRoll === 'show' || existingRoll === 'hide') {
-      return existingRoll === 'show' && isHomepage
-    }
-    return null // Will be determined in useEffect
+function getInitialScores() {
+  if (typeof window === 'undefined') return { networkBest: 0, packetBest: 0, packetGames: 0, globalBest: 0 }
+  return {
+    networkBest: Number(window.localStorage.getItem(NETWORK_BEST_KEY) ?? '0'),
+    packetBest:  Number(window.localStorage.getItem(PACKET_BEST_KEY)  ?? '0'),
+    packetGames: 0,
+    globalBest:  Number(window.localStorage.getItem(GLOBAL_BEST_KEY)  ?? '0'),
   }
+}
 
-  const getInitialScores = () => {
-    if (typeof window === 'undefined') {
-      return {
-        networkBest: 0,
-        packetBest: 0,
-        packetGames: 0,
-        globalBest: 0,
+/** Resize canvas pixel buffer to match its CSS width, keeping BASE aspect ratio. Returns scale factor. */
+function fitCanvas(canvas: HTMLCanvasElement): number {
+  const w = canvas.clientWidth || BASE_W
+  const h = Math.round(w * (BASE_H / BASE_W))
+  if (canvas.width !== w || canvas.height !== h) {
+    canvas.width  = w
+    canvas.height = h
+  }
+  return w / BASE_W
+}
+
+// ─── Static preview renderers ─────────────────────────────────────────────────
+
+function drawNetworkPreview(canvas: HTMLCanvasElement, nodes: NodeItem[]) {
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+  const s = fitCanvas(canvas)
+  const W = canvas.width, H = canvas.height
+
+  ctx.clearRect(0, 0, W, H)
+  ctx.fillStyle = '#09090b'
+  ctx.fillRect(0, 0, W, H)
+
+  // connections
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j]
+      if (Math.hypot(a.x - b.x, a.y - b.y) < 190) {
+        ctx.strokeStyle = 'rgba(161,161,170,0.18)'
+        ctx.lineWidth = 1
+        ctx.beginPath()
+        ctx.moveTo(a.x * s, a.y * s)
+        ctx.lineTo(b.x * s, b.y * s)
+        ctx.stroke()
       }
     }
-    return {
-      networkBest: Number(window.localStorage.getItem(NETWORK_BEST_KEY) ?? '0'),
-      packetBest: Number(window.localStorage.getItem(PACKET_BEST_KEY) ?? '0'),
-      packetGames: Number(window.localStorage.getItem('vc_packet_games') ?? '0'),
-      globalBest: Number(window.localStorage.getItem(GLOBAL_BEST_KEY) ?? '0'),
-    }
   }
 
+  // nodes
+  const brokenIdxs = [1, 4, 7, 11, 15]
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i], broken = brokenIdxs.includes(i)
+    ctx.fillStyle   = broken ? '#ef4444' : '#22c55e'
+    ctx.strokeStyle = broken ? '#fecaca' : '#dcfce7'
+    ctx.lineWidth   = 2.2 * s
+    ctx.shadowColor = broken ? 'rgba(239,68,68,0.8)' : 'rgba(34,197,94,0.7)'
+    ctx.shadowBlur  = (broken ? 22 : 18) * s
+    ctx.beginPath(); ctx.arc(node.x * s, node.y * s, 11.5 * s, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+    ctx.shadowBlur = 0
+    ctx.fillStyle = broken ? '#7f1d1d' : '#14532d'
+    ctx.beginPath(); ctx.arc(node.x * s, node.y * s, 3.6 * s, 0, Math.PI * 2); ctx.fill()
+  }
+
+  // overlay
+  ctx.fillStyle = 'rgba(9,9,11,0.55)'; ctx.fillRect(0, 0, W, H)
+
+  // pill badge
+  const bw = 220 * s, bh = 36 * s
+  ctx.fillStyle = 'rgba(249,115,22,0.15)'; ctx.strokeStyle = 'rgba(249,115,22,0.5)'; ctx.lineWidth = 1.5
+  ctx.beginPath(); ctx.roundRect(W / 2 - bw / 2, H / 2 - 64 * s, bw, bh, 18 * s); ctx.fill(); ctx.stroke()
+  ctx.fillStyle = '#f97316'; ctx.font = `bold ${13 * s}px Arial`; ctx.textAlign = 'center'
+  ctx.fillText('NETWORK REPAIR', W / 2, H / 2 - 41 * s)
+  ctx.fillStyle = 'rgba(245,245,245,0.95)'; ctx.font = `bold ${26 * s}px Arial`
+  ctx.fillText('Tap Start to Play', W / 2, H / 2 + 8 * s)
+  ctx.fillStyle = 'rgba(161,161,170,0.85)'; ctx.font = `${14 * s}px Arial`
+  ctx.fillText('Touch red nodes to repair them!', W / 2, H / 2 + 36 * s)
+  ctx.textAlign = 'left'
+}
+
+function drawPacketPreview(canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+  const s = fitCanvas(canvas)
+  const W = canvas.width, H = canvas.height
+  const lh = (BASE_H / PACKET_LANES) * s
+  const lc = (l: number) => l * lh + lh / 2
+
+  ctx.clearRect(0, 0, W, H)
+  ctx.fillStyle = '#09090b'; ctx.fillRect(0, 0, W, H)
+
+  // lane lines
+  for (let i = 0; i <= PACKET_LANES; i++) {
+    ctx.strokeStyle = 'rgba(249,115,22,0.12)'; ctx.lineWidth = 1
+    ctx.beginPath(); ctx.moveTo(0, i * lh); ctx.lineTo(W, i * lh); ctx.stroke()
+  }
+  const gs = 34 * s
+  for (let x = 0; x < W; x += gs) {
+    ctx.strokeStyle = 'rgba(249,115,22,0.06)'; ctx.lineWidth = 1
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke()
+  }
+  ctx.fillStyle = 'rgba(245,245,245,0.72)'; ctx.font = `bold ${11 * s}px Arial`; ctx.textAlign = 'left'
+  for (let l = 0; l < PACKET_LANES; l++) ctx.fillText(`Lane ${l + 1}`, 16 * s, lc(l) - 12 * s)
+
+  // obstacles
+  for (const o of [{ x: 280, ol: 2 }, { x: 460, ol: 0 }, { x: 620, ol: 3 }]) {
+    for (let l = 0; l < PACKET_LANES; l++) {
+      if (l === o.ol) { ctx.fillStyle = 'rgba(34,197,94,0.22)'; ctx.fillRect(o.x * s, l * lh + 6 * s, 70 * s, lh - 12 * s) }
+      else            { ctx.fillStyle = '#b91c1c';               ctx.fillRect(o.x * s, l * lh, 70 * s, lh) }
+    }
+    ctx.fillStyle = 'rgba(248,113,113,0.5)'
+    ctx.fillRect(o.x * s - 2, 0, 2, H); ctx.fillRect((o.x + 70) * s, 0, 2, H)
+  }
+
+  // player
+  const px = PACKET_PLAYER_X * s, py = lc(1)
+  ctx.fillStyle = '#f97316'; ctx.shadowColor = 'rgba(249,115,22,0.7)'; ctx.shadowBlur = 12 * s
+  ctx.beginPath(); ctx.moveTo(px - 13 * s, py - 9 * s); ctx.lineTo(px + 11 * s, py); ctx.lineTo(px - 13 * s, py + 9 * s); ctx.closePath(); ctx.fill()
+  ctx.shadowBlur = 0
+
+  // overlay + badge
+  ctx.fillStyle = 'rgba(9,9,11,0.55)'; ctx.fillRect(0, 0, W, H)
+  const bw = 180 * s, bh = 36 * s
+  ctx.fillStyle = 'rgba(249,115,22,0.15)'; ctx.strokeStyle = 'rgba(249,115,22,0.5)'; ctx.lineWidth = 1.5
+  ctx.beginPath(); ctx.roundRect(W / 2 - bw / 2, H / 2 - 64 * s, bw, bh, 18 * s); ctx.fill(); ctx.stroke()
+  ctx.fillStyle = '#f97316'; ctx.font = `bold ${13 * s}px Arial`; ctx.textAlign = 'center'
+  ctx.fillText('PACKET RUSH', W / 2, H / 2 - 41 * s)
+  ctx.fillStyle = 'rgba(245,245,245,0.95)'; ctx.font = `bold ${26 * s}px Arial`
+  ctx.fillText('Tap Start to Play', W / 2, H / 2 + 8 * s)
+  ctx.fillStyle = 'rgba(161,161,170,0.85)'; ctx.font = `${14 * s}px Arial`
+  ctx.fillText('Dodge red walls — go through the green gap!', W / 2, H / 2 + 36 * s)
+  ctx.textAlign = 'left'
+}
+
+// ─── Component ────────────────────────────────────────────────────────────────
+const EasterEggGames = () => {
   const [activeGame, setActiveGame] = useState<GameMode>('network')
-  const [touchDevice] = useState(() => 
-    typeof window !== 'undefined' ? window.matchMedia('(pointer: coarse)').matches : false
-  )
-  const [shouldRenderGames, setShouldRenderGames] = useState<boolean | null>(getInitialGameShow)
+  const [touchDevice] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(pointer: coarse)').matches : false)
+  const [shouldRenderGames, setShouldRenderGames] = useState<boolean | null>(null)
+  const [isClient, setIsClient] = useState(false)
 
   const networkCanvasRef = useRef<HTMLCanvasElement | null>(null)
-  const packetCanvasRef = useRef<HTMLCanvasElement | null>(null)
+  const packetCanvasRef  = useRef<HTMLCanvasElement | null>(null)
+
+  const initialScores = getInitialScores()
 
   const [networkRunning, setNetworkRunning] = useState(false)
-  const [networkScore, setNetworkScore] = useState(0)
-  const initialScores = getInitialScores()
-  const [networkBest, setNetworkBest] = useState(initialScores.networkBest)
-  const [networkTime, setNetworkTime] = useState(30)
+  const [networkScore,   setNetworkScore]   = useState(0)
+  const [networkBest,    setNetworkBest]    = useState(initialScores.networkBest)
+  const [networkTime,    setNetworkTime]    = useState(30)
 
   const [packetRunning, setPacketRunning] = useState(false)
-  const [packetScore, setPacketScore] = useState(0)
-  const [packetBest, setPacketBest] = useState(initialScores.packetBest)
-  const [packetGames, setPacketGames] = useState(initialScores.packetGames)
-  const packetScoreRef = useRef(0)
-  const packetGamesRef = useRef(initialScores.packetGames)
-  const packetBestRef = useRef(initialScores.packetBest)
-  const networkScoreRef = useRef(0)
-  const [globalBest, setGlobalBest] = useState(initialScores.globalBest)
+  const [packetScore,   setPacketScore]   = useState(0)
+  const [packetBest,    setPacketBest]    = useState(initialScores.packetBest)
+  const [packetGames,   setPacketGames]   = useState(initialScores.packetGames)
+  const [globalBest,    setGlobalBest]    = useState(initialScores.globalBest)
   const [beatPrompt, setBeatPrompt] = useState<{ open: boolean; score: number; game: string }>({
-    open: false,
-    score: 0,
-    game: '',
+    open: false, score: 0, game: '',
   })
 
-  const networkNodes = useRef<NodeItem[]>([])
-  const networkMouse = useRef({ x: -999, y: -999 })
+  const packetScoreRef  = useRef(0)
+  const packetGamesRef  = useRef(initialScores.packetGames)
+  const packetBestRef   = useRef(initialScores.packetBest)
+  const networkScoreRef = useRef(0)
+
+  const networkNodes      = useRef<NodeItem[]>([])
+  const networkMouse      = useRef({ x: -999, y: -999 })
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const networkBreakTimer = useRef<any>(null)
-  const networkFrame = useRef<number | null>(null)
+  const networkFrame      = useRef<number | null>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const networkCountdown = useRef<any>(null)
+  const networkCountdown  = useRef<any>(null)
 
-  const packetFrame = useRef<number | null>(null)
-  const packetPlayerY = useRef(PACKET_H / 2)
-  const packetLane = useRef(1)
+  const packetFrame      = useRef<number | null>(null)
   const packetTargetLane = useRef(1)
-  const packetPulse = useRef(0)
-  const packetObstacles = useRef<Obstacle[]>([])
-  const packetSpeed = useRef(3.8)
-  const packetTick = useRef(0)
+  const packetPlayerY    = useRef((BASE_H / PACKET_LANES) * 1.5)
+  const packetPulse      = useRef(0)
+  const packetObstacles  = useRef<Obstacle[]>([])
+  const packetSpeed      = useRef(3.8)
+  const packetTick       = useRef(0)
 
   const canShowNetwork = shouldRenderGames === true && activeGame === 'network'
-  const canShowPacket = shouldRenderGames === true && activeGame === 'packet'
+  const canShowPacket  = shouldRenderGames === true && activeGame === 'packet'
 
-  const networkInstructions = useMemo(
-    () =>
-      networkRunning
-        ? touchDevice
-          ? 'Drag your finger across red nodes to repair them before time runs out.'
-          : 'Move your mouse over red nodes to repair them before time runs out.'
-        : touchDevice
-          ? 'Tap Start and swipe across red nodes to repair your network.'
-          : 'Click Start and hover over red nodes to repair your network.',
-    [networkRunning, touchDevice],
-  )
-
-  const packetInstructions = useMemo(
-    () =>
-      packetRunning
-        ? touchDevice
-          ? 'Tap upper/lower areas to reroute the packet through each green lane.'
-          : 'Use Arrow Up/Down or W/S to reroute the packet through each open lane.'
-        : touchDevice
-          ? 'Tap Start, then route up or down to avoid blocked lanes.'
-          : 'Click Start, then route with Arrow Up/Down or W/S.',
-    [packetRunning, touchDevice],
-  )
+  // ── hydration ──────────────────────────────────────────────────────────────
+  useEffect(() => { setIsClient(true) }, [])
 
   useEffect(() => {
-    // Always determine random show/hide for each session
+    if (!isClient) return
     const isHomepage = window.location.pathname === '/' || window.location.pathname === ''
-    const show = Math.random() < 0.5 // 50% chance
-    window.sessionStorage.setItem('vc_games_roll', show ? 'show' : 'hide')
-    // Defer setState to avoid cascading renders
+    const roll = window.sessionStorage.getItem('vc_games_roll')
+    let show: boolean
+    if (roll === 'show' || roll === 'hide') {
+      show = roll === 'show'
+    } else {
+      show = Math.random() < 0.5
+      window.sessionStorage.setItem('vc_games_roll', show ? 'show' : 'hide')
+    }
     setTimeout(() => setShouldRenderGames(show && isHomepage), 0)
-  }, [])
+  }, [isClient])
+
+  // ── draw / redraw previews ─────────────────────────────────────────────────
+  useEffect(() => {
+    if (shouldRenderGames !== true) return
+    const id = setTimeout(() => {
+      if (networkCanvasRef.current && !networkRunning) {
+        if (networkNodes.current.length === 0) seedNetworkNodes()
+        drawNetworkPreview(networkCanvasRef.current, networkNodes.current)
+      }
+      if (packetCanvasRef.current && !packetRunning) {
+        drawPacketPreview(packetCanvasRef.current)
+      }
+    }, 50)
+    return () => clearTimeout(id)
+  }, [shouldRenderGames, activeGame, networkRunning, packetRunning])
+
+  // ── resize observer: redraws previews on container width change ───────────
+  useEffect(() => {
+    if (shouldRenderGames !== true) return
+    const entries = [
+      { ref: networkCanvasRef, running: () => networkRunning, redraw: () => { if (networkCanvasRef.current) drawNetworkPreview(networkCanvasRef.current, networkNodes.current) } },
+      { ref: packetCanvasRef,  running: () => packetRunning,  redraw: () => { if (packetCanvasRef.current)  drawPacketPreview(packetCanvasRef.current) } },
+    ]
+    const observers: ResizeObserver[] = []
+    for (const e of entries) {
+      if (!e.ref.current) continue
+      const ro = new ResizeObserver(() => { if (!e.running()) e.redraw() })
+      ro.observe(e.ref.current)
+      observers.push(ro)
+    }
+    return () => observers.forEach(o => o.disconnect())
+  }, [shouldRenderGames, networkRunning, packetRunning])
+
+  // ── seed nodes ─────────────────────────────────────────────────────────────
+  const seedNetworkNodes = () => {
+    networkNodes.current = Array.from({ length: 18 }).map((_, idx) => {
+      const col = idx % 6, row = Math.floor(idx / 6)
+      return { x: 80 + col * 120 + Math.random() * 10, y: 70 + row * 100 + Math.random() * 12, broken: false }
+    })
+  }
 
   const registerGlobalScore = (score: number, game: string) => {
     if (score <= 0) return
@@ -154,118 +283,74 @@ const EasterEggGames = () => {
     setGlobalBest(stored)
   }
 
+  // ── Network Repair – animation loop ───────────────────────────────────────
   useEffect(() => {
-    if (!networkCanvasRef.current) return
     const canvas = networkCanvasRef.current
+    if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-
-    if (networkNodes.current.length === 0) {
-      networkNodes.current = Array.from({ length: 18 }).map((_, idx) => {
-        const col = idx % 6
-        const row = Math.floor(idx / 6)
-        return {
-          x: 80 + col * 120 + Math.random() * 10,
-          y: 70 + row * 100 + Math.random() * 12,
-          broken: false,
-        }
-      })
-    }
+    if (networkNodes.current.length === 0) seedNetworkNodes()
 
     const draw = () => {
-      ctx.clearRect(0, 0, NETWORK_W, NETWORK_H)
-      
-      // Always draw background and nodes (preview or game)
-      ctx.fillStyle = '#09090b'
-      ctx.fillRect(0, 0, NETWORK_W, NETWORK_H)
-      
-      for (let i = 0; i < networkNodes.current.length; i += 1) {
-        const nodeA = networkNodes.current[i]
-        for (let j = i + 1; j < networkNodes.current.length; j += 1) {
-          const nodeB = networkNodes.current[j]
-          const dx = nodeA.x - nodeB.x
-          const dy = nodeA.y - nodeB.y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 190) {
-            ctx.strokeStyle = 'rgba(161,161,170,0.18)'
-            ctx.lineWidth = 1
-            ctx.beginPath()
-            ctx.moveTo(nodeA.x, nodeA.y)
-            ctx.lineTo(nodeB.x, nodeB.y)
-            ctx.stroke()
+      const s = fitCanvas(canvas)
+      const W = canvas.width, H = canvas.height
+      ctx.clearRect(0, 0, W, H)
+      ctx.fillStyle = '#09090b'; ctx.fillRect(0, 0, W, H)
+
+      // connections
+      for (let i = 0; i < networkNodes.current.length; i++) {
+        for (let j = i + 1; j < networkNodes.current.length; j++) {
+          const a = networkNodes.current[i], b = networkNodes.current[j]
+          if (Math.hypot(a.x - b.x, a.y - b.y) < 190) {
+            ctx.strokeStyle = 'rgba(161,161,170,0.18)'; ctx.lineWidth = 1
+            ctx.beginPath(); ctx.moveTo(a.x * s, a.y * s); ctx.lineTo(b.x * s, b.y * s); ctx.stroke()
           }
         }
       }
 
-      // Only draw interactive elements and game logic when running
-      if (!networkRunning) {
-        // Draw preview state
-        ctx.fillStyle = 'rgba(249,115,22,0.1)'
-        ctx.font = 'bold 16px Arial'
-        ctx.textAlign = 'center'
-        ctx.fillText('Click Start to begin repairing network nodes!', NETWORK_W / 2, NETWORK_H / 2)
-        ctx.font = '14px Arial'
-        ctx.fillText('Move your mouse over red nodes to fix them', NETWORK_W / 2, NETWORK_H / 2 + 30)
-        return
-      }
+      if (!networkRunning) return   // static preview handles idle state
 
       for (const node of networkNodes.current) {
-        const dx = networkMouse.current.x - node.x
-        const dy = networkMouse.current.y - node.y
-        const hovering = Math.sqrt(dx * dx + dy * dy) < 30
-        const pulsePhase = Date.now() * 0.008 + node.x * 0.03 + node.y * 0.02
-        const pulse = node.broken ? (Math.sin(pulsePhase) + 1) * 0.5 : 0
+        const hovering = Math.hypot(networkMouse.current.x - node.x, networkMouse.current.y - node.y) < 30
+        const phase = Date.now() * 0.008 + node.x * 0.03 + node.y * 0.02
+        const pulse = node.broken ? (Math.sin(phase) + 1) * 0.5 : 0
 
-        if (node.broken && hovering && networkRunning) {
+        if (node.broken && hovering) {
           node.broken = false
-          setNetworkScore((s) => {
-            const next = s + 1
-            networkScoreRef.current = next
-            return next
-          })
+          setNetworkScore(sc => { const n = sc + 1; networkScoreRef.current = n; return n })
         }
 
-        ctx.fillStyle = node.broken ? '#ef4444' : '#22c55e'
+        ctx.fillStyle   = node.broken ? '#ef4444' : '#22c55e'
         ctx.strokeStyle = node.broken ? '#fecaca' : '#dcfce7'
-        ctx.lineWidth = 2.2
+        ctx.lineWidth   = 2.2 * s
         ctx.shadowColor = node.broken ? 'rgba(239,68,68,0.98)' : 'rgba(34,197,94,0.9)'
-        ctx.shadowBlur = node.broken ? 18 + pulse * 18 : 20
-        const nodeRadius = node.broken ? 10.5 + pulse * 3.2 : 11.5
-        ctx.beginPath()
-        ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.stroke()
-
-        ctx.beginPath()
-        ctx.fillStyle = node.broken ? '#7f1d1d' : '#14532d'
-        ctx.arc(node.x, node.y, 3.6, 0, Math.PI * 2)
-        ctx.fill()
+        ctx.shadowBlur  = (node.broken ? 18 + pulse * 18 : 20) * s
+        const r = (node.broken ? 10.5 + pulse * 3.2 : 11.5) * s
+        ctx.beginPath(); ctx.arc(node.x * s, node.y * s, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
         ctx.shadowBlur = 0
+        ctx.fillStyle = node.broken ? '#7f1d1d' : '#14532d'
+        ctx.beginPath(); ctx.arc(node.x * s, node.y * s, 3.6 * s, 0, Math.PI * 2); ctx.fill()
       }
 
-      networkFrame.current = window.requestAnimationFrame(draw)
+      networkFrame.current = requestAnimationFrame(draw)
     }
 
     draw()
-    return () => {
-      if (networkFrame.current) window.cancelAnimationFrame(networkFrame.current)
-    }
+    return () => { if (networkFrame.current) cancelAnimationFrame(networkFrame.current) }
   }, [networkRunning])
 
+  // ── Network Repair – timers ────────────────────────────────────────────────
   useEffect(() => {
     if (!networkRunning) return
-
-    networkBreakTimer.current = window.setInterval(() => {
+    networkBreakTimer.current = setInterval(() => {
       const idx = Math.floor(Math.random() * networkNodes.current.length)
       networkNodes.current[idx].broken = true
     }, 680)
-
-    networkCountdown.current = window.setInterval(() => {
-      setNetworkTime((t) => {
+    networkCountdown.current = setInterval(() => {
+      setNetworkTime(t => {
         if (t <= 1) {
           registerGlobalScore(networkScoreRef.current, 'Network Repair')
-          // Save best score for network game
-          setNetworkBest((best) => {
+          setNetworkBest(best => {
             const next = Math.max(best, networkScoreRef.current)
             window.localStorage.setItem(NETWORK_BEST_KEY, String(next))
             return next
@@ -276,526 +361,317 @@ const EasterEggGames = () => {
         return t - 1
       })
     }, 1000)
-
-    return () => {
-      if (networkBreakTimer.current) window.clearInterval(networkBreakTimer.current)
-      if (networkCountdown.current) window.clearInterval(networkCountdown.current)
-    }
+    return () => { clearInterval(networkBreakTimer.current); clearInterval(networkCountdown.current) }
   }, [networkRunning])
 
+  // ── Packet Rush – animation loop ──────────────────────────────────────────
   useEffect(() => {
-    if (!packetCanvasRef.current) return
     const canvas = packetCanvasRef.current
+    if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const laneHeight = PACKET_H / PACKET_LANES
-    const laneCenter = (lane: number) => lane * laneHeight + laneHeight / 2
-    const clampLane = (lane: number) => Math.max(0, Math.min(PACKET_LANES - 1, lane))
+    const lh    = BASE_H / PACKET_LANES
+    const lc    = (l: number) => l * lh + lh / 2
+    const clamp = (l: number) => Math.max(0, Math.min(PACKET_LANES - 1, l))
 
-    const reroute = (direction: -1 | 1) => {
+    const reroute = (dir: -1 | 1) => {
       if (!packetRunning) return
-      const next = clampLane(packetTargetLane.current + direction)
-      packetTargetLane.current = next
+      packetTargetLane.current = clamp(packetTargetLane.current + dir)
       packetPulse.current = 8
     }
-
-    const onKeyDown = (event: KeyboardEvent) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (!packetRunning) return
-      if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
-        event.preventDefault()
-        reroute(-1)
-      }
-      if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
-        event.preventDefault()
-        reroute(1)
-      }
+      if (e.key === 'ArrowUp'   || e.key === 'w' || e.key === 'W') { e.preventDefault(); reroute(-1) }
+      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') { e.preventDefault(); reroute(1)  }
     }
-
     window.addEventListener('keydown', onKeyDown)
 
     const draw = () => {
-      ctx.clearRect(0, 0, PACKET_W, PACKET_H)
-      ctx.fillStyle = '#09090b'
-      ctx.fillRect(0, 0, PACKET_W, PACKET_H)
+      const s = fitCanvas(canvas)
+      const W = canvas.width, H = canvas.height
+      ctx.clearRect(0, 0, W, H)
+      ctx.fillStyle = '#09090b'; ctx.fillRect(0, 0, W, H)
 
-      for (let i = 0; i <= PACKET_LANES; i += 1) {
-        ctx.strokeStyle = 'rgba(249,115,22,0.12)'
-        ctx.beginPath()
-        ctx.moveTo(0, i * laneHeight)
-        ctx.lineTo(PACKET_W, i * laneHeight)
-        ctx.stroke()
+      // lane lines
+      for (let i = 0; i <= PACKET_LANES; i++) {
+        ctx.strokeStyle = 'rgba(249,115,22,0.12)'; ctx.lineWidth = 1
+        ctx.beginPath(); ctx.moveTo(0, i * lh * s); ctx.lineTo(W, i * lh * s); ctx.stroke()
       }
+      const gs = 34 * s
+      for (let x = 0; x < W; x += gs) {
+        ctx.strokeStyle = 'rgba(249,115,22,0.06)'; ctx.lineWidth = 1
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke()
+      }
+      ctx.fillStyle = 'rgba(245,245,245,0.72)'; ctx.font = `bold ${11 * s}px Arial`; ctx.textAlign = 'left'
+      for (let l = 0; l < PACKET_LANES; l++) ctx.fillText(`Lane ${l + 1}`, 16 * s, lc(l) * s - 12 * s)
 
-      // Only draw game elements when running
       if (!packetRunning) {
-        // Draw preview state
-        ctx.fillStyle = 'rgba(249,115,22,0.1)'
-        ctx.font = 'bold 16px Arial'
-        ctx.textAlign = 'center'
-        ctx.fillText('Click Start to begin packet routing!', PACKET_W / 2, PACKET_H / 2)
-        ctx.font = '14px Arial'
-        ctx.fillText('Use Arrow Keys or W/S to move between lanes', PACKET_W / 2, PACKET_H / 2 + 30)
-        ctx.fillText('Avoid red obstacles, go through green gaps', PACKET_W / 2, PACKET_H / 2 + 60)
+        if (packetScoreRef.current > 0) {
+          ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, W, H)
+          ctx.textAlign = 'center'
+          ctx.fillStyle = 'rgba(239,68,68,0.9)'; ctx.font = `bold ${28 * s}px Arial`
+          ctx.fillText('GAME OVER', W / 2, H / 2 - 50 * s)
+          ctx.fillStyle = 'rgba(245,245,245,0.9)'; ctx.font = `bold ${20 * s}px Arial`
+          ctx.fillText(`Final Score: ${packetScoreRef.current}`, W / 2, H / 2)
+          ctx.fillStyle = 'rgba(249,115,22,0.8)'; ctx.font = `${16 * s}px Arial`
+          ctx.fillText('Tap Start to play again', W / 2, H / 2 + 40 * s)
+          ctx.textAlign = 'left'
+        }
         return
       }
 
-      for (let i = 0; i < 24; i += 1) {
-        const x = i * 34
-        ctx.strokeStyle = 'rgba(249,115,22,0.06)'
-        ctx.beginPath()
-        ctx.moveTo(x, 0)
-        ctx.lineTo(x, PACKET_H)
-        ctx.stroke()
+      // ── game logic ──
+      packetTick.current += 1
+      packetSpeed.current = Math.min(6.2, packetSpeed.current + 0.0009)
+      if (packetTick.current % 60 === 0) {
+        packetObstacles.current.push({ x: BASE_W + 8, w: 70, openLane: Math.floor(Math.random() * PACKET_LANES), passed: false })
       }
 
-      ctx.fillStyle = 'rgba(245,245,245,0.72)'
-      ctx.font = 'bold 11px Arial'
-      for (let lane = 0; lane < PACKET_LANES; lane += 1) {
-        ctx.fillText(`Lane ${lane + 1}`, 16, laneCenter(lane) - 12)
-      }
-
-      if (packetRunning) {
-        packetTick.current += 1
-        packetSpeed.current = Math.min(6.2, packetSpeed.current + 0.0009)
-
-        if (packetTick.current % 60 === 0) { // Changed from 78 to 60 for better obstacle frequency
-          const openLane = Math.floor(Math.random() * PACKET_LANES)
-          packetObstacles.current.push({
-            x: PACKET_W + 8,
-            w: 70,
-            openLane,
-            passed: false,
-          })
-        }
-      }
-
-      const targetY = laneCenter(packetTargetLane.current)
+      const targetY = lc(packetTargetLane.current)
       packetPlayerY.current += (targetY - packetPlayerY.current) * 0.24
-      if (Math.abs(packetPlayerY.current - targetY) < 0.5) {
-        packetPlayerY.current = targetY
-      }
+      if (Math.abs(packetPlayerY.current - targetY) < 0.5) packetPlayerY.current = targetY
+      if (packetPulse.current > 0) packetPulse.current -= 0.35
 
-      if (packetPulse.current > 0) {
-        packetPulse.current -= 0.35
-      }
+      const playerX = PACKET_PLAYER_X, playerY = packetPlayerY.current
+      const curLane = clamp(Math.floor(playerY / lh))
+      let gameOver = false
 
-      const playerX = PACKET_PLAYER_X
-      const playerY = packetPlayerY.current
-
-      for (const obstacle of packetObstacles.current) {
-        if (packetRunning) {
-          obstacle.x -= packetSpeed.current
-        }
-        for (let lane = 0; lane < PACKET_LANES; lane += 1) {
-          const y = lane * laneHeight
-          if (lane === obstacle.openLane) {
+      for (const obs of packetObstacles.current) {
+        obs.x -= packetSpeed.current
+        for (let l = 0; l < PACKET_LANES; l++) {
+          if (l === obs.openLane) {
             ctx.fillStyle = 'rgba(34,197,94,0.22)'
-            ctx.fillRect(obstacle.x, y + 6, obstacle.w, laneHeight - 12)
-            continue
+            ctx.fillRect(obs.x * s, l * lh * s + 6 * s, obs.w * s, lh * s - 12 * s)
+          } else {
+            ctx.fillStyle = '#b91c1c'
+            ctx.fillRect(obs.x * s, l * lh * s, obs.w * s, lh * s)
           }
-          ctx.fillStyle = '#b91c1c'
-          ctx.fillRect(obstacle.x, y, obstacle.w, laneHeight)
         }
         ctx.fillStyle = 'rgba(248,113,113,0.5)'
-        ctx.fillRect(obstacle.x - 2, 0, 2, PACKET_H)
-        ctx.fillRect(obstacle.x + obstacle.w, 0, 2, PACKET_H)
-      }
+        ctx.fillRect(obs.x * s - 2, 0, 2, H)
+        ctx.fillRect((obs.x + obs.w) * s, 0, 2, H)
 
-      // Stop drawing if game is not running
-      if (!packetRunning) {
-        return
-      }
-
-      const currentLane = clampLane(Math.floor(playerY / laneHeight))
-      
-      if (packetRunning) {
-        for (const obstacle of packetObstacles.current) {
-          const packetLeft = playerX - 12
-          const packetRight = playerX + 12
-          const packetTop = playerY - 9
-          const packetBottom = playerY + 9
-          const obstacleLeft = obstacle.x
-          const obstacleRight = obstacle.x + obstacle.w
-          const obstacleTop = obstacle.openLane * laneHeight + 6
-          const obstacleBottom = obstacleTop + laneHeight - 12
-          
-          // Check if packet overlaps with obstacle
-          const hitX = packetRight > obstacleLeft && packetLeft < obstacleRight
-          const hitY = packetBottom > obstacleTop && packetTop < obstacleBottom
-          
-          if (hitX && hitY && currentLane !== obstacle.openLane) {
-            obstacle.passed = true
-            packetScoreRef.current += 1
-            setPacketScore(packetScoreRef.current)
-          }
-          
-          // Check if packet hits red obstacle (game over)
-          if (hitX && currentLane !== obstacle.openLane) {
+        const hitX = (playerX + 12) > obs.x && (playerX - 12) < (obs.x + obs.w)
+        if (hitX) {
+          if (curLane !== obs.openLane) {
             registerGlobalScore(packetScoreRef.current, 'Packet Rush')
-            setPacketRunning(false)
-            break
+            setPacketRunning(false); gameOver = true; break
+          } else if (!obs.passed) {
+            obs.passed = true; packetScoreRef.current += 1; setPacketScore(packetScoreRef.current)
           }
         }
       }
-      packetObstacles.current = packetObstacles.current.filter((o) => o.x + o.w > -20);
-      }
+      if (gameOver) return
 
-      // Stop drawing if game is not running
-      if (!packetRunning) {
-        return
-      }
+      packetObstacles.current = packetObstacles.current.filter(o => o.x + o.w > -20)
 
-      const playerX = PACKET_PLAYER_X
-      const playerY = packetPlayerY.current
-      const currentLane = clampLane(Math.floor(playerY / laneHeight))
-
-      ctx.fillStyle = '#f97316'
+      const px = playerX * s, py = playerY * s
+      ctx.fillStyle = '#f97316'; ctx.shadowColor = 'rgba(249,115,22,0.7)'; ctx.shadowBlur = 14 * s
       ctx.beginPath()
-      ctx.moveTo(playerX - 13, playerY - 9)
-      ctx.lineTo(playerX + 11, playerY)
-      ctx.lineTo(playerX - 13, playerY + 9)
-      ctx.closePath()
-      ctx.fill()
+      ctx.moveTo(px - 13 * s, py - 9 * s); ctx.lineTo(px + 11 * s, py); ctx.lineTo(px - 13 * s, py + 9 * s)
+      ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0
 
       if (packetPulse.current > 0) {
         ctx.strokeStyle = `rgba(249,115,22,${Math.min(0.75, packetPulse.current / 8)})`
-        ctx.lineWidth = 2
-        ctx.beginPath()
-        ctx.arc(playerX - 18, playerY, 11 + packetPulse.current * 1.2, 0, Math.PI * 2)
-        ctx.stroke()
+        ctx.lineWidth = 2 * s
+        ctx.beginPath(); ctx.arc(px - 18 * s, py, (11 + packetPulse.current * 1.2) * s, 0, Math.PI * 2); ctx.stroke()
       }
 
-      ctx.fillStyle = '#f5f5f5'
-      ctx.font = 'bold 14px Arial'
-      ctx.fillText(`Score: ${packetScoreRef.current}`, 20, 28)
-      ctx.fillText('Mode: Routed Transit', 20, 48)
+      ctx.fillStyle = '#f5f5f5'; ctx.font = `bold ${14 * s}px Arial`; ctx.textAlign = 'left'
+      ctx.fillText(`Score: ${packetScoreRef.current}`, 20 * s, 28 * s)
 
-      packetFrame.current = window.requestAnimationFrame(draw)
-
-    return () => {
-      if (packetFrame.current) window.cancelAnimationFrame(packetFrame.current)
-      window.removeEventListener('keydown', onKeyDown)
+      packetFrame.current = requestAnimationFrame(draw)
     }
+
+    draw()
+    return () => { cancelAnimationFrame(packetFrame.current!); window.removeEventListener('keydown', onKeyDown) }
   }, [packetRunning])
 
+  // ── Packet Rush – end-of-game bookkeeping ─────────────────────────────────
   useEffect(() => {
     if (packetRunning) return
-    if (packetScore <= 0) return
-
-    // Use refs to avoid setState in useEffect
-    const currentGames = packetGamesRef.current || packetGames
-    const nextGames = currentGames + 1
-    packetGamesRef.current = nextGames
-    window.localStorage.setItem('vc_packet_games', String(nextGames))
-    // Defer setState to avoid cascading renders
-    setTimeout(() => setPacketGames(nextGames), 0)
-
-    const currentBest = packetBestRef.current || packetBest
-    const nextBest = Math.max(currentBest, packetScore)
+    if (packetScoreRef.current <= 0) return
+    const nextGames = packetGamesRef.current + 1
+    packetGamesRef.current = nextGames; setPacketGames(nextGames)
+    const nextBest = Math.max(packetBestRef.current, packetScoreRef.current)
     packetBestRef.current = nextBest
-    window.localStorage.setItem(PACKET_BEST_KEY, String(nextBest))
-    // Defer setState to avoid cascading renders
-    setTimeout(() => setPacketBest(nextBest), 0)
-  }, [packetRunning, packetScore, packetGames, packetBest])
+    window.localStorage.setItem(PACKET_BEST_KEY, String(nextBest)); setPacketBest(nextBest)
+  }, [packetRunning])
 
+  // ── pointer (converts CSS px → logical coords) ────────────────────────────
+  const setNetworkPointer = (clientX: number, clientY: number, target: HTMLCanvasElement) => {
+    const rect = target.getBoundingClientRect()
+    networkMouse.current.x = (clientX - rect.left) * (BASE_W / rect.width)
+    networkMouse.current.y = (clientY - rect.top)  * (BASE_W / rect.width)
+  }
+
+  const routePacketUp   = () => { if (!packetRunning) return; packetTargetLane.current = Math.max(0, packetTargetLane.current - 1); packetPulse.current = 8 }
+  const routePacketDown = () => { if (!packetRunning) return; packetTargetLane.current = Math.min(PACKET_LANES - 1, packetTargetLane.current + 1); packetPulse.current = 8 }
+
+  // ── game starters ──────────────────────────────────────────────────────────
   const startNetworkGame = () => {
-    // Reset all nodes to working state
-    networkNodes.current.forEach((n) => {
-      n.broken = false
-    })
-    // Reset score - update ref FIRST before state
-    networkScoreRef.current = 0
-    setNetworkScore(0)
-    setNetworkTime(30)
+    networkNodes.current.forEach(n => { n.broken = false })
+    networkScoreRef.current = 0; setNetworkScore(0); setNetworkTime(30)
     setBeatPrompt({ open: false, score: 0, game: '' })
-    // Clear any existing intervals to prevent race conditions
-    if (networkBreakTimer.current) {
-      clearInterval(networkBreakTimer.current)
-      networkBreakTimer.current = null
-    }
-    if (networkCountdown.current) {
-      clearInterval(networkCountdown.current)
-      networkCountdown.current = null
-    }
+    clearInterval(networkBreakTimer.current); clearInterval(networkCountdown.current)
     setNetworkRunning(true)
   }
 
   const startPacketGame = () => {
-    // Reset score - update ref FIRST before state
-    packetScoreRef.current = 0
-    setPacketScore(0)
-    // Reset lane positions properly
-    packetLane.current = 1
+    packetScoreRef.current = 0; setPacketScore(0)
     packetTargetLane.current = 1
-    // Calculate correct Y position based on lane (center of lane)
-    const laneHeight = PACKET_H / PACKET_LANES
-    packetPlayerY.current = (1 + 0.5) * laneHeight // Lane 1 center
-    packetPulse.current = 0
-    packetSpeed.current = 3.8
-    packetTick.current = 0
-    // Clear existing obstacles
+    packetPlayerY.current    = (BASE_H / PACKET_LANES) * 1.5
+    packetPulse.current = 0; packetSpeed.current = 3.8; packetTick.current = 0
     packetObstacles.current = []
     setBeatPrompt({ open: false, score: 0, game: '' })
     setPacketRunning(true)
   }
 
-  const setNetworkPointer = (
-    clientX: number,
-    clientY: number,
-    target: EventTarget & HTMLCanvasElement,
-  ) => {
-    const rect = target.getBoundingClientRect()
-    const scaleX = NETWORK_W / rect.width
-    const scaleY = NETWORK_H / rect.height
-    networkMouse.current.x = (clientX - rect.left) * scaleX
-    networkMouse.current.y = (clientY - rect.top) * scaleY
-  }
-
-  const routePacketUp = () => {
-    if (!packetRunning) return
-    packetTargetLane.current = Math.max(0, packetTargetLane.current - 1)
-    packetPulse.current = 8
-  }
-
-  const routePacketDown = () => {
-    if (!packetRunning) return
-    packetTargetLane.current = Math.min(PACKET_LANES - 1, packetTargetLane.current + 1)
-    packetPulse.current = 8
-  }
-
   if (shouldRenderGames !== true) return null
 
+  // ── JSX ───────────────────────────────────────────────────────────────────
   return (
-    <section className="relative overflow-hidden border-y border-zinc-900 bg-[radial-gradient(circle_at_16%_15%,rgba(249,115,22,0.12),transparent_38%),radial-gradient(circle_at_82%_80%,rgba(249,115,22,0.09),transparent_36%),linear-gradient(to_bottom,#070708,#0a0a0c)] py-20 text-white">
+    <section className="relative overflow-hidden border-y border-zinc-900 bg-[radial-gradient(circle_at_16%_15%,rgba(249,115,22,0.12),transparent_38%),radial-gradient(circle_at_82%_80%,rgba(249,115,22,0.09),transparent_36%),linear-gradient(to_bottom,#070708,#0a0a0c)] py-10 sm:py-20 text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+
+        {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f97316]">Easter Eggs</p>
-          <h2 className="mt-3 text-4xl font-black sm:text-5xl">Play While You Wait</h2>
-          <p className="mt-4 text-zinc-300">Two lightweight mini games inspired by your original site.</p>
-          <p className="mt-4 inline-flex items-center rounded-full border border-zinc-700 bg-zinc-900/90 px-4 py-1.5 text-sm font-bold text-zinc-200">
-            Global High Score: <span className="ml-2 text-[#f97316]">{globalBest}</span>
+          <h2 className="mt-2 text-3xl font-black sm:text-5xl">Play While You Wait</h2>
+          <p className="mt-3 text-sm text-zinc-300 sm:text-base">Two mini games hidden in the site.</p>
+          <p className="mt-3 inline-flex items-center rounded-full border border-zinc-700 bg-zinc-900/90 px-4 py-1.5 text-sm font-bold text-zinc-200">
+            Global Best: <span className="ml-2 text-[#f97316]">{globalBest}</span>
           </p>
         </div>
 
-        <div className="mx-auto mt-8 flex max-w-md rounded-xl border border-zinc-700 bg-zinc-900 p-1">
-          <button
-            type="button"
-            onClick={() => setActiveGame('network')}
-            className={`w-1/2 rounded-lg px-3 py-2 text-sm font-bold transition ${
-              canShowNetwork ? 'bg-[#f97316] text-white' : 'text-zinc-300 hover:text-white'
-            }`}
-          >
+        {/* Tab switcher */}
+        <div className="mx-auto mt-6 flex max-w-xs rounded-xl border border-zinc-700 bg-zinc-900 p-1">
+          <button type="button" onClick={() => setActiveGame('network')}
+            className={`w-1/2 rounded-lg px-3 py-2 text-sm font-bold transition ${canShowNetwork ? 'bg-[#f97316] text-white' : 'text-zinc-300'}`}>
             Network Repair
           </button>
-          <button
-            type="button"
-            onClick={() => setActiveGame('packet')}
-            className={`w-1/2 rounded-lg px-3 py-2 text-sm font-bold transition ${
-              canShowPacket ? 'bg-[#f97316] text-white' : 'text-zinc-300 hover:text-white'
-            }`}
-          >
+          <button type="button" onClick={() => setActiveGame('packet')}
+            className={`w-1/2 rounded-lg px-3 py-2 text-sm font-bold transition ${canShowPacket ? 'bg-[#f97316] text-white' : 'text-zinc-300'}`}>
             Packet Rush
           </button>
         </div>
 
+        {/* ── Network Repair ── */}
         {canShowNetwork ? (
-          <div className="mt-8 rounded-2xl border border-zinc-800 bg-[linear-gradient(145deg,rgba(15,15,16,0.92),rgba(8,8,9,0.98))] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.42)] sm:p-6">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-zinc-300">
-                {!networkRunning ? (
-                  <span className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1">
-                      <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse inline-block"></span>
-                      <span>Move your mouse over red nodes to repair them!</span>
-                    </span>
-                    <span className="text-xs text-zinc-400">(or use arrow keys)</span>
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1">
-                      <span className="h-2 w-2 rounded-full bg-green-500 inline-block"></span>
-                      <span>Click Start to begin repairing!</span>
-                    </span>
-                    <span className="text-xs text-zinc-400">Score points by fixing nodes quickly</span>
-                  </span>
-                )}
-              </p>
-              <div className="flex items-center gap-3 text-sm">
-                <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Time: {networkTime}s</span>
-                <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Score: {networkScore}</span>
-                <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Best: {networkBest}</span>
-                <button
-                  type="button"
-                  onClick={startNetworkGame}
-                  className="rounded-md bg-[#f97316] px-3 py-1.5 font-bold text-white hover:brightness-110"
-                >
+          <div className="mt-6 rounded-2xl border border-zinc-800 bg-[linear-gradient(145deg,rgba(15,15,16,0.92),rgba(8,8,9,0.98))] p-3 shadow-[0_18px_40px_rgba(0,0,0,0.42)] sm:p-6">
+            <div className="mb-3 flex items-center justify-between gap-2 text-xs sm:text-sm">
+              <div className="flex items-center gap-1.5">
+                <span className={`h-2 w-2 shrink-0 rounded-full ${networkRunning ? 'bg-green-500' : 'bg-red-500 animate-pulse'}`} />
+                <span className="text-zinc-300">
+                  {networkRunning ? 'Fix the red nodes!' : touchDevice ? 'Touch red nodes to fix them' : 'Hover red nodes to fix them'}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1">⏱ {networkTime}s</span>
+                <span className="rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1">{networkScore}</span>
+                <span className="rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1 text-zinc-400">Best {networkBest}</span>
+                <button type="button" onClick={startNetworkGame}
+                  className="rounded bg-[#f97316] px-3 py-1 font-bold text-white">
                   {networkRunning ? 'Restart' : 'Start'}
                 </button>
               </div>
             </div>
-
             <div className="overflow-hidden rounded-xl border border-zinc-800">
               <canvas
                 ref={networkCanvasRef}
-                width={NETWORK_W}
-                height={NETWORK_H}
-                className="block h-auto w-full"
-                onMouseMove={(event) => {
-                  setNetworkPointer(event.clientX, event.clientY, event.target as HTMLCanvasElement)
-                }}
-                onMouseLeave={() => {
-                  networkMouse.current.x = -999
-                  networkMouse.current.y = -999
-                }}
-                onTouchStart={(event) => {
-                  const touch = event.touches[0]
-                  if (!touch) return
-                  setNetworkPointer(touch.clientX, touch.clientY, event.currentTarget)
-                }}
-                onTouchMove={(event) => {
-                  const touch = event.touches[0]
-                  if (!touch) return
-                  setNetworkPointer(touch.clientX, touch.clientY, event.currentTarget)
-                }}
-                onTouchEnd={() => {
-                  networkMouse.current.x = -999
-                  networkMouse.current.y = -999
-                }}
+                className="block h-auto w-full touch-none"
+                onMouseMove={e => setNetworkPointer(e.clientX, e.clientY, e.currentTarget)}
+                onMouseLeave={() => { networkMouse.current = { x: -999, y: -999 } }}
+                onTouchStart={e => { const t = e.touches[0]; if (t) setNetworkPointer(t.clientX, t.clientY, e.currentTarget) }}
+                onTouchMove={e  => { const t = e.touches[0]; if (t) setNetworkPointer(t.clientX, t.clientY, e.currentTarget) }}
+                onTouchEnd={() => { networkMouse.current = { x: -999, y: -999 } }}
               />
             </div>
           </div>
         ) : null}
 
+        {/* ── Packet Rush ── */}
         {canShowPacket ? (
-          <div className="mt-8 rounded-2xl border border-zinc-800 bg-[linear-gradient(145deg,rgba(15,15,16,0.92),rgba(8,8,9,0.98))] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.42)] sm:p-6">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-zinc-300">
-                {!packetRunning ? (
-                  <span className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1">
-                      <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse inline-block"></span>
-                      <span>Use Arrow Keys or W/S to move between lanes!</span>
-                    </span>
-                    <span className="text-xs text-zinc-400">Avoid red obstacles, go through green gaps</span>
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1">
-                      <span className="h-2 w-2 rounded-full bg-green-500 inline-block"></span>
-                      <span>Click Start to begin racing!</span>
-                    </span>
-                    <span className="text-xs text-zinc-400">Score points by avoiding obstacles</span>
-                  </span>
-                )}
-              </p>
-              <div className="flex items-center gap-3 text-sm">
-                <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Score: {packetScore}</span>
-                <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Best: {packetBest}</span>
-                <span className="rounded-md border border-zinc-700 bg-zinc-900/90 px-3 py-1.5">Games: {packetGames}</span>
-                <button
-                  type="button"
-                  onClick={startPacketGame}
-                  className="rounded-md bg-[#f97316] px-3 py-1.5 font-bold text-white hover:brightness-110"
-                >
+          <div className="mt-6 rounded-2xl border border-zinc-800 bg-[linear-gradient(145deg,rgba(15,15,16,0.92),rgba(8,8,9,0.98))] p-3 shadow-[0_18px_40px_rgba(0,0,0,0.42)] sm:p-6">
+            <div className="mb-3 flex items-center justify-between gap-2 text-xs sm:text-sm">
+              <div className="flex items-center gap-1.5">
+                <span className={`h-2 w-2 shrink-0 rounded-full ${packetRunning ? 'bg-green-500' : 'bg-red-500 animate-pulse'}`} />
+                <span className="text-zinc-300">
+                  {packetRunning ? 'Dodge the walls!' : touchDevice ? 'Use buttons below' : 'Arrow Keys / W · S'}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1">{packetScore}</span>
+                <span className="rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1 text-zinc-400">Best {packetBest}</span>
+                <span className="rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1 text-zinc-400">{packetGames}×</span>
+                <button type="button" onClick={startPacketGame}
+                  className="rounded bg-[#f97316] px-3 py-1 font-bold text-white">
                   {packetRunning ? 'Restart' : 'Start'}
                 </button>
               </div>
             </div>
-
             <div className="overflow-hidden rounded-xl border border-zinc-800">
               <canvas
                 ref={packetCanvasRef}
-                width={PACKET_W}
-                height={PACKET_H}
-                className="block h-auto w-full"
-                onTouchStart={(event) => {
+                className="block h-auto w-full touch-none"
+                onTouchStart={e => {
                   if (!packetRunning) return
-                  event.preventDefault()
-                  const touch = event.touches[0]
-                  if (!touch) return
-                  const rect = event.currentTarget.getBoundingClientRect()
-                  const scaleY = PACKET_H / rect.height
-                  const y = (touch.clientY - rect.top) * scaleY
-                  const laneHeight = PACKET_H / PACKET_LANES
-                  if (y < laneHeight * 2) {
-                    routePacketUp()
-                    return
-                  }
-                  routePacketDown()
+                  e.preventDefault()
+                  const t = e.touches[0]; if (!t) return
+                  const rect = e.currentTarget.getBoundingClientRect()
+                  if ((t.clientY - rect.top) / rect.height < 0.5) routePacketUp(); else routePacketDown()
                 }}
-                onClick={(event) => {
+                onClick={e => {
                   if (!packetRunning) return
-                  const rect = event.currentTarget.getBoundingClientRect()
-                  const scaleY = PACKET_H / rect.height
-                  const y = (event.clientY - rect.top) * scaleY
-                  const laneHeight = PACKET_H / PACKET_LANES
-                  if (y < laneHeight * 2) {
-                    routePacketUp()
-                    return
-                  }
-                  routePacketDown()
+                  const rect = e.currentTarget.getBoundingClientRect()
+                  if ((e.clientY - rect.top) / rect.height < 0.5) routePacketUp(); else routePacketDown()
                 }}
               />
             </div>
-
             {touchDevice ? (
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onTouchStart={routePacketUp}
-                  onMouseDown={routePacketUp}
-                  className="rounded-xl border border-zinc-700 bg-zinc-900/90 px-4 py-3 text-sm font-bold text-zinc-100 active:scale-[0.98]"
-                >
-                  Route Up
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <button type="button" onTouchStart={routePacketUp} onMouseDown={routePacketUp}
+                  className="rounded-xl border border-zinc-700 bg-zinc-900/90 py-5 text-lg font-bold text-zinc-100 active:bg-zinc-800">
+                  ▲ Up
                 </button>
-                <button
-                  type="button"
-                  onTouchStart={routePacketDown}
-                  onMouseDown={routePacketDown}
-                  className="rounded-xl border border-zinc-700 bg-zinc-900/90 px-4 py-3 text-sm font-bold text-zinc-100 active:scale-[0.98]"
-                >
-                  Route Down
+                <button type="button" onTouchStart={routePacketDown} onMouseDown={routePacketDown}
+                  className="rounded-xl border border-zinc-700 bg-zinc-900/90 py-5 text-lg font-bold text-zinc-100 active:bg-zinc-800">
+                  ▼ Down
                 </button>
               </div>
             ) : null}
           </div>
         ) : null}
 
+        {/* Beat prompt */}
         {beatPrompt.open ? (
-          <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-4 text-center">
+          <div className="mx-auto mt-6 max-w-2xl rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-4 text-center">
             <p className="text-sm font-bold text-emerald-300">
-              New Global High Score! {beatPrompt.score} on {beatPrompt.game}
+              🏆 New Global High Score! {beatPrompt.score} on {beatPrompt.game}
             </p>
             <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
-              <button
-                type="button"
+              <button type="button"
                 onClick={() => {
-                  const scoreMsg = `Hi Valley Computers! I just beat the global high score with ${beatPrompt.score} points on ${beatPrompt.game}.`
-                  // Use WhatsApp API format with proper encoding
-                  const whatsappUrl = `https://wa.me/27799381260?text=${encodeURIComponent(scoreMsg)}`
-                  window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+                  const msg = `Hi Valley Computers! I just beat the global high score with ${beatPrompt.score} points on ${beatPrompt.game}.`
+                  window.open(`https://wa.me/27799381260?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer')
                 }}
-                className="rounded-lg bg-[#25D366] hover:bg-[#20BD5A] px-4 py-2 text-sm font-bold text-white transition"
-              >
+                className="rounded-lg bg-[#25D366] px-4 py-2 text-sm font-bold text-white">
                 Send via WhatsApp
               </button>
-              <button
-                type="button"
+              <button type="button"
                 onClick={() => {
-                  const subject = encodeURIComponent('New high score submission')
-                  const body = encodeURIComponent(
-                    `Hi Valley Computers,%0D%0A%0D%0AI just beat the global high score with ${beatPrompt.score} points on ${beatPrompt.game}.`,
-                  )
-                  window.location.href = `mailto:info@valleycomputers.co.za?subject=${subject}&body=${body}`
+                  const sub  = encodeURIComponent('New high score submission')
+                  const body = encodeURIComponent(`Hi Valley Computers,\n\nI just beat the global high score with ${beatPrompt.score} points on ${beatPrompt.game}.`)
+                  window.location.href = `mailto:info@valleycomputers.co.za?subject=${sub}&body=${body}`
                 }}
-                className="rounded-lg border border-zinc-600 bg-zinc-900/80 px-4 py-2 text-sm font-bold text-zinc-100 transition hover:border-zinc-500"
-              >
-                Send Score to Us
+                className="rounded-lg border border-zinc-600 bg-zinc-900/80 px-4 py-2 text-sm font-bold text-zinc-100">
+                Send Score via Email
               </button>
             </div>
           </div>
         ) : null}
+
       </div>
     </section>
   )

@@ -133,6 +133,18 @@ export default function Navbar() {
                       </Link>
                     )}
                   </MenuItem>
+                  <MenuItem>
+                    {({ focus }) => (
+                      <Link
+                        href="/signup"
+                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white ${
+                          focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
+                        }`}
+                      >
+                        Sign Up
+                      </Link>
+                    )}
+                  </MenuItem>
                 </MenuItems>
               </Menu>
             </div>
@@ -169,6 +181,9 @@ export default function Navbar() {
             </Link>
             <Link href="/login" className="block rounded-md px-3 py-2 text-sm font-semibold text-white hover:bg-white/10">
               Login
+            </Link>
+            <Link href="/signup" className="block rounded-md px-3 py-2 text-sm font-semibold text-white hover:bg-white/10">
+              Sign Up
             </Link>
             <button
               type="button"

@@ -21,12 +21,24 @@ const Hero = () => {
 
   const nodes = useMemo(
     () => [
-      { id: 1, x: '14%', y: '28%', size: 'h-2.5 w-2.5', delay: '0s' },
-      { id: 2, x: '28%', y: '62%', size: 'h-2 w-2', delay: '0.6s' },
-      { id: 3, x: '46%', y: '24%', size: 'h-3 w-3', delay: '1.1s' },
-      { id: 4, x: '61%', y: '56%', size: 'h-2.5 w-2.5', delay: '1.7s' },
-      { id: 5, x: '74%', y: '34%', size: 'h-2 w-2', delay: '0.9s' },
-      { id: 6, x: '86%', y: '66%', size: 'h-3 w-3', delay: '1.4s' },
+      { id: 1, x: '14%', y: '28%', size: 'h-2.5 w-2.5', delay: '0s', type: 'router' },
+      { id: 2, x: '28%', y: '62%', size: 'h-2 w-2', delay: '0.6s', type: 'server' },
+      { id: 3, x: '46%', y: '24%', size: 'h-3 w-3', delay: '1.1s', type: 'core' },
+      { id: 4, x: '61%', y: '56%', size: 'h-2.5 w-2.5', delay: '1.7s', type: 'router' },
+      { id: 5, x: '74%', y: '34%', size: 'h-2 w-2', delay: '0.9s', type: 'client' },
+      { id: 6, x: '86%', y: '66%', size: 'h-3 w-3', delay: '1.4s', type: 'server' },
+    ],
+    [],
+  )
+
+  const connections = useMemo(
+    () => [
+      { from: 1, to: 3 },
+      { from: 3, to: 4 },
+      { from: 2, to: 4 },
+      { from: 4, to: 5 },
+      { from: 4, to: 6 },
+      { from: 1, to: 2 },
     ],
     [],
   )
@@ -71,38 +83,71 @@ const Hero = () => {
       }}
       onMouseLeave={() => setPointer({ x: 0, y: 0 })}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(243,111,0,0.22),transparent_42%),radial-gradient(circle_at_85%_10%,rgba(243,111,0,0.14),transparent_35%),linear-gradient(to_bottom,rgba(0,0,0,0.45),rgba(0,0,0,0.92))]" />
-      <div className="hero-noise absolute inset-0 opacity-20" />
-      <div className="hero-aurora absolute inset-0 opacity-55" />
-      <div className="hero-scan absolute inset-0 opacity-45" />
-      <div className="hero-orbital absolute inset-0 opacity-45" />
-      <div className="hero-grid absolute inset-0 opacity-25" />
+      {/* Simplified networking background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(34,197,94,0.15),transparent_42%),radial-gradient(circle_at_85%_10%,rgba(59,130,246,0.12),transparent_35%),linear-gradient(to_bottom,rgba(0,0,0,0.45),rgba(0,0,0,0.92))]" />
+      <div className="hero-grid absolute inset-0 opacity-15" />
 
       <div
         className="pointer-events-none absolute inset-0 transition-transform duration-300 ease-out"
         style={{
-          transform: `translate3d(${pointer.x * 8}px, ${pointer.y * 8}px, 0)`,
+          transform: `translate3d(${pointer.x * 4}px, ${pointer.y * 4}px, 0)`,
         }}
       >
-        <div className="absolute left-[10%] top-[20%] h-56 w-56 rounded-full bg-[#f97316]/20 blur-3xl" />
-        <div className="absolute bottom-[14%] right-[12%] h-72 w-72 rounded-full bg-[#f97316]/15 blur-3xl" />
+        <div className="absolute left-[10%] top-[20%] h-56 w-56 rounded-full bg-[#22c55e]/10 blur-3xl" />
+        <div className="absolute bottom-[14%] right-[12%] h-72 w-72 rounded-full bg-[#3b82f6]/8 blur-3xl" />
       </div>
 
       <div
         className="pointer-events-none absolute inset-0 transition-transform duration-500 ease-out"
         style={{
-          transform: `translate3d(${pointer.x * -10}px, ${pointer.y * -10}px, 0)`,
+          transform: `translate3d(${pointer.x * -6}px, ${pointer.y * -6}px, 0)`,
         }}
       >
-        <div className="absolute left-[16%] top-[31%] h-px w-[23%] rotate-6 bg-gradient-to-r from-transparent via-[#f97316]/30 to-transparent" />
-        <div className="absolute left-[30%] top-[58%] h-px w-[30%] -rotate-12 bg-gradient-to-r from-transparent via-[#f97316]/26 to-transparent" />
-        <div className="absolute right-[18%] top-[38%] h-px w-[18%] -rotate-6 bg-gradient-to-r from-transparent via-[#f97316]/30 to-transparent" />
+        {/* Simplified network connection lines */}
+        {connections.map((connection, index) => {
+          const fromNode = nodes.find(n => n.id === connection.from)
+          const toNode = nodes.find(n => n.id === connection.to)
+          if (!fromNode || !toNode) return null
+          
+          return (
+            <div
+              key={`connection-${index}`}
+              className="absolute h-px bg-gradient-to-r from-transparent via-[#22c55e]/30 to-transparent"
+              style={{
+                left: fromNode.x,
+                top: fromNode.y,
+                width: '100px',
+                transform: `rotate(${Math.atan2(
+                  parseFloat(toNode.y) - parseFloat(fromNode.y),
+                  parseFloat(toNode.x) - parseFloat(fromNode.x)
+                ) * 180 / Math.PI}deg)`,
+                transformOrigin: '0 50%',
+              }}
+            />
+          )
+        })}
+        
+        {/* Simplified network nodes */}
         {nodes.map((node) => (
           <span
             key={node.id}
-            className={`node-pulse absolute rounded-full border border-[#f8a258]/45 bg-[#f97316]/70 shadow-[0_0_16px_rgba(243,111,0,0.65)] ${node.size}`}
+            className={`node-pulse absolute rounded-full border shadow-lg ${
+              node.type === 'core' 
+                ? 'border-[#f97316]/40 bg-[#f97316]/50 shadow-[0_0_12px_rgba(249,115,22,0.4)]' 
+                : node.type === 'router'
+                ? 'border-[#22c55e]/30 bg-[#22c55e]/40 shadow-[0_0_8px_rgba(34,197,94,0.3)]'
+                : node.type === 'server'
+                ? 'border-[#3b82f6]/30 bg-[#3b82f6]/40 shadow-[0_0_8px_rgba(59,130,246,0.3)]'
+                : 'border-[#f8a258]/25 bg-[#f97316]/30 shadow-[0_0_6px_rgba(243,111,0,0.2)]'
+            } ${node.size}`}
             style={{ left: node.x, top: node.y, animationDelay: node.delay }}
-          />
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className={`h-1 w-1 rounded-full bg-white ${
+                node.type === 'core' ? 'animate-pulse' : ''
+              }`} />
+            </div>
+          </span>
         ))}
       </div>
 

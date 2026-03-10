@@ -287,6 +287,16 @@ const CustomCursor = () => {
       
       // Buttons
       if (tagName === 'button' || role === 'button' || className.includes('btn')) {
+        // Exclude game buttons from showing "Click" label
+        if (className.includes('game') || 
+            element.closest('[class*="game"]') ||
+            element.closest('#easter-egg-games') ||
+            className.includes('packet') ||
+            className.includes('network') ||
+            element.textContent?.includes('Packet Rush') ||
+            element.textContent?.includes('Network Repair')) {
+          return ''
+        }
         return 'Click'
       }
       
