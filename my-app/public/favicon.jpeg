@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Dark hexagonal background -->
+  <polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  
+  <!-- Orange concentric oval lines -->
+  <ellipse cx="32" cy="32" rx="25" ry="18" fill="none" stroke="#ff6b35" stroke-width="1.5" opacity="0.3"/>
+  <ellipse cx="32" cy="32" rx="20" ry="14" fill="none" stroke="#ff6b35" stroke-width="2" opacity="0.5"/>
+  <ellipse cx="32" cy="32" rx="15" ry="10" fill="none" stroke="#ff6b35" stroke-width="2.5" opacity="0.7"/>
+  
+  <!-- VC text in orange -->
+  <text x="32" y="40" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#ff6b35" text-anchor="middle">VC</text>
+</svg>

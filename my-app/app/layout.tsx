@@ -39,6 +39,11 @@ export const metadata: Metadata = {
     "Western Cape",
     "Valley Computers",
   ],
+  icons: {
+    icon: '/favicon-96x96.png',
+    shortcut: '/favicon-96x96.png',
+    apple: '/favicon-96x96.png',
+  },
   openGraph: {
     title: "Valley Computers | ISP and IT Solutions",
     description:
