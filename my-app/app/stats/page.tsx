@@ -53,7 +53,6 @@ export default function InternetStats() {
 
   const loadStats = async () => {
     try {
-      // Mock data for now
       const mockStats: InternetStats = {
         downloadSpeed: 85.5,
         uploadSpeed: 42.3,
@@ -100,7 +99,6 @@ export default function InternetStats() {
   const runSpeedTest = async () => {
     setIsLoading(true);
     try {
-      // Mock speed test
       await new Promise(resolve => setTimeout(resolve, 3000));
       
       if (stats) {
@@ -128,7 +126,6 @@ export default function InternetStats() {
     setIsLoading(true);
     
     try {
-      // Mock ticket submission
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       setShowTicketModal(false);
@@ -162,7 +159,6 @@ export default function InternetStats() {
 
           {stats && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              {/* Connection Overview */}
               <div className="lg:col-span-2 bg-zinc-800 rounded-lg p-6 border border-zinc-700">
                 <h2 className="text-xl font-bold text-white mb-4">Connection Overview</h2>
                 
@@ -218,7 +214,6 @@ export default function InternetStats() {
                 </div>
               </div>
 
-              {/* Data Usage */}
               <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
                 <h2 className="text-xl font-bold text-white mb-4">Data Usage</h2>
                 
@@ -255,7 +250,6 @@ export default function InternetStats() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Service Details */}
               <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
                 <h2 className="text-xl font-bold text-white mb-4">Service Details</h2>
                 
@@ -277,7 +271,6 @@ export default function InternetStats() {
                 </div>
               </div>
 
-              {/* Monthly Usage Chart */}
               <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
                 <h2 className="text-xl font-bold text-white mb-4">Monthly Usage Trend</h2>
                 
@@ -305,7 +298,6 @@ export default function InternetStats() {
         </div>
       </div>
 
-      {/* Support Ticket Modal */}
       {showTicketModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700 max-w-md w-full mx-4">

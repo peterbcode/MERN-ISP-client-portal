@@ -178,7 +178,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm text-zinc-400">Total Games - remove this!</p>
+                  <p className="text-sm text-zinc-400">Total Games</p>
                   <p className="text-2xl font-bold text-white">{stats.totalGames}</p>
                 </div>
               </div>
