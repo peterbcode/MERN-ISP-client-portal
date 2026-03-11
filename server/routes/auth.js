@@ -172,35 +172,21 @@ router.get('/me', protect, async (req, res) => {
       email: 'test@test.com',
       profile: {
         firstName: 'Test',
-        lastName: 'User'
-      },
-      gaming: {
-        highScores: [],
-        totalGamesPlayed: 0,
-        favoriteGame: null
+        lastName: 'User',
+        phone: '+1-555-0123',
+        address: '123 Main St, City, State 12345'
       },
       stats: {
         loginCount: 1,
         lastLogin: new Date().toISOString(),
         accountCreated: new Date().toISOString(),
-        timeSpent: 0,
-        achievementsUnlocked: 0
-      },
-      getPublicProfile: function() {
-        return {
-          id: this.id,
-          username: this.username,
-          email: this.email,
-          profile: this.profile,
-          gaming: this.gaming,
-          stats: this.stats
-        };
+        timeSpent: 0
       }
     };
-
+    
     res.json({
       success: true,
-      user: mockUser.getPublicProfile()
+      user: mockUser
     });
   } catch (error) {
     console.error('Get profile error:', error);
