@@ -64,7 +64,7 @@ svg#cursorFilter {
 .Cursor {
   pointer-events: none;
   position: fixed;
-  display: none;
+  display: none !important; /* Disable custom cursor */
   top: 0;
   left: 0;
   z-index: 99999;
@@ -122,6 +122,7 @@ body.custom-cursor-enabled .Cursor {
   border: 1px solid rgba(255, 255, 255, 0.1);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  display: none !important; /* Disable cursor labels */
 }
 
 .Cursor--with-label .cursor-label {
@@ -531,7 +532,7 @@ h6 {
 }
 
 .brand-marquee-track {
-  animation: brand-marquee 55s linear infinite;
+  animation: brand-marquee 120s linear infinite;
   will-change: transform;
 }
 

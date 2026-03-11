@@ -53,20 +53,9 @@ const LocalFootprint = () => {
         </div>
 
         <div className="relative self-center overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950 shadow-[0_22px_45px_rgba(0,0,0,0.45)]">
-          <div className="absolute left-4 top-4 z-10">
-            <a
-              href="https://maps.google.com/?q=Riebeek+Kasteel+Swartland"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-semibold text-zinc-100 shadow hover:border-[#f97316]"
-            >
-              Open in Maps
-            </a>
-          </div>
-
-          <div className="absolute left-4 right-4 top-20 z-10 rounded-2xl border border-zinc-700 bg-zinc-900/95 px-4 py-3 shadow">
+          <div className="absolute left-4 right-4 top-4 z-10 rounded-2xl border border-zinc-700 bg-zinc-900/95 px-4 py-3 shadow">
             <p className="text-sm font-bold uppercase tracking-wide text-zinc-300">
-              Coverage: Riebeek Kasteel, Malmesbury, Gouda, Riebeek West, Hermon, Abbotsdale, Chatsworth and the Swartland region
+              Coverage: Riebeek Kasteel, Malmesbury, Gouda, Riebeek West, Hermon, Abbotsdale, Chatsworth and Swartland region
             </p>
           </div>
 

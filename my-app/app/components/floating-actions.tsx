@@ -144,11 +144,7 @@ const FloatingActions = () => {
             </div>
           </div>
         </div>
-      ) : (
-        <p className="rounded-full border border-zinc-700 bg-zinc-900/95 px-3 py-1 text-xs font-semibold text-zinc-300 shadow-[0_8px_20px_rgba(0,0,0,0.35)]">
-          Need help? Chat with us
-        </p>
-      )}
+      ) : null}
 
       <button
         type="button"

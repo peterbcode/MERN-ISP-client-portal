@@ -93,11 +93,11 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`relative text-[15px] font-semibold transition-colors after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-0 after:bg-[#f97316] after:transition-all hover:text-[#f97316] hover:after:w-full ${
+                  className={`relative text-[15px] font-semibold transition-colors hover:text-[#f97316] ${
                     (item.href === '/#services' || item.href === '/#success-stories') && pathname === '/'
                       ? 'text-white/95'
                       : pathname === item.href
-                        ? 'text-[#f97316] after:w-full'
+                        ? 'text-[#f97316]'
                         : 'text-white/90'
                   }`}
                 >
@@ -108,7 +108,7 @@ export default function Navbar() {
                 <MenuButton className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 bg-white/5 text-white/95 transition hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]">
                   <ChevronDownIcon className="h-5 w-5" />
                 </MenuButton>
-                <MenuItems className="absolute right-0 z-50 mt-3 w-44 rounded-xl border border-white/20 bg-zinc-950 p-2 shadow-[0_14px_30px_rgba(0,0,0,0.5)]">
+                <MenuItems className="absolute right-0 z-50 mt-2 w-44 rounded-xl border border-white/20 bg-zinc-950 p-2 shadow-[0_14px_30px_rgba(0,0,0,0.5)]">
                   <MenuItem>
                     {({ focus }) => (
                       <Link

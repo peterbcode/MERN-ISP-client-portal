@@ -38,18 +38,10 @@ const plans = [
 
 const IspPage = () => {
   return (
-    <main className="bg-[#070708] text-white">
-      <section className="relative overflow-hidden border-b border-zinc-900 bg-[radial-gradient(circle_at_20%_10%,rgba(249,115,22,0.16),transparent_46%),radial-gradient(circle_at_85%_75%,rgba(249,115,22,0.10),transparent_42%),linear-gradient(to_bottom,#060607,#0a0a0b)]">
-        <div
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, #f97316 1px, transparent 1px), linear-gradient(to bottom, #f97316 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
+    <main className="bg-zinc-900 text-white">
+      <section className="relative overflow-hidden border-b border-zinc-800 bg-zinc-900">
         <div className="relative mx-auto max-w-7xl px-4 pb-18 pt-40 text-center sm:px-6 lg:px-8 lg:pb-22 lg:pt-52">
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900/85 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-300">
+          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-800/85 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-300">
             <WifiIcon className="h-4 w-4 text-[#f97316]" />
             Fibre & Wireless Internet
           </div>
