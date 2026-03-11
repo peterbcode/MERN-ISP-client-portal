@@ -1002,3 +1002,36 @@ html {
   }
 }
 
+/* Hide Next.js dev indicators and overlays */
+.__next-dev-container {
+  display: none !important;
+}
+
+.next-dev-overlay {
+  display: none !important;
+}
+
+.next-dev-tools {
+  display: none !important;
+}
+
+/* Hide React DevTools */
+#__react-devtools {
+  display: none !important;
+}
+
+/* Hide any build activity indicators */
+[data-nextjs-dev-indicator] {
+  display: none !important;
+}
+
+/* Hide any floating dev elements */
+[style*="position: fixed"][style*="z-index: 9999"] {
+  display: none !important;
+}
+
+/* Hide console warnings in production (optional) */
+.console-warning {
+  display: none !important;
+}
+

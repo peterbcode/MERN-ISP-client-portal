@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Disable React Strict Mode to reduce dev warnings
+  reactStrictMode: false,
 };
 
 export default nextConfig;

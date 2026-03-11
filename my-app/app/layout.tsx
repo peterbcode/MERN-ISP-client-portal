@@ -8,6 +8,7 @@ import CookieConsent from "./components/cookie-consent";
 import { ConsentProvider } from "./components/consent-provider";
 import AnalyticsLoader from "./components/analytics-loader";
 import PageLoader from "./components/page-loader";
+import DevIndicatorRemover from "./components/dev-indicator-remover";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -76,6 +77,7 @@ export default function RootLayout({
         <ConsentProvider>
           <PageLoader />
           <CustomCursor />
+          <DevIndicatorRemover />
           {children}
           <CookieConsent />
           <FloatingActions />
