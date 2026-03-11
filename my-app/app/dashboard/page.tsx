@@ -37,7 +37,7 @@ export default function Dashboard() {
         }
 
         const response = await auth.getCurrentUser();
-        if (response.success) {
+        if (response && response.success) {
           setUser(response.user);
         } else {
           auth.clearToken();
@@ -45,6 +45,8 @@ export default function Dashboard() {
         }
       } catch (error) {
         console.error('Auth error:', error);
+        // Clear invalid token and redirect to login
+        auth.clearToken();
         router.push('/login');
       } finally {
         setIsLoading(false);
@@ -262,40 +264,42 @@ export default function Dashboard() {
 
         {/* Bottom Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-          {/* Recent Support Tickets */}
+          {/* Router Setup Guide */}
           <div className="bg-zinc-800 rounded-xl border border-zinc-700">
             <div className="p-6 border-b border-zinc-700">
-              <h2 className="text-xl font-bold text-white">Recent Support Tickets</h2>
+              <h2 className="text-xl font-bold text-white">Router Setup Guide</h2>
+              <p className="text-zinc-400 text-sm mt-1">Connect your Tenda router to the dashboard</p>
             </div>
             <div className="p-6">
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3 p-3 bg-zinc-700/50 rounded-lg">
-                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <div className="flex-1">
-                    <h4 className="text-white font-medium">Router Setup Help</h4>
-                    <p className="text-zinc-400 text-sm">Resolved - Technician assisted with configuration</p>
-                  </div>
-                  <span className="text-green-400 text-sm">Closed</span>
+              <div className="space-y-4">
+                <div className="p-4 bg-zinc-700/50 rounded-lg">
+                  <h4 className="text-white font-medium mb-2">🔧 Step 1: Find Your Router IP</h4>
+                  <p className="text-zinc-400 text-sm">Check your technician setup notes, router sticker, or use command prompt: ipconfig (Windows) or ifconfig (Mac/Linux) to find your router's IP address</p>
                 </div>
-                <div className="flex items-center space-x-3 p-3 bg-zinc-700/50 rounded-lg">
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                  <div className="flex-1">
-                    <h4 className="text-white font-medium">Slow Internet Speed</h4>
-                    <p className="text-zinc-400 text-sm">In progress - Awaiting technician visit</p>
-                  </div>
-                  <span className="text-yellow-400 text-sm">Pending</span>
+                
+                <div className="p-4 bg-zinc-700/50 rounded-lg">
+                  <h4 className="text-white font-medium mb-2">📡 Step 2: Enable Remote Management</h4>
+                  <p className="text-zinc-400 text-sm">Go to Advanced Settings → Remote Management → Enable on port 8081</p>
                 </div>
-                <div className="flex items-center space-x-3 p-3 bg-zinc-700/50 rounded-lg">
-                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <div className="flex-1">
-                    <h4 className="text-white font-medium">WiFi Password Reset</h4>
-                    <p className="text-zinc-400 text-sm">Resolved - Password successfully changed</p>
-                  </div>
-                  <span className="text-green-400 text-sm">Closed</span>
+                
+                <div className="p-4 bg-zinc-700/50 rounded-lg">
+                  <h4 className="text-white font-medium mb-2">🔗 Step 3: Port Forwarding</h4>
+                  <p className="text-zinc-400 text-sm">Forward port 8081 to your router's IP address (the one you found in Step 1) for external access</p>
+                </div>
+                
+                <div className="p-4 bg-zinc-700/50 rounded-lg">
+                  <h4 className="text-white font-medium mb-2">⚙️ Step 4: Configure Dashboard</h4>
+                  <p className="text-zinc-400 text-sm">Use Router Setup button above with your router's IP address (from Step 1) and port 8081</p>
+                </div>
+                
+                <div className="p-4 bg-zinc-700/50 rounded-lg">
+                  <h4 className="text-white font-medium mb-2">✅ Step 5: Test Connection</h4>
+                  <p className="text-zinc-400 text-sm">Click "Test Router Connection" to verify integration works</p>
                 </div>
               </div>
+              
               <button className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                View All Tickets
+                View Detailed Setup Instructions
               </button>
             </div>
           </div>

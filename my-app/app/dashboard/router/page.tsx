@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import TendaRouterAPI from '@/lib/tenda-router';
+import type { TendaRouterStatus, ConnectedDevice } from '@/lib/tenda-router';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/auth';
 
 export default function RouterPage() {
-  const [routerIP, setRouterIP] = useState('192.168.0.1');
+  const [routerIP, setRouterIP] = useState('YOUR_ROUTER_IP');
   const [isConnected, setIsConnected] = useState(false);
-  const [status, setStatus] = useState(null);
-  const [devices, setDevices] = useState([]);
+  const [status, setStatus] = useState<TendaRouterStatus | null>(null);
+  const [devices, setDevices] = useState<ConnectedDevice[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -64,8 +65,8 @@ export default function RouterPage() {
       } else {
         setError('Router not accessible. Please check IP address.');
       }
-    } catch (error) {
-      setError('Failed to connect to router: ' + error.message);
+    } catch (error: any) {
+      setError('Failed to connect to router: ' + (error?.message || 'Unknown error'));
     } finally {
       setIsLoading(false);
     }
@@ -73,21 +74,8 @@ export default function RouterPage() {
 
   const detectRouterIP = async () => {
     try {
-      // Get local IP and guess router IP
-      const response = await fetch('https://api.ipify.org?format=json');
-      const data = await response.json();
-      const localIP = data.ip;
-      
-      // Common router IP patterns
-      if (localIP.startsWith('192.168.')) {
-        return '192.168.0.1';
-      } else if (localIP.startsWith('10.0.')) {
-        return '10.0.0.1';
-      } else if (localIP.startsWith('172.16.')) {
-        return '172.16.0.1';
-      }
-      
-      return '192.168.0.1'; // Default
+      // For now, return a placeholder - user should configure their actual router IP
+      return 'YOUR_ROUTER_IP'; // User needs to configure this
     } catch (error) {
       return null;
     }
@@ -97,35 +85,40 @@ export default function RouterPage() {
     const tenda = new TendaRouterAPI(routerIP);
     const statusResult = await tenda.getStatus();
     if (statusResult.success) {
-      setStatus(statusResult.data);
+      setStatus(statusResult.data as RouterStatus);
       await loadDevices();
     } else {
-      setError(statusResult.error);
+      setError((statusResult as any).error || 'Failed to load router status');
     }
   };
 
   const loadDevices = async () => {
     const tenda = new TendaRouterAPI(routerIP);
-    const devicesResult = await tenda.getDevices();
+    const devicesResult = await tenda.getConnectedDevices();
     if (devicesResult.success) {
-      setDevices(devicesResult.data);
+      setDevices(devicesResult.data as ConnectedDevice[]);
     }
   };
 
-  const handleRouterLogin = async (password) => {
+  const handleRouterLogin = async (password: string) => {
     setIsLoading(true);
-    const tenda = new TendaRouterAPI(routerIP);
-    const loginResult = await tenda.login(password);
-    if (loginResult.success) {
-      await loadRouterStatus();
-      setError('');
-    } else {
-      setError(loginResult.error);
+    try {
+      const tenda = new TendaRouterAPI(routerIP);
+      const loginResult = await tenda.login(password);
+      if (loginResult.success) {
+        await loadRouterStatus();
+        setError('');
+      } else {
+        setError((loginResult as any).error || 'Login failed');
+      }
+      setIsLoading(false);
+    } catch (error: any) {
+      setError('Login failed: ' + (error?.message || 'Unknown error'));
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
-  const handlePasswordChange = async (e) => {
+  const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
@@ -134,21 +127,22 @@ export default function RouterPage() {
     }
 
     setIsLoading(true);
-    const tenda = new TendaRouterAPI(routerIP);
-    const changeResult = await tenda.changePassword(
-      passwordForm.currentPassword,
-      passwordForm.newPassword
-    );
-
-    if (changeResult.success) {
-      setShowPasswordModal(false);
-      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
-      setError('');
-      alert('Password changed successfully!');
-    } else {
-      setError(changeResult.error);
+    try {
+      const tenda = new TendaRouterAPI(routerIP);
+      const changeResult = await tenda.changePassword(passwordForm.currentPassword, passwordForm.newPassword);
+      if (changeResult.success) {
+        setShowPasswordModal(false);
+        setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+        setError('');
+        alert('Password changed successfully!');
+      } else {
+        setError((changeResult as any).error || 'Password change failed');
+      }
+      setIsLoading(false);
+    } catch (error: any) {
+      setError('Password change failed: ' + (error?.message || 'Unknown error'));
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const runSpeedTest = async () => {
@@ -186,8 +180,8 @@ export default function RouterPage() {
       localStorage.setItem('lastSpeedTest', JSON.stringify(speedResult));
       
       alert(`Speed Test Complete:\nDownload: ${speedResult.download} Mbps\nUpload: ${speedResult.upload} Mbps\nPing: ${speedResult.ping} ms`);
-    } catch (error) {
-      setError('Speed test failed: ' + error.message);
+    } catch (error: any) {
+      setError('Speed test failed: ' + (error?.message || 'Unknown error'));
     } finally {
       setIsLoading(false);
     }
