@@ -92,9 +92,9 @@ export default function StatsPage() {
       if (stats) {
         setStats({
           ...stats,
-          downloadSpeed: Math.random() * 50 + 50,
-          uploadSpeed: Math.random() * 20 + 20,
-          ping: Math.floor(Math.random() * 20 + 5),
+          downloadSpeed: parseFloat((Math.random() * 50 + 50).toFixed(3)),
+          uploadSpeed: parseFloat((Math.random() * 20 + 20).toFixed(3)),
+          ping: parseFloat((Math.random() * 20 + 5).toFixed(3)),
           lastSpeedTest: new Date().toISOString()
         });
         
@@ -171,7 +171,7 @@ export default function StatsPage() {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="text-center">
                 <div className="text-4xl font-bold text-white mb-2">
-                  {stats.downloadSpeed}
+                  {stats.downloadSpeed.toFixed(3)}
                 </div>
                 <div className="text-sm text-zinc-400">Download Mbps</div>
                 <div className={`text-lg font-medium ${getSpeedColor(stats.downloadSpeed)}`}>
@@ -183,7 +183,7 @@ export default function StatsPage() {
               
               <div className="text-center">
                 <div className="text-4xl font-bold text-white mb-2">
-                  {stats.uploadSpeed}
+                  {stats.uploadSpeed.toFixed(3)}
                 </div>
                 <div className="text-sm text-zinc-400">Upload Mbps</div>
                 <div className={`text-lg font-medium ${getSpeedColor(stats.uploadSpeed)}`}>
@@ -196,7 +196,7 @@ export default function StatsPage() {
 
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <div className="text-2xl font-bold text-white mb-1">{stats.ping}</div>
+                <div className="text-2xl font-bold text-white mb-1">{stats.ping.toFixed(3)}</div>
                 <div className="text-sm text-zinc-400">Ping (ms)</div>
               </div>
               <div>

@@ -213,8 +213,8 @@ export default function Dashboard() {
       setTestProgress('Finalizing results...');
       setStats(prev => ({
         ...prev,
-        downloadSpeed: Math.round(downloadSpeed * 10) / 10,
-        uploadSpeed: Math.round(uploadSpeed * 10) / 10,
+        downloadSpeed: parseFloat((downloadSpeed * 1000).toFixed(3)) / 1000,
+        uploadSpeed: parseFloat((uploadSpeed * 1000).toFixed(3)) / 1000,
         latency: avgLatency,
         lastUpdated: new Date().toLocaleTimeString()
       }));
@@ -513,76 +513,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Speed Test Controls */}
-          <div className="bg-zinc-900 rounded-xl border border-zinc-800">
-            <div className="p-6 border-b border-zinc-800">
-              <h2 className="text-xl font-bold text-zinc-100 flex items-center">
-                <ArrowsPointingOutIcon className="h-5 w-5 mr-2 text-[#f97316]" />
-                Performance Test
-              </h2>
-            </div>
-            <div className="p-6">
-              <p className="text-zinc-400 mb-6">
-                Click the button below to test your current internet speed. This test measures download speed, upload speed, and latency using browser-based tools.
-              </p>
-              <button
-                onClick={runSpeedTest}
-                disabled={isSpeedTestRunning}
-                className="w-full px-6 py-3 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-              >
-                {isSpeedTestRunning ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    {testProgress || 'Running Speed Test...'}
-                  </>
-                ) : (
-                  'Run Speed Test'
-                )}
-              </button>
-              {testProgress && isSpeedTestRunning && (
-                <div className="mt-3 p-3 bg-zinc-800 rounded-lg">
-                  <p className="text-zinc-300 text-sm text-center">{testProgress}</p>
-                </div>
-              )}
-              {stats.downloadSpeed > 0 && (
-                <div className="mt-4 p-4 bg-zinc-800 rounded-lg border border-zinc-700">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-white font-medium">📊 Latest Test Results</h4>
-                    <span className="text-zinc-400 text-xs">{stats.lastUpdated}</span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div className="p-3 bg-zinc-700/50 rounded-lg">
-                      <div className="text-2xl font-bold text-green-400">{stats.downloadSpeed}</div>
-                      <div className="text-xs text-zinc-400">Download Mbps</div>
-                    </div>
-                    <div className="p-3 bg-zinc-700/50 rounded-lg">
-                      <div className="text-2xl font-bold text-orange-400">{stats.uploadSpeed}</div>
-                      <div className="text-xs text-zinc-400">Upload Mbps</div>
-                    </div>
-                    <div className="p-3 bg-zinc-700/50 rounded-lg">
-                      <div className="text-2xl font-bold text-purple-400">{stats.latency}</div>
-                      <div className="text-xs text-zinc-400">Ping (ms)</div>
-                    </div>
-                  </div>
-                  <div className="mt-3 p-3 bg-zinc-900/50 rounded-lg border border-zinc-600">
-                    <p className="text-zinc-300 text-xs leading-relaxed">
-                      <strong>Connection Quality:</strong>{' '}
-                      {(stats.downloadSpeed >= 50 && stats.uploadSpeed >= 20 && stats.latency <= 20) 
-                        ? '🟢 Excellent - Perfect for streaming, gaming, and video calls' 
-                        : (stats.downloadSpeed >= 25 && stats.uploadSpeed >= 10 && stats.latency <= 50) 
-                          ? '🟡 Good - Good for most activities including HD streaming' 
-                          : (stats.downloadSpeed >= 10 && stats.uploadSpeed >= 5 && stats.latency <= 100) 
-                            ? '🟠 Fair - Basic browsing and light streaming' 
-                            : '🔴 Poor - May struggle with video calls and streaming'
-                      }
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
         {/* Support Tickets Section */}
         <div className="bg-zinc-900 rounded-xl border border-zinc-800">
           <div className="p-6 border-b border-zinc-800">
@@ -718,6 +648,7 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 }
