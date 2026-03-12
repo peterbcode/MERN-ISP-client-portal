@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import './design-system.css'
 import NavbarSoft from "./components/navbar-soft"
 import HeroSoft from "./components/hero-soft"
 import BrandCarousel from "./components/brand-carousel"
@@ -13,9 +14,6 @@ import SiteFooter from "./components/site-footer"
 
 const PageSoft = () => {
   useEffect(() => {
-    // Import design system CSS
-    import('./design-system.css')
-    
     // Scroll to top on page load/reload
     window.scrollTo(0, 0)
   }, [])

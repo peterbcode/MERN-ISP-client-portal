@@ -69,8 +69,8 @@ const PricingComparisonSoft = () => {
               key={plan.name}
               className={cn(
                 "relative p-8 text-center transition-all duration-300",
-                plan.recommended && "ring-2 ring-text-primary ring-offset-2",
-                hoveredPlan === plan.name && "transform -translate-y-2"
+                plan.recommended ? "ring-2 ring-text-primary ring-offset-2" : "",
+                hoveredPlan === plan.name ? "transform -translate-y-2" : ""
               )}
               onMouseEnter={() => setHoveredPlan(plan.name)}
               onMouseLeave={() => setHoveredPlan(null)}

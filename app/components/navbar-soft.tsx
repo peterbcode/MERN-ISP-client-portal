@@ -98,7 +98,7 @@ export default function NavbarSoft() {
                     href={item.href}
                     className={cn(
                       'nav-item-soft',
-                      isActive && 'active'
+                      isActive ? 'active' : ''
                     )}
                   >
                     {item.name}

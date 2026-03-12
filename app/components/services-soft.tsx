@@ -79,7 +79,7 @@ const ServicesSoft = () => {
               variant="elevated"
               className={cn(
                 "p-8 cursor-pointer transition-all duration-300",
-                hoveredService === service.id && "ring-2 ring-accent-primary ring-offset-2"
+                hoveredService === service.id ? "ring-2 ring-accent-primary ring-offset-2" : ""
               )}
               onMouseEnter={() => setHoveredService(service.id)}
               onMouseLeave={() => setHoveredService(null)}

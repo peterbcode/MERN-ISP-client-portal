@@ -75,7 +75,7 @@ export default function LoginForm() {
       let errorMessage = 'Login failed. Please try again.';
       
       if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
-        errorMessage = 'Cannot connect to server. Please make sure backend is running on localhost:5000';
+        errorMessage = 'Cannot connect to server. Please make sure the Next.js development server is running';
       } else if (error.message) {
         errorMessage = error.message;
       } else if (error.error) {

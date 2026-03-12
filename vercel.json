@@ -1,14 +1,8 @@
 {
-  "functions": {
-    "app/api/**/*.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 30
-    }
-  },
   "env": {
-    "MONGODB_URI": "@mongodb_uri",
-    "JWT_SECRET": "@jwt_secret",
-    "JWT_EXPIRE": "@jwt_expire",
+    "MONGODB_URI": "mongodb+srv://admin:vFXne5esQikuojQX@cluster0.cszm9.mongodb.net/?retryWrites=true&w=majority",
+    "JWT_SECRET": "Rfkhve4wC7LS",
+    "JWT_EXPIRE": "1h",
     "NODE_ENV": "production"
   },
   "build": {

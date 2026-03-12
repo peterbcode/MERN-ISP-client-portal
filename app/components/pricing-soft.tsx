@@ -129,8 +129,8 @@ const PricingSoft = () => {
                 key={plan.id}
                 className={cn(
                   "relative p-8 cursor-pointer transition-all duration-300",
-                  plan.recommended && "ring-2 ring-text-primary ring-offset-2",
-                  isHovered && "transform -translate-y-2"
+                  plan.recommended ? "ring-2 ring-text-primary ring-offset-2" : "",
+                  isHovered ? "transform -translate-y-2" : ""
                 )}
                 onMouseEnter={() => setHoveredPlan(plan.id)}
                 onMouseLeave={() => setHoveredPlan(null)}
