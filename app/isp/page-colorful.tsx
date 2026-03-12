@@ -1,15 +1,15 @@
-import Navbar from "../components/navbar";
+import NavbarSoft from "../components/navbar-soft";
 import SiteFooter from "../components/site-footer";
 import IspPageColorful from "../components/pages/isp-page-colorful";
 
-const Page = () => {
+const PageColorful = () => {
   return (
     <>
-      <Navbar />
+      <NavbarSoft />
       <IspPageColorful />
       <SiteFooter />
     </>
   );
 };
 
-export default Page;
+export default PageColorful;
