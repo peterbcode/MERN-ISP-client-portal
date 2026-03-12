@@ -8,9 +8,15 @@ interface RouterConfig {
   password: string;
   port: number;
   enableRemote: boolean;
+  setupComplete?: boolean;
+  configuredAt?: string;
 }
 
-export default function RouterSetupModal({ isOpen, onClose, onComplete }) {
+export default function RouterSetupModal({ isOpen, onClose, onComplete }: {
+  isOpen: boolean;
+  onClose: () => void;
+  onComplete: (config: RouterConfig) => void;
+}) {
   const [config, setConfig] = useState<RouterConfig>({
     routerIP: '192.168.0.1',
     username: 'admin',

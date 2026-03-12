@@ -85,7 +85,7 @@ export default function RouterPage() {
     const tenda = new TendaRouterAPI(routerIP);
     const statusResult = await tenda.getStatus();
     if (statusResult.success) {
-      setStatus(statusResult.data as RouterStatus);
+      setStatus(statusResult.data as any);
       await loadDevices();
     } else {
       setError((statusResult as any).error || 'Failed to load router status');

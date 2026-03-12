@@ -16,7 +16,7 @@ const dashboardNavigation = [
 export default function DashboardSidebar() {
   const router = useRouter();
   const pathname = usePathname();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
