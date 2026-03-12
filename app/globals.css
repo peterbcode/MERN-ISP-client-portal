@@ -81,17 +81,19 @@ svg#cursorFilter {
   display: block;
   width: 26px;
   height: 26px;
-  border-radius: 20px;
-  background-color: rgba(249, 115, 22, 0.75);
-  transition: background-color 140ms ease;
-  transform-origin: center center;
-  will-change: transform;
+  border-radius: 13px;
+  background-color: rgba(251, 146, 60, 0.5);
+  pointer-events: none;
   backface-visibility: hidden;
+  will-change: transform;
+  border: 2px solid rgba(255, 255, 255, 0.5);
   transform: translateZ(0);
+  opacity: 0.5;
 }
 
 .Cursor.Cursor--dark span {
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(251, 146, 60, 0.5);
 }
 
 body.custom-cursor-enabled * {
