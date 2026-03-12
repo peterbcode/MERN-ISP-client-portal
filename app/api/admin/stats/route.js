@@ -1,6 +1,7 @@
 import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
 import Game from '@/models/Game';
+import jwt from 'jsonwebtoken';
 
 // Authentication middleware for serverless
 const protect = async (request) => {
