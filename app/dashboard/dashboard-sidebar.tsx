@@ -8,7 +8,6 @@ import { auth } from '@/lib/auth';
 const dashboardNavigation = [
   { name: 'Dashboard', href: '/dashboard', icon: '🏠' },
   { name: 'Stats', href: '/dashboard/stats', icon: '📊' },
-  { name: 'Router', href: '/dashboard/router', icon: '🌐' },
   { name: 'Profile', href: '/dashboard/profile', icon: '👤' },
   { name: 'Settings', href: '/dashboard/settings', icon: '⚙️' },
 ];
