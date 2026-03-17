@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/auth';
+import { safeAlert } from '@/lib/native-dialog';
+import { runSpeedTest as runLocalSpeedTest } from '@/lib/speedtest';
 import { 
   WifiIcon, 
   GlobeAltIcon, 
@@ -148,74 +150,14 @@ export default function Dashboard() {
     try {
       // Reset stats
       setStats(prev => ({ ...prev, downloadSpeed: 0, uploadSpeed: 0, latency: 0 }));
+
+      const result = await runLocalSpeedTest({ onProgress: setTestProgress });
       
-      // Test latency first (multiple pings for accuracy)
-      setTestProgress('Testing latency...');
-      const latencyPromises = [];
-      for (let i = 0; i < 5; i++) {
-        latencyPromises.push(
-          fetch('https://httpbin.org/get', { cache: 'no-cache' }).then(() => {
-            const start = performance.now();
-            return fetch('https://httpbin.org/get', { cache: 'no-cache' }).then(() => {
-              const end = performance.now();
-              return end - start;
-            });
-          })
-        );
-      }
-      
-      const latencyResults = await Promise.all(latencyPromises);
-      const avgLatency = Math.round(latencyResults.reduce((a, b) => a + b, 0) / latencyResults.length);
-      
-      // Test download speed (multiple concurrent connections)
-      setTestProgress('Testing download speed...');
-      const downloadStartTime = performance.now();
-      const downloadPromises = [];
-      
-      // Use multiple larger files for better accuracy
-      for (let i = 0; i < 3; i++) {
-        downloadPromises.push(
-          fetch('https://httpbin.org/bytes/5242880', { // 5MB files
-            cache: 'no-cache'
-          }).then(response => response.blob())
-        );
-      }
-      
-      const downloadBlobs = await Promise.all(downloadPromises);
-      const downloadEndTime = performance.now();
-      
-      const totalDownloadSize = downloadBlobs.reduce((total, blob) => total + blob.size, 0);
-      const downloadDuration = (downloadEndTime - downloadStartTime) / 1000; // seconds
-      const downloadSpeed = (totalDownloadSize / downloadDuration) * 8 / 1024 / 1024; // Mbps
-      
-      // Test upload speed (using POST requests)
-      setTestProgress('Testing upload speed...');
-      const uploadStartTime = performance.now();
-      const uploadData = new ArrayBuffer(1048576); // 1MB upload
-      const uploadPromises = [];
-      
-      for (let i = 0; i < 2; i++) {
-        uploadPromises.push(
-          fetch('https://httpbin.org/post', {
-            method: 'POST',
-            body: uploadData,
-            cache: 'no-cache'
-          })
-        );
-      }
-      
-      await Promise.all(uploadPromises);
-      const uploadEndTime = performance.now();
-      
-      const uploadDuration = (uploadEndTime - uploadStartTime) / 1000;
-      const uploadSpeed = (uploadData.byteLength * 2 / uploadDuration) * 8 / 1024 / 1024; // Mbps
-      
-      setTestProgress('Finalizing results...');
       setStats(prev => ({
         ...prev,
-        downloadSpeed: parseFloat((downloadSpeed * 1000).toFixed(3)) / 1000,
-        uploadSpeed: parseFloat((uploadSpeed * 1000).toFixed(3)) / 1000,
-        latency: avgLatency,
+        downloadSpeed: result.downloadMbps,
+        uploadSpeed: result.uploadMbps,
+        latency: result.latencyMs,
         lastUpdated: new Date().toLocaleTimeString()
       }));
       
@@ -242,13 +184,51 @@ export default function Dashboard() {
 
   const submitTicket = async () => {
     if (!newTicket.subject.trim() || !newTicket.message.trim()) {
-      alert('Please fill in both subject and message fields');
+      safeAlert('Please fill in both subject and message fields');
       return;
     }
 
     setIsSubmittingTicket(true);
     
     try {
+      // Ensure we have a speed test result before sending (so support can see it).
+      let speedResult = {
+        downloadMbps: stats.downloadSpeed,
+        uploadMbps: stats.uploadSpeed,
+        latencyMs: stats.latency,
+      };
+
+      const hasSpeedTest =
+        Number.isFinite(speedResult.downloadMbps) &&
+        Number.isFinite(speedResult.uploadMbps) &&
+        Number.isFinite(speedResult.latencyMs) &&
+        speedResult.downloadMbps > 0 &&
+        speedResult.uploadMbps > 0 &&
+        speedResult.latencyMs > 0;
+
+      if (!hasSpeedTest) {
+        setIsSpeedTestRunning(true);
+        setTestProgress('Testing latency...');
+        try {
+          const result = await runLocalSpeedTest({ onProgress: setTestProgress });
+          speedResult = result;
+          setStats((prev) => ({
+            ...prev,
+            downloadSpeed: result.downloadMbps,
+            uploadSpeed: result.uploadMbps,
+            latency: result.latencyMs,
+            lastUpdated: new Date().toLocaleTimeString(),
+          }));
+          setTimeout(() => setTestProgress(''), 1000);
+        } catch (error) {
+          console.error('Speed test failed:', error);
+          safeAlert('Speed test failed. Please run a speed test and try submitting the ticket again.');
+          return;
+        } finally {
+          setIsSpeedTestRunning(false);
+        }
+      }
+
       // Create ticket locally (in real app, this would save to backend)
       const ticket: SupportTicket = {
         id: Date.now().toString(),
@@ -263,6 +243,21 @@ export default function Dashboard() {
       setNewTicket({ subject: '', message: '', priority: 'medium' });
       setShowTicketForm(false);
       
+      // Ask the server what IP it observes for this user (more reliable than client-side guessing).
+      let observedIp: string | null = null;
+      try {
+        const ipRes = await fetch('/api/tickets', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject: ticket.subject }),
+          cache: 'no-store'
+        });
+        const ipData = await ipRes.json();
+        if (ipData?.success) observedIp = ipData.observedIp || null;
+      } catch {
+        // ignore IP lookup failures
+      }
+
       // Open WhatsApp with pre-filled message
       const whatsappMessage = encodeURIComponent(
         `🎫 *New Support Ticket*\n\n` +
@@ -270,16 +265,17 @@ export default function Dashboard() {
         `*Priority:* ${newTicket.priority.toUpperCase()}\n` +
         `*Subject:* ${newTicket.subject}\n` +
         `*Message:* ${newTicket.message}\n\n` +
-        `*Public IP:* ${stats.publicIP}\n` +
+        `*Observed IP:* ${observedIp || 'Unknown'}\n` +
+        `*Public IP (ipify):* ${stats.publicIP}\n` +
         `*Network Type:* ${stats.networkType}\n` +
-        `*Speed Test:* ${stats.downloadSpeed > 0 ? `${stats.downloadSpeed} Mbps` : 'Not run yet'}`
+        `*Speed Test:* ↓ ${speedResult.downloadMbps} Mbps / ↑ ${speedResult.uploadMbps} Mbps / ${speedResult.latencyMs} ms`
       );
       
       window.open(`https://wa.me/27799381260?text=${whatsappMessage}`, '_blank');
       
     } catch (error) {
       console.error('Failed to submit ticket:', error);
-      alert('Failed to submit ticket. Please try again.');
+      safeAlert('Failed to submit ticket. Please try again.');
     } finally {
       setIsSubmittingTicket(false);
     }

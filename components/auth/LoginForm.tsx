@@ -91,25 +91,10 @@ export default function LoginForm() {
   };
 
   const handleGoogleLogin = async () => {
-    setIsLoading(true);
-    setErrors({});
-
-    try {
-      // For now, simulate Google OAuth - in production you'd use Google's OAuth flow
-      // This would typically open Google's OAuth popup and handle the callback
-      const googleResponse = await auth.googleLogin();
-      
-      if (googleResponse.success) {
-        router.push('/dashboard');
-      }
-    } catch (error: any) {
-      console.error('Google login error:', error);
-      setErrors({
-        general: 'Google login failed. Please try again or use email login.'
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    // Google login not implemented yet
+    setErrors({
+      general: 'Google login coming soon. Please use email login.'
+    });
   };
 
   return (

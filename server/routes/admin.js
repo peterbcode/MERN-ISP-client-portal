@@ -5,6 +5,12 @@ const { protect, restrictTo } = require('../middleware/auth');
 
 const router = express.Router();
 
+const mutationsEnabled = () =>
+  process.env.NODE_ENV !== 'production' || process.env.ADMIN_MUTATIONS_ENABLED === 'true';
+const roleChangesEnabled = () =>
+  mutationsEnabled() &&
+  (process.env.NODE_ENV !== 'production' || process.env.ADMIN_ROLE_CHANGES_ENABLED === 'true');
+
 // All admin routes require authentication and admin role
 router.use(protect);
 router.use(restrictTo('admin'));
@@ -95,7 +101,9 @@ router.get('/users', async (req, res) => {
         .sort(sort)
         .skip(skip)
         .limit(parseInt(limit))
-        .select('-password')
+        .select(
+          'username email role isActive stats.accountCreated profile.firstName profile.lastName createdAt updatedAt'
+        )
         .lean(),
       User.countDocuments(filter)
     ]);
@@ -124,7 +132,9 @@ router.get('/users', async (req, res) => {
 // @access  Private/Admin
 router.get('/users/:id', async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select('-password');
+    const user = await User.findById(req.params.id).select(
+      'username email role isActive stats profile preferences gaming createdAt updatedAt'
+    );
     
     if (!user) {
       return res.status(404).json({
@@ -151,6 +161,13 @@ router.get('/users/:id', async (req, res) => {
 // @access  Private/Admin
 router.put('/users/:id', async (req, res) => {
   try {
+    if (!mutationsEnabled()) {
+      return res.status(403).json({
+        success: false,
+        message: 'Admin mutations are disabled on this environment.'
+      });
+    }
+
     const allowedFields = ['username', 'email', 'role', 'isActive', 'profile', 'preferences'];
     const updateData = {};
     
@@ -160,11 +177,18 @@ router.put('/users/:id', async (req, res) => {
       }
     });
 
+    if (Object.prototype.hasOwnProperty.call(updateData, 'role') && !roleChangesEnabled()) {
+      return res.status(403).json({
+        success: false,
+        message: 'Role changes are disabled on this environment.'
+      });
+    }
+
     const user = await User.findByIdAndUpdate(
       req.params.id,
       updateData,
       { new: true, runValidators: true }
-    ).select('-password');
+    ).select('username email role isActive stats.accountCreated profile createdAt updatedAt');
 
     if (!user) {
       return res.status(404).json({
@@ -191,6 +215,13 @@ router.put('/users/:id', async (req, res) => {
 // @access  Private/Admin
 router.delete('/users/:id', async (req, res) => {
   try {
+    if (!mutationsEnabled()) {
+      return res.status(403).json({
+        success: false,
+        message: 'Admin mutations are disabled on this environment.'
+      });
+    }
+
     if (req.params.id === req.user.id) {
       return res.status(400).json({
         success: false,
@@ -202,7 +233,7 @@ router.delete('/users/:id', async (req, res) => {
       req.params.id,
       { isActive: false },
       { new: true }
-    ).select('-password');
+    ).select('username email role isActive stats.accountCreated profile createdAt updatedAt');
 
     if (!user) {
       return res.status(404).json({

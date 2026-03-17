@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins, Geist } from "next/font/google";
+import type { Metadata } from "next";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import CustomCursor from "./components/custom-cursor";
@@ -9,19 +9,6 @@ import { ConsentProvider } from "./components/consent-provider";
 import AnalyticsLoader from "./components/analytics-loader";
 import PageLoader from "./components/page-loader";
 import DevIndicatorRemover from "./components/dev-indicator-remover";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://valley-computers.co.za"),
@@ -72,8 +59,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body suppressHydrationWarning className={`${inter.variable} ${poppins.variable} antialiased`}>
+    <html lang="en" className={cn("font-sans")}>
+      <body suppressHydrationWarning className="antialiased">
         <ConsentProvider>
           <PageLoader />
           <CustomCursor />

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/auth';
+import { safeAlert } from '@/lib/native-dialog';
 
 export default function SettingsPage() {
   const [user, setUser] = useState<any>(null);
@@ -79,9 +80,9 @@ export default function SettingsPage() {
     try {
       // Simulate API call to save settings
       await new Promise(resolve => setTimeout(resolve, 1000));
-      alert('Settings saved successfully!');
+      safeAlert('Settings saved successfully!');
     } catch (error) {
-      alert('Failed to save settings. Please try again.');
+      safeAlert('Failed to save settings. Please try again.');
     } finally {
       setIsLoading(false);
     }

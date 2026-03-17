@@ -56,7 +56,10 @@ Copy `.env.production` to `.env.local` and update values:
 NEXT_PUBLIC_API_URL=http://localhost:5001/api
 
 # Database
-MONGODB_URI=mongodb://localhost:27017/mern-isp-portal
+MONGODB_URI=mongodb+srv://peterbvalleycomputers_db_user:admin123@cluster0.lrzvbki.mongodb.net/?appName=Cluster0
+
+# (Alternative) MongoDB Atlas
+# MONGODB_URI=mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=mern-isp-client-portal
 
 # JWT
 JWT_SECRET=your_local_secret_key
@@ -65,11 +68,29 @@ JWT_SECRET=your_local_secret_key
 ### 2. Vercel Production
 Add these to Vercel Dashboard → Settings → Environment Variables:
 
-```bash
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/mern-isp-portal
+```bash 
+MONGODB_URI=mongodb+srv://peterbvalleycomputers_db_user:admin123@cluster0.lrzvbki.mongodb.net/?appName=Cluster0
 JWT_SECRET=your_production_secret_key
 JWT_EXPIRE=7d
 NODE_ENV=production
+```
+
+### MongoDB Atlas quick setup (dev)
+1. Atlas → **Database** → create a cluster (M0 is fine for dev).
+2. Atlas → **Security** → **Database Access** → create a database user.
+3. Atlas → **Security** → **Network Access** → allow your current IP (or `0.0.0.0/0` temporarily for testing).
+4. Atlas → **Connect** → pick **Drivers** to copy the `mongodb+srv://...` URI and paste it into `MONGODB_URI`.
+
+### Test Atlas with mongosh
+```bash
+mongosh "mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=mern-isp-client-portal"
+```
+
+### Move your local data to Atlas (optional)
+If you already have data locally, install MongoDB Database Tools (`mongodump`/`mongorestore`) and run:
+```bash
+mongodump --uri="mongodb://localhost:27017/mern-isp-portal" --out=./dump
+mongorestore --uri="mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=mern-isp-client-portal" ./dump/mern-isp-portal
 ```
 
 ## 🚀 Deployment Steps

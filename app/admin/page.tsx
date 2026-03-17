@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Navbar from "../components/navbar";
 import SiteFooter from "../components/site-footer";
 import { auth } from '@/lib/auth';
+import { apiClient } from '@/lib/api-client';
+import AdminUsers from './components/admin-users';
 
 interface AdminStats {
   totalUsers: number;
@@ -36,7 +38,25 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'users'>('dashboard');
   const router = useRouter();
+
+  const fetchAdminStats = async () => {
+    try {
+      const res = await apiClient.admin.getStats();
+      if (res.data?.success) {
+        setStats(res.data.stats);
+        setError('');
+      } else {
+        setError('Failed to fetch admin statistics');
+      }
+    } catch (error) {
+      console.error('Failed to fetch admin stats:', error);
+      setError('Failed to fetch admin statistics');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -64,29 +84,6 @@ export default function AdminDashboard() {
       }
     };
 
-    const fetchAdminStats = async () => {
-      try {
-        const token = auth.getToken();
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/admin/stats`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        const data = await response.json();
-        if (data.success) {
-          setStats(data.stats);
-        } else {
-          setError('Failed to fetch admin statistics');
-        }
-      } catch (error) {
-        console.error('Failed to fetch admin stats:', error);
-        setError('Failed to fetch admin statistics');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     checkAuth();
   }, [router]);
 
@@ -105,18 +102,6 @@ export default function AdminDashboard() {
         <div className="text-white">Loading admin dashboard...</div>
       </div>
     );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
-        <div className="text-red-400">{error}</div>
-      </div>
-    );
-  }
-
-  if (!stats) {
-    return null;
   }
 
   return (
@@ -138,9 +123,52 @@ export default function AdminDashboard() {
                 Logout
               </button>
             </div>
+
+            <div className="mt-6 flex gap-2 border-b border-zinc-800">
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === 'dashboard'
+                    ? 'text-white border-b-2 border-orange-500'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                Dashboard
+              </button>
+              <button
+                onClick={() => setActiveTab('users')}
+                className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === 'users'
+                    ? 'text-white border-b-2 border-orange-500'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                Users
+              </button>
+            </div>
           </div>
 
-          {/* Stats Overview */}
+          {activeTab === 'users' ? <AdminUsers /> : null}
+
+          {activeTab === 'dashboard' ? (
+          <>
+          {error || !stats ? (
+            <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700 mb-8">
+              <div className="text-red-400 font-semibold">Failed to load admin statistics</div>
+              <div className="mt-1 text-sm text-zinc-400">{error || 'Unknown error'}</div>
+              <button
+                onClick={() => {
+                  setIsLoading(true);
+                  void fetchAdminStats();
+                }}
+                className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+              >
+                Retry
+              </button>
+            </div>
+          ) : null}
+
+          {!stats ? null : (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
               <div className="flex items-center">
@@ -198,7 +226,10 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
+          )}
 
+          {!stats ? null : (
+          <>
           {/* Recent Activity */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Recent Users */}
@@ -248,10 +279,17 @@ export default function AdminDashboard() {
               )}
             </div>
           </div>
+          </>
+          )}
 
+          {!stats ? null : (
+          <>
           {/* Quick Actions */}
           <div className="mt-8 flex flex-wrap gap-4">
-            <button className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium">
+            <button
+              onClick={() => setActiveTab('users')}
+              className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
+            >
               Manage Users
             </button>
             <button className="px-6 py-3 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors font-medium">
@@ -264,6 +302,10 @@ export default function AdminDashboard() {
               System Settings
             </button>
           </div>
+          </>
+          )}
+          </>
+          ) : null}
         </div>
       </div>
       <SiteFooter />

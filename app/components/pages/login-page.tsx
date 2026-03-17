@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from "next/link";
 import AnimatedSection from '../ui/animated-section';
 import PremiumButton from '../ui/premium-button';
+import { safeAlert } from '@/lib/native-dialog'
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const LoginPage = () => {
     e.preventDefault();
     
     if (!formData.email || !formData.password) {
-      alert('Please enter both email and password');
+      safeAlert('Please enter both email and password');
       return;
     }
 

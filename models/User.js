@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
-import validator from 'validator';
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -33,13 +33,13 @@ const userSchema = new mongoose.Schema({
   profile: {
     firstName: {
       type: String,
-      required: false,
+      required: [true, 'First name is required'],
       trim: true,
       maxlength: [50, 'First name cannot exceed 50 characters']
     },
     lastName: {
       type: String,
-      required: false,
+      required: [true, 'Last name is required'],
       trim: true,
       maxlength: [50, 'Last name cannot exceed 50 characters']
     },
@@ -144,7 +144,7 @@ userSchema.virtual('getPublicProfile').get(function() {
 
 // Pre-save middleware for password hashing
 userSchema.pre('save', async function(next) {
-  // Only hash the password if it has been modified (or is new)
+  // Only hash password if it has been modified (or is new)
   if (!this.isModified('password')) return next();
   
   // Hash password with cost of 12
@@ -160,10 +160,10 @@ userSchema.statics.getLeaderboard = function(game = 'all', limit = 50) {
     
   return this.find(query)
     .select('username profile.firstName profile.lastName profile.avatar profile.gaming.level profile.gaming.experience profile.gaming.achievements')
-    .sort(game === 'all' ? { 'profile.gaming.experience': -1 } : { [`profile.gaming.gameStats.${game}.score`]: -1 })
+    .sort({ 'profile.gaming.experience': -1 })
     .limit(limit);
 };
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
-export default User;
+module.exports = User;

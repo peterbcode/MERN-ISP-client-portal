@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import {
   BoltIcon,
   ChartBarIcon,
@@ -8,6 +11,7 @@ import {
   WifiIcon,
   ArrowRightIcon,
   CheckIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
 
 const serviceAreas = ["Riebeek Kasteel", "Malmesbury", "Chatsworth", "Swartland Region"];
@@ -31,34 +35,36 @@ const valueCards = [
 ];
 
 const plans = [
-  { speed: "2 Mbps", label: "Basic browsing", price: "R350/mo" },
-  { speed: "4 Mbps", label: "Streaming + work", price: "R550/mo" },
-  { speed: "6 Mbps", label: "Family use", price: "R650/mo", featured: true },
-  { speed: "8 Mbps", label: "Power users", price: "R850/mo" },
-  { speed: "10 Mbps", label: "Premium", price: "R1050/mo" },
+  { speed: "2 Mbps", label: "Basic browsing", price: "R350/mo", message: "Perfect for light browsing, email and social media. Great for single users or couples." },
+  { speed: "4 Mbps", label: "Streaming + work", price: "R550/mo", message: "Ideal for streaming HD content on one device and working from home. Supports smooth video calls and online meetings." },
+  { speed: "6 Mbps", label: "Family use", price: "R650/mo", featured: true, message: "Perfect for smart TVs! Multiple devices can stream simultaneously. Great for families with 3-4 users watching different content." },
+  { speed: "8 Mbps", label: "Power users", price: "R850/mo", message: "Excellent for heavy streaming, gaming, and multiple smart home devices. No buffering even during peak hours." },
+  { speed: "10 Mbps", label: "Premium", price: "R1050/mo", message: "Perfect for multiple smart TVs! Supports 4K streaming on several devices simultaneously. Ideal for large families and home offices." },
 ];
 
 const IspPageColorful = () => {
+  const [selectedPlan, setSelectedPlan] = useState<typeof plans[0] | null>(null);
+
   return (
     <main className="bg-[#050505] text-white">
-      {/* Hero Section - Black background like homepage */}
+      {/* Hero Section - Matching homepage style with variety */}
       <section className="relative overflow-hidden bg-[#050505] text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(249,115,22,0.15),transparent_42%),radial-gradient(circle_at_85%_10%,rgba(249,115,22,0.12),transparent_35%),linear-gradient(to_bottom,rgba(0,0,0,0.45),rgba(0,0,0,0.92))]" />
-        <div className="relative mx-auto max-w-7xl px-4 pb-18 pt-40 text-center sm:px-6 lg:px-8 lg:pb-22 lg:pt-52">
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-800/85 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-300">
-            <WifiIcon className="h-4 w-4 text-[#f97316]" />
-            Fibre & Wireless Internet
-          </div>
-          <h1 className="mx-auto mt-6 max-w-4xl text-5xl font-black leading-[0.95] text-zinc-100 sm:text-6xl lg:text-7xl">
-            Professional Internet Infrastructure for Homes and Businesses
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_15%,rgba(249,115,22,0.18),transparent_45%),radial-gradient(circle_at_75%_85%,rgba(249,115,22,0.12),transparent_40%),linear-gradient(to_bottom,rgba(0,0,0,0.4),rgba(0,0,0,0.95))]" />
+        <div className="hero-grid absolute inset-0 opacity-10" />
+        
+        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-36 text-center sm:px-6 lg:px-8 lg:pb-16 lg:pt-44">
+          <WifiIcon className="mx-auto h-6 w-6 text-[#f97316]" />
+          <h1 className="mx-auto mt-6 max-w-5xl text-4xl font-black leading-[0.9] tracking-[-0.02em] sm:text-5xl lg:text-7xl">
+            <span className="block text-[#f97316] drop-shadow-[0_0_24px_rgba(243,111,0,0.35)]">Professional Internet</span>
+            <span className="block text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]">Infrastructure</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-base text-zinc-300 sm:text-lg">
-            Uncapped fibre & wireless internet with local support.
+          <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-zinc-300 sm:mt-8 sm:text-lg lg:text-xl">
+            Uncapped fibre & wireless internet with local support. Built for homes and businesses in Riebeek Valley.
           </p>
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
             <a
               href="#plans"
-              className="rounded-xl bg-[#f97316] px-7 py-3 text-sm font-bold text-white transition hover:brightness-110"
+              className="rounded-xl bg-[#f97316] px-7 py-3 text-sm font-bold text-white transition hover:brightness-110 shadow-lg"
             >
               View Plans
             </a>
@@ -80,8 +86,8 @@ const IspPageColorful = () => {
         </div>
       </section>
 
-      {/* Value Section - Orange accent section */}
-      <section className="bg-[radial-gradient(circle_at_50%_85%,rgba(243,111,0,0.08),transparent_52%),linear-gradient(to_bottom,#070707,#0b0b0b)] py-16 sm:py-20">
+      {/* Value Section - Consistent background */}
+      <section className="bg-[#050505] py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316]">Why Valley Internet</p>
@@ -120,47 +126,57 @@ const IspPageColorful = () => {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-4 lg:grid-cols-5">
+          <div className="mt-10 grid gap-6 md:grid-cols-3 lg:grid-cols-5">
             {plans.map((plan) => (
               <article
                 key={plan.speed}
-                className={`rounded-2xl border p-5 ${
-                  plan.featured
-                    ? "border-[#f97316] bg-zinc-950 shadow-[0_0_34px_rgba(249,115,22,0.22)]"
-                    : "border-zinc-800 bg-zinc-900"
-                }`}
+                className={`group relative rounded-2xl border border-[#f97316] bg-gradient-to-b from-zinc-900 to-black p-6 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl shadow-[0_0_40px_rgba(249,115,22,0.3)]`}
+                onClick={() => setSelectedPlan(plan)}
               >
-                <div className="flex items-center justify-between">
-                  <p className="text-xl font-black text-zinc-100">{plan.speed}</p>
-                  {plan.featured ? (
-                    <span className="rounded-full bg-[#f97316] px-2 py-1 text-[10px] font-bold uppercase text-white">
-                      Popular
+                {plan.featured && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span className="inline-flex items-center rounded-full bg-gradient-to-r from-[#f97316] to-orange-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-lg">
+                      Most Popular
                     </span>
-                  ) : null}
+                  </div>
+                )}
+                
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-white">
+                    {plan.speed}
+                  </p>
+                  <p className="mt-2 text-sm font-medium text-zinc-300">
+                    {plan.label}
+                  </p>
                 </div>
-                <p className="mt-2 text-xs text-zinc-400">{plan.label}</p>
-                <div className="mt-4 rounded-lg border border-zinc-700 bg-black/30 px-3 py-2">
-                  <p className="text-4xl font-black leading-none text-white sm:text-[2.7rem]">{plan.price}</p>
+                
+                <div className="mt-6 text-center border-t border-zinc-700 pt-6">
+                  <div className="flex items-baseline justify-center">
+                    <span className="text-4xl font-bold text-white">
+                      {plan.price}
+                    </span>
+                  </div>
                 </div>
-                <ul className="mt-4 space-y-2 text-xs text-zinc-300">
+                
+                <ul className="mt-6 space-y-3 text-zinc-300">
                   <li className="flex items-center gap-2">
-                    <ChartBarIcon className="h-3.5 w-3.5 text-[#f97316]" />
-                    Uncapped
+                    <CheckIcon className="h-4 w-4 text-[#f97316] flex-shrink-0" />
+                    <span className="text-sm">Uncapped data</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <ChartBarIcon className="h-3.5 w-3.5 text-[#f97316]" />
-                    Fibre & Wireless
+                    <CheckIcon className="h-4 w-4 text-[#f97316] flex-shrink-0" />
+                    <span className="text-sm">Fibre & Wireless</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <ChartBarIcon className="h-3.5 w-3.5 text-[#f97316]" />
-                    Local Support
+                    <CheckIcon className="h-4 w-4 text-[#f97316] flex-shrink-0" />
+                    <span className="text-sm">24/7 Local Support</span>
                   </li>
                 </ul>
+                
                 <Link
                   href="/contact"
-                  className={`mt-5 block w-full rounded-lg px-4 py-2 text-center text-sm font-bold ${
-                    plan.featured ? "bg-white text-black" : "bg-[#f97316] text-white"
-                  }`}
+                  className="mt-8 block w-full rounded-xl bg-[#f97316] px-4 py-3 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-orange-600 shadow-lg"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   Get Started
                 </Link>
@@ -168,22 +184,57 @@ const IspPageColorful = () => {
             ))}
           </div>
 
-          <div className="mt-7 grid gap-3 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 sm:grid-cols-3">
+          <div className="mt-7 grid gap-3 rounded-2xl border border-[#f97316] bg-gradient-to-b from-zinc-900 to-black p-5 sm:grid-cols-3 shadow-[0_0_40px_rgba(249,115,22,0.3)]">
             <p className="text-center text-sm text-zinc-300">
-              <span className="font-black text-zinc-100">R1,000</span> one-time installation
+              <span className="font-black text-white">R1,000</span> one-time installation
             </p>
             <p className="text-center text-sm text-zinc-300">
-              <span className="font-black text-zinc-100">R100/mo</span> optional UPS rental
+              <span className="font-black text-white">R100/mo</span> optional UPS rental
             </p>
             <p className="text-center text-sm text-zinc-300">
-              <span className="font-black text-emerald-400">R0</span> contract lock-in fee
+              <span className="font-black text-[#f97316]">R0</span> contract lock-in fee
             </p>
           </div>
+
+          {/* Custom Message Modal */}
+          {selectedPlan && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setSelectedPlan(null)}>
+              <div className="max-w-md rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-2xl font-black text-zinc-900">{selectedPlan.speed}</h3>
+                  <button
+                    onClick={() => setSelectedPlan(null)}
+                    className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-900"
+                  >
+                    <XMarkIcon className="h-5 w-5" />
+                  </button>
+                </div>
+                <p className="text-sm text-zinc-600 mb-3">{selectedPlan.label}</p>
+                <p className="text-3xl font-black text-zinc-900 mb-4">{selectedPlan.price}</p>
+                <p className="text-zinc-700 leading-relaxed mb-6">{selectedPlan.message}</p>
+                <div className="flex gap-3">
+                  <Link
+                    href="/contact"
+                    className="flex-1 rounded-lg bg-[#f97316] px-4 py-3 text-center text-sm font-bold text-white transition hover:brightness-110"
+                    onClick={() => setSelectedPlan(null)}
+                  >
+                    Get Started
+                  </Link>
+                  <button
+                    onClick={() => setSelectedPlan(null)}
+                    className="flex-1 rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-center text-sm font-bold text-zinc-900 transition hover:bg-zinc-100"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Technology Section - Orange accent section */}
-      <section className="bg-[radial-gradient(circle_at_50%_85%,rgba(243,111,0,0.08),transparent_52%),linear-gradient(to_bottom,#070707,#0b0b0b)] py-16 sm:py-20">
+      {/* Technology Section - Consistent background */}
+      <section className="bg-[#050505] py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316]">Our Technology</p>

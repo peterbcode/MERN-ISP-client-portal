@@ -1,8 +1,7 @@
-import { connectDB } from '@/lib/mongodb';
-import User from '@/models/User';
-import bcrypt from 'bcryptjs';
-import validator from 'validator';
-import jwt from 'jsonwebtoken';
+const { connectDB } = require('../../../../lib/mongodb');
+const User = require('../../../../models/User');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Generate JWT token
 const generateToken = (id) => {
@@ -29,7 +28,7 @@ const createUserResponse = (user, token) => {
   };
 };
 
-export async function POST(request) {
+async function POST(request) {
   try {
     await connectDB();
     const { username, email, password, firstName, lastName } = await request.json();
@@ -42,24 +41,10 @@ export async function POST(request) {
       }, { status: 400 });
     }
 
-    if (!validator.isEmail(email)) {
-      return Response.json({
-        success: false,
-        message: 'Please provide a valid email'
-      }, { status: 400 });
-    }
-
     if (password.length < 6) {
       return Response.json({
         success: false,
         message: 'Password must be at least 6 characters long'
-      }, { status: 400 });
-    }
-
-    if (username.length < 3) {
-      return Response.json({
-        success: false,
-        message: 'Username must be at least 3 characters long'
       }, { status: 400 });
     }
 
@@ -123,3 +108,5 @@ export async function POST(request) {
     }, { status: 500 });
   }
 }
+
+module.exports = { POST };

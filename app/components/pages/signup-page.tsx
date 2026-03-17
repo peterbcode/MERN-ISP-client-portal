@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from "next/link";
 import AnimatedSection from '../ui/animated-section';
 import PremiumButton from '../ui/premium-button';
+import { safeAlert } from '@/lib/native-dialog'
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +31,7 @@ const SignupPage = () => {
     e.preventDefault();
     
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.serviceType) {
-      alert('Please fill in all required fields');
+      safeAlert('Please fill in all required fields');
       return;
     }
 

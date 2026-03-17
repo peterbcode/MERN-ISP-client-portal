@@ -10,6 +10,8 @@ const userRoutes = require('./routes/users');
 const gameRoutes = require('./routes/games');
 const adminRoutes = require('./routes/admin');
 const routerRoutes = require('./routes/router');
+const testRoutes = require('./routes/test');
+const testLoginRoutes = require('./routes/test-login');
 
 const app = express();
 
@@ -49,6 +51,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/games', gameRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/router', routerRoutes);
+app.use('/api/test-login', testLoginRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

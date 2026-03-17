@@ -19,7 +19,16 @@ const createUserResponse = (user, token) => {
   return {
     success: true,
     token,
-    user: user.getPublicProfile()
+    user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      firstName: user.profile?.firstName || 'Test',
+      lastName: user.profile?.lastName || 'User',
+      role: user.role || 'user',
+      profile: user.profile,
+      createdAt: user.stats?.accountCreated || new Date()
+    }
   };
 };
 
@@ -110,47 +119,51 @@ router.post('/register', authRateLimit, async (req, res) => {
 router.post('/login', authRateLimit, async (req, res) => {
   try {
     const { email, password } = req.body;
+    
+    console.log('🔍 Login attempt:', { email, passwordLength: password?.length });
 
     // Validation
     if (!email || !password) {
+      console.log('❌ Missing email or password');
       return res.status(400).json({
         success: false,
         message: 'Please provide email and password'
       });
     }
 
-    // Mock login for testing without MongoDB
-    // For demo purposes, accept any email/password combination
-    const mockUser = {
-      _id: 'mock_user_id_' + Date.now(),
-      username: email.split('@')[0],
-      email,
-      profile: {
-        firstName: 'Test',
-        lastName: 'User'
-      },
-      stats: {
-        loginCount: 1,
-        lastLogin: new Date(),
-        accountCreated: new Date(),
-        timeSpent: 0,
-        achievementsUnlocked: 0
-      },
-      getPublicProfile: function() {
-        return {
-          id: this._id,
-          username: this.username,
-          email: this.email,
-          profile: this.profile,
-          stats: this.stats
-        };
-      }
-    };
+    // Find user by email
+    const user = await User.findOne({ email }).select('+password');
+    console.log('👤 User found:', !!user);
+
+    if (!user) {
+      console.log('❌ User not found for email:', email);
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
+      });
+    }
+
+    console.log('🔑 User password hash exists:', !!user.password);
+    console.log('🔑 Password hash length:', user.password?.length);
+
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log('🔍 Password comparison result:', isMatch);
+
+    if (!isMatch) {
+      console.log('❌ Password mismatch for email:', email);
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
+      });
+    }
+
+    console.log('✅ Authentication successful for:', email);
 
     // Generate token
-    const token = generateToken(mockUser._id);
+    const token = generateToken(user._id);
 
-    res.json(createUserResponse(mockUser, token));
+    res.json(createUserResponse(user, token));
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({
@@ -165,28 +178,9 @@ router.post('/login', authRateLimit, async (req, res) => {
 // @access  Private
 router.get('/me', protect, async (req, res) => {
   try {
-    // For mock authentication, create a mock user response
-    const mockUser = {
-      id: 'mock_user_id_' + Date.now(),
-      username: 'testuser',
-      email: 'test@test.com',
-      profile: {
-        firstName: 'Test',
-        lastName: 'User',
-        phone: '+1-555-0123',
-        address: '123 Main St, City, State 12345'
-      },
-      stats: {
-        loginCount: 1,
-        lastLogin: new Date().toISOString(),
-        accountCreated: new Date().toISOString(),
-        timeSpent: 0
-      }
-    };
-    
     res.json({
       success: true,
-      user: mockUser
+      user: req.user.getPublicProfile()
     });
   } catch (error) {
     console.error('Get profile error:', error);

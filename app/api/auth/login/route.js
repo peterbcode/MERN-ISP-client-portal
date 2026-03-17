@@ -1,7 +1,7 @@
-import { connectDB } from '@/lib/mongodb';
-import User from '@/models/User';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const { connectDB } = require('../../../../lib/mongodb');
+const User = require('../../../../models/User');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Generate JWT token
 const generateToken = (id) => {
@@ -28,7 +28,7 @@ const createUserResponse = (user, token) => {
   };
 };
 
-export async function POST(request) {
+async function POST(request) {
   try {
     await connectDB();
     const { email, password } = await request.json();
@@ -78,3 +78,5 @@ export async function POST(request) {
     }, { status: 500 });
   }
 }
+
+module.exports = { POST };

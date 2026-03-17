@@ -5,11 +5,11 @@
 ### 1. MONGODB_URI (Required)
 **Purpose**: MongoDB Atlas connection string for database connectivity
 **Format**: `mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority`
-**Your Connection String**: 
+**Example**:
 ```
-mongodb+srv://admin:vFXne5esQikuojQX@cluster0.cszm9.mongodb.net/?retryWrites=true&w=majority
+mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=mern-isp-client-portal
 ```
-**Note**: This is your complete MongoDB Atlas connection string ready for Vercel deployment
+**Note**: If your password contains special characters (like `@`, `:` or `/`), URL-encode it in the connection string.
 **How to set in Vercel**:
 1. Go to Vercel Project Dashboard → Settings → Environment Variables
 2. Add Variable Name: `MONGODB_URI`

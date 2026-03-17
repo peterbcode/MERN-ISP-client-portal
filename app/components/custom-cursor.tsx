@@ -54,17 +54,18 @@ class Dot {
 
 const CustomCursor = () => {
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
-    const supportsCustomCursor = mediaQuery.matches
-    const cursor = document.getElementById('cursor')
+    try {
+      const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
+      const supportsCustomCursor = mediaQuery.matches
+      const cursor = document.getElementById('cursor')
 
-    if (!supportsCustomCursor || !cursor) {
-      document.body.classList.add('no-custom-cursor')
-      return
-    }
+      if (!supportsCustomCursor || !cursor) {
+        document.body.classList.add('no-custom-cursor')
+        return
+      }
 
-    document.body.classList.add('custom-cursor-enabled')
-    document.documentElement.classList.add('has-custom-cursor')
+      document.body.classList.add('custom-cursor-enabled')
+      document.documentElement.classList.add('has-custom-cursor')
 
     const amount = 12
     const sineDots = Math.floor(amount * 0.3)
@@ -396,17 +397,23 @@ const CustomCursor = () => {
     startIdleTimer()
     render()
 
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove)
-      window.removeEventListener('mouseleave', onMouseLeave)
-      window.removeEventListener('mouseenter', onMouseEnter)
-      window.removeEventListener('touchmove', onTouchMove)
-      mediaQuery.removeEventListener('change', onMediaChange)
-      if (timeoutID) clearTimeout(timeoutID)
-      window.cancelAnimationFrame(frameId)
-      if (cursor) cursor.innerHTML = ''
+      return () => {
+        window.removeEventListener('mousemove', onMouseMove)
+        window.removeEventListener('mouseleave', onMouseLeave)
+        window.removeEventListener('mouseenter', onMouseEnter)
+        window.removeEventListener('touchmove', onTouchMove)
+        mediaQuery.removeEventListener('change', onMediaChange)
+        if (timeoutID) clearTimeout(timeoutID)
+        window.cancelAnimationFrame(frameId)
+        if (cursor) cursor.innerHTML = ''
+        document.body.classList.remove('custom-cursor-enabled')
+        document.body.classList.remove('no-custom-cursor')
+        document.documentElement.classList.remove('has-custom-cursor')
+      }
+    } catch (error) {
+      console.error('Custom cursor failed to initialize:', error)
       document.body.classList.remove('custom-cursor-enabled')
-      document.body.classList.remove('no-custom-cursor')
+      document.body.classList.add('no-custom-cursor')
       document.documentElement.classList.remove('has-custom-cursor')
     }
   }, [])

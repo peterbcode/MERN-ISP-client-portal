@@ -1,13 +1,7 @@
 {
-  "env": {
-    "MONGODB_URI": "mongodb+srv://admin:vFXne5esQikuojQX@cluster0.cszm9.mongodb.net/?retryWrites=true&w=majority",
-    "JWT_SECRET": "Rfkhve4wC7LS",
-    "JWT_EXPIRE": "1h",
-    "NODE_ENV": "production"
-  },
   "build": {
     "env": {
-      "NEXT_PUBLIC_API_URL": "/api"
+       "NEXT_PUBLIC_API_URL": "/api"
     }
   }
 }

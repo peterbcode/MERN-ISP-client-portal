@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from "next/link";
 import AnimatedSection from '../ui/animated-section';
 import PremiumButton from '../ui/premium-button';
+import { safeAlert } from '@/lib/native-dialog'
 
 const details = [
   { label: "Phone", value: "079 938 1260" },
@@ -29,7 +30,7 @@ const ContactPage = () => {
     e.preventDefault();
     
     if (!formData.name || !formData.email || !formData.message) {
-      alert('Please fill in all required fields');
+      safeAlert('Please fill in all required fields');
       return;
     }
 

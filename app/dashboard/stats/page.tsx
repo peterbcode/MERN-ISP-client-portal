@@ -3,28 +3,23 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/auth';
+import { safeAlert } from '@/lib/native-dialog';
+import { runSpeedTest as runLocalSpeedTest, speedColor, speedRating } from '@/lib/speedtest';
 
 interface InternetStats {
   downloadSpeed: number;
   uploadSpeed: number;
   ping: number;
-  totalDataUsed: number;
-  dataLimit: number;
   connectionType: string;
   ispName: string;
   planType: string;
   lastSpeedTest: string;
-  monthlyUsage: Array<{
-    month: string;
-    download: number;
-    upload: number;
-    total: number;
-  }>;
 }
 
 export default function StatsPage() {
   const [stats, setStats] = useState<InternetStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSpeedTestRunning, setIsSpeedTestRunning] = useState(false);
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [ticketForm, setTicketForm] = useState({
     subject: '',
@@ -64,17 +59,10 @@ export default function StatsPage() {
         downloadSpeed: 85.5,
         uploadSpeed: 42.3,
         ping: 12,
-        totalDataUsed: 245.6,
-        dataLimit: 500,
         connectionType: 'Fiber',
         ispName: 'Valley Computers ISP',
         planType: 'Premium 500GB',
-        lastSpeedTest: new Date().toISOString(),
-        monthlyUsage: [
-          { month: 'Jan 2026', download: 180.2, upload: 15.8, total: 196.0 },
-          { month: 'Feb 2026', download: 195.5, upload: 18.2, total: 213.7 },
-          { month: 'Mar 2026', download: 245.6, upload: 22.1, total: 267.7 }
-        ]
+        lastSpeedTest: new Date().toISOString()
       });
     } catch (error) {
       console.error('Failed to load stats:', error);
@@ -84,27 +72,25 @@ export default function StatsPage() {
   };
 
   const runSpeedTest = async () => {
-    setIsLoading(true);
+    setIsSpeedTestRunning(true);
     try {
-      // Simulate speed test
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
       if (stats) {
+        const result = await runLocalSpeedTest();
         setStats({
           ...stats,
-          downloadSpeed: parseFloat((Math.random() * 50 + 50).toFixed(3)),
-          uploadSpeed: parseFloat((Math.random() * 20 + 20).toFixed(3)),
-          ping: parseFloat((Math.random() * 20 + 5).toFixed(3)),
+          downloadSpeed: result.downloadMbps,
+          uploadSpeed: result.uploadMbps,
+          ping: result.latencyMs,
           lastSpeedTest: new Date().toISOString()
         });
         
-        alert('Speed test completed successfully!');
+        safeAlert('Speed test completed successfully!');
       }
     } catch (error) {
       console.error('Speed test failed:', error);
-      alert('Speed test failed. Please try again.');
+      safeAlert('Speed test failed. Please try again.');
     } finally {
-      setIsLoading(false);
+      setIsSpeedTestRunning(false);
     }
   };
 
@@ -112,7 +98,7 @@ export default function StatsPage() {
     e.preventDefault();
     
     if (!ticketForm.subject.trim() || !ticketForm.description.trim()) {
-      alert('Please fill in all fields');
+      safeAlert('Please fill in all fields');
       return;
     }
 
@@ -123,33 +109,13 @@ export default function StatsPage() {
       
       setShowTicketModal(false);
       setTicketForm({ subject: '', description: '', priority: 'medium' });
-      alert('Support ticket submitted successfully! We will contact you soon.');
+      safeAlert('Support ticket submitted successfully! We will contact you soon.');
     } catch (error) {
       console.error('Ticket submission failed:', error);
-      alert('Failed to submit ticket. Please try again.');
+      safeAlert('Failed to submit ticket. Please try again.');
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const getSpeedColor = (speed: number) => {
-    if (speed >= 100) return 'text-green-400';
-    if (speed >= 50) return 'text-yellow-400';
-    if (speed >= 25) return 'text-orange-400';
-    return 'text-red-400';
-  };
-
-  const getUsagePercentage = () => {
-    if (!stats) return 0;
-    return (stats.totalDataUsed / stats.dataLimit) * 100;
-  };
-
-  const getUsageColor = () => {
-    const percentage = getUsagePercentage();
-    if (percentage >= 90) return 'bg-red-500';
-    if (percentage >= 75) return 'bg-orange-500';
-    if (percentage >= 50) return 'bg-yellow-500';
-    return 'bg-green-500';
   };
 
   if (isLoading) {
@@ -174,10 +140,8 @@ export default function StatsPage() {
                   {stats.downloadSpeed.toFixed(3)}
                 </div>
                 <div className="text-sm text-zinc-400">Download Mbps</div>
-                <div className={`text-lg font-medium ${getSpeedColor(stats.downloadSpeed)}`}>
-                  {stats.downloadSpeed >= 100 ? 'Excellent' : 
-                   stats.downloadSpeed >= 50 ? 'Good' : 
-                   stats.downloadSpeed >= 25 ? 'Fair' : 'Poor'}
+                <div className={`text-lg font-medium ${speedColor('download', stats.downloadSpeed)}`}>
+                  {speedRating('download', stats.downloadSpeed)}
                 </div>
               </div>
               
@@ -186,10 +150,8 @@ export default function StatsPage() {
                   {stats.uploadSpeed.toFixed(3)}
                 </div>
                 <div className="text-sm text-zinc-400">Upload Mbps</div>
-                <div className={`text-lg font-medium ${getSpeedColor(stats.uploadSpeed)}`}>
-                  {stats.uploadSpeed >= 20 ? 'Excellent' : 
-                   stats.uploadSpeed >= 10 ? 'Good' : 
-                   stats.uploadSpeed >= 5 ? 'Fair' : 'Poor'}
+                <div className={`text-lg font-medium ${speedColor('upload', stats.uploadSpeed)}`}>
+                  {speedRating('upload', stats.uploadSpeed)}
                 </div>
               </div>
             </div>
@@ -219,72 +181,26 @@ export default function StatsPage() {
                 </div>
                 <button
                   onClick={runSpeedTest}
-                  disabled={isLoading}
+                  disabled={isSpeedTestRunning}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
                 >
-                  {isLoading ? 'Testing...' : 'Run Speed Test'}
+                  {isSpeedTestRunning ? 'Testing...' : 'Run Speed Test'}
                 </button>
               </div>
             </div>
           </div>
 
           <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-            <h2 className="text-xl font-bold text-white mb-4">Data Usage</h2>
-            
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-zinc-400">Monthly Usage</span>
-                <span className="text-white">
-                  {stats.totalDataUsed.toFixed(1)} GB / {stats.dataLimit} GB
-                </span>
-              </div>
-              
-              <div className="w-full bg-zinc-700 rounded-full h-4 overflow-hidden">
-                <div 
-                  className={`h-full transition-all duration-500 ${getUsageColor()}`}
-                  style={{ width: `${getUsagePercentage()}%` }}
-                />
-              </div>
-            </div>
-              
-              <div className="flex justify-between text-sm text-zinc-400">
-                <span>{getUsagePercentage().toFixed(1)}% used</span>
-                <span>{(stats.dataLimit - stats.totalDataUsed).toFixed(1)} GB remaining</span>
-              </div>
-
-            <div className="grid grid-cols-1 gap-4 mt-4">
-              <button
-                onClick={() => setShowTicketModal(true)}
-                className="w-full px-4 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
-              >
-                Request Plan Change
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {stats && (
-        <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-          <h2 className="text-xl font-bold text-white mb-4">Monthly Usage Trend</h2>
-          
-          <div className="space-y-2">
-            {stats.monthlyUsage.map((month, index) => (
-              <div key={index} className="flex items-center justify-between py-2 border-b border-zinc-700 last:border-0">
-                <div>
-                  <div className="text-white font-medium">{month.month}</div>
-                  <div className="text-sm text-zinc-400">
-                    {month.download.toFixed(1)} GB down / {month.upload.toFixed(1)} GB up
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-lg font-bold text-white">{month.total.toFixed(1)} GB</div>
-                  <div className="text-xs text-zinc-400">
-                    {((month.total / stats.dataLimit) * 100).toFixed(1)}% of plan
-                  </div>
-                </div>
-              </div>
-            ))}
+            <h2 className="text-xl font-bold text-white mb-2">Support</h2>
+            <p className="text-sm text-zinc-400 mb-4">
+              Data usage isn&apos;t connected to a real ISP/router source yet, so it&apos;s hidden to avoid showing incorrect values.
+            </p>
+            <button
+              onClick={() => setShowTicketModal(true)}
+              className="w-full px-4 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+            >
+              Request Plan Change
+            </button>
           </div>
         </div>
       )}

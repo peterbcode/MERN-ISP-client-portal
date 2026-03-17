@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import AnimatedSection from './ui/animated-section'
 import PremiumButton from './ui/premium-button'
+import { safeAlert } from '@/lib/native-dialog'
 
 const inputClass =
   'w-full rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 text-base text-zinc-100 placeholder:text-zinc-500 focus:border-[#f97316] focus:outline-none focus:ring-2 focus:ring-[#f97316]/20 transition-all duration-300'
@@ -25,7 +26,7 @@ const ContactStrip = () => {
 
   const handleCheckCoverage = async () => {
     if (!formData.streetAddress || !formData.area || !formData.city || !formData.postalCode) {
-      alert('Please fill in all fields to check coverage')
+      safeAlert('Please fill in all fields to check coverage')
       return
     }
 

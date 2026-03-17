@@ -23,42 +23,16 @@ const protect = async (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // For mock authentication, create a mock user object
-    const mockUser = {
-      _id: decoded.id,
-      id: decoded.id,
-      username: 'testuser',
-      email: 'test@test.com',
-      profile: {
-        firstName: 'Test',
-        lastName: 'User'
-      },
-      gaming: {
-        highScores: [],
-        totalGamesPlayed: 0,
-        favoriteGame: null
-      },
-      stats: {
-        loginCount: 1,
-        lastLogin: new Date().toISOString(),
-        accountCreated: new Date().toISOString(),
-        timeSpent: 0,
-        achievementsUnlocked: 0
-      },
-      getPublicProfile: function() {
-        return {
-          id: this.id,
-          username: this.username,
-          email: this.email,
-          profile: this.profile,
-          gaming: this.gaming,
-          stats: this.stats
-        };
-      }
-    };
+    const user = await User.findById(decoded.id);
 
-    // Attach user to request
-    req.user = mockUser;
+    if (!user || !user.isActive) {
+      return res.status(401).json({
+        success: false,
+        message: 'Not authorized.'
+      });
+    }
+
+    req.user = user;
     next();
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
@@ -89,6 +63,30 @@ const restrictTo = (...roles) => {
         message: 'Access denied. Insufficient permissions.'
       });
     }
+
+    // Optional extra hardening for admin routes: IP allowlist.
+    if (roles.includes('admin') && process.env.ADMIN_IP_ALLOWLIST) {
+      const allowlist = String(process.env.ADMIN_IP_ALLOWLIST)
+        .split(',')
+        .map((ip) => ip.trim())
+        .filter(Boolean);
+
+      if (allowlist.length) {
+        const ip =
+          req.headers['cf-connecting-ip'] ||
+          req.headers['x-real-ip'] ||
+          (String(req.headers['x-forwarded-for'] || '').split(',')[0] || '').trim() ||
+          req.ip;
+
+        if (!ip || !allowlist.includes(String(ip))) {
+          return res.status(403).json({
+            success: false,
+            message: 'Access denied.'
+          });
+        }
+      }
+    }
+
     next();
   };
 };
