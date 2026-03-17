@@ -1,7 +1,26 @@
 {
-  "build": {
-    "env": {
-       "NEXT_PUBLIC_API_URL": "/api"
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "JWT_SECRET": "mern_isp_client_portal_jwt_secret_key_for_vercel_deployment_2024_secure",
+    "JWT_EXPIRE": "7d",
+    "NODE_ENV": "production",
+    "FRONTEND_URL": "https://mern-isp-client-portal-5zc5h5iyg-peterbcodes-projects.vercel.app",
+    "MONGODB_URI": "mongodb+srv://admin:vFXne5esQikuojQX@cluster0.cszm9.mongodb.net/mern-isp-portal?retryWrites=true&w=majority",
+    "NEXT_PUBLIC_API_URL": "/api",
+    "DEBUG_API_ERRORS": "true"
+  },
+  "functions": {
+    "pages/api/**/*.js": {
+      "maxDuration": 30
+    },
+    "app/api/**/*.js": {
+      "maxDuration": 30
     }
   }
 }

@@ -73,14 +73,14 @@ router.post('/register', authRateLimit, async (req, res) => {
       });
     }
 
-    // Create user (mock response for testing without MongoDB)
-    const mockUser = {
-      _id: 'mock_user_id_' + Date.now(),
+    // Create new user
+    const user = new User({
       username,
       email,
+      password, // Will be hashed by pre-save middleware
       profile: {
-        firstName,
-        lastName
+        firstName: firstName || 'Test',
+        lastName: lastName || 'User'
       },
       stats: {
         loginCount: 1,
@@ -88,22 +88,15 @@ router.post('/register', authRateLimit, async (req, res) => {
         accountCreated: new Date(),
         timeSpent: 0,
         achievementsUnlocked: 0
-      },
-      getPublicProfile: function() {
-        return {
-          id: this._id,
-          username: this.username,
-          email: this.email,
-          profile: this.profile,
-          stats: this.stats
-        };
       }
-    };
+    });
+
+    await user.save();
 
     // Generate token
-    const token = generateToken(mockUser._id);
+    const token = generateToken(user._id);
 
-    res.status(201).json(createUserResponse(mockUser, token));
+    res.status(201).json(createUserResponse(user, token));
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({
