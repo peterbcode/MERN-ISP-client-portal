@@ -123,8 +123,6 @@ const userSchema = new mongoose.Schema({
 });
 
 // Indexes for performance
-userSchema.index({ email: 1 });
-userSchema.index({ username: 1 });
 userSchema.index({ 'profile.gaming.experience': -1 });
 userSchema.index({ 'stats.isActive': 1 });
 
