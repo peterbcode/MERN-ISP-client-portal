@@ -1,112 +1,91 @@
-const { connectDB } = require('../../../../lib/mongodb');
-const User = require('../../../../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import { connectDB } from "@/lib/mongoose";
+import User from "@/models/User";
+import jwt from "jsonwebtoken";
 
-// Generate JWT token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE || '7d',
+export const runtime = "nodejs";
+
+const generateToken = (id) =>
+  jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE || "7d",
   });
-};
 
-// Helper function to create user response
-const createUserResponse = (user, token) => {
-  return {
-    success: true,
-    token,
-    user: {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      role: user.role,
-      profile: user.profile,
-      createdAt: user.createdAt
-    }
-  };
-};
+const createUserResponse = (user, token) => ({
+  success: true,
+  token,
+  user: {
+    id: user._id,
+    username: user.username,
+    email: user.email,
+    firstName: user.profile?.firstName,
+    lastName: user.profile?.lastName,
+    role: user.role,
+    profile: user.profile,
+    createdAt: user.createdAt,
+  },
+});
 
-async function POST(request) {
+export async function POST(request) {
   try {
+    if (!process.env.MONGODB_URI) throw new Error("Missing environment variable: MONGODB_URI");
+    if (!process.env.JWT_SECRET) throw new Error("Missing environment variable: JWT_SECRET");
+
     await connectDB();
+
     const { username, email, password, firstName, lastName } = await request.json();
 
-    // Validation
-    if (!username || !email || !password) {
-      return Response.json({
-        success: false,
-        message: 'Please provide username, email, and password'
-      }, { status: 400 });
+    if (!username || !email || !password || !firstName || !lastName) {
+      return Response.json(
+        { success: false, message: "Please provide username, email, password, first name, and last name" },
+        { status: 400 },
+      );
     }
 
     if (password.length < 6) {
-      return Response.json({
-        success: false,
-        message: 'Password must be at least 6 characters long'
-      }, { status: 400 });
+      return Response.json(
+        { success: false, message: "Password must be at least 6 characters long" },
+        { status: 400 },
+      );
     }
 
-    // Check if user already exists
-    const existingUser = await User.findOne({
-      $or: [{ email }, { username }]
-    });
-
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
-      const field = existingUser.email === email ? 'email' : 'username';
-      return Response.json({
-        success: false,
-        message: `${field} already exists`
-      }, { status: 400 });
+      const field = existingUser.email === email ? "email" : "username";
+      return Response.json({ success: false, message: `${field} already exists` }, { status: 400 });
     }
 
-    // Create new user
     const user = new User({
       username,
       email,
-      password: await bcrypt.hash(password, 12),
-      firstName,
-      lastName
+      password,
+      profile: { firstName, lastName },
     });
 
     await user.save();
 
-    // Generate token
     const token = generateToken(user._id);
-
-    // Return response
-    return Response.json(
-      createUserResponse(user, token),
-      { status: 201 }
-    );
-
+    return Response.json(createUserResponse(user, token), { status: 201 });
   } catch (error) {
-    console.error('Registration error:', error);
-    
-    // Handle duplicate key error
-    if (error.code === 11000) {
-      const field = Object.keys(error.keyValue)[0];
-      return Response.json({
-        success: false,
-        message: `${field} already exists`
-      }, { status: 400 });
+    console.error("Registration error:", error);
+
+    if (error?.code === 11000) {
+      const field = Object.keys(error.keyValue || {})[0] || "field";
+      return Response.json({ success: false, message: `${field} already exists` }, { status: 400 });
     }
-    
-    // Handle validation error
-    if (error.name === 'ValidationError') {
-      const message = Object.values(error.errors).map(val => val.message).join(', ');
-      return Response.json({
-        success: false,
-        message
-      }, { status: 400 });
+
+    if (error?.name === "ValidationError") {
+      const message = Object.values(error.errors || {})
+        .map((val) => val.message)
+        .join(", ");
+      return Response.json({ success: false, message }, { status: 400 });
     }
-    
-    return Response.json({
-      success: false,
-      message: 'Registration failed. Please try again.'
-    }, { status: 500 });
+
+    return Response.json(
+      {
+        success: false,
+        message: "Registration failed. Please try again.",
+        ...(process.env.DEBUG_API_ERRORS === "true" ? { error: error?.message } : null),
+      },
+      { status: 500 },
+    );
   }
 }
-
-module.exports = { POST };

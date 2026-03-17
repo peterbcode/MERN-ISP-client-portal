@@ -1,6 +1,8 @@
-import { connectDB } from '@/lib/mongodb';
+import { connectDB } from '@/lib/mongoose';
 import User from '@/models/User';
 import jwt from 'jsonwebtoken';
+
+export const runtime = 'nodejs'
 
 // Authentication middleware for serverless
 const protect = async (request) => {

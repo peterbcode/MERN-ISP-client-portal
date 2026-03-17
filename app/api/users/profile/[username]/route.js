@@ -1,5 +1,7 @@
-import { connectDB } from '@/lib/mongodb';
+import { connectDB } from '@/lib/mongoose';
 import User from '@/models/User';
+
+export const runtime = 'nodejs'
 
 export async function GET(request, { params }) {
   try {
