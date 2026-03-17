@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
   "env": {
     "JWT_SECRET": "mern_isp_client_portal_jwt_secret_key_for_vercel_deployment_2024_secure",
     "JWT_EXPIRE": "7d",
