@@ -217,18 +217,19 @@ export default function AdminUsers() {
 
       {error ? <div className="mt-4 text-sm text-red-400">{error}</div> : null}
 
-      <div className="mt-6 overflow-x-auto">
-        <table className="min-w-full text-sm">
-          <thead>
-            <tr className="text-left text-zinc-400">
-              <th className="py-2 pr-4">User</th>
-              <th className="py-2 pr-4">Email</th>
-              <th className="py-2 pr-4">Role</th>
-              <th className="py-2 pr-4">Active</th>
-              <th className="py-2 pr-4">Created</th>
-              <th className="py-2 pr-4">Actions</th>
-            </tr>
-          </thead>
+      <div className="mt-6 overflow-x-auto -mx-4 sm:mx-0">
+        <div className="inline-block min-w-full align-middle">
+          <table className="min-w-full text-sm">
+            <thead className="bg-zinc-800/50">
+              <tr className="text-left text-zinc-400">
+                <th className="px-4 py-3 text-left">User</th>
+                <th className="px-4 py-3 text-left hidden sm:table-cell">Email</th>
+                <th className="px-4 py-3 text-left">Role</th>
+                <th className="px-4 py-3 text-left">Active</th>
+                <th className="px-4 py-3 text-left hidden lg:table-cell">Created</th>
+                <th className="px-4 py-3 text-left">Actions</th>
+              </tr>
+            </thead>
           <tbody className="text-white">
             {isLoading ? (
               <tr>
@@ -247,12 +248,12 @@ export default function AdminUsers() {
 
                 return (
                   <tr key={user._id} className="border-t border-zinc-700/70">
-                    <td className="py-3 pr-4">
+                    <td className="px-4 py-3">
                       <div className="font-medium">{displayName}</div>
                       <div className="text-xs text-zinc-400">@{user.username}</div>
                     </td>
-                    <td className="py-3 pr-4 text-zinc-200">{user.email}</td>
-                    <td className="py-3 pr-4">
+                    <td className="px-4 py-3 text-zinc-200 hidden sm:table-cell">{user.email}</td>
+                    <td className="px-4 py-3">
                       <select
                         value={user.role}
                         disabled={saving}
@@ -263,7 +264,7 @@ export default function AdminUsers() {
                         <option value="admin">Admin</option>
                       </select>
                     </td>
-                    <td className="py-3 pr-4">
+                    <td className="px-4 py-3">
                       <button
                         disabled={saving}
                         onClick={() => updateUser(user._id, { isActive: !isUserActive })}
@@ -276,10 +277,10 @@ export default function AdminUsers() {
                         {isUserActive ? 'Active' : 'Inactive'}
                       </button>
                     </td>
-                    <td className="py-3 pr-4 text-zinc-300">
+                    <td className="px-4 py-3 text-zinc-300 hidden lg:table-cell">
                       {createdAt ? new Date(createdAt).toLocaleString() : '—'}
                     </td>
-                    <td className="py-3 pr-4">
+                    <td className="px-4 py-3">
                       <button
                         disabled={saving || !isUserActive}
                         onClick={() => deactivateUser(user._id)}
@@ -325,6 +326,7 @@ export default function AdminUsers() {
           </button>
         </div>
       </div>
+    </div>
     </div>
   )
 }

@@ -110,19 +110,18 @@ export default function AdminDashboard() {
       <div className="min-h-screen bg-zinc-900 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="mb-8">
-            <div className="flex justify-between items-center">
-              <div>
-                <h1 className="text-3xl font-black text-white">Admin Dashboard</h1>
-                <p className="mt-2 text-zinc-400">Manage users, games, and monitor platform activity</p>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-              >
-                Logout
-              </button>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-6">
+            <div>
+              <h1 className="text-2xl lg:text-3xl font-black text-white">Admin Dashboard</h1>
+              <p className="mt-1 lg:mt-2 text-sm lg:text-base text-zinc-400">Manage users, games, and monitor platform activity</p>
             </div>
+            <button
+              onClick={handleLogout}
+              className="px-3 py-2 lg:px-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm lg:text-base"
+            >
+              Logout
+            </button>
+          </div>
 
             <div className="mt-6 flex gap-2 border-b border-zinc-800">
               <button
@@ -169,7 +168,7 @@ export default function AdminDashboard() {
           ) : null}
 
           {!stats ? null : (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -302,8 +301,6 @@ export default function AdminDashboard() {
               System Settings
             </button>
           </div>
-          </>
-          )}
           </>
           ) : null}
         </div>

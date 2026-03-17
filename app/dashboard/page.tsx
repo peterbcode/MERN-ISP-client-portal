@@ -315,33 +315,33 @@ export default function Dashboard() {
     <div className="min-h-screen bg-[#050505] text-white">
       {/* Header */}
       <div className="bg-[#050505] border-b border-zinc-800 px-6 py-4">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-zinc-100">
+            <h1 className="text-xl lg:text-2xl font-bold text-zinc-100">
               Welcome back, {user.profile.firstName || user.username}!
             </h1>
-            <p className="text-zinc-400 text-sm">
+            <p className="text-sm lg:text-base text-zinc-400">
               Network performance dashboard
             </p>
           </div>
-          <div className="flex space-x-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <button
               onClick={runSpeedTest}
               disabled={isSpeedTestRunning}
-              className="px-4 py-2 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-2 lg:px-4 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
             >
               {isSpeedTestRunning ? 'Testing...' : 'Run Speed Test'}
             </button>
             <button
               onClick={() => setShowTicketForm(true)}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+              className="px-3 py-2 lg:px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center text-sm lg:text-base"
             >
               <TicketIcon className="h-4 w-4 mr-2" />
               New Ticket
             </button>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors"
+              className="px-3 py-2 lg:px-4 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors text-sm lg:text-base"
             >
               Logout
             </button>
@@ -352,7 +352,7 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="p-6">
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {/* Public IP */}
           <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
             <div className="flex items-center justify-between mb-4">
@@ -484,7 +484,7 @@ export default function Dashboard() {
         </div>
 
         {/* Detailed Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Network Information */}
           <div className="bg-zinc-900 rounded-xl border border-zinc-800">
             <div className="p-6 border-b border-zinc-800">
@@ -564,8 +564,8 @@ export default function Dashboard() {
 
       {/* Ticket Form Modal */}
       {showTicketForm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-zinc-900 rounded-xl border border-zinc-700 p-6 w-full max-w-md mx-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-zinc-900 rounded-xl border border-zinc-700 p-6 w-full max-w-md mx-auto">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold text-zinc-100">Create Support Ticket</h3>
               <button
@@ -626,17 +626,17 @@ export default function Dashboard() {
               </div>
             </div>
             
-            <div className="flex justify-end gap-3 mt-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mt-6">
               <button
                 onClick={() => setShowTicketForm(false)}
-                className="px-4 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors"
+                className="px-4 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors text-sm lg:text-base"
               >
                 Cancel
               </button>
               <button
                 onClick={submitTicket}
                 disabled={isSubmittingTicket}
-                className="px-4 py-2 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
               >
                 {isSubmittingTicket ? 'Submitting...' : 'Submit Ticket'}
               </button>
