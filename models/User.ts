@@ -185,7 +185,9 @@ const userSchema = new Schema<IUser>({
       default: 'active'
     },
     expiresAt: Date
-  }
+  },
+  passwordResetToken: String,
+  passwordResetExpires: Date
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
