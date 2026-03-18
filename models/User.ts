@@ -59,6 +59,8 @@ interface IUser extends Document {
     status: 'active' | 'inactive' | 'cancelled';
     expiresAt?: Date;
   };
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
 }
 
 // User schema

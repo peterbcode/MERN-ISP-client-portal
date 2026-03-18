@@ -1,31 +1,23 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from "../components/navbar";
 import SiteFooter from "../components/site-footer";
 
-interface FormData {
-  token: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
-interface FormErrors {
-  token?: string;
-  newPassword?: string;
-  confirmPassword?: string;
-  general?: string;
-}
-
-export default function ResetPasswordPage() {
-  const [formData, setFormData] = useState<FormData>({
+function ResetPasswordContent() {
+  const [formData, setFormData] = useState({
     token: '',
     newPassword: '',
     confirmPassword: ''
   });
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<{
+    token?: string;
+    newPassword?: string;
+    confirmPassword?: string;
+    general?: string;
+  }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isReset, setIsReset] = useState(false);
   const [isValidToken, setIsValidToken] = useState<boolean | null>(null);
@@ -47,7 +39,7 @@ export default function ResetPasswordPage() {
   }, [searchParams]);
 
   const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
+    const newErrors: any = {};
 
     if (!formData.token) {
       newErrors.token = 'Reset token is required';
@@ -74,7 +66,7 @@ export default function ResetPasswordPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
     
     // Clear error for this field
-    if (errors[name as keyof FormErrors]) {
+    if (errors[name as keyof typeof errors]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
   };
@@ -303,5 +295,21 @@ export default function ResetPasswordPage() {
       </div>
       <SiteFooter />
     </>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center bg-zinc-900">
+          <div className="text-white">Loading...</div>
+        </div>
+        <SiteFooter />
+      </>
+    }>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

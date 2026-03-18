@@ -5,58 +5,10 @@ import { useRouter } from 'next/navigation';
 import Navbar from "../components/navbar";
 import SiteFooter from "../components/site-footer";
 import { auth } from '@/lib/auth';
-import { apiClient } from '@/lib/api-client';
-import AdminUsers from './components/admin-users';
-
-interface AdminStats {
-  totalUsers: number;
-  activeUsers: number;
-  totalGames: number;
-  totalHighScores: number;
-  recentUsers: Array<{
-    username: string;
-    email: string;
-    profile: {
-      firstName?: string;
-      lastName?: string;
-    };
-    stats: {
-      accountCreated: string;
-    };
-  }>;
-  topGames: Array<{
-    name: string;
-    category: string;
-    stats: {
-      totalPlays: number;
-      highestScore: number;
-    };
-  }>;
-}
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState<AdminStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'users'>('dashboard');
   const router = useRouter();
-
-  const fetchAdminStats = async () => {
-    try {
-      const res = await apiClient.admin.getStats();
-      if (res.data?.success) {
-        setStats(res.data.stats);
-        setError('');
-      } else {
-        setError('Failed to fetch admin statistics');
-      }
-    } catch (error) {
-      console.error('Failed to fetch admin stats:', error);
-      setError('Failed to fetch admin statistics');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -72,7 +24,6 @@ export default function AdminDashboard() {
             router.push('/dashboard');
             return;
           }
-          await fetchAdminStats();
         } else {
           auth.clearToken();
           router.push('/login');
@@ -81,6 +32,8 @@ export default function AdminDashboard() {
         console.error('Auth check failed:', error);
         auth.clearToken();
         router.push('/login');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -123,51 +76,7 @@ export default function AdminDashboard() {
             </button>
           </div>
 
-            <div className="mt-6 flex gap-2 border-b border-zinc-800">
-              <button
-                onClick={() => setActiveTab('dashboard')}
-                className={`px-4 py-2 text-sm font-semibold transition-colors ${
-                  activeTab === 'dashboard'
-                    ? 'text-white border-b-2 border-orange-500'
-                    : 'text-zinc-400 hover:text-zinc-200'
-                }`}
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={() => setActiveTab('users')}
-                className={`px-4 py-2 text-sm font-semibold transition-colors ${
-                  activeTab === 'users'
-                    ? 'text-white border-b-2 border-orange-500'
-                    : 'text-zinc-400 hover:text-zinc-200'
-                }`}
-              >
-                Users
-              </button>
-            </div>
-          </div>
-
-          {activeTab === 'users' ? <AdminUsers /> : null}
-
-          {activeTab === 'dashboard' ? (
-          <>
-          {error || !stats ? (
-            <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700 mb-8">
-              <div className="text-red-400 font-semibold">Failed to load admin statistics</div>
-              <div className="mt-1 text-sm text-zinc-400">{error || 'Unknown error'}</div>
-              <button
-                onClick={() => {
-                  setIsLoading(true);
-                  void fetchAdminStats();
-                }}
-                className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-              >
-                Retry
-              </button>
-            </div>
-          ) : null}
-
-          {!stats ? null : (
+          {/* Admin Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
               <div className="flex items-center">
@@ -178,7 +87,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="ml-4">
                   <p className="text-sm text-zinc-400">Total Users</p>
-                  <p className="text-2xl font-bold text-white">{stats.totalUsers}</p>
+                  <p className="text-2xl font-bold text-white">0</p>
                 </div>
               </div>
             </div>
@@ -192,7 +101,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="ml-4">
                   <p className="text-sm text-zinc-400">Active Users</p>
-                  <p className="text-2xl font-bold text-white">{stats.activeUsers}</p>
+                  <p className="text-2xl font-bold text-white">0</p>
                 </div>
               </div>
             </div>
@@ -206,7 +115,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="ml-4">
                   <p className="text-sm text-zinc-400">Total Games</p>
-                  <p className="text-2xl font-bold text-white">{stats.totalGames}</p>
+                  <p className="text-2xl font-bold text-white">0</p>
                 </div>
               </div>
             </div>
@@ -220,75 +129,15 @@ export default function AdminDashboard() {
                 </div>
                 <div className="ml-4">
                   <p className="text-sm text-zinc-400">High Scores</p>
-                  <p className="text-2xl font-bold text-white">{stats.totalHighScores}</p>
+                  <p className="text-2xl font-bold text-white">0</p>
                 </div>
               </div>
             </div>
           </div>
-          )}
 
-          {!stats ? null : (
-          <>
-          {/* Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Recent Users */}
-            <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-              <h2 className="text-xl font-bold text-white mb-4">Recent Users</h2>
-              {stats.recentUsers.length > 0 ? (
-                <div className="space-y-3">
-                  {stats.recentUsers.map((user, index) => (
-                    <div key={index} className="flex justify-between items-center py-2 border-b border-zinc-700 last:border-0">
-                      <div>
-                        <p className="text-white font-medium">{user.username}</p>
-                        <p className="text-sm text-zinc-400">{user.email}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm text-zinc-400">
-                          {new Date(user.stats.accountCreated).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-zinc-400">No recent users</p>
-              )}
-            </div>
-
-            {/* Top Games */}
-            <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-              <h2 className="text-xl font-bold text-white mb-4">Top Games</h2>
-              {stats.topGames.length > 0 ? (
-                <div className="space-y-3">
-                  {stats.topGames.map((game, index) => (
-                    <div key={index} className="flex justify-between items-center py-2 border-b border-zinc-700 last:border-0">
-                      <div>
-                        <p className="text-white font-medium">{game.name}</p>
-                        <p className="text-sm text-zinc-400">{game.category}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-lg font-bold text-orange-500">{game.stats.totalPlays}</p>
-                        <p className="text-xs text-zinc-400">plays</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-zinc-400">No games available</p>
-              )}
-            </div>
-          </div>
-          </>
-          )}
-
-          {!stats ? null : (
-          <>
           {/* Quick Actions */}
           <div className="mt-8 flex flex-wrap gap-4">
-            <button
-              onClick={() => setActiveTab('users')}
-              className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
-            >
+            <button className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium">
               Manage Users
             </button>
             <button className="px-6 py-3 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors font-medium">
@@ -301,13 +150,9 @@ export default function AdminDashboard() {
               System Settings
             </button>
           </div>
-          </>
-          ) : null}
         </div>
       </div>
       <SiteFooter />
     </>
   );
 }
-
-// Remove duplicate export - AdminDashboard is already exported above
