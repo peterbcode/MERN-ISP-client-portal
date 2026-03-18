@@ -314,34 +314,34 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-[#050505] text-white">
       {/* Header */}
-      <div className="bg-[#050505] border-b border-zinc-800 px-6 py-4">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between mb-6">
-          <div>
-            <h1 className="text-xl lg:text-2xl font-bold text-zinc-100">
+      <div className="bg-[#050505] border-b border-zinc-800 px-4 sm:px-6 py-4">
+        <div className="flex flex-col gap-4 sm:gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-center sm:text-left">
+            <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">
               Welcome back, {user.profile.firstName || user.username}!
             </h1>
-            <p className="text-sm lg:text-base text-zinc-400">
+            <p className="text-sm text-zinc-400 mt-1">
               Network performance dashboard
             </p>
           </div>
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <button
               onClick={runSpeedTest}
               disabled={isSpeedTestRunning}
-              className="px-3 py-2 lg:px-4 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
+              className="w-full sm:w-auto px-4 py-2 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
             >
               {isSpeedTestRunning ? 'Testing...' : 'Run Speed Test'}
             </button>
             <button
               onClick={() => setShowTicketForm(true)}
-              className="px-3 py-2 lg:px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center text-sm lg:text-base"
+              className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center text-sm font-medium"
             >
               <TicketIcon className="h-4 w-4 mr-2" />
               New Ticket
             </button>
             <button
               onClick={handleLogout}
-              className="px-3 py-2 lg:px-4 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors text-sm lg:text-base"
+              className="w-full sm:w-auto px-4 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors text-sm font-medium"
             >
               Logout
             </button>
@@ -352,37 +352,37 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="p-6">
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
           {/* Public IP */}
-          <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
+          <div className="bg-zinc-900 rounded-xl p-4 sm:p-6 border border-zinc-800">
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-blue-500/20 rounded-lg">
-                <GlobeAltIcon className="h-6 w-6 text-blue-400" />
+              <div className="p-2 sm:p-3 bg-blue-500/20 rounded-lg">
+                <GlobeAltIcon className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
               </div>
             </div>
-            <h3 className="text-2xl font-bold text-zinc-100 mb-2 break-all">{stats.publicIP}</h3>
-            <p className="text-zinc-400 text-sm">Public IP Address</p>
+            <h3 className="text-lg sm:text-2xl font-bold text-zinc-100 mb-2 break-all">{stats.publicIP}</h3>
+            <p className="text-xs sm:text-sm text-zinc-400">Public IP Address</p>
           </div>
 
           {/* Download Speed */}
-          <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/10 to-transparent rounded-full -mr-16 -mt-16"></div>
+          <div className="bg-zinc-900 rounded-xl p-4 sm:p-6 border border-zinc-800 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-green-500/10 to-transparent rounded-full -mr-12 -mt-12 sm:-mr-16 sm:-mt-16"></div>
             <div className="relative">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-green-500/20 rounded-lg">
-                  <ArrowDownIcon className="h-6 w-6 text-green-400" />
+                <div className="p-2 sm:p-3 bg-green-500/20 rounded-lg">
+                  <ArrowDownIcon className="h-5 w-5 sm:h-6 sm:w-6 text-green-400" />
                 </div>
                 {stats.downloadSpeed > 0 && (
-                  <span className="text-green-400 text-xs font-medium bg-green-500/20 px-2 py-1 rounded-full">
+                  <span className="text-xs text-green-400 font-medium bg-green-500/20 px-2 py-1 rounded-full">
                     ACTIVE
                   </span>
                 )}
               </div>
-              <h3 className="text-3xl font-black text-zinc-100 mb-2">
+              <h3 className="text-2xl sm:text-3xl font-black text-zinc-100 mb-2">
                 {stats.downloadSpeed > 0 ? `${stats.downloadSpeed}` : '--'}
-                <span className="text-lg font-normal text-zinc-400 ml-1">Mbps</span>
+                <span className="text-sm sm:text-lg font-normal text-zinc-400 ml-1">Mbps</span>
               </h3>
-              <p className="text-zinc-400 text-sm mb-2">Download Speed</p>
+              <p className="text-xs sm:text-sm text-zinc-400 mb-2">Download Speed</p>
               {stats.downloadSpeed > 0 && (
                 <div className="space-y-2">
                   <div className="w-full bg-zinc-700 rounded-full h-2">
@@ -402,24 +402,24 @@ export default function Dashboard() {
           </div>
 
           {/* Upload Speed */}
-          <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full -mr-16 -mt-16"></div>
+          <div className="bg-zinc-900 rounded-xl p-4 sm:p-6 border border-zinc-800 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full -mr-12 -mt-12 sm:-mr-16 sm:-mt-16"></div>
             <div className="relative">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-orange-500/20 rounded-lg">
-                  <ArrowUpIcon className="h-6 w-6 text-orange-400" />
+                <div className="p-2 sm:p-3 bg-orange-500/20 rounded-lg">
+                  <ArrowUpIcon className="h-5 w-5 sm:h-6 sm:w-6 text-orange-400" />
                 </div>
                 {stats.uploadSpeed > 0 && (
-                  <span className="text-orange-400 text-xs font-medium bg-orange-500/20 px-2 py-1 rounded-full">
+                  <span className="text-xs text-orange-400 font-medium bg-orange-500/20 px-2 py-1 rounded-full">
                     ACTIVE
                   </span>
                 )}
               </div>
-              <h3 className="text-3xl font-black text-zinc-100 mb-2">
+              <h3 className="text-2xl sm:text-3xl font-black text-zinc-100 mb-2">
                 {stats.uploadSpeed > 0 ? `${stats.uploadSpeed}` : '--'}
-                <span className="text-lg font-normal text-zinc-400 ml-1">Mbps</span>
+                <span className="text-sm sm:text-lg font-normal text-zinc-400 ml-1">Mbps</span>
               </h3>
-              <p className="text-zinc-400 text-sm mb-2">Upload Speed</p>
+              <p className="text-xs sm:text-sm text-zinc-400 mb-2">Upload Speed</p>
               {stats.uploadSpeed > 0 && (
                 <div className="space-y-2">
                   <div className="w-full bg-zinc-700 rounded-full h-2">
@@ -439,12 +439,12 @@ export default function Dashboard() {
           </div>
 
           {/* Latency */}
-          <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full -mr-16 -mt-16"></div>
+          <div className="bg-zinc-900 rounded-xl p-4 sm:p-6 border border-zinc-800 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full -mr-12 -mt-12 sm:-mr-16 sm:-mt-16"></div>
             <div className="relative">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-purple-500/20 rounded-lg">
-                  <SignalIcon className="h-6 w-6 text-purple-400" />
+                <div className="p-2 sm:p-3 bg-purple-500/20 rounded-lg">
+                  <SignalIcon className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400" />
                 </div>
                 {stats.latency > 0 && (
                   <span className={`text-xs font-medium px-2 py-1 rounded-full ${
@@ -457,11 +457,11 @@ export default function Dashboard() {
                   </span>
                 )}
               </div>
-              <h3 className="text-3xl font-black text-zinc-100 mb-2">
+              <h3 className="text-2xl sm:text-3xl font-black text-zinc-100 mb-2">
                 {stats.latency > 0 ? `${stats.latency}` : '--'}
-                <span className="text-lg font-normal text-zinc-400 ml-1">ms</span>
+                <span className="text-sm sm:text-lg font-normal text-zinc-400 ml-1">ms</span>
               </h3>
-              <p className="text-zinc-400 text-sm mb-2">Latency (Ping)</p>
+              <p className="text-xs sm:text-sm text-zinc-400 mb-2">Latency (Ping)</p>
               {stats.latency > 0 && (
                 <div className="space-y-2">
                   <div className="w-full bg-zinc-700 rounded-full h-2">
@@ -484,60 +484,60 @@ export default function Dashboard() {
         </div>
 
         {/* Detailed Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           {/* Network Information */}
           <div className="bg-zinc-900 rounded-xl border border-zinc-800">
-            <div className="p-6 border-b border-zinc-800">
-              <h2 className="text-xl font-bold text-zinc-100 flex items-center">
-                <WifiIcon className="h-5 w-5 mr-2 text-[#f97316]" />
+            <div className="p-4 sm:p-6 border-b border-zinc-800">
+              <h2 className="text-lg sm:text-xl font-bold text-zinc-100 flex items-center">
+                <WifiIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-[#f97316]" />
                 Network Information
               </h2>
             </div>
-            <div className="p-6 space-y-4">
-              <div className="flex justify-between items-center py-3 border-b border-zinc-800">
-                <span className="text-zinc-400">Connection Type</span>
-                <span className="text-zinc-100 font-medium">{stats.networkType}</span>
+            <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+              <div className="flex justify-between items-center py-2 sm:py-3 border-b border-zinc-800">
+                <span className="text-sm text-zinc-400">Connection Type</span>
+                <span className="text-sm text-zinc-100 font-medium">{stats.networkType}</span>
               </div>
-              <div className="flex justify-between items-center py-3 border-b border-zinc-800">
-                <span className="text-zinc-400">Connection Time</span>
-                <span className="text-zinc-100 font-medium">{stats.connectionTime}</span>
+              <div className="flex justify-between items-center py-2 sm:py-3 border-b border-zinc-800">
+                <span className="text-sm text-zinc-400">Connection Time</span>
+                <span className="text-sm text-zinc-100 font-medium">{stats.connectionTime}</span>
               </div>
-              <div className="flex justify-between items-center py-3">
-                <span className="text-zinc-400">Last Updated</span>
-                <span className="text-zinc-100 font-medium">{stats.lastUpdated}</span>
+              <div className="flex justify-between items-center py-2 sm:py-3">
+                <span className="text-sm text-zinc-400">Last Updated</span>
+                <span className="text-sm text-zinc-100 font-medium">{stats.lastUpdated}</span>
               </div>
             </div>
           </div>
 
         {/* Support Tickets Section */}
         <div className="bg-zinc-900 rounded-xl border border-zinc-800">
-          <div className="p-6 border-b border-zinc-800">
-            <h2 className="text-xl font-bold text-zinc-100 flex items-center justify-between">
+          <div className="p-4 sm:p-6 border-b border-zinc-800">
+            <h2 className="text-lg sm:text-xl font-bold text-zinc-100 flex items-center justify-between">
               <span className="flex items-center">
-                <ChatBubbleLeftRightIcon className="h-5 w-5 mr-2 text-[#f97316]" />
+                <ChatBubbleLeftRightIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-[#f97316]" />
                 Support Tickets
               </span>
               <button
                 onClick={() => setShowTicketForm(true)}
-                className="px-3 py-1 bg-[#f97316] text-white text-sm rounded-lg hover:bg-orange-600 transition-colors flex items-center"
+                className="px-2 sm:px-3 py-1 sm:py-2 bg-[#f97316] text-white text-sm rounded-lg hover:bg-orange-600 transition-colors flex items-center"
               >
-                <PlusIcon className="h-4 w-4 mr-1" />
+                <PlusIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                 New Ticket
               </button>
             </h2>
           </div>
           
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {tickets.length === 0 ? (
-              <div className="text-center py-8">
-                <ChatBubbleLeftRightIcon className="h-12 w-12 text-zinc-600 mx-auto mb-4" />
-                <p className="text-zinc-400">No support tickets yet. Create your first ticket for any network issues.</p>
+              <div className="text-center py-6 sm:py-8">
+                <ChatBubbleLeftRightIcon className="h-10 w-10 sm:h-12 sm:w-12 text-zinc-600 mx-auto mb-3 sm:mb-4" />
+                <p className="text-sm text-zinc-400">No support tickets yet. Create your first ticket for any network issues.</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {tickets.map((ticket) => (
-                  <div key={ticket.id} className="p-4 bg-zinc-800/50 rounded-lg border border-zinc-700">
-                    <div className="flex justify-between items-start mb-2">
+                  <div key={ticket.id} className="p-3 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <span className={`text-xs font-medium ${getPriorityColor(ticket.priority)}`}>
@@ -547,10 +547,10 @@ export default function Dashboard() {
                             {ticket.status.replace('-', ' ').toUpperCase()}
                           </span>
                         </div>
-                        <h4 className="text-white font-medium">{ticket.subject}</h4>
-                        <p className="text-zinc-400 text-sm mt-1">{ticket.message}</p>
+                        <h4 className="text-white font-medium text-sm">{ticket.subject}</h4>
+                        <p className="text-zinc-400 text-sm mt-1 line-clamp-2">{ticket.message}</p>
                       </div>
-                      <div className="text-zinc-500 text-xs">
+                      <div className="text-zinc-500 text-xs sm:text-right">
                         {new Date(ticket.createdAt).toLocaleDateString()}
                       </div>
                     </div>
@@ -565,12 +565,12 @@ export default function Dashboard() {
       {/* Ticket Form Modal */}
       {showTicketForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-zinc-900 rounded-xl border border-zinc-700 p-6 w-full max-w-md mx-auto">
+          <div className="bg-zinc-900 rounded-xl border border-zinc-700 p-4 sm:p-6 w-full max-w-md mx-auto max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-zinc-100">Create Support Ticket</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-zinc-100">Create Support Ticket</h3>
               <button
                 onClick={() => setShowTicketForm(false)}
-                className="text-zinc-400 hover:text-zinc-200"
+                className="text-zinc-400 hover:text-zinc-200 text-xl"
               >
                 ✕
               </button>
@@ -582,7 +582,7 @@ export default function Dashboard() {
                 <select
                   value={newTicket.priority}
                   onChange={(e) => setNewTicket(prev => ({ ...prev, priority: e.target.value as 'low' | 'medium' | 'high' }))}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-[#f97316]"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-[#f97316] text-sm"
                 >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
@@ -597,7 +597,7 @@ export default function Dashboard() {
                   value={newTicket.subject}
                   onChange={(e) => setNewTicket(prev => ({ ...prev, subject: e.target.value }))}
                   placeholder="e.g., WiFi password change, IP configuration issue"
-                  className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316]"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316] text-sm"
                 />
               </div>
               
@@ -608,17 +608,17 @@ export default function Dashboard() {
                   onChange={(e) => setNewTicket(prev => ({ ...prev, message: e.target.value }))}
                   placeholder="Describe your issue in detail..."
                   rows={4}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316] resize-none"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316] resize-none text-sm"
                 />
               </div>
               
-              <div className="flex items-center justify-between p-4 bg-zinc-800/50 rounded-lg">
-                <p className="text-zinc-400 text-sm">
+              <div className="flex flex-col sm:flex-row items-center justify-between p-3 sm:p-4 bg-zinc-800/50 rounded-lg gap-3">
+                <p className="text-zinc-400 text-sm text-center sm:text-left">
                   📱 This will open WhatsApp with your ticket details for quick support
                 </p>
                 <button
                   onClick={() => window.open('https://wa.me/27799381260', '_blank')}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center text-sm font-medium"
                 >
                   <ChatBubbleLeftRightIcon className="h-4 w-4 mr-2" />
                   Open WhatsApp
@@ -626,17 +626,17 @@ export default function Dashboard() {
               </div>
             </div>
             
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mt-6">
+            <div className="flex flex-col sm:flex-row gap-3 mt-6">
               <button
                 onClick={() => setShowTicketForm(false)}
-                className="px-4 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors text-sm lg:text-base"
+                className="w-full sm:w-auto px-4 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors text-sm font-medium"
               >
                 Cancel
               </button>
               <button
                 onClick={submitTicket}
                 disabled={isSubmittingTicket}
-                className="px-4 py-2 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
+                className="w-full sm:w-auto px-4 py-2 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
               >
                 {isSubmittingTicket ? 'Submitting...' : 'Submit Ticket'}
               </button>
