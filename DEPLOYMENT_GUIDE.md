@@ -56,7 +56,7 @@ Copy `.env.production` to `.env.local` and update values:
 NEXT_PUBLIC_API_URL=http://localhost:5001/api
 
 # Database
-MONGODB_URI=mongodb+srv://peterbvalleycomputers_db_user:admin123@cluster0.lrzvbki.mongodb.net/?appName=Cluster0
+MONGODB_URI=mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=Cluster0
 
 # (Alternative) MongoDB Atlas
 # MONGODB_URI=mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=mern-isp-client-portal
@@ -69,7 +69,7 @@ JWT_SECRET=your_local_secret_key
 Add these to Vercel Dashboard → Settings → Environment Variables:
 
 ```bash 
-MONGODB_URI=mongodb+srv://peterbvalleycomputers_db_user:admin123@cluster0.lrzvbki.mongodb.net/?appName=Cluster0
+MONGODB_URI=mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=Cluster0
 JWT_SECRET=your_production_secret_key
 JWT_EXPIRE=7d
 NODE_ENV=production
