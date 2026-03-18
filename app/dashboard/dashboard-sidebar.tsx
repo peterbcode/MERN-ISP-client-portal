@@ -12,7 +12,11 @@ const dashboardNavigation = [
   { name: 'Settings', href: '/dashboard/settings', icon: '⚙️' },
 ];
 
-export default function DashboardSidebar() {
+interface DashboardSidebarProps {
+  showLogout?: boolean;
+}
+
+export default function DashboardSidebar({ showLogout = true }: DashboardSidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
@@ -53,7 +57,7 @@ export default function DashboardSidebar() {
           <h3 className="text-white font-semibold">
             {user?.profile?.firstName || user?.username || 'User'}
           </h3>
-          <p className="text-zinc-400 text-sm">
+          <p className="text-zinc-400 text-sm truncate">
             {user?.email || 'user@example.com'}
           </p>
         </div>
@@ -79,15 +83,17 @@ export default function DashboardSidebar() {
         </div>
 
         {/* Logout Section */}
-        <div className="mt-8 pt-4 border-t border-zinc-700">
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-colors"
-          >
-            <span className="mr-3 text-lg">🚪</span>
-            Logout
-          </button>
-        </div>
+        {showLogout && (
+          <div className="mt-8 pt-4 border-t border-zinc-700">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-colors"
+            >
+              <span className="mr-3 text-lg">🚪</span>
+              Logout
+            </button>
+          </div>
+        )}
       </nav>
     </div>
   );
