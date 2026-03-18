@@ -614,19 +614,6 @@ export default function Dashboard() {
                     className="w-full px-3 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316] resize-none text-sm"
                   />
                 </div>
-                
-                <div className="flex flex-col sm:flex-row items-center justify-between p-3 sm:p-4 bg-zinc-800/50 rounded-lg gap-3">
-                  <p className="text-zinc-400 text-sm text-center sm:text-left">
-                    📱 This will open WhatsApp with your ticket details for quick support
-                  </p>
-                  <button
-                    onClick={() => window.open('https://wa.me/27799381260', '_blank')}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center text-sm font-medium"
-                  >
-                    <ChatBubbleLeftRightIcon className="h-4 w-4 mr-2" />
-                    Open WhatsApp
-                  </button>
-                </div>
               </div>
             </div>
             
