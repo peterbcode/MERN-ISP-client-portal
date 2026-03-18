@@ -169,29 +169,58 @@ export default function Navbar() {
           </div>
         </div>
 
-        <DisclosurePanel className="border-t border-white/10 bg-black md:hidden">
-          <div className="space-y-2 px-4 py-4">
-            {navigation.map((item) => (
-              <Link key={item.name} href={item.href} className="block rounded-md px-3 py-2 text-sm font-semibold text-white hover:bg-white/10">
-                {item.name}
-              </Link>
-            ))}
-            <Link href="/faq" className="block rounded-md px-3 py-2 text-sm font-semibold text-white hover:bg-white/10">
-              FAQ
-            </Link>
-            <Link href="/login" className="block rounded-md px-3 py-2 text-sm font-semibold text-white hover:bg-white/10">
-              Login
-            </Link>
-            <Link href="/signup" className="block rounded-md px-3 py-2 text-sm font-semibold text-white hover:bg-white/10">
-              Sign Up
-            </Link>
-            <button
-              type="button"
-              onClick={() => router.push('/signup')}
-              className="mt-2 w-full rounded-full bg-[#f97316] px-6 py-3 text-sm font-bold text-white transition hover:brightness-110"
-            >
-              Partner With Us
-            </button>
+        <DisclosurePanel className="md:hidden">
+          <div className="fixed inset-0 z-50 flex">
+            {/* Backdrop */}
+            <div className="fixed inset-0 bg-black/80" />
+            
+            {/* Menu Panel */}
+            <div className="relative flex w-full max-w-sm flex-1 flex-col bg-black/95 backdrop-blur-sm">
+              {/* Close button at top */}
+              <div className="flex justify-end p-4">
+                <DisclosureButton className="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-white/10">
+                  <span className="sr-only">Close menu</span>
+                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                </DisclosureButton>
+              </div>
+              
+              {/* Menu Items */}
+              <div className="flex-1 overflow-y-auto px-4 py-6">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    {navigation.map((item) => (
+                      <Link key={item.name} href={item.href} className="block rounded-lg px-4 py-3 text-base font-semibold text-white hover:bg-white/10 transition-colors">
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                  
+                  <div className="border-t border-white/10 pt-4">
+                    <div className="space-y-2">
+                      <Link href="/faq" className="block rounded-lg px-4 py-3 text-base font-semibold text-white hover:bg-white/10 transition-colors">
+                        FAQ
+                      </Link>
+                      <Link href="/login" className="block rounded-lg px-4 py-3 text-base font-semibold text-white hover:bg-white/10 transition-colors">
+                        Login
+                      </Link>
+                      <Link href="/signup" className="block rounded-lg px-4 py-3 text-base font-semibold text-white hover:bg-white/10 transition-colors">
+                        Sign Up
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  <div className="border-t border-white/10 pt-4">
+                    <button
+                      type="button"
+                      onClick={() => router.push('/signup')}
+                      className="w-full rounded-full bg-[#f97316] px-6 py-3 text-base font-bold text-white shadow-[0_10px_24px_rgba(243,111,0,0.3)] ring-1 ring-[#f8a258]/40 transition-all hover:-translate-y-0.5 hover:brightness-110"
+                    >
+                      Partner With Us
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </DisclosurePanel>
       </Disclosure>
