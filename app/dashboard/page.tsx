@@ -564,82 +564,89 @@ export default function Dashboard() {
 
       {/* Ticket Form Modal */}
       {showTicketForm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-zinc-900 rounded-xl border border-zinc-700 p-4 sm:p-6 w-full max-w-md mx-auto max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-0 sm:p-4">
+          <div className="bg-zinc-900 rounded-t-2xl sm:rounded-xl border border-zinc-700 w-full h-full sm:h-auto sm:max-w-md sm:mx-auto sm:max-h-[90vh] flex flex-col">
+            {/* Header */}
+            <div className="flex justify-between items-center p-4 sm:p-6 border-b border-zinc-700 flex-shrink-0">
               <h3 className="text-lg sm:text-xl font-bold text-zinc-100">Create Support Ticket</h3>
               <button
                 onClick={() => setShowTicketForm(false)}
-                className="text-zinc-400 hover:text-zinc-200 text-xl"
+                className="text-zinc-400 hover:text-zinc-200 text-xl p-1"
               >
                 ✕
               </button>
             </div>
             
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">Priority</label>
-                <select
-                  value={newTicket.priority}
-                  onChange={(e) => setNewTicket(prev => ({ ...prev, priority: e.target.value as 'low' | 'medium' | 'high' }))}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-[#f97316] text-sm"
-                >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">Subject</label>
-                <input
-                  type="text"
-                  value={newTicket.subject}
-                  onChange={(e) => setNewTicket(prev => ({ ...prev, subject: e.target.value }))}
-                  placeholder="e.g., WiFi password change, IP configuration issue"
-                  className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316] text-sm"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">Message</label>
-                <textarea
-                  value={newTicket.message}
-                  onChange={(e) => setNewTicket(prev => ({ ...prev, message: e.target.value }))}
-                  placeholder="Describe your issue in detail..."
-                  rows={4}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316] resize-none text-sm"
-                />
-              </div>
-              
-              <div className="flex flex-col sm:flex-row items-center justify-between p-3 sm:p-4 bg-zinc-800/50 rounded-lg gap-3">
-                <p className="text-zinc-400 text-sm text-center sm:text-left">
-                  📱 This will open WhatsApp with your ticket details for quick support
-                </p>
-                <button
-                  onClick={() => window.open('https://wa.me/27799381260', '_blank')}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center text-sm font-medium"
-                >
-                  <ChatBubbleLeftRightIcon className="h-4 w-4 mr-2" />
-                  Open WhatsApp
-                </button>
+            {/* Scrollable Content Area */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">Priority</label>
+                  <select
+                    value={newTicket.priority}
+                    onChange={(e) => setNewTicket(prev => ({ ...prev, priority: e.target.value as 'low' | 'medium' | 'high' }))}
+                    className="w-full px-3 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-[#f97316] text-sm"
+                  >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">Subject</label>
+                  <input
+                    type="text"
+                    value={newTicket.subject}
+                    onChange={(e) => setNewTicket(prev => ({ ...prev, subject: e.target.value }))}
+                    placeholder="e.g., WiFi password change, IP configuration issue"
+                    className="w-full px-3 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316] text-sm"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">Message</label>
+                  <textarea
+                    value={newTicket.message}
+                    onChange={(e) => setNewTicket(prev => ({ ...prev, message: e.target.value }))}
+                    placeholder="Describe your issue in detail..."
+                    rows={6}
+                    className="w-full px-3 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316] resize-none text-sm"
+                  />
+                </div>
+                
+                <div className="flex flex-col sm:flex-row items-center justify-between p-3 sm:p-4 bg-zinc-800/50 rounded-lg gap-3">
+                  <p className="text-zinc-400 text-sm text-center sm:text-left">
+                    📱 This will open WhatsApp with your ticket details for quick support
+                  </p>
+                  <button
+                    onClick={() => window.open('https://wa.me/27799381260', '_blank')}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center text-sm font-medium"
+                  >
+                    <ChatBubbleLeftRightIcon className="h-4 w-4 mr-2" />
+                    Open WhatsApp
+                  </button>
+                </div>
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-3 mt-6">
-              <button
-                onClick={() => setShowTicketForm(false)}
-                className="w-full sm:w-auto px-4 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors text-sm font-medium"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={submitTicket}
-                disabled={isSubmittingTicket}
-                className="w-full sm:w-auto px-4 py-2 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
-              >
-                {isSubmittingTicket ? 'Submitting...' : 'Submit Ticket'}
-              </button>
+            {/* Fixed Footer */}
+            <div className="p-4 sm:p-6 border-t border-zinc-700 flex-shrink-0">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={() => setShowTicketForm(false)}
+                  className="w-full sm:w-auto px-4 py-3 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors text-sm font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={submitTicket}
+                  disabled={isSubmittingTicket}
+                  className="w-full sm:w-auto px-4 py-3 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                >
+                  {isSubmittingTicket ? 'Submitting...' : 'Submit Ticket'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
