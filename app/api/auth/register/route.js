@@ -27,6 +27,12 @@ const createUserResponse = (user, token) => ({
 export async function POST(request) {
   try {
     console.log("🔍 Registration request received");
+    console.log("🔧 Environment check:", {
+      hasMongoUri: !!process.env.MONGODB_URI,
+      hasJwtSecret: !!process.env.JWT_SECRET,
+      nodeEnv: process.env.NODE_ENV,
+      mongoUriPrefix: process.env.MONGODB_URI?.substring(0, 20) + "..."
+    });
     
     // Check environment variables
     if (!process.env.MONGODB_URI) {
