@@ -7,9 +7,14 @@
 **Format**: `mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority`
 **Example**:
 ```
-mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=mern-isp-client-portal
+mongodb+srv://<db_username>:<db_password>@cluster0.cszm9.mongodb.net/?appName=Cluster0
 ```
 **Note**: If your password contains special characters (like `@`, `:` or `/`), URL-encode it in the connection string.
+
+### 1b. MONGODB_DBNAME (Optional)
+**Purpose**: Database name to use when your `MONGODB_URI` does not include a database name in its path.
+**Default**: `mern-isp-portal`
+**Example**: `mern-isp-portal`
 **How to set in Vercel**:
 1. Go to Vercel Project Dashboard → Settings → Environment Variables
 2. Add Variable Name: `MONGODB_URI`
@@ -51,7 +56,8 @@ After setting the environment variables, push your changes and Vercel will autom
 ## Local Development
 For local development, create a `.env.local` file in the project root:
 ```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/your_database?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://<db_username>:<db_password>@cluster0.cszm9.mongodb.net/?appName=Cluster0
+MONGODB_DBNAME=mern-isp-portal
 JWT_SECRET=your_local_development_secret_key
 JWT_EXPIRE=7d
 ```

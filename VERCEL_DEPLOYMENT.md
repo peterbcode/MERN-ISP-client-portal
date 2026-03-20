@@ -32,7 +32,12 @@ Set these in Vercel Dashboard → Settings → Environment Variables:
 
 1. **MONGODB_URI** (Required)
    ```
-   mongodb+srv://username:password@cluster.mongodb.net/mern-isp-portal?retryWrites=true&w=majority
+   mongodb+srv://<db_username>:<db_password>@cluster0.cszm9.mongodb.net/?appName=Cluster0
+   ```
+
+1b. **MONGODB_DBNAME** (Optional)
+   ```
+   mern-isp-portal
    ```
 
 2. **JWT_SECRET** (Required)

@@ -4,8 +4,14 @@ const gameSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Game name is required'],
-    trim: true,
-    maxlength: [100, 'Game name cannot exceed 100 characters']
+    unique: true,
+    trim: true
+  },
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true
   },
   description: {
     type: String,
@@ -14,65 +20,78 @@ const gameSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: [true, 'Category is required'],
-    enum: ['action', 'puzzle', 'strategy', 'simulation', 'racing', 'sports', 'other'],
-    default: 'other'
+    required: true,
+    enum: ['puzzle', 'action', 'strategy', 'arcade', 'racing', 'sports', 'other']
   },
   difficulty: {
     type: String,
-    enum: ['easy', 'medium', 'hard', 'expert'],
+    enum: ['easy', 'medium', 'hard'],
     default: 'medium'
   },
   thumbnail: {
     type: String,
-    required: [true, 'Thumbnail is required'],
-    validate: {
-      validator: function(v) {
-        return /^https?:\/\/.+/.test(v);
-      },
-      message: 'Thumbnail must be a valid URL'
-    }
+    required: true
   },
+  screenshots: [{
+    type: String
+  }],
   gameUrl: {
     type: String,
-    required: [true, 'Game URL is required'],
-    validate: {
-      validator: function(v) {
-        return /^https?:\/\/.+/.test(v);
-      },
-      message: 'Game URL must be a valid URL'
-    }
+    required: true
   },
-  developer: {
-    name: { type: String, required: true },
-    website: { type: String },
-    github: { type: String }
+  instructions: {
+    type: String,
+    required: true
   },
-  stats: {
-    totalPlays: { type: Number, default: 0 },
-    averageRating: { type: Number, default: 0 },
-    totalRatings: { type: Number, default: 0 },
-    highestScore: { type: Number, default: 0 },
-    averagePlaytime: { type: Number, default: 0 }
+  controls: {
+    type: String,
+    required: true
   },
-  features: {
-    hasMultiplayer: { type: Boolean, default: false },
-    hasLeaderboard: { type: Boolean, default: true },
-    hasAchievements: { type: Boolean, default: false },
-    hasSaveStates: { type: Boolean, default: false }
-  },
+  features: [{
+    type: String
+  }],
   tags: [{
     type: String,
-    trim: true,
-    maxlength: [30, 'Tag cannot exceed 30 characters']
+    lowercase: true
+  }],
+  stats: {
+    totalPlays: { type: Number, default: 0 },
+    uniquePlayers: { type: Number, default: 0 },
+    averageScore: { type: Number, default: 0 },
+    highestScore: { type: Number, default: 0 },
+    totalPlayTime: { type: Number, default: 0 }, // in minutes
+    rating: { type: Number, default: 0, min: 0, max: 5 },
+    ratingCount: { type: Number, default: 0 }
+  },
+  leaderboard: [{
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    username: { type: String, required: true },
+    score: { type: Number, required: true },
+    difficulty: { type: String, enum: ['easy', 'medium', 'hard'], default: 'medium' },
+    achievedAt: { type: Date, default: Date.now },
+    playTime: { type: Number }, // in seconds
+    achievements: [String]
   }],
   isActive: {
     type: Boolean,
     default: true
   },
-  isPremium: {
+  isFeatured: {
     type: Boolean,
     default: false
+  },
+  developer: {
+    name: { type: String, required: true },
+    website: { type: String },
+    contact: { type: String }
+  },
+  version: {
+    type: String,
+    default: '1.0.0'
+  },
+  lastUpdated: {
+    type: Date,
+    default: Date.now
   }
 }, {
   timestamps: true,
@@ -80,21 +99,96 @@ const gameSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Indexes for performance
-gameSchema.index({ category: 1 });
-gameSchema.index({ difficulty: 1 });
-gameSchema.index({ 'stats.totalPlays': -1 });
-gameSchema.index({ 'stats.averageRating': -1 });
-gameSchema.index({ isActive: 1 });
-
-// Virtual for rating breakdown
-gameSchema.virtual('ratingBreakdown').get(function() {
+// Virtual for rating count
+gameSchema.virtual('ratingDistribution').get(function() {
+  // This would be calculated based on actual ratings
   return {
-    average: this.stats.averageRating,
-    totalRatings: this.stats.totalRatings,
-    highestScore: this.stats.highestScore
+    5: 0,
+    4: 0,
+    3: 0,
+    2: 0,
+    1: 0
   };
 });
+
+// Indexes for better performance
+// Note: Mongoose automatically creates indexes for fields with unique: true
+
+// Pre-save middleware to generate slug
+gameSchema.pre('save', function(next) {
+  if (this.isModified('name') && !this.slug) {
+    this.slug = this.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+  next();
+});
+
+// Static method to get popular games
+gameSchema.statics.getPopularGames = async function(limit = 10) {
+  return await this.find({ isActive: true })
+    .sort({ 'stats.totalPlays': -1 })
+    .limit(limit)
+    .select('name slug thumbnail category stats');
+};
+
+// Static method to get featured games
+gameSchema.statics.getFeaturedGames = async function(limit = 6) {
+  return await this.find({ isActive: true, isFeatured: true })
+    .sort({ 'stats.rating': -1 })
+    .limit(limit)
+    .select('name slug thumbnail category description stats');
+};
+
+// Instance method to update leaderboard
+gameSchema.methods.updateLeaderboard = async function(userId, username, score, difficulty = 'medium', playTime = 0) {
+  // Remove existing lower score for this user
+  this.leaderboard = this.leaderboard.filter(entry => 
+    entry.user.toString() !== userId || entry.score >= score
+  );
+  
+  // Add new score
+  this.leaderboard.push({
+    user: userId,
+    username,
+    score,
+    difficulty,
+    achievedAt: new Date(),
+    playTime
+  });
+  
+  // Keep only top 100 scores
+  this.leaderboard.sort((a, b) => b.score - a.score);
+  this.leaderboard = this.leaderboard.slice(0, 100);
+  
+  // Update game stats
+  this.stats.highestScore = Math.max(this.stats.highestScore, score);
+  this.stats.totalPlays += 1;
+  
+  await this.save();
+  
+  return this.leaderboard.findIndex(entry => 
+    entry.user.toString() === userId && entry.score === score
+  );
+};
+
+// Instance method to get top scores
+gameSchema.methods.getTopScores = async function(limit = 10, difficulty = null) {
+  let query = {};
+  if (difficulty) {
+    query.difficulty = difficulty;
+  }
+  
+  return this.leaderboard
+    .filter(entry => !difficulty || entry.difficulty === difficulty)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(entry => ({
+      username: entry.username,
+      score: entry.score,
+      difficulty: entry.difficulty,
+      achievedAt: entry.achievedAt,
+      rank: this.leaderboard.indexOf(entry) + 1
+    }));
+};
 
 const Game = mongoose.models.Game || mongoose.model('Game', gameSchema);
 

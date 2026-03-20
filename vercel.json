@@ -1,11 +1,15 @@
 {
   "version": 2,
   "functions": {
-    "pages/api/**/*.js": {
-      "maxDuration": 30
-    },
     "app/api/**/*.js": {
       "maxDuration": 30
+    },
+    "app/api/**/*.ts": {
+      "maxDuration": 30
     }
-  }
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "framework": "nextjs"
 }

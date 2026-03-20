@@ -56,10 +56,10 @@ Copy `.env.production` to `.env.local` and update values:
 NEXT_PUBLIC_API_URL=http://localhost:5001/api
 
 # Database
-MONGODB_URI=mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=Cluster0
-
-# (Alternative) MongoDB Atlas
-# MONGODB_URI=mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=mern-isp-client-portal
+MONGODB_URI=mongodb+srv://<db_username>:<db_password>@cluster0.cszm9.mongodb.net/?appName=Cluster0
+# If your URI does not include a database name (ends with `.mongodb.net/?...`),
+# set this (defaults to `mern-isp-portal` if omitted).
+MONGODB_DBNAME=mern-isp-portal
 
 # JWT
 JWT_SECRET=your_local_secret_key
@@ -69,7 +69,8 @@ JWT_SECRET=your_local_secret_key
 Add these to Vercel Dashboard → Settings → Environment Variables:
 
 ```bash 
-MONGODB_URI=mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=Cluster0
+MONGODB_URI=mongodb+srv://<db_username>:<db_password>@cluster0.cszm9.mongodb.net/?appName=Cluster0
+MONGODB_DBNAME=mern-isp-portal
 JWT_SECRET=your_production_secret_key
 JWT_EXPIRE=7d
 NODE_ENV=production
@@ -83,14 +84,14 @@ NODE_ENV=production
 
 ### Test Atlas with mongosh
 ```bash
-mongosh "mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=mern-isp-client-portal"
+mongosh "mongodb+srv://<db_username>:<db_password>@cluster0.cszm9.mongodb.net/?appName=Cluster0"
 ```
 
 ### Move your local data to Atlas (optional)
 If you already have data locally, install MongoDB Database Tools (`mongodump`/`mongorestore`) and run:
 ```bash
 mongodump --uri="mongodb://localhost:27017/mern-isp-portal" --out=./dump
-mongorestore --uri="mongodb+srv://<dbUser>:<dbPassword>@<clusterHost>/<dbName>?retryWrites=true&w=majority&appName=mern-isp-client-portal" ./dump/mern-isp-portal
+mongorestore --uri="mongodb+srv://<db_username>:<db_password>@cluster0.cszm9.mongodb.net/?appName=Cluster0" ./dump/mern-isp-portal
 ```
 
 ## 🚀 Deployment Steps
