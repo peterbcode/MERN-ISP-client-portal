@@ -1,426 +1,257 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
-class Dot {
-  index: number
-  anglespeed: number
-  x: number
-  y: number
-  scale: number
-  range: number
-  element: HTMLSpanElement
-  lockX: number
-  lockY: number
-  angleX: number
-  angleY: number
+// Smart goo cursor:
+// - Reads the bg color under the cursor → black on light/orange, orange on dark
+// - On interactive elements (links, buttons, text) → shrinks + goes semi-transparent so user can see what they're clicking
 
-  constructor(index: number, width: number, cursor: HTMLElement) {
-    this.index = index
-    this.anglespeed = 0.05
-    this.x = 0
-    this.y = 0
-    this.scale = 1 - 0.05 * index
-    this.range = width / 2 - (width / 2) * this.scale + 2
-    this.element = document.createElement('span')
-    this.element.style.transform = `translate3d(0px,0px,0) scale(${this.scale})`
-    cursor.appendChild(this.element)
-    this.lockX = 0
-    this.lockY = 0
-    this.angleX = 0
-    this.angleY = 0
-  }
+const INTERACTIVE =
+  "a, button, input, textarea, select, label, [role='button'], [tabindex], [onclick], p, h1, h2, h3, h4, h5, h6, span, li";
 
-  lock() {
-    this.lockX = this.x
-    this.lockY = this.y
-    this.angleX = Math.PI * 2 * Math.random()
-    this.angleY = Math.PI * 2 * Math.random()
-  }
+export default function MorphCursor() {
+  const cursorRef = useRef<HTMLDivElement>(null)
 
-  draw(idle: boolean, sineDots: number) {
-    if (!idle || this.index <= sineDots) {
-      this.element.style.transform = `translate3d(${this.x}px,${this.y}px,0) scale(${this.scale})`
+  useEffect(() => {
+    console.log('MorphCursor: useEffect running')
+    const cursor = cursorRef.current
+    if (!cursor) {
+      console.error('MorphCursor: cursor ref is null')
       return
     }
+    console.log('MorphCursor: cursor element found', cursor)
+    
+    // Add required classes for cursor visibility
+    document.body.classList.add('custom-cursor-enabled')
+    cursor.classList.add('Cursor')
+    console.log('MorphCursor: classes added')
 
-    this.angleX += this.anglespeed
-    this.angleY += this.anglespeed
-    this.y = this.lockY + Math.sin(this.angleY) * this.range
-    this.x = this.lockX + Math.sin(this.angleX) * this.range
-    this.element.style.transform = `translate3d(${this.x}px,${this.y}px,0) scale(${this.scale})`
-  }
-}
+    const AMOUNT = 20
+    const SINE_DOTS = Math.floor(AMOUNT * 0.3)
+    const DOT_SIZE = 26
+    const IDLE_TIMEOUT = 150
 
-const CustomCursor = () => {
-  useEffect(() => {
-    try {
-      const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
-      const supportsCustomCursor = mediaQuery.matches
-      const cursor = document.getElementById('cursor')
+    const COLOR_DARK    = "#0d0d0d"; // on light/orange backgrounds
+    const COLOR_ORANGE  = "#ff6a00"; // on dark backgrounds
 
-      if (!supportsCustomCursor || !cursor) {
-        document.body.classList.add('no-custom-cursor')
-        return
-      }
-
-      document.body.classList.add('custom-cursor-enabled')
-      document.documentElement.classList.add('has-custom-cursor')
-
-    const amount = 12
-    const sineDots = Math.floor(amount * 0.3)
-    const width = 26
-    const idleTimeout = 150
-
-    const mousePosition = { x: 0, y: 0 }
-    const dots: Dot[] = []
-    let timeoutID: ReturnType<typeof setTimeout> | null = null
+    let mousePosition = { x: 0, y: 0 } 
+    let dots: Dot[] = []
+    let timeoutID: ReturnType<typeof setTimeout>
     let idle = false
-    let frameId = 0
-    let isDarkTone = false
-    let currentLabel = ''
-    let lastHoveredElement: Element | null = null
-    let updateCounter = 0
-    let lastMouseMoveTime = 0
-    const mouseMoveThrottle = 16 // ~60fps
+    let rafID: number
+    let isHoveringInteractive = false
+    let currentColor = COLOR_DARK
 
-    const resolveBackgroundColor = (el: Element | null): string | null => {
-      let current: Element | null = el
-      while (current && current !== document.documentElement) {
-        const bg = window.getComputedStyle(current).backgroundColor
-        if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
-          return bg
-        }
-        current = current.parentElement
-      }
-      return window.getComputedStyle(document.body).backgroundColor
+    // ── Color utils ───────────────────────────────────────────────────────────
+    function getLuminance(r: number, g: number, b: number) {
+      return 0.299 * r + 0.587 * g + 0.114 * b
     }
 
-    const isLightColor = (color: string | null) => {
-      if (!color) return false
-      const match = color.match(/rgba?\(([^)]+)\)/)
-      if (!match) return false
-      const parts = match[1].split(',').map((part) => Number.parseFloat(part.trim()))
-      const [r = 0, g = 0, b = 0, a = 1] = parts
-      if (a === 0) return false
-      const luminance = 0.299 * r + 0.587 * g + 0.114 * b
-      return luminance > 120
+    // Walk up DOM from element to find first non-transparent background
+    function getEffectiveBg(el: Element | null): { r: number; g: number; b: number } | null {
+      let node = el
+      while (node && node !== document.body) {
+        const bg = window.getComputedStyle(node as Element).backgroundColor
+        const match = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/)
+        if (match) {
+          const alpha = match[4] !== undefined ? parseFloat(match[4]) : 1
+          if (alpha > 0.05) {
+            return { r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]) }
+          }
+        }
+        node = (node as Element).parentElement
+      }
+      // Fall back to body bg
+      const bodyBg = window.getComputedStyle(document.body).backgroundColor
+      const m = bodyBg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
+      if (m) return { r: parseInt(m[1]), g: parseInt(m[2]), b: parseInt(m[3]) }
+      return null
     }
 
-    const isOrangeAccent = (color: string | null) => {
-      if (!color) return false
-      const match = color.match(/rgba?\(([^)]+)\)/)
-      if (!match) return false
-      const parts = match[1].split(',').map((part) => Number.parseFloat(part.trim()))
-      const [r = 0, g = 0, b = 0, a = 1] = parts
-      if (a === 0) return false
-      // Detect orange-like brand accent tones (e.g. rgb(249,115,22)).
-      return r >= 180 && g >= 70 && g <= 170 && b <= 90
+    function colorForBg(r: number, g: number, b: number): string {
+      const lum = getLuminance(r, g, b)
+      // Orange hue range (approx): high red, mid green, low blue
+      const isOrangish = r > 180 && g > 60 && g < 160 && b < 80
+      // Light or orange bg → use dark cursor; dark bg → use orange cursor
+      return (lum > 100 || isOrangish) ? COLOR_DARK : COLOR_ORANGE
     }
 
-    const syncCursorTone = () => {
-      // Throttle updates to every 5th frame for even better performance
-      updateCounter++
-      if (updateCounter % 5 !== 0) return
-      
-      // Add boundary checks to prevent errors
-      if (mousePosition.x < 0 || mousePosition.y < 0 || 
-          mousePosition.x > window.innerWidth || mousePosition.y > window.innerHeight) {
-        // Reset states when cursor is outside viewport
-        if (isDarkTone || currentLabel) {
-          isDarkTone = false
-          currentLabel = ''
-          cursor.classList.remove('Cursor--dark')
-          updateCursorLabel('')
-        }
-        return
-      }
-      
-      const probeX = mousePosition.x + width / 2
-      const probeY = mousePosition.y + width / 2
-      
-      // Ensure probe coordinates are within bounds
-      if (probeX < 0 || probeY < 0 || probeX > window.innerWidth || probeY > window.innerHeight) {
-        return
-      }
-      
-      const hovered = document.elementFromPoint(probeX, probeY)
-      
-      // Only update if element changed
-      if (hovered === lastHoveredElement) return
-      lastHoveredElement = hovered
-      
-      if (!hovered) {
-        // Reset to default when not hovering anything
-        if (isDarkTone) {
-          isDarkTone = false
-          cursor.classList.remove('Cursor--dark')
-        }
-        if (currentLabel) {
-          currentLabel = ''
-          updateCursorLabel('')
-        }
-        return
-      }
-      
-      // Batch all DOM reads together with error handling
-      let computedStyle, textColor, bgColor
-      try {
-        computedStyle = window.getComputedStyle(hovered)
-        textColor = computedStyle.color
-        bgColor = resolveBackgroundColor(hovered)
-      } catch (error) {
-        // If we can't get styles, skip this frame
-        return
-      }
-      
-      const lightSurface = isLightColor(bgColor)
-      const overOrangeText = isOrangeAccent(textColor)
-      const shouldUseBlack = lightSurface || overOrangeText
+    // ── Dot class ─────────────────────────────────────────────────────────────
+    class Dot {
+      index: number
+      anglespeed: number
+      x: number
+      y: number
+      scale: number
+      baseScale: number
+      range: number
+      lockX: number
+      lockY: number
+      angleX: number
+      angleY: number
+      element: HTMLSpanElement
 
-      if (shouldUseBlack !== isDarkTone) {
-        isDarkTone = shouldUseBlack
-        cursor.classList.toggle('Cursor--dark', isDarkTone)
+      constructor(index = 0) {
+        this.index = index
+        this.anglespeed = 0.05
+        this.x = 0
+        this.y = 0
+        this.baseScale = 1 - 0.05 * index
+        this.scale = this.baseScale
+        this.range = DOT_SIZE / 2 - (DOT_SIZE / 2) * this.baseScale + 2
+        this.lockX = 0
+        this.lockY = 0
+        this.angleX = 0
+        this.angleY = 0
+        this.element = document.createElement("span")
+        this.element.style.cssText = `
+          position: absolute;
+          display: block;
+          width: ${DOT_SIZE}px;
+          height: ${DOT_SIZE}px;
+          border-radius: 50%;
+          background-color: ${COLOR_DARK};
+          transform-origin: center center;
+          transform: translate(-50%, -50%) scale(${this.baseScale});
+          transition: background-color 0.15s ease, opacity 0.15s ease;
+          will-change: transform;
+        `
+        cursor!.appendChild(this.element)
       }
 
-      // Update cursor label based on hovered element
-      const label = getCursorLabel(hovered)
-      if (label !== currentLabel) {
-        currentLabel = label
-        updateCursorLabel(label)
+      setColor(color: string) {
+        this.element.style.backgroundColor = color
+      }
+
+      setInteractive(on: boolean) {
+        // On interactive: make slightly transparent so text underneath is visible
+        this.element.style.opacity = on ? "0.7" : "1";
+      }
+
+      lock() {
+        this.lockX = this.x
+        this.lockY = this.y
+        this.angleX = Math.PI * 2 * Math.random()
+        this.angleY = Math.PI * 2 * Math.random()
+      }
+
+      draw() {
+        if (!idle || this.index <= SINE_DOTS) {
+          this.element.style.transform = `translate(${this.x}px, ${this.y}px) translate(-50%, -50%) scale(${this.baseScale})`
+        } else {
+          this.angleX += this.anglespeed
+          this.angleY += this.anglespeed
+          this.y = this.lockY + Math.sin(this.angleY) * this.range
+          this.x = this.lockX + Math.sin(this.angleX) * this.range
+          this.element.style.transform = `translate(${this.x}px, ${this.y}px) translate(-50%, -50%) scale(${this.baseScale})`
+        }
       }
     }
 
-    const startIdleTimer = () => {
+    // ── Apply color to all dots ───────────────────────────────────────────────
+    function applyColor(color: string) {
+      if (color === currentColor) return
+      currentColor = color
+      dots.forEach((d) => d.setColor(color))
+    }
+
+    function applyInteractive(on: boolean) {
+      if (on === isHoveringInteractive) return
+      isHoveringInteractive = on
+      dots.forEach((d) => d.setInteractive(on))
+    }
+
+    // ── Sample bg color at mouse position ────────────────────────────────────
+    function sampleColor() {
+      const el = document.elementFromPoint(
+        mousePosition.x + DOT_SIZE / 2,
+        mousePosition.y + DOT_SIZE / 2
+      )
+      if (!el || el === cursor) return
+      const bg = getEffectiveBg(el)
+      if (bg) applyColor(colorForBg(bg.r, bg.g, bg.b))
+
+      // Interactive check
+      const interactive = !!(el as Element).closest?.(INTERACTIVE)
+      applyInteractive(interactive)
+    }
+
+    // ── Idle ──────────────────────────────────────────────────────────────────
+    function startIdleTimer() {
+      idle = false
       timeoutID = setTimeout(() => {
         idle = true
-        for (const dot of dots) dot.lock()
-      }, idleTimeout)
-      idle = false
+        dots.forEach((d) => d.lock())
+      }, IDLE_TIMEOUT)
     }
 
-    const resetIdleTimer = () => {
-      if (timeoutID) clearTimeout(timeoutID)
+    function resetIdleTimer() {
+      clearTimeout(timeoutID)
       startIdleTimer()
     }
 
-    const buildDots = () => {
-      for (let i = 0; i < amount; i += 1) {
-        dots.push(new Dot(i, width, cursor))
-      }
+    // ── Mouse / touch ─────────────────────────────────────────────────────────
+    const onMouseMove = (e: MouseEvent) => {
+      mousePosition.x = e.clientX - DOT_SIZE / 2
+      mousePosition.y = e.clientY - DOT_SIZE / 2
+      resetIdleTimer()
     }
 
+    const onTouchMove = (e: TouchEvent) => {
+      mousePosition.x = e.touches[0].clientX - DOT_SIZE / 2
+      mousePosition.y = e.touches[0].clientY - DOT_SIZE / 2
+      resetIdleTimer()
+    }
+
+    // ── Render loop ───────────────────────────────────────────────────────────
     const positionCursor = () => {
-      // Add boundary checks to prevent cursor from going off-screen
-      const boundedX = Math.max(0, Math.min(window.innerWidth - width, mousePosition.x))
-      const boundedY = Math.max(0, Math.min(window.innerHeight - width, mousePosition.y))
-      
-      let x = boundedX
-      let y = boundedY
-
-      for (let i = 0; i < dots.length; i += 1) {
-        const dot = dots[i]
-        const nextDot = dots[i + 1] || dots[0]
-        
-        // Ensure dots stay within bounds
-        dot.x = Math.max(0, Math.min(window.innerWidth - width, x))
-        dot.y = Math.max(0, Math.min(window.innerHeight - width, y))
-        
-        dot.draw(idle, sineDots)
-
-        if (!idle || i <= sineDots) {
-          // Smoother following with reduced lag
-          const nextX = Math.max(0, Math.min(window.innerWidth - width, nextDot.x))
-          const nextY = Math.max(0, Math.min(window.innerHeight - width, nextDot.y))
-          x += (nextX - dot.x) * 0.25
-          y += (nextY - dot.y) * 0.25
+      sampleColor()
+      let x = mousePosition.x
+      let y = mousePosition.y
+      dots.forEach((dot, index, arr) => {
+        const next = arr[index + 1] || arr[0]
+        dot.x = x
+        dot.y = y
+        dot.draw()
+        if (!idle || index <= SINE_DOTS) {
+          x += (next.x - dot.x) * 0.35
+          y += (next.y - dot.y) * 0.35
         }
-      }
+      })
     }
 
     const render = () => {
       positionCursor()
-      syncCursorTone()
-      frameId = window.requestAnimationFrame(render)
+      rafID = requestAnimationFrame(render)
     }
 
-    const onMouseMove = (event: MouseEvent) => {
-      const now = Date.now()
-      if (now - lastMouseMoveTime < mouseMoveThrottle) return
-      lastMouseMoveTime = now
-      
-      // Add boundary checks and smooth transitions
-      const newX = Math.max(0, Math.min(window.innerWidth, event.clientX - width / 2))
-      const newY = Math.max(0, Math.min(window.innerHeight, event.clientY - width / 2))
-      
-      // Smooth position updates to prevent jitter
-      mousePosition.x += (newX - mousePosition.x) * 0.8
-      mousePosition.y += (newY - mousePosition.y) * 0.8
-      
-      resetIdleTimer()
-      // Reset hovered element on mouse move to force re-evaluation
-      lastHoveredElement = null
-    }
+    // ── Init ──────────────────────────────────────────────────────────────────
+    console.log('MorphCursor: creating dots...')
+    for (let i = 0; i < AMOUNT; i++) dots.push(new Dot(i))
+    console.log(`MorphCursor: created ${dots.length} dots`)
 
-    const onTouchMove = (event: TouchEvent) => {
-      const touch = event.touches[0]
-      if (!touch) return
-      mousePosition.x = touch.clientX - width / 2
-      mousePosition.y = touch.clientY - width / 2
-      resetIdleTimer()
-    }
+    console.log('MorphCursor: adding event listeners...')
+    window.addEventListener("mousemove", onMouseMove)
+    window.addEventListener("touchmove", onTouchMove)
+    rafID = requestAnimationFrame(render)
+    console.log('MorphCursor: initialization complete')
 
-    const getCursorLabel = (element: Element | null): string => {
-      if (!element) return ''
-      
-      const tagName = element.tagName.toLowerCase()
-      // Safely get className as string, handling both string and DOMTokenList
-      const className = element.className ? 
-        (typeof element.className === 'string' ? element.className : Array.from(element.className).join(' ')) : 
-        ''
-      const role = element.getAttribute('role')
-      const ariaLabel = element.getAttribute('aria-label')
-      
-      // Links
-      if (tagName === 'a' || role === 'link') {
-        return 'Navigate'
-      }
-      
-      // Buttons
-      if (tagName === 'button' || role === 'button' || className.includes('btn')) {
-        // Exclude game buttons from showing "Click" label
-        if (className.includes('game') || 
-            element.closest('[class*="game"]') ||
-            element.closest('#easter-egg-games') ||
-            className.includes('packet') ||
-            className.includes('network') ||
-            element.textContent?.includes('Packet Rush') ||
-            element.textContent?.includes('Network Repair')) {
-          return ''
-        }
-        return 'Click'
-      }
-      
-      // Form inputs
-      if (tagName === 'input' || tagName === 'textarea' || tagName === 'select') {
-        const inputType = element.getAttribute('type')
-        if (inputType === 'submit' || inputType === 'button') return 'Submit'
-        if (inputType === 'checkbox') return 'Select'
-        if (inputType === 'radio') return 'Choose'
-        return 'Type'
-      }
-      
-      // Interactive elements
-      if (role === 'tab' || className.includes('tab')) return 'Switch'
-      if (role === 'menuitem' || className.includes('menu')) return 'Menu'
-      if (role === 'option' || className.includes('option')) return 'Select'
-      if (className.includes('card') || className.includes('tile')) return 'View'
-      if (className.includes('slider') || className.includes('carousel')) return 'Slide'
-      
-      // Media elements
-      if (tagName === 'img') return 'Image'
-      if (tagName === 'video') return 'Video'
-      if (tagName === 'audio') return 'Audio'
-      
-      // Navigation
-      if (className.includes('nav') || className.includes('navigation')) return 'Navigate'
-      if (className.includes('pagination')) return 'Page'
-      
-      // Content actions
-      if (className.includes('expand') || className.includes('accordion')) return 'Expand'
-      if (className.includes('close') || className.includes('dismiss')) return 'Close'
-      if (className.includes('share')) return 'Share'
-      if (className.includes('download')) return 'Download'
-      if (className.includes('copy')) return 'Copy'
-      if (className.includes('edit')) return 'Edit'
-      if (className.includes('delete') || className.includes('remove')) return 'Delete'
-      
-      // Accessibility
-      if (ariaLabel) return ariaLabel
-      if (element.getAttribute('title')) return element.getAttribute('title')!
-      
-      return ''
-    }
-
-    const updateCursorLabel = (label: string) => {
-      let labelElement = cursor.querySelector('.cursor-label') as HTMLElement
-      
-      if (!labelElement) {
-        labelElement = document.createElement('div')
-        labelElement.className = 'cursor-label'
-        cursor.appendChild(labelElement)
-      }
-      
-      if (label) {
-        labelElement.textContent = label
-        labelElement.style.display = 'block'
-        cursor.classList.add('Cursor--with-label')
-      } else {
-        labelElement.style.display = 'none'
-        cursor.classList.remove('Cursor--with-label')
-      }
-    }
-
-    const onMediaChange = (event: MediaQueryListEvent) => {
-      if (!event.matches) {
-        document.body.classList.remove('custom-cursor-enabled')
-        document.body.classList.add('no-custom-cursor')
-        document.documentElement.classList.remove('has-custom-cursor')
-      }
-    }
-
-    const onMouseLeave = () => {
-      // Reset cursor when mouse leaves the window
-      mousePosition.x = -100
-      mousePosition.y = -100
-      lastHoveredElement = null
-      if (isDarkTone || currentLabel) {
-        isDarkTone = false
-        currentLabel = ''
-        cursor.classList.remove('Cursor--dark')
-        updateCursorLabel('')
-      }
-    }
-
-    const onMouseEnter = () => {
-      // Reset when mouse re-enters the window
-      lastHoveredElement = null
-    }
-
-    window.addEventListener('mousemove', onMouseMove, { passive: true })
-    window.addEventListener('mouseleave', onMouseLeave, { passive: true })
-    window.addEventListener('mouseenter', onMouseEnter, { passive: true })
-    window.addEventListener('touchmove', onTouchMove, { passive: true })
-    mediaQuery.addEventListener('change', onMediaChange)
-
-    buildDots()
-    startIdleTimer()
-    render()
-
-      return () => {
-        window.removeEventListener('mousemove', onMouseMove)
-        window.removeEventListener('mouseleave', onMouseLeave)
-        window.removeEventListener('mouseenter', onMouseEnter)
-        window.removeEventListener('touchmove', onTouchMove)
-        mediaQuery.removeEventListener('change', onMediaChange)
-        if (timeoutID) clearTimeout(timeoutID)
-        window.cancelAnimationFrame(frameId)
-        if (cursor) cursor.innerHTML = ''
-        document.body.classList.remove('custom-cursor-enabled')
-        document.body.classList.remove('no-custom-cursor')
-        document.documentElement.classList.remove('has-custom-cursor')
-      }
-    } catch (error) {
-      console.error('Custom cursor failed to initialize:', error)
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove)
+      window.removeEventListener("touchmove", onTouchMove)
+      clearTimeout(timeoutID)
+      cancelAnimationFrame(rafID)
+      while (cursor.firstChild) cursor.removeChild(cursor.firstChild)
+      dots = []
+      // Clean up classes
       document.body.classList.remove('custom-cursor-enabled')
-      document.body.classList.add('no-custom-cursor')
-      document.documentElement.classList.remove('has-custom-cursor')
+      cursor.classList.remove('Cursor')
     }
   }, [])
 
   return (
     <>
-      <svg id="cursorFilter" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
         <defs>
           <filter id="goo">
             <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
@@ -434,9 +265,11 @@ const CustomCursor = () => {
           </filter>
         </defs>
       </svg>
-      <div id="cursor" className="Cursor" />
+
+      <div
+        ref={cursorRef}
+        className="Cursor"
+      />
     </>
   )
 }
-
-export default CustomCursor

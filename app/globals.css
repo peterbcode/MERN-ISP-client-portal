@@ -64,7 +64,6 @@ svg#cursorFilter {
 .Cursor {
   pointer-events: none;
   position: fixed;
-  display: none !important; /* Disable custom cursor */
   top: 0;
   left: 0;
   z-index: 99999;
@@ -82,18 +81,16 @@ svg#cursorFilter {
   width: 26px;
   height: 26px;
   border-radius: 13px;
-  background-color: rgba(251, 146, 60, 0.5);
+  background-color: #0d0d0d;
   pointer-events: none;
   backface-visibility: hidden;
   will-change: transform;
-  border: 2px solid rgba(255, 255, 255, 0.5);
   transform: translateZ(0);
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .Cursor.Cursor--dark span {
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 2px solid rgba(251, 146, 60, 0.5);
+  background-color: #ff6a00;
 }
 
 body.custom-cursor-enabled * {
