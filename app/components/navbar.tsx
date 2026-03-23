@@ -45,18 +45,18 @@ export default function Navbar() {
               Riebeek Kasteel, Western Cape
             </span>
             <span className="h-3 w-px bg-white/30" aria-hidden="true" />
-            <a href="mailto:info@valley-computers.co.za" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition hover:text-white">
+            <a href="mailto:info@valley-computers.co.za" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition hover:text-white">
               <EnvelopeIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               info@valley-computers.co.za
             </a>
           </div>
           <div className="ml-auto flex items-center gap-2 sm:gap-4">
-            <a href="tel:+27799381260" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition hover:text-white">
+            <a href="tel:+27799381260" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition hover:text-white">
               <PhoneIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               <span className="hidden font-bold sm:inline">Call Us:</span> 079 938 1260
             </a>
             <span className="hidden h-3 w-px bg-white/30 sm:block" aria-hidden="true" />
-            <a href="https://wa.me/27799381260" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition hover:text-white">
+            <a href="https://wa.me/27799381260" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition hover:text-white">
               <ChatBubbleOvalLeftEllipsisIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               <span className="hidden sm:inline">WhatsApp</span>
             </a>

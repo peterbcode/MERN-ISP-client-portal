@@ -48,6 +48,8 @@ export default function NavbarSoft() {
               <span className="h-3 w-px bg-white/30" aria-hidden="true" />
               <a 
                 href="mailto:info@valley-computers.co.za" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="flex items-center gap-1.5 opacity-90 transition hover:opacity-100"
               >
                 <EnvelopeIcon className="h-3.5 w-3.5" />
@@ -57,6 +59,8 @@ export default function NavbarSoft() {
             <div className="flex items-center gap-4">
               <a 
                 href="tel:+27212345678" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="flex items-center gap-1.5 opacity-90 transition hover:opacity-100"
               >
                 <PhoneIcon className="h-3.5 w-3.5" />

@@ -309,11 +309,11 @@ export default function RegisterForm() {
           />
           <label htmlFor="terms" className="ml-2 text-sm text-zinc-300">
             I agree to the{' '}
-            <Link href="/terms" className="text-orange-500 hover:text-orange-400 transition-colors">
+            <Link href="/terms" className="text-orange-500 hover:text-orange-400 transition-all duration-200 hover:scale-105 font-medium inline-block">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href="/privacy" className="text-orange-500 hover:text-orange-400 transition-colors">
+            <Link href="/privacy" className="text-orange-500 hover:text-orange-400 transition-all duration-200 hover:scale-105 font-medium inline-block">
               Privacy Policy
             </Link>
           </label>
@@ -333,7 +333,7 @@ export default function RegisterForm() {
             Already have an account?{' '}
             <Link
               href="/login"
-              className="text-orange-500 hover:text-orange-400 transition-colors font-medium"
+              className="text-orange-500 hover:text-orange-400 transition-all duration-200 hover:scale-105 font-medium inline-block"
             >
               Sign in
             </Link>
