@@ -45,18 +45,18 @@ export default function Navbar() {
               Riebeek Kasteel, Western Cape
             </span>
             <span className="h-3 w-px bg-white/30" aria-hidden="true" />
-            <a href="mailto:info@valley-computers.co.za" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition hover:text-white">
+            <a href="mailto:info@valley-computers.co.za" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition-all duration-200 hover:text-white hover:scale-105">
               <EnvelopeIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               info@valley-computers.co.za
             </a>
           </div>
           <div className="ml-auto flex items-center gap-2 sm:gap-4">
-            <a href="tel:+27799381260" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition hover:text-white">
+            <a href="tel:+27799381260" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition-all duration-200 hover:text-white hover:scale-105">
               <PhoneIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               <span className="hidden font-bold sm:inline">Call Us:</span> 079 938 1260
             </a>
             <span className="hidden h-3 w-px bg-white/30 sm:block" aria-hidden="true" />
-            <a href="https://wa.me/27799381260" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition hover:text-white">
+            <a href="https://wa.me/27799381260" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 whitespace-nowrap text-white/95 transition-all duration-200 hover:text-white hover:scale-105">
               <ChatBubbleOvalLeftEllipsisIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               <span className="hidden sm:inline">WhatsApp</span>
             </a>
@@ -93,7 +93,7 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`relative text-[15px] font-semibold transition-colors hover:text-[#f97316] ${
+                  className={`relative text-[15px] font-semibold transition-all duration-200 hover:text-[#f97316] hover:scale-105 inline-block ${
                     (item.href === '/#services' || item.href === '/#success-stories') && pathname === '/'
                       ? 'text-white/95'
                       : pathname === item.href
@@ -113,7 +113,7 @@ export default function Navbar() {
                     {({ focus }) => (
                       <Link
                         href="/faq"
-                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white ${
+                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 ${
                           focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
                         }`}
                       >
@@ -125,7 +125,7 @@ export default function Navbar() {
                     {({ focus }) => (
                       <Link
                         href="/login"
-                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white ${
+                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 ${
                           focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
                         }`}
                       >
@@ -137,7 +137,7 @@ export default function Navbar() {
                     {({ focus }) => (
                       <Link
                         href="/signup"
-                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white ${
+                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 ${
                           focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
                         }`}
                       >

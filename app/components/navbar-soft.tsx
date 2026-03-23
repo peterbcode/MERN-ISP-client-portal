@@ -50,7 +50,7 @@ export default function NavbarSoft() {
                 href="mailto:info@valley-computers.co.za" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 opacity-90 transition hover:opacity-100"
+                className="flex items-center gap-1.5 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-105"
               >
                 <EnvelopeIcon className="h-3.5 w-3.5" />
                 info@valley-computers.co.za
@@ -61,7 +61,7 @@ export default function NavbarSoft() {
                 href="tel:+27212345678" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 opacity-90 transition hover:opacity-100"
+                className="flex items-center gap-1.5 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-105"
               >
                 <PhoneIcon className="h-3.5 w-3.5" />
                 +27 21 234 5678
@@ -130,7 +130,7 @@ export default function NavbarSoft() {
                     <MenuItem key={item.name}>
                       <Link
                         href={item.href}
-                        className="block px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary hover:text-text-primary transition-colors"
+                        className="block px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary hover:text-text-primary transition-all duration-200 hover:scale-105"
                       >
                         {item.name}
                       </Link>
@@ -139,7 +139,7 @@ export default function NavbarSoft() {
                   <div className="border-t border-border-light px-4 py-2">
                     <Link
                       href="/contact"
-                      className="btn-soft-primary w-full text-center"
+                      className="btn-soft-primary w-full text-center transition-all duration-200 hover:scale-105"
                     >
                       Get Quote
                     </Link>
