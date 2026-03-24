@@ -35,33 +35,24 @@ export default function Navbar() {
     return pathname === href
   }
 
-  // Handle navigation with debugging
-  const handleNavigation = (href: string, e: React.MouseEvent) => {
-    console.log('Navigation clicked:', href)
-    e.preventDefault()
+  // Handle anchor navigation only (for smooth scrolling)
+  const handleAnchorNavigation = (href: string, e: React.MouseEvent) => {
+    if (!href.startsWith('/#')) return // Only handle anchor links
     
-    if (href.startsWith('/#')) {
-      // Handle anchor navigation
-      const targetId = href.replace('/#', '')
-      const element = document.getElementById(targetId)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        console.log('Scrolling to element:', targetId)
-      } else {
-        console.log('Element not found:', targetId)
-        // Fallback: navigate to home then scroll
-        router.push('/')
-        setTimeout(() => {
-          const element = document.getElementById(targetId)
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
-        }, 100)
-      }
+    e.preventDefault()
+    const targetId = href.replace('/#', '')
+    const element = document.getElementById(targetId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     } else {
-      // Handle regular navigation
-      router.push(href)
-      console.log('Navigating to:', href)
+      // Fallback: navigate to home then scroll
+      router.push('/')
+      setTimeout(() => {
+        const element = document.getElementById(targetId)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }, 100)
     }
   }
 
@@ -176,30 +167,59 @@ export default function Navbar() {
 
             <div className="hidden items-center gap-8 lg:gap-10 md:flex">
               {navigation.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={(e) => handleNavigation(item.href, e)}
-                  className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
-                    isScrolled && isHoveringSection
-                      ? 'text-white hover:text-gray-300'
-                      : isScrolled
-                        ? 'text-white hover:text-gray-200'
-                        : isActive(item.href)
-                          ? 'text-white'
-                          : 'text-white/90 hover:text-white'
-                  }`}
-                >
-                  <span className="relative">
-                    {item.name}
-                    <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                item.href.startsWith('/#') ? (
+                  // Services anchor link - use custom handler
+                  <button
+                    key={item.name}
+                    onClick={(e) => handleAnchorNavigation(item.href, e)}
+                    className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
                       isScrolled && isHoveringSection
-                        ? 'bg-[#f97316]'
+                        ? 'text-white hover:text-gray-300'
                         : isScrolled
-                          ? 'bg-white'
-                          : 'bg-white'
-                    }`}></span>
-                  </span>
-                </button>
+                          ? 'text-white hover:text-gray-200'
+                          : isActive(item.href)
+                            ? 'text-white'
+                            : 'text-white/90 hover:text-white'
+                    }`}
+                  >
+                    <span className="relative">
+                      {item.name}
+                      <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                        isScrolled && isHoveringSection
+                          ? 'bg-[#f97316]'
+                          : isScrolled
+                            ? 'bg-white'
+                            : 'bg-white'
+                      }`}></span>
+                    </span>
+                  </button>
+                ) : (
+                  // Regular page links - use Next.js Link for fast navigation
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
+                      isScrolled && isHoveringSection
+                        ? 'text-white hover:text-gray-300'
+                        : isScrolled
+                          ? 'text-white hover:text-gray-200'
+                          : isActive(item.href)
+                            ? 'text-white'
+                            : 'text-white/90 hover:text-white'
+                    }`}
+                  >
+                    <span className="relative">
+                      {item.name}
+                      <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                        isScrolled && isHoveringSection
+                          ? 'bg-[#f97316]'
+                          : isScrolled
+                            ? 'bg-white'
+                            : 'bg-white'
+                      }`}></span>
+                    </span>
+                  </Link>
+                )
               ))}
               <Menu as="div" className="relative">
                 <MenuButton className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition ${
@@ -298,13 +318,25 @@ export default function Navbar() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     {navigation.map((item) => (
-                      <button
-                        key={item.name}
-                        onClick={(e) => handleNavigation(item.href, e)}
-                        className="block w-full rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316] bg-transparent border-none cursor-pointer text-left"
-                      >
-                        {item.name}
-                      </button>
+                      item.href.startsWith('/#') ? (
+                        // Services anchor link - use custom handler
+                        <button
+                          key={item.name}
+                          onClick={(e) => handleAnchorNavigation(item.href, e)}
+                          className="block w-full rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316] bg-transparent border-none cursor-pointer text-left"
+                        >
+                          {item.name}
+                        </button>
+                      ) : (
+                        // Regular page links - use Next.js Link for fast navigation
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316]"
+                        >
+                          {item.name}
+                        </Link>
+                      )
                     ))}
                   </div>
                   
