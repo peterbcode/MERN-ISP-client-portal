@@ -34,34 +34,16 @@ export default function Navbar() {
     return pathname === href
   }
 
-  // Handle navigation with debugging
-  const handleNavigation = (href: string, e: React.MouseEvent) => {
-    console.log('Navigation clicked:', href)
+  const handleAnchorClick = (href: string, e: React.MouseEvent) => {
+    if (!href.startsWith('/#')) return
+    if (pathname !== '/') return
+
+    const targetId = href.replace('/#', '')
+    const element = document.getElementById(targetId)
+    if (!element) return
+
     e.preventDefault()
-    
-    if (href.startsWith('/#')) {
-      // Handle anchor navigation
-      const targetId = href.replace('/#', '')
-      const element = document.getElementById(targetId)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        console.log('Scrolling to element:', targetId)
-      } else {
-        console.log('Element not found:', targetId)
-        // Fallback: navigate to home then scroll
-        router.push('/')
-        setTimeout(() => {
-          const element = document.getElementById(targetId)
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
-        }, 100)
-      }
-    } else {
-      // Handle regular navigation
-      router.push(href)
-      console.log('Navigating to:', href)
-    }
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   useEffect(() => {
@@ -107,25 +89,29 @@ export default function Navbar() {
         as="nav"
         className={`transition-all duration-300 ${
           isScrolled
-            ? 'fixed left-0 right-0 top-0 border-b border-gray-200 bg-white/95 shadow-[0_8px_28px_rgba(0,0,0,0.1)] backdrop-blur supports-[backdrop-filter]:bg-white/85'
+            ? 'fixed left-0 right-0 top-0 border-b border-orange-600/30 bg-[#f97316]/95 shadow-[0_8px_28px_rgba(0,0,0,0.18)] backdrop-blur supports-[backdrop-filter]:bg-[#f97316]/85'
             : 'absolute inset-x-0 top-10 bg-transparent'
         }`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between sm:h-20">
             <div
-              className="-ml-1 flex items-center gap-3 px-3 py-1.5 text-left leading-none transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-105 hover:bg-orange-500/10 hover:shadow-[0_10px_24px_rgba(249,115,22,0.3)] hover:px-4 cursor-pointer sm:ml-0 sm:gap-4 sm:px-3.5 sm:py-2 hover:sm:px-4.5"
+              className={`-ml-1 flex items-center gap-3 px-3 py-1.5 text-left leading-none transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-105 hover:px-4 cursor-pointer sm:ml-0 sm:gap-4 sm:px-3.5 sm:py-2 hover:sm:px-4.5 ${
+                isScrolled
+                  ? 'hover:bg-white/10 hover:shadow-[0_10px_24px_rgba(0,0,0,0.22)]'
+                  : 'hover:bg-orange-500/10 hover:shadow-[0_10px_24px_rgba(249,115,22,0.3)]'
+              }`}
               onClick={() => router.push('/')}
             >
               <span className="flex items-center transition-all duration-300 ease-out hover:scale-110">
-                <span className={`text-[1.1rem] font-black tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out hover:tracking-widest hover:text-orange-400 ${
-                  isScrolled ? 'text-[#f97316]' : 'text-[#f97316]'
+                <span className={`text-[1.1rem] font-black tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out hover:tracking-widest ${
+                  isScrolled ? 'text-white hover:text-white/95' : 'text-[#f97316] hover:text-orange-400'
                 }`}>
                   VALLEY
                 </span>
                 <span className={`ml-1.5 text-[0.95rem] font-extrabold tracking-tight sm:text-[1.05rem] lg:text-[1.15rem] transition-all duration-300 ease-out hover:tracking-wider ${
-                  isScrolled ? 'text-gray-900' : 'text-zinc-100'
-                } hover:text-white`}>
+                  isScrolled ? 'text-white/95 hover:text-white' : 'text-zinc-100 hover:text-white'
+                }`}>
                   COMPUTERS
                 </span>
               </span>
@@ -133,29 +119,34 @@ export default function Navbar() {
 
             <div className="hidden items-center gap-8 lg:gap-10 md:flex">
               {navigation.map((item) => (
-                <button
+                <Link
                   key={item.name}
-                  onClick={(e) => handleNavigation(item.href, e)}
-                  className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
-                    isScrolled 
-                      ? 'text-gray-900 hover:text-[#f97316]' 
-                      : isActive(item.href) 
+                  href={item.href}
+                  onClick={(e) => handleAnchorClick(item.href, e)}
+                  className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
+                    isScrolled
+                      ? isActive(item.href)
                         ? 'text-white'
                         : 'text-white/90 hover:text-white'
+                      : isActive(item.href)
+                        ? 'text-[#f97316]'
+                        : 'text-white/90 hover:text-[#f97316]'
                   }`}
                 >
                   <span className="relative">
                     {item.name}
-                    <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
-                      isScrolled ? 'bg-[#f97316]' : 'bg-white'
-                    }`}></span>
+                    <span
+                      className={`absolute bottom-0 left-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                        isActive(item.href) ? 'w-full' : 'w-0'
+                      } ${isScrolled ? 'bg-white' : 'bg-[#f97316]'}`}
+                    ></span>
                   </span>
-                </button>
+                </Link>
               ))}
               <Menu as="div" className="relative">
                 <MenuButton className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition ${
                   isScrolled 
-                    ? 'border-gray-300 bg-gray-100 text-gray-900 hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]'
+                    ? 'border-white/25 bg-white/10 text-white hover:border-white/40 hover:bg-white/20 hover:text-white'
                     : 'border-white/20 bg-white/5 text-white/95 hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]'
                 }`}>
                   <ChevronDownIcon className="h-5 w-5" />
@@ -205,7 +196,11 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => router.push('/signup')}
-                className="rounded-full bg-[#f97316] px-6 py-2.5 text-sm font-bold text-white shadow-[0_10px_24px_rgba(243,111,0,0.3)] ring-1 ring-[#f8a258]/40 transition-all hover:-translate-y-0.5 hover:brightness-110 lg:px-7 lg:py-3"
+                className={`rounded-full px-6 py-2.5 text-sm font-bold ring-1 transition-all hover:-translate-y-0.5 lg:px-7 lg:py-3 ${
+                  isScrolled
+                    ? 'bg-white text-[#f97316] ring-white/40 shadow-[0_10px_24px_rgba(0,0,0,0.18)] hover:bg-white/95'
+                    : 'bg-[#f97316] text-white ring-[#f8a258]/40 hover:brightness-110 shadow-[0_10px_24px_rgba(243,111,0,0.3)]'
+                }`}
               >
                 Partner With Us
               </button>
@@ -214,7 +209,7 @@ export default function Navbar() {
             <div className="md:hidden">
               <DisclosureButton className={`group inline-flex items-center justify-center rounded-md p-2 transition ${
                 isScrolled 
-                  ? 'text-gray-900 hover:bg-gray-100' 
+                  ? 'text-white hover:bg-white/10' 
                   : 'text-white hover:bg-white/10'
               }`}>
                 <span className="sr-only">Open menu</span>
@@ -245,13 +240,14 @@ export default function Navbar() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     {navigation.map((item) => (
-                      <button
+                      <Link
                         key={item.name}
-                        onClick={(e) => handleNavigation(item.href, e)}
+                        href={item.href}
+                        onClick={(e) => handleAnchorClick(item.href, e)}
                         className="block w-full rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316] bg-transparent border-none cursor-pointer text-left"
                       >
                         {item.name}
-                      </button>
+                      </Link>
                     ))}
                   </div>
                   
