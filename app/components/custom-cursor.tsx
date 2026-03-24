@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-// Simple water cursor
+// Simple water cursor with color inversion
 export default function MorphCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
 
@@ -20,6 +20,48 @@ export default function MorphCursor() {
     let mousePosition = { x: 0, y: 0 }
     let rafID: number
     let isHoveringInteractive = false
+    let currentColor = 'orange' // Start with orange
+
+    // Simple color detection
+    const getCursorColor = (element: Element | null): string => {
+      // Always use orange on navbar elements
+      if (element?.closest('nav') || element?.closest('[class*="nav"]')) {
+        return 'black' // Black on orange navbar
+      }
+      
+      // Check background color
+      const bg = getEffectiveBg(element)
+      if (bg) {
+        const lum = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b
+        // Check if orange-ish background
+        const isOrangish = bg.r > 180 && bg.g > 60 && bg.g < 160 && bg.b < 80
+        
+        if (isOrangish || lum > 120) {
+          return 'black' // Black on light/orange backgrounds
+        } else {
+          return 'orange' // Orange on dark backgrounds
+        }
+      }
+      
+      return 'orange' // Default to orange
+    }
+
+    // Get effective background color
+    const getEffectiveBg = (el: Element | null): { r: number; g: number; b: number } | null => {
+      let node = el
+      while (node && node !== document.body) {
+        const bg = window.getComputedStyle(node as Element).backgroundColor
+        const match = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/)
+        if (match) {
+          const alpha = match[4] !== undefined ? parseFloat(match[4]) : 1
+          if (alpha > 0.05) {
+            return { r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]) }
+          }
+        }
+        node = (node as Element).parentElement
+      }
+      return null
+    }
 
     // Simple mouse move handler
     const onMouseMove = (e: MouseEvent) => {
@@ -33,6 +75,19 @@ export default function MorphCursor() {
       if (interactive !== isHoveringInteractive) {
         isHoveringInteractive = interactive
         cursor.classList.toggle('Cursor--interactive', interactive)
+      }
+
+      // Update cursor color
+      const newColor = getCursorColor(element)
+      if (newColor !== currentColor) {
+        currentColor = newColor
+        if (newColor === 'orange') {
+          cursor.style.background = 'radial-gradient(circle at 30% 30%, #ff9800, #f57c00)'
+          cursor.style.boxShadow = '0 2px 8px rgba(245, 124, 0, 0.3)'
+        } else {
+          cursor.style.background = 'radial-gradient(circle at 30% 30%, #424242, #212121)'
+          cursor.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)'
+        }
       }
     }
 
@@ -48,6 +103,10 @@ export default function MorphCursor() {
       positionCursor()
       rafID = requestAnimationFrame(render)
     }
+
+    // Initialize cursor color
+    cursor.style.background = 'radial-gradient(circle at 30% 30%, #ff9800, #f57c00)'
+    cursor.style.boxShadow = '0 2px 8px rgba(245, 124, 0, 0.3)'
 
     // Start
     window.addEventListener("mousemove", onMouseMove)
@@ -72,12 +131,10 @@ export default function MorphCursor() {
         width: '24px',
         height: '24px',
         borderRadius: '50%',
-        background: 'radial-gradient(circle at 30% 30%, #4fc3f7, #1976d2)',
         pointerEvents: 'none',
         zIndex: 9999,
         transform: 'translate(-50%, -50%)',
-        transition: 'transform 0.1s ease-out',
-        boxShadow: '0 2px 8px rgba(25, 118, 210, 0.3)',
+        transition: 'transform 0.1s ease-out, background 0.2s ease, box-shadow 0.2s ease',
         backdropFilter: 'blur(1px)'
       }}
     />
