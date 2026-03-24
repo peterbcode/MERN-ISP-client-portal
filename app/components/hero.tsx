@@ -157,7 +157,6 @@ const Hero = () => {
           <span className="block text-[#f97316] drop-shadow-[0_0_24px_rgba(243,111,0,0.35)]">We Build</span>
           <span className="block min-h-[1.05em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]">
             {displayText}
-            <span className="ml-1 inline-block h-[0.9em] w-[0.08em] animate-[cursor-blink_1s_steps(1,end)_infinite] bg-[#f97316] align-[-0.08em]" />
           </span>
         </h1>
 

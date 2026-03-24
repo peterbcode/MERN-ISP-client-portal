@@ -100,7 +100,7 @@ export default function Navbar() {
 
   return (
     <header className="relative z-50 w-full">
-      <div data-cursor-invert className="bg-[#f97316] text-white">
+      <div className="bg-[#f97316] text-white">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-3 text-[10px] font-medium sm:px-6 sm:text-xs lg:px-8">
           <div className="hidden items-center gap-5 md:flex">
             <span className="flex items-center gap-1.5 whitespace-nowrap text-white/95">
