@@ -22,6 +22,7 @@ const navigation = [
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isHoveringSection, setIsHoveringSection] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
 
@@ -69,9 +70,41 @@ export default function Navbar() {
       setIsScrolled(window.scrollY > 24)
     }
 
+    // Check which section is currently in view
+    const checkSectionHover = () => {
+      const sections = document.querySelectorAll('section[id]')
+      const scrollPosition = window.scrollY + 100 // Offset for navbar height
+      
+      let foundSection = false
+      sections.forEach((section) => {
+        const element = section as HTMLElement
+        const rect = element.getBoundingClientRect()
+        const elementTop = rect.top + window.scrollY
+        const elementBottom = elementTop + rect.height
+        
+        // Check if we're within this section
+        if (scrollPosition >= elementTop && scrollPosition <= elementBottom) {
+          setIsHoveringSection(true)
+          foundSection = true
+        }
+      })
+      
+      // If not in any section, reset to false
+      if (!foundSection) {
+        setIsHoveringSection(false)
+      }
+    }
+
     onScroll()
+    checkSectionHover()
+    
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener('scroll', checkSectionHover, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('scroll', checkSectionHover)
+    }
   }, [])
 
   return (
@@ -107,7 +140,9 @@ export default function Navbar() {
         as="nav"
         className={`transition-all duration-300 ${
           isScrolled
-            ? 'fixed left-0 right-0 top-0 border-b border-orange-600/30 bg-[#f97316]/95 shadow-[0_8px_28px_rgba(249,115,22,0.45)] backdrop-blur supports-[backdrop-filter]:bg-[#f97316]/85'
+            ? isHoveringSection
+              ? 'fixed left-0 right-0 top-0 border-b border-gray-800 bg-black/95 shadow-[0_8px_28px_rgba(0,0,0,0.8)] backdrop-blur supports-[backdrop-filter]:bg-black/85'
+              : 'fixed left-0 right-0 top-0 border-b border-orange-600/30 bg-[#f97316]/95 shadow-[0_8px_28px_rgba(249,115,22,0.45)] backdrop-blur supports-[backdrop-filter]:bg-[#f97316]/85'
             : 'absolute inset-x-0 top-10 bg-transparent'
         }`}
       >
@@ -119,12 +154,20 @@ export default function Navbar() {
             >
               <span className="flex items-center transition-all duration-300 ease-out hover:scale-110">
                 <span className={`text-[1.1rem] font-black tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out hover:tracking-widest ${
-                  isScrolled ? 'text-white' : 'text-[#f97316]'
+                  isScrolled && isHoveringSection
+                    ? 'text-[#f97316]'
+                    : isScrolled
+                      ? 'text-white'
+                      : 'text-[#f97316]'
                 }`}>
                   VALLEY
                 </span>
                 <span className={`ml-1.5 text-[0.95rem] font-extrabold tracking-tight sm:text-[1.05rem] lg:text-[1.15rem] transition-all duration-300 ease-out hover:tracking-wider ${
-                  isScrolled ? 'text-white' : 'text-zinc-100'
+                  isScrolled && isHoveringSection
+                    ? 'text-white'
+                    : isScrolled
+                      ? 'text-white'
+                      : 'text-zinc-100'
                 } hover:text-white`}>
                   COMPUTERS
                 </span>
@@ -137,26 +180,34 @@ export default function Navbar() {
                   key={item.name}
                   onClick={(e) => handleNavigation(item.href, e)}
                   className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
-                    isScrolled 
-                      ? 'text-white hover:text-gray-200' 
-                      : isActive(item.href) 
-                        ? 'text-white'
-                        : 'text-white/90 hover:text-white'
+                    isScrolled && isHoveringSection
+                      ? 'text-white hover:text-gray-300'
+                      : isScrolled
+                        ? 'text-white hover:text-gray-200'
+                        : isActive(item.href)
+                          ? 'text-white'
+                          : 'text-white/90 hover:text-white'
                   }`}
                 >
                   <span className="relative">
                     {item.name}
                     <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
-                      isScrolled ? 'bg-white' : 'bg-white'
+                      isScrolled && isHoveringSection
+                        ? 'bg-[#f97316]'
+                        : isScrolled
+                          ? 'bg-white'
+                          : 'bg-white'
                     }`}></span>
                   </span>
                 </button>
               ))}
               <Menu as="div" className="relative">
                 <MenuButton className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition ${
-                  isScrolled 
+                  isScrolled && isHoveringSection
                     ? 'border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20 hover:text-white'
-                    : 'border-white/20 bg-white/5 text-white/95 hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]'
+                    : isScrolled
+                      ? 'border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20 hover:text-white'
+                      : 'border-white/20 bg-white/5 text-white/95 hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]'
                 }`}>
                   <ChevronDownIcon className="h-5 w-5" />
                 </MenuButton>
@@ -213,9 +264,11 @@ export default function Navbar() {
 
             <div className="md:hidden">
               <DisclosureButton className={`group inline-flex items-center justify-center rounded-md p-2 transition ${
-                isScrolled 
+                isScrolled && isHoveringSection
                   ? 'text-white hover:bg-white/10' 
-                  : 'text-white hover:bg-white/10'
+                  : isScrolled
+                    ? 'text-white hover:bg-white/10' 
+                    : 'text-white hover:bg-white/10'
               }`}>
                 <span className="sr-only">Open menu</span>
                 <Bars3Icon className="block h-6 w-6 group-data-open:hidden" aria-hidden="true" />
