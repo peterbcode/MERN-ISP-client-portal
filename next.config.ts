@@ -14,9 +14,9 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    workerThreads: true,
-  },
+  // experimental: {
+  //   workerThreads: true,
+  // },
   // Disable React Strict Mode to reduce dev warnings
   reactStrictMode: false,
 };
