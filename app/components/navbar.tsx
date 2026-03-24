@@ -27,8 +27,9 @@ export default function Navbar() {
 
   // Helper function to check if a navigation item is active
   const isActive = (href: string) => {
+    // Services link should never be orange/active - it's an anchor link
     if (href === '/#services' || href === '/#success-stories') {
-      return pathname === '/'
+      return false
     }
     return pathname === href
   }
