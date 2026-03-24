@@ -12,6 +12,7 @@ export const Cursor: React.FC<CursorProps> = ({ size = 60 }) => {
 
   const targetPosRef = useRef({ x: -size, y: -size });
   const currentPosRef = useRef({ x: -size, y: -size });
+  const enabledRef = useRef(false);
 
   const [visible, setVisible] = useState(false);
 
@@ -19,27 +20,34 @@ export const Cursor: React.FC<CursorProps> = ({ size = 60 }) => {
     const cursorEl = cursorRef.current;
     if (!cursorEl) return;
 
-    const isCoarsePointer =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(hover: none), (pointer: coarse)")?.matches;
-    if (isCoarsePointer) return;
-
-    document.body.classList.add("inverted-cursor-enabled");
-
     targetPosRef.current = { x: -size, y: -size };
     currentPosRef.current = { x: -size, y: -size };
+    enabledRef.current = false;
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const enable = () => {
+      if (enabledRef.current) return;
+      enabledRef.current = true;
+      document.body.classList.add("inverted-cursor-enabled");
+    };
+
+    const handlePointerMove = (e: PointerEvent) => {
+      // Only show the custom cursor for an actual mouse. This keeps touch/stylus
+      // devices from forcing a hidden cursor, while still working on touchscreen laptops.
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      enable();
+      document.body.classList.add("inverted-cursor-hide-native");
       setVisible(true);
       targetPosRef.current = { x: e.clientX, y: e.clientY };
     };
 
     const handleMouseEnter = () => {
+      enable();
       setVisible(true);
     };
 
     const handleMouseLeave = () => {
       setVisible(false);
+      document.body.classList.remove("inverted-cursor-hide-native");
     };
 
     // Animation loop for smooth cursor follow
@@ -60,17 +68,18 @@ export const Cursor: React.FC<CursorProps> = ({ size = 60 }) => {
       requestRef.current = requestAnimationFrame(animate);
     };
 
-    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("pointermove", handlePointerMove);
     document.documentElement.addEventListener("mouseenter", handleMouseEnter);
     document.documentElement.addEventListener("mouseleave", handleMouseLeave);
 
     requestRef.current = requestAnimationFrame(animate);
 
     return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("pointermove", handlePointerMove);
       document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
       document.body.classList.remove("inverted-cursor-enabled");
+      document.body.classList.remove("inverted-cursor-hide-native");
       if (requestRef.current != null) cancelAnimationFrame(requestRef.current);
       requestRef.current = null;
     };
@@ -79,7 +88,7 @@ export const Cursor: React.FC<CursorProps> = ({ size = 60 }) => {
   return (
     <div
       ref={cursorRef}
-      className="fixed pointer-events-none rounded-full bg-white mix-blend-difference z-[99999] transition-opacity duration-300"
+      className="fixed left-0 top-0 pointer-events-none rounded-full bg-white mix-blend-difference z-[99999] transition-opacity duration-300"
       style={{
         width: size,
         height: size,

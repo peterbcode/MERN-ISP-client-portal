@@ -4,6 +4,7 @@ export function withSystemCursor<T>(fn: () => T): T {
   const body = document.body
   const hadCustomCursor = body.classList.contains('custom-cursor-enabled')
   const hadInvertedCursor = body.classList.contains('inverted-cursor-enabled')
+  const hadInvertedCursorHideNative = body.classList.contains('inverted-cursor-hide-native')
   const hadNoCustomCursor = body.classList.contains('no-custom-cursor')
 
   const previousBodyCursor = body.style.cursor
@@ -11,6 +12,7 @@ export function withSystemCursor<T>(fn: () => T): T {
 
   if (hadCustomCursor) body.classList.remove('custom-cursor-enabled')
   if (hadInvertedCursor) body.classList.remove('inverted-cursor-enabled')
+  if (hadInvertedCursorHideNative) body.classList.remove('inverted-cursor-hide-native')
   body.classList.add('no-custom-cursor')
   body.style.cursor = 'auto'
   document.documentElement.style.cursor = 'auto'
@@ -21,6 +23,7 @@ export function withSystemCursor<T>(fn: () => T): T {
     if (!hadNoCustomCursor) body.classList.remove('no-custom-cursor')
     if (hadCustomCursor) body.classList.add('custom-cursor-enabled')
     if (hadInvertedCursor) body.classList.add('inverted-cursor-enabled')
+    if (hadInvertedCursorHideNative) body.classList.add('inverted-cursor-hide-native')
     body.style.cursor = previousBodyCursor
     document.documentElement.style.cursor = previousHtmlCursor
   }

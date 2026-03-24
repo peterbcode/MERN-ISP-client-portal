@@ -55,10 +55,10 @@ body {
   color: #d4d4d4;
 }
 
-body.inverted-cursor-enabled,
-body.inverted-cursor-enabled *,
-body.inverted-cursor-enabled *::before,
-body.inverted-cursor-enabled *::after {
+body.inverted-cursor-hide-native,
+body.inverted-cursor-hide-native *,
+body.inverted-cursor-hide-native *::before,
+body.inverted-cursor-hide-native *::after {
   cursor: none !important;
 }
 
@@ -69,9 +69,9 @@ body.no-custom-cursor *::after {
 }
 
 @media (hover: none), (pointer: coarse) {
-  body.inverted-cursor-enabled *,
-  body.inverted-cursor-enabled *::before,
-  body.inverted-cursor-enabled *::after {
+  body.inverted-cursor-hide-native *,
+  body.inverted-cursor-hide-native *::before,
+  body.inverted-cursor-hide-native *::after {
     cursor: auto !important;
   }
 }
