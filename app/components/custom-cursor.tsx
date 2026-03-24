@@ -241,11 +241,23 @@ export default function MorphCursor() {
 
     window.addEventListener("mousemove", onMouseMove)
     window.addEventListener("touchmove", onTouchMove)
+    
+    // Add click handler to forward clicks from cursor to underlying element
+    const onClick = (e: MouseEvent) => {
+      const element = document.elementFromPoint(e.clientX, e.clientY)
+      if (element && element !== cursor && !cursor.contains(element as Node)) {
+        // Forward the click to the underlying element
+        (element as HTMLElement).click?.()
+      }
+    }
+    cursor.addEventListener("click", onClick)
+    
     rafID = requestAnimationFrame(render)
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove)
       window.removeEventListener("touchmove", onTouchMove)
+      cursor.removeEventListener("click", onClick)
       clearTimeout(timeoutID)
       cancelAnimationFrame(rafID)
       while (cursor.firstChild) cursor.removeChild(cursor.firstChild)
