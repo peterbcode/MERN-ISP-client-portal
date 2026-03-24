@@ -21,9 +21,9 @@ export default function MorphCursor() {
     const targetX = mousePosition.x
     const targetY = mousePosition.y
 
-    // Smooth easing factor for lag-free movement
-    const deltaX = (targetX - currentX) * 0.15
-    const deltaY = (targetY - currentY) * 0.15
+    // High sensitivity easing factor for responsive movement
+    const deltaX = (targetX - currentX) * 0.4
+    const deltaY = (targetY - currentY) * 0.4
 
     const newX = currentX + deltaX
     const newY = currentY + deltaY
@@ -78,39 +78,43 @@ export default function MorphCursor() {
     document.body.classList.add('custom-cursor-enabled')
     cursor.classList.add('Cursor')
 
-    // Optimized mouse move handler
+    // Optimized mouse move handler with high sensitivity
     const onMouseMove = (e: MouseEvent) => {
+      // Direct position update for maximum responsiveness
       mousePosition.x = e.clientX
       mousePosition.y = e.clientY
       
-      // Check for hover on interactive elements
-      const element = document.elementFromPoint(e.clientX, e.clientY)
-      const interactive = !!(element as Element)?.closest?.('a, button, input, textarea, select, label, [role="button"], [tabindex], [onclick]')
-      
-      if (interactive !== isHoveringInteractive) {
-        isHoveringInteractive = interactive
-        cursor.classList.toggle('Cursor--interactive', interactive)
+      // Throttle expensive operations
+      if (!isHoveringInteractive) {
+        // Check for hover on interactive elements only when needed
+        const element = document.elementFromPoint(e.clientX, e.clientY)
+        const interactive = !!(element as Element)?.closest?.('a, button, input, textarea, select, label, [role="button"], [tabindex], [onclick]')
         
-        // Expand cursor on interactive elements
-        if (interactive) {
-          cursor.style.width = '32px'
-          cursor.style.height = '32px'
-        } else {
-          cursor.style.width = '16px'
-          cursor.style.height = '16px'
+        if (interactive !== isHoveringInteractive) {
+          isHoveringInteractive = interactive
+          cursor.classList.toggle('Cursor--interactive', interactive)
+          
+          // Expand cursor on interactive elements
+          if (interactive) {
+            cursor.style.width = '32px'
+            cursor.style.height = '32px'
+          } else {
+            cursor.style.width = '16px'
+            cursor.style.height = '16px'
+          }
         }
-      }
 
-      // Update cursor color
-      const newColor = getCursorColor(element)
-      if (newColor !== currentColor) {
-        currentColor = newColor
-        if (newColor === 'orange') {
-          cursor.style.background = 'radial-gradient(circle at 30% 30%, #ff9800, #f57c00)'
-          cursor.style.boxShadow = '0 2px 8px rgba(245, 124, 0, 0.3)'
-        } else {
-          cursor.style.background = 'radial-gradient(circle at 30% 30%, #424242, #212121)'
-          cursor.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)'
+        // Update cursor color only when needed
+        const newColor = getCursorColor(element)
+        if (newColor !== currentColor) {
+          currentColor = newColor
+          if (newColor === 'orange') {
+            cursor.style.background = 'radial-gradient(circle at 30% 30%, #ff9800, #f57c00)'
+            cursor.style.boxShadow = '0 2px 8px rgba(245, 124, 0, 0.3)'
+          } else {
+            cursor.style.background = 'radial-gradient(circle at 30% 30%, #424242, #212121)'
+            cursor.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)'
+          }
         }
       }
     }
