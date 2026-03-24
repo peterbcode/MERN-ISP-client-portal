@@ -104,9 +104,9 @@ export default function Navbar() {
 
       <Disclosure
         as="nav"
-        className={`text-white transition-all duration-300 ${
+        className={`transition-all duration-300 ${
           isScrolled
-            ? 'fixed left-0 right-0 top-10 border-b border-white/10 bg-orange-600/95 shadow-[0_8px_28px_rgba(249,115,22,0.45)] backdrop-blur supports-[backdrop-filter]:bg-orange-600/85'
+            ? 'fixed left-0 right-0 top-0 border-b border-gray-200 bg-white/95 shadow-[0_8px_28px_rgba(0,0,0,0.1)] backdrop-blur supports-[backdrop-filter]:bg-white/85'
             : 'absolute inset-x-0 top-10 bg-transparent'
         }`}
       >
@@ -117,10 +117,14 @@ export default function Navbar() {
               onClick={() => router.push('/')}
             >
               <span className="flex items-center transition-all duration-300 ease-out hover:scale-110">
-                <span className="text-[1.1rem] font-black tracking-tight text-[#f97316] sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out hover:tracking-widest hover:text-orange-400">
+                <span className={`text-[1.1rem] font-black tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out hover:tracking-widest hover:text-orange-400 ${
+                  isScrolled ? 'text-[#f97316]' : 'text-[#f97316]'
+                }`}>
                   VALLEY
                 </span>
-                <span className="ml-1.5 text-[0.95rem] font-extrabold tracking-tight text-zinc-100 sm:text-[1.05rem] lg:text-[1.15rem] transition-all duration-300 ease-out hover:tracking-wider hover:text-white">
+                <span className={`ml-1.5 text-[0.95rem] font-extrabold tracking-tight sm:text-[1.05rem] lg:text-[1.15rem] transition-all duration-300 ease-out hover:tracking-wider ${
+                  isScrolled ? 'text-gray-900' : 'text-zinc-100'
+                } hover:text-white`}>
                   COMPUTERS
                 </span>
               </span>
@@ -131,20 +135,28 @@ export default function Navbar() {
                 <button
                   key={item.name}
                   onClick={(e) => handleNavigation(item.href, e)}
-                  className={`relative text-[15px] font-semibold transition-all duration-200 hover:text-[#f97316] hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
-                    isActive(item.href)
-                      ? 'text-[#f97316]'
-                      : 'text-white/90'
+                  className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
+                    isScrolled 
+                      ? 'text-gray-900 hover:text-[#f97316]' 
+                      : isActive(item.href) 
+                        ? 'text-white'
+                        : 'text-white/90 hover:text-white'
                   }`}
                 >
                   <span className="relative">
                     {item.name}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#f97316] transition-all duration-300 group-hover:w-full"></span>
+                    <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                      isScrolled ? 'bg-[#f97316]' : 'bg-white'
+                    }`}></span>
                   </span>
                 </button>
               ))}
               <Menu as="div" className="relative">
-                <MenuButton className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 bg-white/5 text-white/95 transition hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]">
+                <MenuButton className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition ${
+                  isScrolled 
+                    ? 'border-gray-300 bg-gray-100 text-gray-900 hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]'
+                    : 'border-white/20 bg-white/5 text-white/95 hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]'
+                }`}>
                   <ChevronDownIcon className="h-5 w-5" />
                 </MenuButton>
                 <MenuItems className="absolute right-0 z-50 mt-2 w-44 rounded-xl border border-white/20 bg-zinc-950 p-2 shadow-[0_14px_30px_rgba(0,0,0,0.5)]">
@@ -199,7 +211,11 @@ export default function Navbar() {
             </div>
 
             <div className="md:hidden">
-              <DisclosureButton className="group inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-white/10">
+              <DisclosureButton className={`group inline-flex items-center justify-center rounded-md p-2 transition ${
+                isScrolled 
+                  ? 'text-gray-900 hover:bg-gray-100' 
+                  : 'text-white hover:bg-white/10'
+              }`}>
                 <span className="sr-only">Open menu</span>
                 <Bars3Icon className="block h-6 w-6 group-data-open:hidden" aria-hidden="true" />
                 <XMarkIcon className="hidden h-6 w-6 group-data-open:block" aria-hidden="true" />
