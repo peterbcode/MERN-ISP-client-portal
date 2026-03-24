@@ -111,6 +111,17 @@ export default function MorphCursor() {
     <div
       ref={cursorRef}
       className="Cursor"
+      style={{
+        position: 'fixed',
+        width: '20px',
+        height: '20px',
+        borderRadius: '50%',
+        backgroundColor: '#ff6a00',
+        pointerEvents: 'none',
+        zIndex: 9999,
+        transform: 'translate(-50%, -50%)',
+        transition: 'background-color 0.15s ease'
+      }}
     />
   )
 }
