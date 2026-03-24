@@ -55,12 +55,6 @@ body {
   color: #d4d4d4;
 }
 
-body.no-custom-cursor *,
-body.no-custom-cursor *::before,
-body.no-custom-cursor *::after {
-  cursor: auto !important;
-}
-
 h1,
 h2,
 h3,
