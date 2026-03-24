@@ -76,14 +76,14 @@ export default function Navbar() {
         as="nav"
         className={`text-white transition-all duration-300 ${
           isScrolled
-            ? 'fixed left-0 right-0 top-0 border-b border-white/10 bg-black/95 shadow-[0_8px_28px_rgba(0,0,0,0.45)] backdrop-blur supports-[backdrop-filter]:bg-black/85'
+            ? 'fixed left-0 right-0 top-10 border-b border-white/10 bg-orange-600/95 shadow-[0_8px_28px_rgba(249,115,22,0.45)] backdrop-blur supports-[backdrop-filter]:bg-orange-600/85'
             : 'absolute inset-x-0 top-10 bg-transparent'
         }`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between sm:h-20">
             <div
-              className="-ml-1 flex items-center gap-3 px-3 py-1.5 text-left leading-none transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-105 hover:bg-white/[0.05] hover:shadow-[0_10px_24px_rgba(249,115,22,0.2)] hover:px-4 cursor-pointer sm:ml-0 sm:gap-4 sm:px-3.5 sm:py-2 hover:sm:px-4.5"
+              className="-ml-1 flex items-center gap-3 px-3 py-1.5 text-left leading-none transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-105 hover:bg-orange-500/10 hover:shadow-[0_10px_24px_rgba(249,115,22,0.3)] hover:px-4 cursor-pointer sm:ml-0 sm:gap-4 sm:px-3.5 sm:py-2 hover:sm:px-4.5"
               onClick={() => router.push('/')}
             >
               <span className="flex items-center transition-all duration-300 ease-out hover:scale-110">
