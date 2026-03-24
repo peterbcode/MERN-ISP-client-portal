@@ -35,7 +35,6 @@ export const Cursor: React.FC<CursorProps> = ({ size = 60 }) => {
       // devices from forcing a hidden cursor, while still working on touchscreen laptops.
       if (e.pointerType && e.pointerType !== "mouse") return;
       enable();
-      document.body.classList.add("inverted-cursor-hide-native");
       setVisible(true);
       targetPosRef.current = { x: e.clientX, y: e.clientY };
     };
@@ -47,7 +46,6 @@ export const Cursor: React.FC<CursorProps> = ({ size = 60 }) => {
 
     const handleMouseLeave = () => {
       setVisible(false);
-      document.body.classList.remove("inverted-cursor-hide-native");
     };
 
     // Animation loop for smooth cursor follow
@@ -79,7 +77,6 @@ export const Cursor: React.FC<CursorProps> = ({ size = 60 }) => {
       document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
       document.body.classList.remove("inverted-cursor-enabled");
-      document.body.classList.remove("inverted-cursor-hide-native");
       if (requestRef.current != null) cancelAnimationFrame(requestRef.current);
       requestRef.current = null;
     };

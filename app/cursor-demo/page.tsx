@@ -4,7 +4,7 @@ import { Cursor } from "@/components/ui/inverted-cursor";
 
 export default function CursorDemoPage() {
   return (
-    <div className="relative w-full h-screen overflow-hidden cursor-none">
+    <div className="relative w-full h-screen overflow-hidden">
       {/* Custom circular inverted color cursor */}
       <Cursor />
 
