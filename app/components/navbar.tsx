@@ -25,6 +25,14 @@ export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
 
+  // Helper function to check if a navigation item is active
+  const isActive = (href: string) => {
+    if (href === '/#services' || href === '/#success-stories') {
+      return pathname === '/'
+    }
+    return pathname === href
+  }
+
   useEffect(() => {
     const onScroll = () => {
       setIsScrolled(window.scrollY > 24)
@@ -93,15 +101,16 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`relative text-[15px] font-semibold transition-all duration-200 hover:text-[#f97316] hover:scale-105 inline-block ${
-                    (item.href === '/#services' || item.href === '/#success-stories') && pathname === '/'
-                      ? 'text-white/95'
-                      : pathname === item.href
-                        ? 'text-[#f97316]'
-                        : 'text-white/90'
+                  className={`relative text-[15px] font-semibold transition-all duration-200 hover:text-[#f97316] hover:scale-105 hover:-translate-y-0.5 inline-block group ${
+                    isActive(item.href)
+                      ? 'text-[#f97316]'
+                      : 'text-white/90'
                   }`}
                 >
-                  {item.name}
+                  <span className="relative">
+                    {item.name}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#f97316] transition-all duration-300 group-hover:w-full"></span>
+                  </span>
                 </Link>
               ))}
               <Menu as="div" className="relative">
@@ -113,7 +122,7 @@ export default function Navbar() {
                     {({ focus }) => (
                       <Link
                         href="/faq"
-                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 ${
+                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#f97316] ${
                           focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
                         }`}
                       >
@@ -125,7 +134,7 @@ export default function Navbar() {
                     {({ focus }) => (
                       <Link
                         href="/login"
-                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 ${
+                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#f97316] ${
                           focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
                         }`}
                       >
@@ -137,7 +146,7 @@ export default function Navbar() {
                     {({ focus }) => (
                       <Link
                         href="/signup"
-                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 ${
+                        className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#f97316] ${
                           focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
                         }`}
                       >
@@ -189,7 +198,11 @@ export default function Navbar() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     {navigation.map((item) => (
-                      <Link key={item.name} href={item.href} className="block rounded-lg px-4 py-3 text-base font-semibold text-white hover:bg-white/10 transition-colors">
+                      <Link 
+                        key={item.name} 
+                        href={item.href} 
+                        className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316]"
+                      >
                         {item.name}
                       </Link>
                     ))}
@@ -197,13 +210,22 @@ export default function Navbar() {
                   
                   <div className="border-t border-white/10 pt-4">
                     <div className="space-y-2">
-                      <Link href="/faq" className="block rounded-lg px-4 py-3 text-base font-semibold text-white hover:bg-white/10 transition-colors">
+                      <Link 
+                        href="/faq" 
+                        className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316]"
+                      >
                         FAQ
                       </Link>
-                      <Link href="/login" className="block rounded-lg px-4 py-3 text-base font-semibold text-white hover:bg-white/10 transition-colors">
+                      <Link 
+                        href="/login" 
+                        className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316]"
+                      >
                         Login
                       </Link>
-                      <Link href="/signup" className="block rounded-lg px-4 py-3 text-base font-semibold text-white hover:bg-white/10 transition-colors">
+                      <Link 
+                        href="/signup" 
+                        className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316]"
+                      >
                         Sign Up
                       </Link>
                     </div>
