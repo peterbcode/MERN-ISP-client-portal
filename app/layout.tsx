@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import MorphCursor from "./components/custom-cursor";
+import Cursor from "@/components/ui/inverted-cursor";
 import FloatingActions from "./components/floating-actions";
 import CookieConsent from "./components/cookie-consent";
 import { ConsentProvider } from "./components/consent-provider";
@@ -62,7 +62,7 @@ export default function RootLayout({
       <body suppressHydrationWarning className="antialiased">
         <ConsentProvider>
           <PageLoader />
-          <MorphCursor />
+          <Cursor />
           <DevIndicatorRemover />
           {children}
           <CookieConsent />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface CursorProps {
   size?: number;
@@ -8,37 +8,30 @@ interface CursorProps {
 
 export const Cursor: React.FC<CursorProps> = ({ size = 60 }) => {
   const cursorRef = useRef<HTMLDivElement>(null);
-  const requestRef = useRef<number>();
-  const previousPos = useRef({ x: -size, y: -size }); // start off-screen
-  
+  const requestRef = useRef<number | null>(null);
+
+  const targetPosRef = useRef({ x: -size, y: -size });
+  const currentPosRef = useRef({ x: -size, y: -size });
+
   const [visible, setVisible] = useState(false);
-  const [position, setPosition] = useState({ x: -size, y: -size });
 
   useEffect(() => {
-    // Animation loop for smooth cursor follow
-    const animate = () => {
-      if (!cursorRef.current) return;
+    const cursorEl = cursorRef.current;
+    if (!cursorEl) return;
 
-      const currentX = previousPos.current.x;
-      const currentY = previousPos.current.y;
-      const targetX = position.x - size / 2;
-      const targetY = position.y - size / 2;
+    const isCoarsePointer =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(hover: none), (pointer: coarse)")?.matches;
+    if (isCoarsePointer) return;
 
-      const deltaX = (targetX - currentX) * 0.2;
-      const deltaY = (targetY - currentY) * 0.2;
+    document.body.classList.add("inverted-cursor-enabled");
 
-      const newX = currentX + deltaX;
-      const newY = currentY + deltaY;
-
-      previousPos.current = { x: newX, y: newY };
-      cursorRef.current.style.transform = `translate(${newX}px, ${newY}px)`;
-
-      requestRef.current = requestAnimationFrame(animate);
-    };
+    targetPosRef.current = { x: -size, y: -size };
+    currentPosRef.current = { x: -size, y: -size };
 
     const handleMouseMove = (e: MouseEvent) => {
       setVisible(true);
-      setPosition({ x: e.clientX, y: e.clientY });
+      targetPosRef.current = { x: e.clientX, y: e.clientY };
     };
 
     const handleMouseEnter = () => {
@@ -49,11 +42,27 @@ export const Cursor: React.FC<CursorProps> = ({ size = 60 }) => {
       setVisible(false);
     };
 
+    // Animation loop for smooth cursor follow
+    const animate = () => {
+      const { x: clientX, y: clientY } = targetPosRef.current;
+      const targetX = clientX - size / 2;
+      const targetY = clientY - size / 2;
+
+      const currentX = currentPosRef.current.x;
+      const currentY = currentPosRef.current.y;
+
+      const newX = currentX + (targetX - currentX) * 0.2;
+      const newY = currentY + (targetY - currentY) * 0.2;
+
+      currentPosRef.current = { x: newX, y: newY };
+      cursorEl.style.transform = `translate3d(${newX}px, ${newY}px, 0)`;
+
+      requestRef.current = requestAnimationFrame(animate);
+    };
+
     document.addEventListener("mousemove", handleMouseMove);
     document.documentElement.addEventListener("mouseenter", handleMouseEnter);
     document.documentElement.addEventListener("mouseleave", handleMouseLeave);
-
-    document.body.style.cursor = "none"; // hide native cursor
 
     requestRef.current = requestAnimationFrame(animate);
 
@@ -61,15 +70,16 @@ export const Cursor: React.FC<CursorProps> = ({ size = 60 }) => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
-      document.body.style.cursor = "auto"; // restore native cursor
+      document.body.classList.remove("inverted-cursor-enabled");
+      if (requestRef.current != null) cancelAnimationFrame(requestRef.current);
+      requestRef.current = null;
     };
-  }, [position, size]);
+  }, [size]);
 
   return (
     <div
       ref={cursorRef}
-      className="fixed pointer-events-none rounded-full bg-white mix-blend-difference z-50 transition-opacity duration-300"
+      className="fixed pointer-events-none rounded-full bg-white mix-blend-difference z-[99999] transition-opacity duration-300"
       style={{
         width: size,
         height: size,
