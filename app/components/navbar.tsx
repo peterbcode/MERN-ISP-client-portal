@@ -33,6 +33,36 @@ export default function Navbar() {
     return pathname === href
   }
 
+  // Handle navigation with debugging
+  const handleNavigation = (href: string, e: React.MouseEvent) => {
+    console.log('Navigation clicked:', href)
+    e.preventDefault()
+    
+    if (href.startsWith('/#')) {
+      // Handle anchor navigation
+      const targetId = href.replace('/#', '')
+      const element = document.getElementById(targetId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        console.log('Scrolling to element:', targetId)
+      } else {
+        console.log('Element not found:', targetId)
+        // Fallback: navigate to home then scroll
+        router.push('/')
+        setTimeout(() => {
+          const element = document.getElementById(targetId)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }, 100)
+      }
+    } else {
+      // Handle regular navigation
+      router.push(href)
+      console.log('Navigating to:', href)
+    }
+  }
+
   useEffect(() => {
     const onScroll = () => {
       setIsScrolled(window.scrollY > 24)
@@ -98,10 +128,10 @@ export default function Navbar() {
 
             <div className="hidden items-center gap-8 lg:gap-10 md:flex">
               {navigation.map((item) => (
-                <Link
+                <button
                   key={item.name}
-                  href={item.href}
-                  className={`relative text-[15px] font-semibold transition-all duration-200 hover:text-[#f97316] hover:scale-105 hover:-translate-y-0.5 inline-block group ${
+                  onClick={(e) => handleNavigation(item.href, e)}
+                  className={`relative text-[15px] font-semibold transition-all duration-200 hover:text-[#f97316] hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
                     isActive(item.href)
                       ? 'text-[#f97316]'
                       : 'text-white/90'
@@ -111,7 +141,7 @@ export default function Navbar() {
                     {item.name}
                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#f97316] transition-all duration-300 group-hover:w-full"></span>
                   </span>
-                </Link>
+                </button>
               ))}
               <Menu as="div" className="relative">
                 <MenuButton className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 bg-white/5 text-white/95 transition hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]">
@@ -198,13 +228,13 @@ export default function Navbar() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     {navigation.map((item) => (
-                      <Link 
-                        key={item.name} 
-                        href={item.href} 
-                        className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316]"
+                      <button
+                        key={item.name}
+                        onClick={(e) => handleNavigation(item.href, e)}
+                        className="block w-full rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316] bg-transparent border-none cursor-pointer text-left"
                       >
                         {item.name}
-                      </Link>
+                      </button>
                     ))}
                   </div>
                   
