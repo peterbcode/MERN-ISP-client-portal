@@ -24,25 +24,13 @@ export default function MorphCursor() {
 
     // Simple color detection
     const getCursorColor = (element: Element | null): string => {
-      // Always use black on navbar elements (orange background)
-      if (element?.closest('nav') || element?.closest('[class*="nav"]')) {
-        return 'black' // Black on orange navbar
+      // Check if we're on the top bar above navbar (the orange announcement bar)
+      if (element?.closest('[data-cursor-invert]') || element?.closest('.bg-\\[\\#f97316\\]')) {
+        return 'black' // Black on top orange bar
       }
       
-      // Check background color
-      const bg = getEffectiveBg(element)
-      if (bg) {
-        // Check if orange-ish background
-        const isOrangish = bg.r > 180 && bg.g > 60 && bg.g < 160 && bg.b < 80
-        
-        if (isOrangish) {
-          return 'black' // Black on orange backgrounds
-        } else {
-          return 'orange' // Orange on white, black, and all other backgrounds
-        }
-      }
-      
-      return 'orange' // Default to orange
+      // Always stay orange on navbar and everywhere else
+      return 'orange' // Orange on navbar and all other backgrounds
     }
 
     // Get effective background color
@@ -74,6 +62,15 @@ export default function MorphCursor() {
       if (interactive !== isHoveringInteractive) {
         isHoveringInteractive = interactive
         cursor.classList.toggle('Cursor--interactive', interactive)
+        
+        // Expand cursor on interactive elements
+        if (interactive) {
+          cursor.style.width = '32px'
+          cursor.style.height = '32px'
+        } else {
+          cursor.style.width = '16px'
+          cursor.style.height = '16px'
+        }
       }
 
       // Update cursor color
@@ -127,13 +124,13 @@ export default function MorphCursor() {
       className="Cursor"
       style={{
         position: 'fixed',
-        width: '24px',
-        height: '24px',
+        width: '16px',
+        height: '16px',
         borderRadius: '50%',
         pointerEvents: 'none',
         zIndex: 9999,
         transform: 'translate(-50%, -50%)',
-        transition: 'transform 0.1s ease-out, background 0.2s ease, box-shadow 0.2s ease',
+        transition: 'transform 0.1s ease-out, background 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease',
         backdropFilter: 'blur(1px)'
       }}
     />
