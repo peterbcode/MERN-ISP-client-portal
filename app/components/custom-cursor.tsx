@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-// Simple cursor with basic hover detection
+// Simple cursor with basic hover detection and color adaptation
 export default function MorphCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
 
@@ -20,6 +20,42 @@ export default function MorphCursor() {
     let mousePosition = { x: 0, y: 0 }
     let rafID: number
     let isHoveringInteractive = false
+    let currentColor = '#ff6a00' // Default to orange
+
+    // Simple color detection
+    const getCursorColor = (element: Element | null): string => {
+      // Always use orange on navbar elements
+      if (element?.closest('nav') || element?.closest('[class*="nav"]')) {
+        return '#ff6a00' // Orange
+      }
+      
+      // Check if hovering over dark/light areas
+      const bg = getEffectiveBg(element)
+      if (bg) {
+        const lum = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b
+        // Light background -> dark cursor, Dark background -> orange cursor
+        return lum > 100 ? '#0d0d0d' : '#ff6a00'
+      }
+      
+      return '#ff6a00' // Default to orange
+    }
+
+    // Get effective background color
+    const getEffectiveBg = (el: Element | null): { r: number; g: number; b: number } | null => {
+      let node = el
+      while (node && node !== document.body) {
+        const bg = window.getComputedStyle(node as Element).backgroundColor
+        const match = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/)
+        if (match) {
+          const alpha = match[4] !== undefined ? parseFloat(match[4]) : 1
+          if (alpha > 0.05) {
+            return { r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]) }
+          }
+        }
+        node = (node as Element).parentElement
+      }
+      return null
+    }
 
     // Simple mouse move handler
     const onMouseMove = (e: MouseEvent) => {
@@ -34,6 +70,13 @@ export default function MorphCursor() {
         isHoveringInteractive = interactive
         cursor.classList.toggle('Cursor--interactive', interactive)
       }
+
+      // Update cursor color
+      const newColor = getCursorColor(element)
+      if (newColor !== currentColor) {
+        currentColor = newColor
+        cursor.style.backgroundColor = newColor
+      }
     }
 
     // Simple position update
@@ -46,6 +89,9 @@ export default function MorphCursor() {
       positionCursor()
       rafID = requestAnimationFrame(render)
     }
+
+    // Initialize cursor color
+    cursor.style.backgroundColor = currentColor
 
     // Start
     window.addEventListener("mousemove", onMouseMove)
