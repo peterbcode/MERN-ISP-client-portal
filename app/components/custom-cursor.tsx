@@ -24,7 +24,7 @@ export default function MorphCursor() {
 
     // Simple color detection
     const getCursorColor = (element: Element | null): string => {
-      // Always use orange on navbar elements
+      // Always use black on navbar elements (orange background)
       if (element?.closest('nav') || element?.closest('[class*="nav"]')) {
         return 'black' // Black on orange navbar
       }
@@ -32,14 +32,13 @@ export default function MorphCursor() {
       // Check background color
       const bg = getEffectiveBg(element)
       if (bg) {
-        const lum = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b
         // Check if orange-ish background
         const isOrangish = bg.r > 180 && bg.g > 60 && bg.g < 160 && bg.b < 80
         
-        if (isOrangish || lum > 120) {
-          return 'black' // Black on light/orange backgrounds
+        if (isOrangish) {
+          return 'black' // Black on orange backgrounds
         } else {
-          return 'orange' // Orange on dark backgrounds
+          return 'orange' // Orange on white, black, and all other backgrounds
         }
       }
       
