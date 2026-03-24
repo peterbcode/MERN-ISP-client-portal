@@ -174,12 +174,12 @@ export default function Navbar() {
                     onClick={(e) => handleAnchorNavigation(item.href, e)}
                     className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
                       isScrolled && isHoveringSection
-                        ? 'text-white hover:text-gray-300'
+                        ? 'text-white hover:text-[#f97316]'
                         : isScrolled
-                          ? 'text-white hover:text-gray-200'
+                          ? 'text-white hover:text-[#f97316]'
                           : isActive(item.href)
                             ? 'text-white'
-                            : 'text-white/90 hover:text-white'
+                            : 'text-white/90 hover:text-[#f97316]'
                     }`}
                   >
                     <span className="relative">
@@ -188,8 +188,8 @@ export default function Navbar() {
                         isScrolled && isHoveringSection
                           ? 'bg-[#f97316]'
                           : isScrolled
-                            ? 'bg-white'
-                            : 'bg-white'
+                            ? 'bg-[#f97316]'
+                            : 'bg-[#f97316]'
                       }`}></span>
                     </span>
                   </button>
@@ -200,12 +200,12 @@ export default function Navbar() {
                     href={item.href}
                     className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
                       isScrolled && isHoveringSection
-                        ? 'text-white hover:text-gray-300'
+                        ? 'text-white hover:text-[#f97316]'
                         : isScrolled
-                          ? 'text-white hover:text-gray-200'
+                          ? 'text-white hover:text-[#f97316]'
                           : isActive(item.href)
                             ? 'text-white'
-                            : 'text-white/90 hover:text-white'
+                            : 'text-white/90 hover:text-[#f97316]'
                     }`}
                   >
                     <span className="relative">
@@ -214,8 +214,8 @@ export default function Navbar() {
                         isScrolled && isHoveringSection
                           ? 'bg-[#f97316]'
                           : isScrolled
-                            ? 'bg-white'
-                            : 'bg-white'
+                            ? 'bg-[#f97316]'
+                            : 'bg-[#f97316]'
                       }`}></span>
                     </span>
                   </Link>
