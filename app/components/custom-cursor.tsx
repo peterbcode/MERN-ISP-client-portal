@@ -122,6 +122,7 @@ export default function MorphCursor() {
           transform: translate(-50%, -50%) scale(${this.baseScale});
           transition: background-color 0.15s ease, opacity 0.15s ease;
           will-change: transform;
+          pointer-events: none;
         `
         cursor!.appendChild(this.element)
       }
