@@ -62,7 +62,7 @@ export default function RootLayout({
       <body suppressHydrationWarning className="antialiased">
         <ConsentProvider>
           <PageLoader />
-          <MorphCursor />
+          {/* <MorphCursor /> */}
           <DevIndicatorRemover />
           {children}
           <CookieConsent />

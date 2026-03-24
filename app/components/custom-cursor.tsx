@@ -4,31 +4,28 @@ import { useEffect, useRef } from 'react'
 
 // Smart goo cursor:
 // - Reads the bg color under the cursor → black on light/orange, orange on dark
-// - On interactive elements (links, buttons, text) → shrinks + goes semi-transparent so user can see what they're clicking
+// - On interactive elements (links, buttons) → shrinks + goes semi-transparent so user can see what they're clicking
 
 const INTERACTIVE =
-  "a, button, input, textarea, select, label, [role='button'], [tabindex], [onclick], p, h1, h2, h3, h4, h5, h6, span, li";
+  "a, button, input, textarea, select, label, [role='button'], [tabindex], [onclick]";
 
 export default function MorphCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    console.log('MorphCursor: useEffect running')
+    // Disable cursor on touch devices to improve performance
+    if ('ontouchstart' in window) return
+
     const cursor = cursorRef.current
-    if (!cursor) {
-      console.error('MorphCursor: cursor ref is null')
-      return
-    }
-    console.log('MorphCursor: cursor element found', cursor)
+    if (!cursor) return
     
     // Add required classes for cursor visibility
     document.body.classList.add('custom-cursor-enabled')
     cursor.classList.add('Cursor')
-    console.log('MorphCursor: classes added')
 
-    const AMOUNT = 20
+    const AMOUNT = 12 // Reduced from 20 for better performance
     const SINE_DOTS = Math.floor(AMOUNT * 0.3)
-    const DOT_SIZE = 26
+    const DOT_SIZE = 20 // Reduced from 26
     const IDLE_TIMEOUT = 150
 
     const COLOR_DARK    = "#0d0d0d"; // on light/orange backgrounds
@@ -41,6 +38,8 @@ export default function MorphCursor() {
     let rafID: number
     let isHoveringInteractive = false
     let currentColor = COLOR_DARK
+    let lastSampleTime = 0
+    const SAMPLE_THROTTLE = 50 // Throttle color sampling to every 50ms
 
     // ── Color utils ───────────────────────────────────────────────────────────
     function getLuminance(r: number, g: number, b: number) {
@@ -171,6 +170,10 @@ export default function MorphCursor() {
 
     // ── Sample bg color at mouse position ────────────────────────────────────
     function sampleColor() {
+      const now = Date.now()
+      if (now - lastSampleTime < SAMPLE_THROTTLE) return // Throttle sampling
+      lastSampleTime = now
+
       const el = document.elementFromPoint(
         mousePosition.x + DOT_SIZE / 2,
         mousePosition.y + DOT_SIZE / 2
@@ -234,15 +237,11 @@ export default function MorphCursor() {
     }
 
     // ── Init ──────────────────────────────────────────────────────────────────
-    console.log('MorphCursor: creating dots...')
     for (let i = 0; i < AMOUNT; i++) dots.push(new Dot(i))
-    console.log(`MorphCursor: created ${dots.length} dots`)
 
-    console.log('MorphCursor: adding event listeners...')
     window.addEventListener("mousemove", onMouseMove)
     window.addEventListener("touchmove", onTouchMove)
     rafID = requestAnimationFrame(render)
-    console.log('MorphCursor: initialization complete')
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove)
