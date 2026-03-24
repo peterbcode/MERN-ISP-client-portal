@@ -68,10 +68,17 @@ export default function MorphCursor() {
       return null
     }
 
-    function colorForBg(r: number, g: number, b: number): string {
+    function colorForBg(r: number, g: number, b: number, element?: Element | null): string {
       const lum = getLuminance(r, g, b)
       // Orange hue range (approx): high red, mid green, low blue
       const isOrangish = r > 180 && g > 60 && g < 160 && b < 80
+      
+      // Special case: always use orange cursor on navbar elements
+      const isNavbar = element?.closest('nav') || element?.closest('[class*="navbar"]') || element?.closest('[class*="nav"]')
+      if (isNavbar) {
+        return COLOR_ORANGE
+      }
+      
       // Light or orange bg → use dark cursor; dark bg → use orange cursor
       return (lum > 100 || isOrangish) ? COLOR_DARK : COLOR_ORANGE
     }
@@ -169,7 +176,7 @@ export default function MorphCursor() {
       )
       if (!el || el === cursor) return
       const bg = getEffectiveBg(el)
-      if (bg) applyColor(colorForBg(bg.r, bg.g, bg.b))
+      if (bg) applyColor(colorForBg(bg.r, bg.g, bg.b, el))
 
       // Interactive check
       const interactive = !!(el as Element).closest?.(INTERACTIVE)
