@@ -93,7 +93,7 @@ const HeroSoft = () => {
             </div>
 
             {/* Trust Indicators */}
-            <div className="grid grid-cols-3 gap-6 pt-8">
+            <div className="grid grid-cols-1 gap-6 pt-8 sm:grid-cols-3">
               <div className="text-center">
                 <div className="text-2xl font-bold text-text-primary">500+</div>
                 <div className="text-sm text-text-tertiary">Happy Clients</div>

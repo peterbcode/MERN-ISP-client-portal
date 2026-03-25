@@ -134,7 +134,7 @@ export default function StatsPage() {
           <div className="lg:col-span-2 bg-zinc-800 rounded-lg p-6 border border-zinc-700">
             <h2 className="text-xl font-bold text-white mb-4">Connection Overview</h2>
             
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="text-center">
                 <div className="text-4xl font-bold text-white mb-2">
                   {stats.downloadSpeed.toFixed(3)}
@@ -156,7 +156,7 @@ export default function StatsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
               <div>
                 <div className="text-2xl font-bold text-white mb-1">{stats.ping.toFixed(3)}</div>
                 <div className="text-sm text-zinc-400">Ping (ms)</div>

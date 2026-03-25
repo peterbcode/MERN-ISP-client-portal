@@ -41,16 +41,19 @@ export default function NavbarSoft() {
         <div className="container-soft">
           <div className="flex items-center justify-between text-xs">
             <div className="hidden items-center gap-4 md:flex">
-              <span className="flex items-center gap-1.5 opacity-90">
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Riebeek%20Kasteel%2C%20Western%20Cape"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="no-accent-hover flex items-center gap-1.5 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-105"
+              >
                 <MapPinIcon className="h-3.5 w-3.5" />
                 Riebeek Kasteel, Western Cape
-              </span>
+              </a>
               <span className="h-3 w-px bg-white/30" aria-hidden="true" />
               <a 
                 href="mailto:info@valley-computers.co.za" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-105"
+                className="no-accent-hover flex items-center gap-1.5 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-105"
               >
                 <EnvelopeIcon className="h-3.5 w-3.5" />
                 info@valley-computers.co.za
@@ -59,9 +62,7 @@ export default function NavbarSoft() {
             <div className="flex items-center gap-4">
               <a 
                 href="tel:+27212345678" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-105"
+                className="no-accent-hover flex items-center gap-1.5 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-105"
               >
                 <PhoneIcon className="h-3.5 w-3.5" />
                 +27 21 234 5678

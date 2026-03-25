@@ -139,7 +139,7 @@ export default function RegisterForm() {
   return (
     <div className="w-full max-w-md mx-auto">
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="firstName" className="block text-sm font-medium text-zinc-300 mb-2">
               First Name

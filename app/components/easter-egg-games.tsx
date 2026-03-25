@@ -624,7 +624,7 @@ const EasterEggGames = () => {
               />
             </div>
             {touchDevice ? (
-              <div className="mt-3 grid grid-cols-2 gap-3">
+              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <button type="button" onTouchStart={routePacketUp} onMouseDown={routePacketUp}
                   className="rounded-xl border border-zinc-700 bg-zinc-900/90 py-5 text-lg font-bold text-zinc-100 active:bg-zinc-800">
                   ▲ Up

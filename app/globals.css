@@ -56,6 +56,21 @@ body {
   color: #d4d4d4;
 }
 
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+iframe {
+  max-width: 100%;
+}
+
 h1,
 h2,
 h3,
@@ -677,7 +692,7 @@ button {
   transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
 }
 
-a:not([class*='text-[#f97316]']):not([class*='text-[#f97316]']):hover {
+a:not(.no-accent-hover):not([class*='text-[#f97316]']):hover {
   color: #f97316;
 }
 
