@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/mongoose";
 import User from "@/models/User";
+import { sendPasswordResetEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -38,14 +39,33 @@ export async function POST(request) {
 
     console.log("✅ Password reset token generated for:", email);
     
-    // In a real app, you would send an email here
-    console.log(`Password reset token for ${email}: ${resetToken}`);
+    // Send password reset email
+    let emailSent = false;
+    let emailError = null;
+    
+    if (process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL) {
+      const emailResult = await sendPasswordResetEmail(email, resetToken);
+      emailSent = emailResult.success;
+      emailError = emailResult.error;
+      
+      if (emailSent) {
+        console.log("📧 Password reset email sent successfully to:", email);
+      } else {
+        console.error("❌ Failed to send password reset email:", emailError);
+      }
+    } else {
+      console.log("📧 Email service not configured. Token logged for development:");
+      console.log(`Password reset token for ${email}: ${resetToken}`);
+    }
 
     return Response.json({
       success: true,
-      message: "Password reset token generated. Check console for development.",
-      // In production, remove this token from response
-      resetToken: process.env.NODE_ENV === "development" ? resetToken : undefined
+      message: emailSent 
+        ? "Password reset link has been sent to your email." 
+        : "Password reset token generated. Check console for development.",
+      // In development or if email fails, include token for testing
+      resetToken: (process.env.NODE_ENV === "development" || !emailSent) ? resetToken : undefined,
+      emailSent: emailSent
     });
   } catch (error) {
     console.error("❌ Forgot password error:", error);

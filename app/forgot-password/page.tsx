@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from "../components/navbar";
@@ -22,7 +22,13 @@ export default function ForgotPasswordPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [resetToken, setResetToken] = useState('');
+  const [origin, setOrigin] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -68,7 +74,13 @@ export default function ForgotPasswordPage() {
 
       if (data.success) {
         setIsSubmitted(true);
-        console.log('Reset token (development):', data.resetToken);
+        if (data.resetToken) {
+          setResetToken(data.resetToken);
+          console.log('Reset token (development):', data.resetToken);
+        }
+        if (data.emailSent) {
+          console.log('Email sent successfully');
+        }
       } else {
         setErrors({
           general: data.message || 'Failed to send reset email'
@@ -111,10 +123,40 @@ export default function ForgotPasswordPage() {
                 We've sent a password reset link to your email address.
               </p>
               <div className="mt-4 p-4 bg-zinc-800 rounded-lg border border-zinc-700">
-                <p className="text-xs text-zinc-300">
-                  <strong>Development Mode:</strong> Check the browser console for the reset token.
-                  In production, this would be sent via email.
+                <p className="text-xs text-zinc-300 mb-2">
+                  <strong>Development Mode:</strong> In production, this would be sent via email.
                 </p>
+                {resetToken && (
+                  <div className="mt-2">
+                    <p className="text-xs text-zinc-300 mb-2">
+                      <strong>Quick Reset Link:</strong>
+                    </p>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        readOnly
+                        value={`${origin}/reset-password?token=${resetToken}`}
+                        className="flex-1 px-2 py-1 text-xs bg-zinc-700 border border-zinc-600 rounded text-zinc-300"
+                        onClick={(e) => e.currentTarget.select()}
+                      />
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(`${origin}/reset-password?token=${resetToken}`);
+                          alert('Reset link copied to clipboard!');
+                        }}
+                        className="px-2 py-1 text-xs bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors"
+                      >
+                        Copy
+                      </button>
+                      <Link
+                        href={`/reset-password?token=${resetToken}`}
+                        className="px-2 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+                      >
+                        Go
+                      </Link>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
