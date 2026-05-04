@@ -4,6 +4,7 @@ import {
   ServerStackIcon,
   WifiIcon,
   SignalIcon,
+  PrinterIcon,
 } from "@heroicons/react/24/solid";
 
 const brands = [
@@ -12,6 +13,7 @@ const brands = [
   { name: "Ubiquiti", icon: SignalIcon, href: "https://ui.com/", color: "text-sky-400" },
   { name: "Genius", icon: ComputerDesktopIcon, href: "https://www.geniusnet.com/", color: "text-red-500" },
   { name: "ADATA", icon: CpuChipIcon, href: "https://www.adata.com/", color: "text-cyan-400" },
+  { name: "Canon", icon: PrinterIcon, href: "https://www.canon.co.za/", color: "text-red-600" },
 ];
 
 const BrandCarousel = () => {
