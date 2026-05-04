@@ -4,6 +4,10 @@ export const runtime = 'nodejs';
 
 // GET /api/debug/db - Test database connection
 export async function GET(request) {
+  if (process.env.DEBUG_API_ERRORS !== 'true') {
+    return Response.json({ success: false, message: 'Not found' }, { status: 404 });
+  }
+
   try {
     console.log("🔍 Testing database connection...");
     

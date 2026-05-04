@@ -61,11 +61,11 @@ export default function NavbarSoft() {
             </div>
             <div className="flex items-center gap-4">
               <a 
-                href="tel:+27212345678" 
+                href="tel:+27799381260"
                 className="no-accent-hover flex items-center gap-1.5 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-105"
               >
                 <PhoneIcon className="h-3.5 w-3.5" />
-                +27 21 234 5678
+                079 938 1260
               </a>
             </div>
           </div>

@@ -1,234 +1,237 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service - MERN ISP Client Portal',
-  description: 'Terms of Service for MERN ISP Client Portal - Rules and guidelines for using our ISP services.',
+  title: 'Terms of Service - Riebeek Valley Computers',
+  description: 'Terms of Service for Riebeek Valley Computers internet, support, and IT services.',
 }
+
+const lastUpdated = '4 May 2026'
+
+const prohibitedActivities = [
+  'Illegal file sharing, copyright infringement, or unlawful content distribution',
+  'Spam, phishing, malware, botnets, or other malicious activity',
+  'Unauthorized access to networks, accounts, routers, or systems',
+  'Using the service in a way that disrupts other customers or network stability',
+  'Reselling or sharing the service outside your approved installation address without written consent',
+]
+
+const dataUseItems = [
+  'Package speeds depend on your selected plan, location, equipment, and local network conditions.',
+  'Fair-use and acceptable-use limits may apply where usage affects network quality for other customers.',
+  'We may manage traffic during faults, maintenance, abuse investigations, or severe congestion.',
+  'Upgrades, relocations, and equipment changes may require a new quote or coverage check.',
+]
+
+const billingItems = [
+  'Service fees are billed according to the plan or quote accepted by you.',
+  'Late or missed payments may lead to restricted access, suspension, or reconnection fees.',
+  'Any once-off installation, call-out, repair, or equipment charges will be quoted separately where applicable.',
+  'Prices may change with reasonable notice, especially where supplier, infrastructure, or regulatory costs change.',
+]
+
+const Section = ({
+  title,
+  children,
+}: {
+  title: string
+  children: React.ReactNode
+}) => (
+  <section className="border-t border-zinc-800 pt-8 first:border-t-0 first:pt-0">
+    <h2 className="heading-compact text-2xl font-bold text-zinc-100">{title}</h2>
+    <div className="mt-4 space-y-4 text-base leading-8 text-zinc-300">{children}</div>
+  </section>
+)
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8">
-            <h1 className="text-3xl font-bold text-white">Terms of Service</h1>
-            <p className="text-blue-100 mt-2">Last updated: {new Date().toLocaleDateString()}</p>
-          </div>
-          
-          <div className="px-6 py-8 space-y-8">
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Agreement to Terms</h2>
-              <p className="text-gray-600 leading-relaxed">
-                By accessing and using MERN ISP Client Portal, you accept and agree to be bound by the 
-                terms and provision of this agreement. If you do not agree to abide by the above, 
-                please do not use this service.
-              </p>
-            </section>
+    <main className="min-h-screen bg-[#070707] text-zinc-100">
+      <section className="border-b border-zinc-800 bg-[radial-gradient(circle_at_20%_20%,rgba(249,115,22,0.14),transparent_34%),linear-gradient(180deg,#101010,#070707)] px-4 pb-12 pt-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#f97316]">
+            Legal
+          </p>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-white sm:text-5xl">
+            Terms of Service
+          </h1>
+          <p className="mt-5 max-w-3xl text-lg leading-8 text-zinc-300">
+            These terms explain how Riebeek Valley Computers provides internet, technical support,
+            repairs, network services, and related customer portal features.
+          </p>
+          <p className="mt-4 text-sm text-zinc-400">Last updated: {lastUpdated}</p>
+        </div>
+      </section>
 
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Description of Service</h2>
-              <p className="text-gray-600 leading-relaxed">
-                MERN ISP Client Portal provides internet service management, account administration, 
-                customer support, and related services. These services are provided "as is" and are 
-                subject to the terms and conditions outlined in this agreement.
-              </p>
-            </section>
+      <section className="px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[260px_1fr]">
+          <aside className="h-fit border border-zinc-800 bg-zinc-950/70 p-5 lg:sticky lg:top-8">
+            <h2 className="heading-compact text-lg font-bold text-zinc-100">Quick Links</h2>
+            <nav className="mt-4 space-y-3 text-sm text-zinc-400">
+              <Link className="block hover:text-[#f97316]" href="/">
+                Home
+              </Link>
+              <Link className="block hover:text-[#f97316]" href="/privacy">
+                Privacy Policy
+              </Link>
+              <Link className="block hover:text-[#f97316]" href="/contact">
+                Contact Us
+              </Link>
+              <a className="block hover:text-[#f97316]" href="tel:+27799381260">
+                079 938 1260
+              </a>
+            </nav>
+          </aside>
 
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">User Responsibilities</h2>
-              <div className="space-y-4">
-                <div className="bg-red-50 border-l-4 border-red-400 p-4">
-                  <h3 className="text-lg font-medium text-gray-800 mb-2">Prohibited Activities</h3>
-                  <ul className="list-disc list-inside text-gray-600 space-y-1">
-                    <li>Illegal file sharing or copyright infringement</li>
-                    <li>Spam, phishing, or malicious activities</li>
-                    <li>Unauthorized access to networks or systems</li>
-                    <li>Distribution of malware or viruses</li>
-                    <li>Exceeding bandwidth or usage limitations</li>
+          <article className="border border-zinc-800 bg-zinc-950/70 p-6 shadow-2xl shadow-black/20 sm:p-8 lg:p-10">
+            <div className="space-y-10">
+              <Section title="1. Agreement to These Terms">
+                <p>
+                  By using our website, client portal, internet services, repair services, or support
+                  channels, you agree to these Terms of Service. If you do not agree, please do not use
+                  the service and contact us so we can help close or adjust your account.
+                </p>
+              </Section>
+
+              <Section title="2. Services We Provide">
+                <p>
+                  Riebeek Valley Computers provides internet connectivity, network installation, PC and
+                  laptop repairs, managed IT support, account administration, and customer support for
+                  homes and businesses in our service areas.
+                </p>
+                <div className="border-l-4 border-[#f97316] bg-zinc-900/80 p-4">
+                  <p className="text-zinc-200">
+                    Service availability depends on coverage, infrastructure, equipment, payment status,
+                    and technical feasibility at the installation address.
+                  </p>
+                </div>
+              </Section>
+
+              <Section title="3. Customer Responsibilities">
+                <p>
+                  You are responsible for keeping your account details, router credentials, and devices
+                  secure. You must also make sure anyone using your connection follows these terms.
+                </p>
+                <div className="bg-red-950/30 p-4 ring-1 ring-red-900/60">
+                  <h3 className="heading-compact text-lg font-semibold text-red-100">
+                    Prohibited Activities
+                  </h3>
+                  <ul className="mt-3 list-disc space-y-2 pl-5 text-zinc-300">
+                    {prohibitedActivities.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
                   </ul>
                 </div>
-                <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
-                  <h3 className="text-lg font-medium text-gray-800 mb-2">Account Security</h3>
-                  <p className="text-gray-600">
-                    You are responsible for maintaining the confidentiality of your account credentials 
-                    and for all activities that occur under your account.
-                  </p>
-                </div>
-              </div>
-            </section>
+              </Section>
 
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Service Availability</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                While we strive to maintain high service availability, we do not guarantee uninterrupted 
-                service. Service may be temporarily unavailable for maintenance, updates, or other 
-                technical reasons.
-              </p>
-              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                <p className="text-gray-700">
-                  <strong>Service Level:</strong> We aim for 99.9% uptime, excluding planned maintenance 
-                  and force majeure events.
+              <Section title="4. Service Availability and Support">
+                <p>
+                  We work to keep services stable and respond quickly to faults, but we cannot guarantee
+                  uninterrupted service. Outages may happen because of weather, power failures, upstream
+                  provider issues, maintenance, equipment failure, or other events outside our control.
                 </p>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Payment and Billing</h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-800">Service Fees</h3>
-                  <p className="text-gray-600">
-                    Service fees are billed monthly or annually as specified in your service plan. 
-                    Rates are subject to change with 30 days notice.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-gray-800">Payment Methods</h3>
-                  <p className="text-gray-600">
-                    We accept major credit cards, debit cards, and other electronic payment methods. 
-                    All payments are processed securely through our payment partners.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-gray-800">Late Payments</h3>
-                  <p className="text-gray-600">
-                    Late payments may incur additional fees and may result in service suspension 
-                    after 15 days of non-payment.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Data Usage and Limits</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Your service plan includes specific data allowances and speed limits:
-              </p>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li>Data caps may apply based on your service tier</li>
-                <li>Speed throttling may occur after reaching data limits</li>
-                <li>Additional data can be purchased at current rates</li>
-                <li>Fair use policy applies to prevent network abuse</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Privacy and Data Protection</h2>
-              <p className="text-gray-600 leading-relaxed">
-                Your privacy is important to us. Our collection, use, and protection of your personal 
-                information is governed by our Privacy Policy, which is incorporated into these 
-                Terms of Service by reference.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Intellectual Property</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                The service and its original content, features, and functionality are owned by 
-                MERN ISP and are protected by international copyright, trademark, and other 
-                intellectual property laws.
-              </p>
-              <p className="text-gray-600">
-                You may not copy, modify, distribute, or create derivative works based on our 
-                service without explicit written permission.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Termination</h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-800">By You</h3>
-                  <p className="text-gray-600">
-                    You may terminate your account at any time through your account dashboard or 
-                    by contacting customer support. No early termination fees apply.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-gray-800">By Us</h3>
-                  <p className="text-gray-600">
-                    We may terminate or suspend your account for violation of these terms, 
-                    non-payment, or other legitimate business reasons.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Disclaimer of Warranties</h2>
-              <p className="text-gray-600 leading-relaxed">
-                Our service is provided on an "AS IS" and "AS AVAILABLE" basis. We make no warranties, 
-                expressed or implied, and hereby disclaim all other warranties including, without 
-                limitation, implied warranties of merchantability, fitness for a particular purpose, 
-                and non-infringement.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Limitation of Liability</h2>
-              <p className="text-gray-600 leading-relaxed">
-                In no event shall MERN ISP, its directors, employees, partners, agents, suppliers, 
-                or affiliates be liable for any indirect, incidental, special, consequential, 
-                or punitive damages, including loss of profits, data, use, or other intangible losses.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Governing Law</h2>
-              <p className="text-gray-600 leading-relaxed">
-                These Terms of Service and any separate agreements whereby we provide you services 
-                shall be governed by and construed in accordance with the laws of the State of 
-                California, United States, without regard to its conflict of law provisions.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Changes to Terms</h2>
-              <p className="text-gray-600 leading-relaxed">
-                We reserve the right to modify these terms at any time. If we make material changes, 
-                we will notify you by email or by posting a notice on our site prior to the change 
-                becoming effective.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Contact Information</h2>
-              <div className="bg-gray-50 rounded-lg p-6">
-                <p className="text-gray-600 mb-4">
-                  Questions about the Terms of Service should be sent to us at:
+                <p>
+                  Planned maintenance will be communicated where practical. Urgent repairs may happen
+                  without advance notice when needed to protect the network.
                 </p>
-                <div className="space-y-2">
-                  <p className="text-gray-700">
-                    <strong>Email:</strong> legal@mern-isp.com
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Phone:</strong> 1-800-MERN-ISP
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Address:</strong> 123 Tech Street, Silicon Valley, CA 94000
-                  </p>
-                </div>
-              </div>
-            </section>
+              </Section>
 
-            <div className="flex justify-center space-x-4 pt-8">
-              <Link 
+              <Section title="5. Billing and Payments">
+                <ul className="list-disc space-y-2 pl-5">
+                  {billingItems.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </Section>
+
+              <Section title="6. Data Usage, Speeds, and Fair Use">
+                <ul className="list-disc space-y-2 pl-5">
+                  {dataUseItems.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </Section>
+
+              <Section title="7. Equipment and Installation">
+                <p>
+                  Equipment supplied by us may remain our property unless your quote or invoice says
+                  otherwise. You must take reasonable care of installed equipment and allow access for
+                  maintenance, repairs, recovery, or upgrades when needed.
+                </p>
+              </Section>
+
+              <Section title="8. Privacy and Personal Information">
+                <p>
+                  We handle personal information according to our Privacy Policy. This includes account
+                  details, contact information, support history, billing information, and technical
+                  information needed to provide the service.
+                </p>
+                <Link className="font-semibold text-[#f97316] hover:text-orange-300" href="/privacy">
+                  Read the Privacy Policy
+                </Link>
+              </Section>
+
+              <Section title="9. Suspension or Termination">
+                <p>
+                  You may cancel your service by contacting us. We may suspend or terminate service for
+                  non-payment, abuse, illegal activity, safety risks, repeated breach of these terms, or
+                  technical reasons that prevent continued service.
+                </p>
+              </Section>
+
+              <Section title="10. Limitation of Liability">
+                <p>
+                  To the fullest extent allowed by law, we are not liable for indirect losses such as
+                  lost profit, lost data, business interruption, or losses caused by third-party outages.
+                  Nothing in these terms removes rights you have under applicable consumer protection
+                  laws.
+                </p>
+              </Section>
+
+              <Section title="11. Changes to These Terms">
+                <p>
+                  We may update these terms when services, laws, supplier requirements, or operating
+                  practices change. The latest version will be posted on this page with an updated date.
+                </p>
+              </Section>
+
+              <Section title="12. Contact Information">
+                <div className="bg-zinc-900/80 p-5 ring-1 ring-zinc-800">
+                  <p className="text-zinc-300">
+                    Questions about these terms can be sent to Riebeek Valley Computers.
+                  </p>
+                  <div className="mt-4 space-y-2 text-zinc-300">
+                    <p>
+                      <strong className="text-zinc-100">Phone:</strong>{' '}
+                      <a className="text-[#f97316] hover:text-orange-300" href="tel:+27799381260">
+                        079 938 1260
+                      </a>
+                    </p>
+                    <p>
+                      <strong className="text-zinc-100">Address:</strong> 6 Church Rd,
+                      Riebeek-Kasteel, 7307
+                    </p>
+                  </div>
+                </div>
+              </Section>
+            </div>
+
+            <div className="mt-10 flex flex-col gap-3 border-t border-zinc-800 pt-8 sm:flex-row">
+              <Link
                 href="/"
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-flex justify-center bg-[#f97316] px-5 py-3 font-semibold text-white transition hover:bg-orange-600"
               >
                 Back to Home
               </Link>
-              <Link 
-                href="/privacy"
-                className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
+              <Link
+                href="/contact"
+                className="inline-flex justify-center border border-zinc-700 bg-zinc-900 px-5 py-3 font-semibold text-zinc-100 transition hover:border-[#f97316]"
               >
-                Privacy Policy
+                Contact Us
               </Link>
             </div>
-          </div>
+          </article>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   )
 }

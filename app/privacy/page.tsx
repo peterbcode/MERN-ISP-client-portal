@@ -1,238 +1,247 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy - MERN ISP Client Portal',
-  description: 'Privacy policy for MERN ISP Client Portal - Learn how we protect your data and privacy.',
+  title: 'Privacy Policy - Riebeek Valley Computers',
+  description: 'Privacy Policy for Riebeek Valley Computers internet, support, and IT services.',
 }
+
+const lastUpdated = '4 May 2026'
+
+const personalInformation = [
+  'Name, email address, phone number, and account details',
+  'Installation address, service address, and support location information',
+  'Billing, invoice, service plan, and payment status information',
+  'Support requests, repair notes, fault reports, and communication history',
+]
+
+const technicalInformation = [
+  'IP address, device information, browser type, and login activity',
+  'Service usage, speed-test results, connection status, and network diagnostics',
+  'Router, wireless, device, and installation information needed for support',
+  'Website analytics and cookie preferences where enabled',
+]
+
+const useCases = [
+  'Provide, activate, maintain, and troubleshoot internet and IT services',
+  'Manage customer accounts, billing, invoices, and service communications',
+  'Respond to support requests, faults, repairs, and coverage checks',
+  'Protect customers, systems, and networks against abuse, fraud, and security risks',
+  'Improve our services, website, client portal, and customer support processes',
+]
+
+const rights = [
+  'Ask us what personal information we hold about you',
+  'Ask us to correct inaccurate or outdated information',
+  'Ask us to delete information where we no longer have a lawful reason to keep it',
+  'Opt out of marketing messages while still receiving important service notices',
+]
+
+const Section = ({
+  title,
+  children,
+}: {
+  title: string
+  children: ReactNode
+}) => (
+  <section className="border-t border-zinc-800 pt-8 first:border-t-0 first:pt-0">
+    <h2 className="heading-compact text-2xl font-bold text-zinc-100">{title}</h2>
+    <div className="mt-4 space-y-4 text-base leading-8 text-zinc-300">{children}</div>
+  </section>
+)
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8">
-            <h1 className="text-3xl font-bold text-white">Privacy Policy</h1>
-            <p className="text-blue-100 mt-2">Last updated: {new Date().toLocaleDateString()}</p>
-          </div>
-          
-          <div className="px-6 py-8 space-y-8">
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Introduction</h2>
-              <p className="text-gray-600 leading-relaxed">
-                Welcome to MERN ISP Client Portal. We are committed to protecting your personal information 
-                and your right to privacy. This Privacy Policy explains how we collect, use, and protect 
-                your information when you use our services.
-              </p>
-            </section>
+    <main className="min-h-screen bg-[#070707] text-zinc-100">
+      <section className="border-b border-zinc-800 bg-[radial-gradient(circle_at_20%_20%,rgba(249,115,22,0.14),transparent_34%),linear-gradient(180deg,#101010,#070707)] px-4 pb-12 pt-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#f97316]">
+            Legal
+          </p>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-white sm:text-5xl">
+            Privacy Policy
+          </h1>
+          <p className="mt-5 max-w-3xl text-lg leading-8 text-zinc-300">
+            This policy explains how Riebeek Valley Computers collects, uses, protects, and
+            stores information when you use our website, client portal, internet services, repairs,
+            and support channels.
+          </p>
+          <p className="mt-4 text-sm text-zinc-400">Last updated: {lastUpdated}</p>
+        </div>
+      </section>
 
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Information We Collect</h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-800">Personal Information</h3>
-                  <ul className="list-disc list-inside text-gray-600 mt-2 space-y-1">
-                    <li>Name and contact information (email, phone)</li>
-                    <li>Account credentials (username, encrypted password)</li>
-                    <li>Service address and billing information</li>
-                    <li>Communication preferences</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-medium text-gray-800">Technical Information</h3>
-                  <ul className="list-disc list-inside text-gray-600 mt-2 space-y-1">
-                    <li>IP address and device information</li>
-                    <li>Browser type and version</li>
-                    <li>Service usage data and statistics</li>
-                    <li>Network performance metrics</li>
-                  </ul>
-                </div>
-              </div>
-            </section>
+      <section className="px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[260px_1fr]">
+          <aside className="h-fit border border-zinc-800 bg-zinc-950/70 p-5 lg:sticky lg:top-8">
+            <h2 className="heading-compact text-lg font-bold text-zinc-100">Quick Links</h2>
+            <nav className="mt-4 space-y-3 text-sm text-zinc-400">
+              <Link className="block hover:text-[#f97316]" href="/">
+                Home
+              </Link>
+              <Link className="block hover:text-[#f97316]" href="/terms">
+                Terms of Service
+              </Link>
+              <Link className="block hover:text-[#f97316]" href="/contact">
+                Contact Us
+              </Link>
+              <a className="block hover:text-[#f97316]" href="tel:+27799381260">
+                079 938 1260
+              </a>
+            </nav>
+          </aside>
 
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">How We Use Your Information</h2>
-              <div className="space-y-4">
-                <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
-                  <p className="text-gray-700">
-                    <strong>Service Provision:</strong> To provide and manage your ISP services
-                  </p>
-                </div>
-                <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
-                  <p className="text-gray-700">
-                    <strong>Communication:</strong> To send service updates and support messages
-                  </p>
-                </div>
-                <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
-                  <p className="text-gray-700">
-                    <strong>Security:</strong> To protect against fraud and ensure service security
-                  </p>
-                </div>
-                <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
-                  <p className="text-gray-700">
-                    <strong>Improvement:</strong> To analyze usage patterns and improve our services
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Data Security</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                We implement industry-standard security measures to protect your information:
-              </p>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li>SSL/TLS encryption for all data transmissions</li>
-                <li>Encrypted password storage using bcrypt</li>
-                <li>Regular security audits and updates</li>
-                <li>Access controls and authentication systems</li>
-                <li>Secure database management with MongoDB Atlas</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Your Rights and Choices</h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-800">Access and Correction</h3>
-                  <p className="text-gray-600">
-                    You can access and update your personal information through your account dashboard 
-                    or by contacting our support team.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-medium text-gray-800">Data Deletion</h3>
-                  <p className="text-gray-600">
-                    You have the right to request deletion of your personal information, subject to 
-                    legal and contractual obligations.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-medium text-gray-800">Communication Preferences</h3>
-                  <p className="text-gray-600">
-                    You can manage your communication preferences in your account settings.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Third-Party Services</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                We may share information with trusted third-party service providers:
-              </p>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li><strong>Payment Processors:</strong> For billing and payment processing</li>
-                <li><strong>Analytics Services:</strong> For service improvement and analytics</li>
-                <li><strong>Infrastructure Providers:</strong> For cloud hosting and data storage</li>
-              </ul>
-              <p className="text-gray-600 mt-4">
-                All third-party providers are carefully vetted and contractually bound to protect your data.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Cookies and Tracking</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                We use cookies and similar technologies to:
-              </p>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li>Remember your login preferences</li>
-                <li>Analyze website traffic and usage patterns</li>
-                <li>Provide personalized content and features</li>
-                <li>Ensure website security and functionality</li>
-              </ul>
-              <p className="text-gray-600 mt-4">
-                You can control cookies through your browser settings.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Data Retention</h2>
-              <p className="text-gray-600 leading-relaxed">
-                We retain your information only as long as necessary to provide our services and 
-                comply with legal obligations. Retention periods vary based on the type of information 
-                and legal requirements.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Children's Privacy</h2>
-              <p className="text-gray-600 leading-relaxed">
-                Our services are not intended for children under 13. We do not knowingly collect 
-                personal information from children under 13. If we become aware of such collection, 
-                we will take immediate steps to delete the information.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">International Data Transfers</h2>
-              <p className="text-gray-600 leading-relaxed">
-                Your information may be transferred to and processed in countries other than your own. 
-                We ensure appropriate safeguards are in place for such transfers in accordance with 
-                applicable data protection laws.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Changes to This Policy</h2>
-              <p className="text-gray-600 leading-relaxed">
-                We may update this Privacy Policy from time to time. We will notify you of any 
-                significant changes by posting the new policy on our website and updating the 
-                "Last updated" date.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Contact Us</h2>
-              <div className="bg-gray-50 rounded-lg p-6">
-                <p className="text-gray-600 mb-4">
-                  If you have questions about this Privacy Policy or how we handle your information, 
-                  please contact us:
+          <article className="border border-zinc-800 bg-zinc-950/70 p-6 shadow-2xl shadow-black/20 sm:p-8 lg:p-10">
+            <div className="space-y-10">
+              <Section title="1. Who We Are">
+                <p>
+                  Riebeek Valley Computers provides connectivity, technical support, computer repairs,
+                  network installation, and related customer portal services. We only collect information
+                  we need to deliver, support, secure, and improve those services.
                 </p>
-                <div className="space-y-2">
-                  <p className="text-gray-700">
-                    <strong>Email:</strong> privacy@mern-isp.com
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Phone:</strong> 1-800-MERN-ISP
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Address:</strong> 123 Tech Street, Silicon Valley, CA 94000
+              </Section>
+
+              <Section title="2. Information We Collect">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="bg-zinc-900/80 p-4 ring-1 ring-zinc-800">
+                    <h3 className="heading-compact text-lg font-semibold text-zinc-100">
+                      Personal Information
+                    </h3>
+                    <ul className="mt-3 list-disc space-y-2 pl-5">
+                      {personalInformation.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="bg-zinc-900/80 p-4 ring-1 ring-zinc-800">
+                    <h3 className="heading-compact text-lg font-semibold text-zinc-100">
+                      Technical Information
+                    </h3>
+                    <ul className="mt-3 list-disc space-y-2 pl-5">
+                      {technicalInformation.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </Section>
+
+              <Section title="3. How We Use Information">
+                <ul className="list-disc space-y-2 pl-5">
+                  {useCases.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </Section>
+
+              <Section title="4. Mailing List and Marketing">
+                <p>
+                  If you join our mailing list, we use your email address to send relevant updates,
+                  service news, and announcements. You can ask us to remove you from the list at any
+                  time. Service-critical notices may still be sent even if you opt out of marketing.
+                </p>
+              </Section>
+
+              <Section title="5. Cookies and Analytics">
+                <p>
+                  We use cookies and similar browser storage for essential site functions such as
+                  login sessions, cookie preferences, and security. Analytics may be used to understand
+                  site performance and improve the customer experience where enabled.
+                </p>
+              </Section>
+
+              <Section title="6. Sharing Information">
+                <p>
+                  We do not sell your personal information. We may share limited information with trusted
+                  providers when needed for hosting, database storage, support tools, payment processing,
+                  email delivery, analytics, legal compliance, or network operations.
+                </p>
+              </Section>
+
+              <Section title="7. Data Security">
+                <p>
+                  We use reasonable technical and organizational safeguards to protect customer
+                  information, including access controls, encrypted password storage, secure hosting
+                  practices, and careful handling of support information.
+                </p>
+                <div className="border-l-4 border-[#f97316] bg-zinc-900/80 p-4">
+                  <p className="text-zinc-200">
+                    No online system is risk-free, so please keep your account password and router
+                    credentials private and tell us quickly if you suspect unauthorized access.
                   </p>
                 </div>
-              </div>
-            </section>
+              </Section>
 
-            <section className="border-t pt-8">
-              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                <p className="text-gray-700">
-                  <strong>Important:</strong> By using our services, you agree to the collection 
-                  and use of information in accordance with this Privacy Policy.
+              <Section title="8. Data Retention">
+                <p>
+                  We keep information only as long as needed for service delivery, billing, support,
+                  legal obligations, security, and legitimate business records. Retention periods vary
+                  depending on the type of information and why it was collected.
                 </p>
-              </div>
-            </section>
+              </Section>
 
-            <div className="flex justify-center space-x-4 pt-8">
-              <Link 
+              <Section title="9. Your Choices and Rights">
+                <ul className="list-disc space-y-2 pl-5">
+                  {rights.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </Section>
+
+              <Section title="10. Children">
+                <p>
+                  Our services are intended for customers who can lawfully enter into a service
+                  agreement. We do not knowingly collect personal information from children without
+                  appropriate consent.
+                </p>
+              </Section>
+
+              <Section title="11. Changes to This Policy">
+                <p>
+                  We may update this policy when our services, systems, legal requirements, or operating
+                  practices change. The latest version will be posted on this page with an updated date.
+                </p>
+              </Section>
+
+              <Section title="12. Contact Information">
+                <div className="bg-zinc-900/80 p-5 ring-1 ring-zinc-800">
+                  <p className="text-zinc-300">
+                    Questions about privacy or personal information can be sent to Riebeek Valley
+                    Computers.
+                  </p>
+                  <div className="mt-4 space-y-2 text-zinc-300">
+                    <p>
+                      <strong className="text-zinc-100">Phone:</strong>{' '}
+                      <a className="text-[#f97316] hover:text-orange-300" href="tel:+27799381260">
+                        079 938 1260
+                      </a>
+                    </p>
+                    <p>
+                      <strong className="text-zinc-100">Address:</strong> 6 Church Rd,
+                      Riebeek-Kasteel, 7307
+                    </p>
+                  </div>
+                </div>
+              </Section>
+            </div>
+
+            <div className="mt-10 flex flex-col gap-3 border-t border-zinc-800 pt-8 sm:flex-row">
+              <Link
                 href="/"
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-flex justify-center bg-[#f97316] px-5 py-3 font-semibold text-white transition hover:bg-orange-600"
               >
                 Back to Home
               </Link>
-              <Link 
+              <Link
                 href="/contact"
-                className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
+                className="inline-flex justify-center border border-zinc-700 bg-zinc-900 px-5 py-3 font-semibold text-zinc-100 transition hover:border-[#f97316]"
               >
                 Contact Us
               </Link>
             </div>
-          </div>
+          </article>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   )
 }

@@ -12,7 +12,8 @@ interface SoftInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const SoftInput = React.forwardRef<HTMLInputElement, SoftInputProps>(
   ({ className, label, error, helperText, id, ...props }, ref) => {
-    const inputId = id || `input-${React.useId()}`
+    const generatedId = React.useId()
+    const inputId = id || `input-${generatedId}`
     
     return (
       <div className="space-y-2">

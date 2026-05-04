@@ -12,13 +12,13 @@ export default function Nav() {
         {/* Menu */}
         <ul className="flex gap-6 text-gray-700 font-medium">
           <li>
-            <Link href="/services">Services</Link>
+            <Link href="/#services">Services</Link>
           </li>
           <li>
             <Link href="/isp">ISP</Link>
           </li>
           <li>
-            <Link href="/success-stories">Success Stories</Link>
+            <Link href="/#testimonials">Success Stories</Link>
           </li>
           <li>
             <Link href="/contact">Contact Us</Link>
@@ -27,7 +27,7 @@ export default function Nav() {
             <Link href="/faq">FAQ</Link>
           </li>
           <li>
-            <Link href="/partner-with-us">Partner With Us</Link>
+            <Link href="/contact">Partner With Us</Link>
           </li>
         </ul>
       </div>
