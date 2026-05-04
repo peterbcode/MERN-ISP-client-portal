@@ -1,129 +1,107 @@
 # Vercel Deployment Guide
 
-## 🚀 Ready for Vercel Serverless Deployment
+This project is ready to deploy as a Next.js app on Vercel. API routes live under `app/api/**/route.js` and run as Vercel serverless functions.
 
-Your project has been successfully refactored for Vercel serverless deployment!
+## GitHub Status
 
-## ✅ What's Been Done
+Deploy from:
 
-### 1. Serverless API Routes
-- All backend logic moved to `app/api/**/route.js` files
-- No dependency on traditional Express server for production
-- Automatic deployment as Vercel serverless functions
-
-### 2. MongoDB Connection
-- Created cached MongoDB connection in `lib/mongodb.js`
-- Prevents new connections on every request
-- Optimized for serverless environments
-
-### 3. Fixed Import Issues
-- Added named export `{ connectDB }` to MongoDB utility
-- Fixed missing `jsonwebtoken` imports in API routes
-- All API routes now properly use `await connectDB()`
-
-### 4. Environment Variables
-- Created documentation in `ENVIRONMENT_VARIABLES.md`
-- Added `.env.example` template
-- Configured for both development and production
-
-## 📋 Required Vercel Environment Variables
-
-Set these in Vercel Dashboard → Settings → Environment Variables:
-
-1. **MONGODB_URI** (Required)
-   ```
-   mongodb+srv://<db_username>:<db_password>@cluster0.cszm9.mongodb.net/?appName=Cluster0
-   ```
-
-1b. **MONGODB_DBNAME** (Optional)
-   ```
-   mern-isp-portal
-   ```
-
-2. **JWT_SECRET** (Required)
-   ```
-   your_super_secret_jwt_key_at_least_32_characters_long
-   ```
-
-3. **JWT_EXPIRE** (Optional)
-   ```
-   7d
-   ```
-
-## 🛠 Local Development Setup
-
-1. Copy environment template:
-   ```bash
-   cp .env.example .env.local
-   ```
-
-2. Fill in your MongoDB Atlas connection string in `.env.local`
-
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-4. Run development server:
-   ```bash
-   npm run dev
-   ```
-
-## 🌐 Deployment Process
-
-1. Push your changes to GitHub
-2. Set environment variables in Vercel dashboard
-3. Vercel will automatically deploy
-
-## 📁 Project Structure
-
-```
-app/
-├── api/                    # Serverless API routes
-│   ├── auth/
-│   │   ├── login/route.js
-│   │   ├── register/route.js
-│   │   └── me/route.js
-│   ├── admin/stats/route.js
-│   └── users/
-│       ├── leaderboard/route.js
-│       └── profile/[username]/route.js
-├── components/            # React components
-├── dashboard/            # Dashboard pages
-└── ...
-
-lib/
-├── auth.js              # Frontend auth utilities
-├── mongodb.js           # MongoDB connection utility
-└── ...
-
-models/                  # Mongoose models
-├── User.js
-└── Game.js
+```text
+https://github.com/peterbcode/MERN-ISP-client-portal.git
 ```
 
-## 🔧 API Endpoints (Serverless)
+Vercel should be connected to the `main` branch. Every push to `main` can trigger a new deployment.
 
-- `POST /api/auth/login` - User login
-- `POST /api/auth/register` - User registration
-- `GET /api/auth/me` - Get current user
-- `PUT /api/auth/me` - Update user profile
-- `GET /api/admin/stats` - Admin statistics
-- `GET /api/users/leaderboard` - User leaderboard
-- `GET /api/users/profile/[username]` - User profile
+## Vercel Project Settings
 
-## 🚨 Important Notes
+Use these settings:
 
-- **No Server Needed**: The `server/` folder is only for local development
-- **MongoDB Atlas Required**: Local MongoDB won't work on Vercel
-- **Environment Variables**: Must be set in Vercel dashboard
-- **Serverless Optimized**: All connections are cached and optimized
+```text
+Framework Preset: Next.js
+Install Command: npm ci
+Build Command: npm run build
+Output Directory: .next
+Node.js: 20.x or newer
+```
 
-## 🎯 Next Steps
+These are already reflected in `vercel.json` and `package.json`.
 
-1. Set up MongoDB Atlas if you haven't already
-2. Add environment variables to Vercel
-3. Deploy to Vercel
-4. Test all API endpoints in production
+## Required Environment Variables
 
-Your project is now fully ready for Vercel serverless deployment! 🎉
+Set these in Vercel Dashboard -> Project -> Settings -> Environment Variables.
+
+```env
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>/?retryWrites=true&w=majority
+MONGODB_DBNAME=mern-isp-portal
+JWT_SECRET=<long-random-secret-at-least-32-characters>
+JWT_EXPIRE=7d
+DEBUG_API_ERRORS=false
+```
+
+Do not set `NEXT_PUBLIC_API_URL` on Vercel unless you intentionally use a separate external API. In production, the app uses its own `/api` routes.
+
+## Optional Environment Variables
+
+```env
+NEXT_PUBLIC_GA_ID=
+NEWSLETTER_WEBHOOK_URL=
+ADMIN_IP_ALLOWLIST=
+ADMIN_MUTATIONS_ENABLED=false
+ADMIN_ROLE_CHANGES_ENABLED=false
+```
+
+`NEWSLETTER_WEBHOOK_URL` can point to a Make/Zapier/CRM/Slack-style webhook. Newsletter signups are also stored in MongoDB when `MONGODB_URI` is configured.
+
+## MongoDB Atlas Setup
+
+1. Create or open a MongoDB Atlas project.
+2. Create a cluster.
+3. Create a database user with a strong password.
+4. In Network Access, allow Vercel to connect. For a simple first deployment, use `0.0.0.0/0`; tighten this later if you use a controlled networking setup.
+5. Copy the Drivers connection string.
+6. URL-encode special characters in the password, especially `@`, `:`, `/`, `?`, `#`, and `%`.
+7. Add the resulting URI as `MONGODB_URI` in Vercel.
+
+If your Atlas URI does not include a database path after the host, keep `MONGODB_DBNAME=mern-isp-portal`.
+
+## Local Development
+
+Create `.env.local` from the example:
+
+```bash
+copy .env.example .env.local
+```
+
+Then set local values:
+
+```env
+MONGODB_URI=mongodb://localhost:27017/mern-isp-portal
+MONGODB_DBNAME=mern-isp-portal
+JWT_SECRET=local-development-secret-change-me
+JWT_EXPIRE=7d
+DEBUG_API_ERRORS=true
+```
+
+Run locally:
+
+```bash
+npm ci
+npm run dev
+```
+
+## Final Checks Before Deploy
+
+Run:
+
+```bash
+npm run lint
+npm run build
+git status --short --branch
+```
+
+Expected:
+
+- Lint exits successfully. Existing warnings are acceptable for now.
+- Build exits successfully.
+- Git branch is clean and synced with `origin/main`.
+
