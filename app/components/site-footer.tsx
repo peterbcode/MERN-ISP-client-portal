@@ -17,7 +17,7 @@ const services = [
 
 const supportHub = [
   { label: 'Remote Support', href: '/contact' },
-  { label: 'Speed Test', href: '/dashboard/stats' },
+  { label: 'Speed Test', href: '/speed-test' },
   { label: 'Privacy Policy', href: '/privacy' },
   { label: 'Terms & Conditions', href: '/terms' },
   { label: 'Acceptable Use', href: '/terms' },
