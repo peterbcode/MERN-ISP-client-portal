@@ -12,7 +12,7 @@ const services = [
   { label: 'Wireless Business Internet', href: '/isp#plans' },
   { label: 'PC Repairs', href: '/contact' },
   { label: 'Network Security', href: '/contact' },
-  { label: 'Managed IT Support', href: '/contact' },
+  { label: 'Managed IT Support', href: '/contact?service=it-support' },
 ]
 
 const supportHub = [

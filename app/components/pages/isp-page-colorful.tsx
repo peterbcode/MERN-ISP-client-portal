@@ -198,31 +198,31 @@ const IspPageColorful = () => {
 
           {/* Custom Message Modal */}
           {selectedPlan && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setSelectedPlan(null)}>
-              <div className="max-w-md rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setSelectedPlan(null)}>
+              <div className="max-w-md rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900 to-black p-6 shadow-2xl shadow-[0_0_40px_rgba(249,115,22,0.2)]" onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-black text-zinc-900">{selectedPlan.speed}</h3>
+                  <h3 className="text-2xl font-black text-white">{selectedPlan.speed}</h3>
                   <button
                     onClick={() => setSelectedPlan(null)}
-                    className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-900"
+                    className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
                   >
                     <XMarkIcon className="h-5 w-5" />
                   </button>
                 </div>
-                <p className="text-sm text-zinc-600 mb-3">{selectedPlan.label}</p>
-                <p className="text-3xl font-black text-zinc-900 mb-4">{selectedPlan.price}</p>
-                <p className="text-zinc-700 leading-relaxed mb-6">{selectedPlan.message}</p>
+                <p className="text-sm text-zinc-300 mb-3">{selectedPlan.label}</p>
+                <p className="text-3xl font-black text-white mb-4">{selectedPlan.price}</p>
+                <p className="text-zinc-300 leading-relaxed mb-6">{selectedPlan.message}</p>
                 <div className="flex gap-3">
                   <Link
                     href="/contact"
-                    className="flex-1 rounded-lg bg-[#f97316] px-4 py-3 text-center text-sm font-bold text-white transition hover:brightness-110"
+                    className="flex-1 rounded-lg bg-[#f97316] px-6 py-3 text-sm font-bold text-white transition hover:bg-orange-600 shadow-lg flex items-center justify-center"
                     onClick={() => setSelectedPlan(null)}
                   >
                     Get Started
                   </Link>
                   <button
                     onClick={() => setSelectedPlan(null)}
-                    className="flex-1 rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-center text-sm font-bold text-zinc-900 transition hover:bg-zinc-100"
+                    className="flex-1 rounded-lg border border-zinc-700 bg-zinc-800 px-6 py-3 text-center text-sm font-bold text-zinc-100 transition hover:bg-zinc-700 hover:border-zinc-600"
                   >
                     Close
                   </button>
