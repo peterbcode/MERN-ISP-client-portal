@@ -121,7 +121,7 @@ export default function RegisterForm() {
       let errorMessage = 'Registration failed. Please try again.';
       
       if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
-        errorMessage = 'Cannot connect to server. Please make sure the backend is running on localhost:5000';
+        errorMessage = 'Cannot connect to server. Please try again later.';
       } else if (error.message) {
         errorMessage = error.message;
       } else if (error.error) {
