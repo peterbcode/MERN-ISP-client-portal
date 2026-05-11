@@ -38,17 +38,25 @@ const PageLoader = () => {
       setSubText(loadingMessages[messageIndex])
     }, 2000) // Slower message rotation for better readability
 
+    // Force hide loader after minimum 3 seconds regardless of anything else
+    const forceHideTimer = window.setTimeout(() => {
+      setVisible(false)
+    }, 3000)
+
     const hideLoader = () => {
       const elapsedTime = Date.now() - startTime
-      const remainingTime = Math.max(0, 3000 - elapsedTime) // Ensure minimum 3 seconds
-      window.setTimeout(() => setVisible(false), remainingTime)
+      if (elapsedTime >= 3000) {
+        // Only hide if minimum time has passed
+        setVisible(false)
+      }
     }
 
-    // Always wait for load event, but ensure minimum 3 seconds
+    // Wait for load event but don't hide before minimum time
     window.addEventListener('load', hideLoader, { once: true })
 
     return () => {
       window.clearInterval(messageTimer)
+      window.clearTimeout(forceHideTimer)
       window.removeEventListener('load', hideLoader)
     }
   }, [])
