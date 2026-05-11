@@ -70,7 +70,7 @@ const SiteFooter = () => {
         <div className="grid gap-10 border-b border-zinc-800/80 pb-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <p className="text-3xl font-black tracking-tight text-zinc-100">
-              <span className="text-[#f97316]">RV</span>COMPUTERS
+              <span className="text-[#f97316]">V</span>COMPUTERS
             </p>
             <p className="mt-5 max-w-sm text-base leading-relaxed text-zinc-400">
               Powering the Riebeek Valley with high-speed connectivity and precision IT engineering.
