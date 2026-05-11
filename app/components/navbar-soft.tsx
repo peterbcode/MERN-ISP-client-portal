@@ -114,7 +114,7 @@ export default function NavbarSoft() {
               {/* CTA Button */}
               <Link
                 href="/contact"
-                className="btn-soft-primary ml-4"
+                className="btn-soft-primary ml-4 cursor-pointer"
               >
                 Get Quote
               </Link>
@@ -140,7 +140,7 @@ export default function NavbarSoft() {
                   <div className="border-t border-border-light px-4 py-2">
                     <Link
                       href="/contact"
-                      className="btn-soft-primary w-full text-center transition-all duration-200 hover:scale-105"
+                      className="btn-soft-primary w-full text-center transition-all duration-200 hover:scale-105 cursor-pointer"
                     >
                       Get Quote
                     </Link>

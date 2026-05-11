@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
-import { validatePassword } from '@/lib/security';
 
 interface FormData {
   username: string;
@@ -64,12 +63,8 @@ export default function RegisterForm() {
     // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else {
-      // Enhanced password validation
-      const passwordValidation = validatePassword(formData.password);
-      if (!passwordValidation.isValid) {
-        newErrors.password = passwordValidation.errors[0]; // Show first error
-      }
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
     }
 
     // Confirm password validation
@@ -266,18 +261,6 @@ export default function RegisterForm() {
           {errors.password && (
             <p className="mt-1 text-sm text-red-400">{errors.password}</p>
           )}
-          <div className="mt-2 text-xs text-zinc-400">
-            <p className="font-semibold mb-1">Create a strong password:</p>
-            <ul className="space-y-1 ml-4">
-              <li>• 12+ characters in length</li>
-              <li>• Include 3+ numbers (0-9)</li>
-              <li>• Include 2+ special characters (!@#$%^&*)</li>
-              <li>• Include 2+ uppercase letters</li>
-              <li>• Include 2+ lowercase letters</li>
-              <li>• Avoid common patterns (password, 123456)</li>
-              <li>• Avoid repeated characters (aaa, 111)</li>
-            </ul>
-          </div>
         </div>
 
         <div>
