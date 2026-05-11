@@ -433,6 +433,38 @@ h6 {
   color: #b4b4bc;
 }
 
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  .page-loader__inner {
+    width: min(95vw, 470px);
+    padding: 24px 20px;
+  }
+  
+  .page-loader__chip {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+  
+  .page-loader__logo {
+    font-size: 1.2rem;
+  }
+  
+  .page-loader__tagline {
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+  }
+  
+  .page-loader__sub {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+  
+  .page-loader__ring {
+    width: 48px;
+    height: 48px;
+  }
+}
+
 .brand-marquee-track {
   animation: brand-marquee 120s linear infinite;
   will-change: transform;

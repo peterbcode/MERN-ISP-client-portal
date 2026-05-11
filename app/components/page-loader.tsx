@@ -34,10 +34,10 @@ const PageLoader = () => {
     const messageTimer = window.setInterval(() => {
       messageIndex = (messageIndex + 1) % loadingMessages.length
       setSubText(loadingMessages[messageIndex])
-    }, 900)
+    }, 2000) // Slower message rotation for better readability
 
     const hideLoader = () => {
-      window.setTimeout(() => setVisible(false), 900)
+      window.setTimeout(() => setVisible(false), 3000) // Longer display time
     }
 
     if (document.readyState === 'complete') {
@@ -62,13 +62,13 @@ const PageLoader = () => {
         <div className="page-loader__orb page-loader__orb--3" />
       </div>
       <div className="page-loader__inner">
-        <p className="page-loader__chip">Booting Valley Systems</p>
+        <p className="page-loader__chip">Initializing Valley Systems</p>
         <div className="page-loader__ring" />
         <p className="page-loader__logo">
           <span className="page-loader__logo-rv">VALLEY</span>
           <span className="page-loader__logo-text">COMPUTERS</span>
         </p>
-        <p className="page-loader__tagline">IT - ISP - NETWORKING</p>
+        <p className="page-loader__tagline">PREMIUM ISP • IT SOLUTIONS • NETWORK ENGINEERING</p>
         <div className="page-loader__bar-wrap">
           <div className="page-loader__bar" />
         </div>
