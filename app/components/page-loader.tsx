@@ -31,20 +31,21 @@ const PageLoader = () => {
 
   useEffect(() => {
     let messageIndex = 0
+    const startTime = Date.now()
+    
     const messageTimer = window.setInterval(() => {
       messageIndex = (messageIndex + 1) % loadingMessages.length
       setSubText(loadingMessages[messageIndex])
     }, 2000) // Slower message rotation for better readability
 
     const hideLoader = () => {
-      window.setTimeout(() => setVisible(false), 3000) // Longer display time
+      const elapsedTime = Date.now() - startTime
+      const remainingTime = Math.max(0, 3000 - elapsedTime) // Ensure minimum 3 seconds
+      window.setTimeout(() => setVisible(false), remainingTime)
     }
 
-    if (document.readyState === 'complete') {
-      hideLoader()
-    } else {
-      window.addEventListener('load', hideLoader, { once: true })
-    }
+    // Always wait for load event, but ensure minimum 3 seconds
+    window.addEventListener('load', hideLoader, { once: true })
 
     return () => {
       window.clearInterval(messageTimer)
