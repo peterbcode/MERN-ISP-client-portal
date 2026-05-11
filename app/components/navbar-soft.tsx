@@ -42,13 +42,13 @@ export default function NavbarSoft() {
           <div className="flex items-center justify-between text-xs">
             <div className="hidden items-center gap-4 md:flex">
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Riebeek%20Kasteel%2C%20Western%20Cape"
+                href="https://www.google.com/maps/search/?api=1&query=6%20Church%20Rd%2C%20Riebeek-Kasteel%2C%207307"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="no-accent-hover flex items-center gap-1.5 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-105"
               >
                 <MapPinIcon className="h-3.5 w-3.5" />
-                Riebeek Kasteel, Western Cape
+                6 Church Rd, Riebeek-Kasteel, 7307
               </a>
               <span className="h-3 w-px bg-white/30" aria-hidden="true" />
               <a 
