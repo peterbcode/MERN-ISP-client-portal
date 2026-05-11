@@ -9,13 +9,12 @@ import {
   WifiIcon, 
   GlobeAltIcon, 
   SignalIcon, 
-  ClockIcon,
   ArrowDownIcon,
   ArrowUpIcon,
-  ArrowsPointingOutIcon,
   ChatBubbleLeftRightIcon,
   TicketIcon,
-  PlusIcon
+  PlusIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 
 interface User {
@@ -260,7 +259,7 @@ export default function Dashboard() {
 
       // Open WhatsApp with pre-filled message
       const whatsappMessage = encodeURIComponent(
-        `🎫 *New Support Ticket*\n\n` +
+        `*New Support Ticket*\n\n` +
         `*From:* ${user?.profile.firstName || user?.username || 'User'} (${user?.email || 'N/A'})\n` +
         `*Priority:* ${newTicket.priority.toUpperCase()}\n` +
         `*Subject:* ${newTicket.subject}\n` +
@@ -268,7 +267,7 @@ export default function Dashboard() {
         `*Observed IP:* ${observedIp || 'Unknown'}\n` +
         `*Public IP (ipify):* ${stats.publicIP}\n` +
         `*Network Type:* ${stats.networkType}\n` +
-        `*Speed Test:* ↓ ${speedResult.downloadMbps} Mbps / ↑ ${speedResult.uploadMbps} Mbps / ${speedResult.latencyMs} ms`
+        `*Speed Test:* Down ${speedResult.downloadMbps} Mbps / Up ${speedResult.uploadMbps} Mbps / ${speedResult.latencyMs} ms`
       );
       
       window.open(`https://wa.me/27799381260?text=${whatsappMessage}`, '_blank');
@@ -571,9 +570,10 @@ export default function Dashboard() {
               <h3 className="text-lg sm:text-xl font-bold text-zinc-100">Create Support Ticket</h3>
               <button
                 onClick={() => setShowTicketForm(false)}
-                className="text-zinc-400 hover:text-zinc-200 text-xl p-1"
+                className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                aria-label="Close ticket form"
               >
-                ✕
+                <XMarkIcon className="h-5 w-5" />
               </button>
             </div>
             

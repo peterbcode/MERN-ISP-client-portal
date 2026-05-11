@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { safeAlert } from '@/lib/native-dialog';
 
+const SETTINGS_STORAGE_KEY = 'vc_dashboard_settings';
+
 export default function SettingsPage() {
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +33,20 @@ export default function SettingsPage() {
 
   useEffect(() => {
     checkAuth();
+  }, []);
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(SETTINGS_STORAGE_KEY);
+      if (!saved) return;
+
+      const parsed = JSON.parse(saved);
+      if (parsed.notifications) setNotifications(parsed.notifications);
+      if (parsed.privacy) setPrivacy(parsed.privacy);
+      if (parsed.preferences) setPreferences(parsed.preferences);
+    } catch {
+      window.localStorage.removeItem(SETTINGS_STORAGE_KEY);
+    }
   }, []);
 
   const checkAuth = async () => {
@@ -78,8 +94,10 @@ export default function SettingsPage() {
   const saveSettings = async () => {
     setIsLoading(true);
     try {
-      // Simulate API call to save settings
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      window.localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({ notifications, privacy, preferences })
+      );
       safeAlert('Settings saved successfully!');
     } catch (error) {
       safeAlert('Failed to save settings. Please try again.');
@@ -98,6 +116,10 @@ export default function SettingsPage() {
       <div>
         <h1 className="text-2xl font-bold text-white mb-2">Settings</h1>
         <p className="text-zinc-400">Manage your account preferences and configuration</p>
+      </div>
+
+      <div className="rounded-lg border border-blue-500/30 bg-blue-500/10 p-4 text-sm text-blue-100">
+        These preferences are saved locally on this device until server-side account preferences are connected.
       </div>
 
       {/* Notification Settings */}

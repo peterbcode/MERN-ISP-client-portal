@@ -1,12 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { ComponentType, SVGProps } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from "../components/navbar";
 import SiteFooter from "../components/site-footer";
 import { auth } from '@/lib/auth';
 import { apiClient } from '@/lib/api-client';
 import AdminUsers from './components/admin-users';
+import {
+  ChartBarIcon,
+  TrophyIcon,
+  UserGroupIcon,
+  UsersIcon,
+} from '@heroicons/react/24/outline';
 
 type AdminStats = {
   totalUsers: number;
@@ -114,10 +121,10 @@ export default function AdminDashboard() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <StatCard label="Total Users" value={stats.totalUsers} marker="U" className="bg-blue-500" />
-            <StatCard label="Active Users" value={stats.activeUsers} marker="A" className="bg-green-500" />
-            <StatCard label="Total Games" value={stats.totalGames} marker="G" className="bg-orange-500" />
-            <StatCard label="High Scores" value={stats.totalHighScores} marker="S" className="bg-purple-500" />
+            <StatCard label="Total Users" value={stats.totalUsers} icon={UsersIcon} className="bg-blue-500" />
+            <StatCard label="Active Users" value={stats.activeUsers} icon={UserGroupIcon} className="bg-green-500" />
+            <StatCard label="Total Games" value={stats.totalGames} icon={ChartBarIcon} className="bg-orange-500" />
+            <StatCard label="High Scores" value={stats.totalHighScores} icon={TrophyIcon} className="bg-purple-500" />
           </div>
 
           {statsError ? <div className="mb-6 text-sm text-red-400">{statsError}</div> : null}
@@ -133,12 +140,12 @@ export default function AdminDashboard() {
 function StatCard({
   label,
   value,
-  marker,
+  icon: Icon,
   className,
 }: {
   label: string;
   value: number;
-  marker: string;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
   className: string;
 }) {
   return (
@@ -146,7 +153,7 @@ function StatCard({
       <div className="flex items-center">
         <div className="flex-shrink-0">
           <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${className}`}>
-            <span className="text-white font-bold">{marker}</span>
+            <Icon className="h-5 w-5 text-white" />
           </div>
         </div>
         <div className="ml-4">

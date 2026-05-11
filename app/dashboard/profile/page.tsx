@@ -309,30 +309,30 @@ export default function ProfilePage() {
           <div className="flex justify-between items-center py-3 border-b border-zinc-700">
             <div>
               <h3 className="text-white font-medium">Change Password</h3>
-              <p className="text-sm text-zinc-400">Update your account password</p>
+              <p className="text-sm text-zinc-400">Use password reset from the login page until in-dashboard password changes are enabled.</p>
             </div>
-            <button className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
-              Change Password
+            <button disabled className="px-4 py-2 bg-zinc-700 text-zinc-400 rounded-lg cursor-not-allowed">
+              Coming Soon
             </button>
           </div>
           
           <div className="flex justify-between items-center py-3 border-b border-zinc-700">
             <div>
               <h3 className="text-white font-medium">Two-Factor Authentication</h3>
-              <p className="text-sm text-zinc-400">Add an extra layer of security</p>
+              <p className="text-sm text-zinc-400">Additional login protection is planned but not active yet.</p>
             </div>
-            <button className="px-4 py-2 bg-zinc-600 text-white rounded-lg hover:bg-zinc-700 transition-colors">
-              Setup 2FA
+            <button disabled className="px-4 py-2 bg-zinc-700 text-zinc-400 rounded-lg cursor-not-allowed">
+              Coming Soon
             </button>
           </div>
           
           <div className="flex justify-between items-center py-3">
             <div>
               <h3 className="text-white font-medium">Login History</h3>
-              <p className="text-sm text-zinc-400">View recent login activity</p>
+              <p className="text-sm text-zinc-400">Recent login activity will appear here once audit logging is connected.</p>
             </div>
-            <button className="px-4 py-2 bg-zinc-600 text-white rounded-lg hover:bg-zinc-700 transition-colors">
-              View History
+            <button disabled className="px-4 py-2 bg-zinc-700 text-zinc-400 rounded-lg cursor-not-allowed">
+              Coming Soon
             </button>
           </div>
         </div>
@@ -347,10 +347,10 @@ export default function ProfilePage() {
           <div className="flex justify-between items-center">
             <div>
               <h3 className="text-white font-medium">Delete Account</h3>
-              <p className="text-sm text-zinc-400">Permanently delete your account and all data</p>
+              <p className="text-sm text-zinc-400">Contact support if you need account removal or data export.</p>
             </div>
-            <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-              Delete Account
+            <button disabled className="px-4 py-2 bg-zinc-700 text-zinc-400 rounded-lg cursor-not-allowed">
+              Contact Support
             </button>
           </div>
         </div>
