@@ -267,15 +267,15 @@ export default function RegisterForm() {
             <p className="mt-1 text-sm text-red-400">{errors.password}</p>
           )}
           <div className="mt-2 text-xs text-zinc-400">
-            <p className="font-semibold mb-1">Password must contain:</p>
+            <p className="font-semibold mb-1">Create a strong password:</p>
             <ul className="space-y-1 ml-4">
-              <li>• At least 12 characters</li>
-              <li>• At least 3 numbers</li>
-              <li>• At least 2 special characters (!@#$%^&* etc.)</li>
-              <li>• At least 2 uppercase letters</li>
-              <li>• At least 2 lowercase letters</li>
-              <li>• No common patterns (password, 123456, etc.)</li>
-              <li>• No 3+ repeated characters in a row</li>
+              <li>• 12+ characters in length</li>
+              <li>• Include 3+ numbers (0-9)</li>
+              <li>• Include 2+ special characters (!@#$%^&*)</li>
+              <li>• Include 2+ uppercase letters</li>
+              <li>• Include 2+ lowercase letters</li>
+              <li>• Avoid common patterns (password, 123456)</li>
+              <li>• Avoid repeated characters (aaa, 111)</li>
             </ul>
           </div>
         </div>
