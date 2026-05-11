@@ -36,6 +36,15 @@ MONGODB_DBNAME=mern-isp-portal
 JWT_SECRET=<long-random-secret-at-least-32-characters>
 JWT_EXPIRE=7d
 DEBUG_API_ERRORS=false
+
+# Email Service (Resend)
+RESEND_API_KEY=re_your_resend_api_key_here
+RESEND_FROM_EMAIL=noreply@valley-computers.co.za
+CONTACT_EMAIL=info@valley-computers.co.za
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your_google_client_id_here
+GOOGLE_CLIENT_SECRET=your_google_client_secret_here
 ```
 
 Do not set `NEXT_PUBLIC_API_URL` on Vercel unless you intentionally use a separate external API. In production, the app uses its own `/api` routes.

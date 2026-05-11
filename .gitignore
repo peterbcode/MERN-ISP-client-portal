@@ -45,3 +45,11 @@ next-dev*.log
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# test files
+test-*.js
+
+# development artifacts
+*.log
+next-dev*.log
+next-dev.err.log

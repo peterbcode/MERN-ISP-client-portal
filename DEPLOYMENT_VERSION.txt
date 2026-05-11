@@ -1,3 +1,0 @@
-Deployment: 2024-03-17-17-33
-Features: Mobile responsiveness, Forgot password, Vercel fixes
-Commit: 42c574b

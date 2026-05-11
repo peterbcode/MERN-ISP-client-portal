@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
+import { validatePassword } from '@/lib/security';
 
 interface FormData {
   username: string;
@@ -63,8 +64,12 @@ export default function RegisterForm() {
     // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+    } else {
+      // Enhanced password validation
+      const passwordValidation = validatePassword(formData.password);
+      if (!passwordValidation.isValid) {
+        newErrors.password = passwordValidation.errors[0]; // Show first error
+      }
     }
 
     // Confirm password validation
@@ -244,8 +249,10 @@ export default function RegisterForm() {
               className={`w-full px-4 py-3 pr-12 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
                 errors.password ? 'border-red-500' : 'border-zinc-700'
               }`}
-              placeholder="Create a password"
+              placeholder="Create a strong password"
               disabled={isLoading}
+              minLength={12}
+              required
             />
             <button
               type="button"
@@ -259,6 +266,18 @@ export default function RegisterForm() {
           {errors.password && (
             <p className="mt-1 text-sm text-red-400">{errors.password}</p>
           )}
+          <div className="mt-2 text-xs text-zinc-400">
+            <p className="font-semibold mb-1">Password must contain:</p>
+            <ul className="space-y-1 ml-4">
+              <li>• At least 12 characters</li>
+              <li>• At least 3 numbers</li>
+              <li>• At least 2 special characters (!@#$%^&* etc.)</li>
+              <li>• At least 2 uppercase letters</li>
+              <li>• At least 2 lowercase letters</li>
+              <li>• No common patterns (password, 123456, etc.)</li>
+              <li>• No 3+ repeated characters in a row</li>
+            </ul>
+          </div>
         </div>
 
         <div>

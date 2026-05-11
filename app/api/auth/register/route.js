@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/mongoose";
 import User from "@/models/User";
 import jwt from "jsonwebtoken";
+import { validateInput, validatePassword, authRateLimiter } from "@/lib/security";
 
 export const runtime = "nodejs";
 
@@ -26,7 +27,26 @@ const createUserResponse = (user, token) => ({
 
 export async function POST(request) {
   try {
-    console.log("🔍 Registration request received");
+    // Get client IP for rate limiting
+    const clientIP = request.headers.get('x-forwarded-for') || 
+                     request.headers.get('x-real-ip') || 
+                     'unknown';
+    
+    // Rate limiting check
+    if (!authRateLimiter.isAllowed(clientIP)) {
+      const resetTime = authRateLimiter.getResetTime(clientIP);
+      const remainingTime = Math.ceil((resetTime - Date.now()) / 60000);
+      
+      return Response.json(
+        { 
+          success: false, 
+          message: `Too many registration attempts. Please try again in ${remainingTime} minutes.` 
+        },
+        { status: 429 }
+      );
+    }
+    
+    console.log("🔍 Registration request received from:", clientIP);
     console.log("🔧 Environment check:", {
       hasMongoUri: !!process.env.MONGODB_URI,
       hasJwtSecret: !!process.env.JWT_SECRET,
@@ -51,18 +71,89 @@ export async function POST(request) {
     const { username, email, password, firstName, lastName } = await request.json();
     console.log("📝 Registration data:", { username, email, firstName, lastName, passwordLength: password?.length });
 
-    if (!username || !email || !password || !firstName || !lastName) {
-      console.log("❌ Missing required fields");
+    // Validate all inputs
+    const usernameValidation = validateInput(username, {
+      minLength: 3,
+      maxLength: 30,
+      allowEmpty: false
+    });
+    
+    const emailValidation = validateInput(email, {
+      maxLength: 255,
+      allowEmpty: false
+    });
+    
+    const firstNameValidation = validateInput(firstName, {
+      maxLength: 50,
+      allowEmpty: false
+    });
+    
+    const lastNameValidation = validateInput(lastName, {
+      maxLength: 50,
+      allowEmpty: false
+    });
+    
+    if (!usernameValidation.valid) {
+      console.log("❌ Invalid username:", usernameValidation.error);
       return Response.json(
-        { success: false, message: "Please provide username, email, password, first name, and last name" },
+        { success: false, message: usernameValidation.error },
+        { status: 400 },
+      );
+    }
+    
+    if (!emailValidation.valid) {
+      console.log("❌ Invalid email:", emailValidation.error);
+      return Response.json(
+        { success: false, message: emailValidation.error },
+        { status: 400 },
+      );
+    }
+    
+    if (!firstNameValidation.valid) {
+      console.log("❌ Invalid first name:", firstNameValidation.error);
+      return Response.json(
+        { success: false, message: firstNameValidation.error },
+        { status: 400 },
+      );
+    }
+    
+    if (!lastNameValidation.valid) {
+      console.log("❌ Invalid last name:", lastNameValidation.error);
+      return Response.json(
+        { success: false, message: lastNameValidation.error },
         { status: 400 },
       );
     }
 
-    if (password.length < 6) {
-      console.log("❌ Password too short");
+    // Enhanced password validation
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      console.log("❌ Weak password:", passwordValidation.errors);
       return Response.json(
-        { success: false, message: "Password must be at least 6 characters long" },
+        { 
+          success: false, 
+          message: "Password does not meet security requirements",
+          errors: passwordValidation.errors 
+        },
+        { status: 400 },
+      );
+    }
+    
+    // Username format validation
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      console.log("❌ Invalid username format");
+      return Response.json(
+        { success: false, message: "Username can only contain letters, numbers, and underscores" },
+        { status: 400 },
+      );
+    }
+    
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      console.log("❌ Invalid email format");
+      return Response.json(
+        { success: false, message: "Please provide a valid email address" },
         { status: 400 },
       );
     }

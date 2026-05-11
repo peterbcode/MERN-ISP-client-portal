@@ -91,10 +91,19 @@ export default function LoginForm() {
   };
 
   const handleGoogleLogin = async () => {
-    // Google login not implemented yet
-    setErrors({
-      general: 'Google login coming soon. Please use email login.'
-    });
+    try {
+      setIsLoading(true);
+      setErrors({});
+      
+      // Redirect to Google OAuth
+      window.location.href = '/api/auth/google';
+    } catch (error) {
+      console.error('Google login error:', error);
+      setErrors({
+        general: 'Failed to start Google authentication. Please try again.'
+      });
+      setIsLoading(false);
+    }
   };
 
   return (
