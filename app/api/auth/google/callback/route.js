@@ -24,13 +24,37 @@ export async function GET(request) {
     // Create or update user in database
     const user = await createOrUpdateGoogleUser(googleUser);
     
-    // Generate JWT token
     const token = generateJWTToken(user);
 
-    // Redirect to dashboard with token
-    const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?token=${token}`;
-    
-    return Response.redirect(redirectUrl);
+    const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`;
+    const escapedToken = JSON.stringify(token);
+    const escapedDashboardUrl = JSON.stringify(dashboardUrl);
+
+    return new Response(
+      `<!doctype html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8" />
+          <meta name="robots" content="noindex" />
+          <title>Signing in...</title>
+        </head>
+        <body>
+          <script>
+            localStorage.setItem("token", ${escapedToken});
+            window.location.replace(${escapedDashboardUrl});
+          </script>
+          <noscript>JavaScript is required to finish signing in.</noscript>
+        </body>
+      </html>`,
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+        },
+      }
+    );
 
   } catch (error) {
     console.error('Google auth callback error:', error);

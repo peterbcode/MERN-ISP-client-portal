@@ -4,7 +4,7 @@ export const runtime = 'nodejs';
 
 // GET /api/debug/db - Test database connection
 export async function GET(request) {
-  if (process.env.DEBUG_API_ERRORS !== 'true') {
+  if (process.env.NODE_ENV === 'production' || process.env.DEBUG_API_ERRORS !== 'true') {
     return Response.json({ success: false, message: 'Not found' }, { status: 404 });
   }
 
@@ -12,8 +12,7 @@ export async function GET(request) {
     console.log("🔍 Testing database connection...");
     
     const envCheck = {
-      hasMongoUri: !!process.env.MONGODB_URI,
-      mongoUriPrefix: process.env.MONGODB_URI?.substring(0, 30) + "..."
+      hasMongoUri: !!process.env.MONGODB_URI
     };
 
     if (!process.env.MONGODB_URI) {

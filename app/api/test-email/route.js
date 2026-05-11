@@ -2,7 +2,14 @@ import { sendPasswordResetEmail, sendWelcomeEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 
+const isDebugEnabled = () =>
+  process.env.NODE_ENV !== "production" && process.env.DEBUG_API_ERRORS === "true";
+
 export async function POST(request) {
+  if (!isDebugEnabled()) {
+    return Response.json({ success: false, message: "Not found" }, { status: 404 });
+  }
+
   try {
     const { email, type, firstName } = await request.json();
 
@@ -13,36 +20,29 @@ export async function POST(request) {
       );
     }
 
-    let result;
-    
-    if (type === 'welcome') {
-      result = await sendWelcomeEmail(email, firstName);
-    } else {
-      // Generate a test token for password reset
-      const testToken = 'test-reset-token-' + Date.now();
-      result = await sendPasswordResetEmail(email, testToken);
-    }
+    const result =
+      type === "welcome"
+        ? await sendWelcomeEmail(email, firstName)
+        : await sendPasswordResetEmail(email, `debug-reset-token-${Date.now()}`);
 
     if (result.success) {
       return Response.json({
         success: true,
-        message: `Test ${type === 'welcome' ? 'welcome' : 'password reset'} email sent successfully to ${email}`,
-        data: result.data
+        message: `Test ${type === "welcome" ? "welcome" : "password reset"} email sent successfully`,
       });
-    } else {
-      return Response.json({
-        success: false,
-        message: `Failed to send test email: ${result.error}`,
-        error: result.error
-      }, { status: 500 });
     }
+
+    return Response.json({
+      success: false,
+      message: "Failed to send test email",
+    }, { status: 500 });
   } catch (error) {
     console.error("Test email error:", error);
     return Response.json(
       {
         success: false,
         message: "Server error sending test email",
-        error: error.message
+        error: error.message,
       },
       { status: 500 }
     );
@@ -50,24 +50,16 @@ export async function POST(request) {
 }
 
 export async function GET() {
-  const emailConfig = {
-    resendApiKey: !!process.env.RESEND_API_KEY,
-    fromEmail: process.env.RESEND_FROM_EMAIL || 'not configured',
-    appUrl: process.env.NEXT_PUBLIC_APP_URL || 'not configured'
-  };
+  if (!isDebugEnabled()) {
+    return Response.json({ success: false, message: "Not found" }, { status: 404 });
+  }
 
   return Response.json({
     message: "Email configuration status",
-    config: emailConfig,
-    instructions: {
-      setup: [
-        "1. Sign up at https://resend.com",
-        "2. Get your API key from https://resend.com/api-keys",
-        "3. Add RESEND_API_KEY to your environment variables",
-        "4. Add RESEND_FROM_EMAIL (must be a verified domain in Resend)",
-        "5. Set NEXT_PUBLIC_APP_URL to your app's URL"
-      ],
-      test: "Send a POST request to this endpoint with { email: 'test@example.com', type: 'welcome' }"
-    }
+    config: {
+      resendApiKeyConfigured: !!process.env.RESEND_API_KEY,
+      fromEmailConfigured: !!process.env.RESEND_FROM_EMAIL,
+      appUrlConfigured: !!process.env.NEXT_PUBLIC_APP_URL,
+    },
   });
 }

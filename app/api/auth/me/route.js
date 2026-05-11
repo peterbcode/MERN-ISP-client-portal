@@ -21,6 +21,11 @@ const protect = async (request) => {
     if (!user) {
       return null;
     }
+
+    const isActive = user.isActive ?? user.stats?.isActive ?? true;
+    if (!isActive) {
+      return null;
+    }
     
     return user;
   } catch (error) {

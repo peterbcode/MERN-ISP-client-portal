@@ -45,15 +45,7 @@ export async function POST(request) {
         { status: 429 }
       );
     }
-    
-    console.log("🔍 Registration request received from:", clientIP);
-    console.log("🔧 Environment check:", {
-      hasMongoUri: !!process.env.MONGODB_URI,
-      hasJwtSecret: !!process.env.JWT_SECRET,
-      nodeEnv: process.env.NODE_ENV,
-      mongoUriPrefix: process.env.MONGODB_URI?.substring(0, 20) + "..."
-    });
-    
+
     // Check environment variables
     if (!process.env.MONGODB_URI) {
       console.error("❌ Missing MONGODB_URI");
@@ -64,12 +56,9 @@ export async function POST(request) {
       throw new Error("Missing environment variable: JWT_SECRET");
     }
 
-    console.log("🔗 Connecting to database...");
     await connectDB();
-    console.log("✅ Database connected");
 
     const { username, email, password, firstName, lastName } = await request.json();
-    console.log("📝 Registration data:", { username, email, firstName, lastName, passwordLength: password?.length });
 
     // Validate all inputs
     const usernameValidation = validateInput(username, {
@@ -209,7 +198,9 @@ export async function POST(request) {
       {
         success: false,
         message: "Registration failed. Please try again.",
-        ...(process.env.DEBUG_API_ERRORS === "true" ? { error: error?.message } : null),
+        ...(process.env.NODE_ENV !== "production" && process.env.DEBUG_API_ERRORS === "true"
+          ? { error: error?.message }
+          : null),
       },
       { status: 500 },
     );

@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/mongoose";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { authRateLimiter } from "@/lib/security";
 
 export const runtime = "nodejs";
 
@@ -27,6 +28,23 @@ const createUserResponse = (user, token) => ({
 
 export async function POST(request) {
   try {
+    const clientIP = request.headers.get("x-forwarded-for") ||
+                     request.headers.get("x-real-ip") ||
+                     "unknown";
+
+    if (!authRateLimiter.isAllowed(clientIP)) {
+      const resetTime = authRateLimiter.getResetTime(clientIP);
+      const remainingTime = Math.ceil((resetTime - Date.now()) / 60000);
+
+      return Response.json(
+        {
+          success: false,
+          message: `Too many login attempts. Please try again in ${remainingTime} minutes.`,
+        },
+        { status: 429 }
+      );
+    }
+
     if (!process.env.MONGODB_URI) throw new Error("Missing environment variable: MONGODB_URI");
     if (!process.env.JWT_SECRET) throw new Error("Missing environment variable: JWT_SECRET");
 
@@ -39,6 +57,11 @@ export async function POST(request) {
 
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
+      return Response.json({ success: false, message: "Invalid credentials" }, { status: 401 });
+    }
+
+    const isActive = user.isActive ?? user.stats?.isActive ?? true;
+    if (!isActive) {
       return Response.json({ success: false, message: "Invalid credentials" }, { status: 401 });
     }
 
@@ -55,7 +78,9 @@ export async function POST(request) {
       {
         success: false,
         message: "Login failed. Please try again.",
-        ...(process.env.DEBUG_API_ERRORS === "true" ? { error: error?.message } : null),
+        ...(process.env.NODE_ENV !== "production" && process.env.DEBUG_API_ERRORS === "true"
+          ? { error: error?.message }
+          : null),
       },
       { status: 500 },
     );
