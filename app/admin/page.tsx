@@ -5,9 +5,25 @@ import { useRouter } from 'next/navigation';
 import Navbar from "../components/navbar";
 import SiteFooter from "../components/site-footer";
 import { auth } from '@/lib/auth';
+import { apiClient } from '@/lib/api-client';
+import AdminUsers from './components/admin-users';
+
+type AdminStats = {
+  totalUsers: number;
+  activeUsers: number;
+  totalGames: number;
+  totalHighScores: number;
+};
 
 export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
+  const [stats, setStats] = useState<AdminStats>({
+    totalUsers: 0,
+    activeUsers: 0,
+    totalGames: 0,
+    totalHighScores: 0,
+  });
+  const [statsError, setStatsError] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -24,6 +40,7 @@ export default function AdminDashboard() {
             router.push('/dashboard');
             return;
           }
+          await loadStats();
         } else {
           auth.clearToken();
           router.push('/login');
@@ -39,6 +56,25 @@ export default function AdminDashboard() {
 
     checkAuth();
   }, [router]);
+
+  const loadStats = async () => {
+    setStatsError('');
+    try {
+      const response = await apiClient.admin.getStats();
+      if (response.data?.success) {
+        setStats({
+          totalUsers: response.data.stats?.totalUsers || 0,
+          activeUsers: response.data.stats?.activeUsers || 0,
+          totalGames: response.data.stats?.totalGames || 0,
+          totalHighScores: response.data.stats?.totalHighScores || 0,
+        });
+      } else {
+        setStatsError(response.data?.message || 'Failed to load admin stats');
+      }
+    } catch (error: any) {
+      setStatsError(error?.message || 'Failed to load admin stats');
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -62,11 +98,12 @@ export default function AdminDashboard() {
       <Navbar />
       <div className="min-h-screen bg-zinc-900 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-6">
             <div>
               <h1 className="text-2xl lg:text-3xl font-black text-white">Admin Dashboard</h1>
-              <p className="mt-1 lg:mt-2 text-sm lg:text-base text-zinc-400">Manage users, games, and monitor platform activity</p>
+              <p className="mt-1 lg:mt-2 text-sm lg:text-base text-zinc-400">
+                Manage users, games, and monitor platform activity
+              </p>
             </div>
             <button
               onClick={handleLogout}
@@ -76,83 +113,47 @@ export default function AdminDashboard() {
             </button>
           </div>
 
-          {/* Admin Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold">👥</span>
-                  </div>
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm text-zinc-400">Total Users</p>
-                  <p className="text-2xl font-bold text-white">0</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold">✅</span>
-                  </div>
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm text-zinc-400">Active Users</p>
-                  <p className="text-2xl font-bold text-white">0</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold">🎮</span>
-                  </div>
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm text-zinc-400">Total Games</p>
-                  <p className="text-2xl font-bold text-white">0</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold">🏆</span>
-                  </div>
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm text-zinc-400">High Scores</p>
-                  <p className="text-2xl font-bold text-white">0</p>
-                </div>
-              </div>
-            </div>
+            <StatCard label="Total Users" value={stats.totalUsers} marker="U" className="bg-blue-500" />
+            <StatCard label="Active Users" value={stats.activeUsers} marker="A" className="bg-green-500" />
+            <StatCard label="Total Games" value={stats.totalGames} marker="G" className="bg-orange-500" />
+            <StatCard label="High Scores" value={stats.totalHighScores} marker="S" className="bg-purple-500" />
           </div>
 
-          {/* Quick Actions */}
-          <div className="mt-8 flex flex-wrap gap-4">
-            <button className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium">
-              Manage Users
-            </button>
-            <button className="px-6 py-3 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors font-medium">
-              Manage Games
-            </button>
-            <button className="px-6 py-3 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors font-medium">
-              View Leaderboard
-            </button>
-            <button className="px-6 py-3 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors font-medium">
-              System Settings
-            </button>
-          </div>
+          {statsError ? <div className="mb-6 text-sm text-red-400">{statsError}</div> : null}
+
+          <AdminUsers />
         </div>
       </div>
       <SiteFooter />
     </>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+  marker,
+  className,
+}: {
+  label: string;
+  value: number;
+  marker: string;
+  className: string;
+}) {
+  return (
+    <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${className}`}>
+            <span className="text-white font-bold">{marker}</span>
+          </div>
+        </div>
+        <div className="ml-4">
+          <p className="text-sm text-zinc-400">{label}</p>
+          <p className="text-2xl font-bold text-white">{value}</p>
+        </div>
+      </div>
+    </div>
   );
 }

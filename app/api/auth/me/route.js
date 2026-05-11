@@ -53,6 +53,7 @@ export async function GET(request) {
         lastName: user.lastName,
         role: user.role,
         profile: user.profile,
+        stats: user.stats,
         createdAt: user.createdAt
       }
     });
@@ -80,12 +81,19 @@ export async function PUT(request) {
       }, { status: 401 });
     }
 
-    const { firstName, lastName, profile } = await request.json();
+    const { firstName, lastName, profile = {} } = await request.json();
+    const currentProfile = user.profile?.toObject?.() || user.profile || {};
+    const nextProfile = {
+      ...currentProfile,
+      ...profile,
+      firstName: firstName ?? profile.firstName ?? user.profile?.firstName,
+      lastName: lastName ?? profile.lastName ?? user.profile?.lastName,
+    };
 
     // Update user
     const updatedUser = await User.findByIdAndUpdate(
       user._id,
-      { firstName, lastName, profile },
+      { profile: nextProfile },
       { new: true, runValidators: true }
     );
 
@@ -99,6 +107,7 @@ export async function PUT(request) {
         lastName: updatedUser.lastName,
         role: updatedUser.role,
         profile: updatedUser.profile,
+        stats: updatedUser.stats,
         createdAt: updatedUser.createdAt
       }
     });

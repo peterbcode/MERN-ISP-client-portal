@@ -93,29 +93,34 @@ export default function ProfilePage() {
     
     setIsLoading(true);
     try {
-      // Simulate API call to update profile
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      if (user) {
-        const updatedUser = {
-          ...user,
-          profile: {
-            ...user.profile,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            phone: formData.phone,
-            address: formData.address
-          }
-        };
-        setUser(updatedUser);
+      const response = await auth.updateProfile({
+        profile: {
+          firstName: formData.firstName.trim(),
+          lastName: formData.lastName.trim(),
+          phone: formData.phone.trim(),
+          address: formData.address.trim(),
+        },
+      });
+
+      if (!response.success) {
+        throw new Error(response.message || 'Failed to update profile');
       }
+
+      setUser(response.user);
+      setFormData({
+        firstName: response.user.profile?.firstName || '',
+        lastName: response.user.profile?.lastName || '',
+        email: response.user.email || '',
+        phone: response.user.profile?.phone || '',
+        address: response.user.profile?.address || ''
+      });
       
       setIsEditing(false);
       setSaveMessage('Profile updated successfully!');
       
       setTimeout(() => setSaveMessage(''), 3000);
-    } catch (error) {
-      setSaveMessage('Failed to update profile. Please try again.');
+    } catch (error: any) {
+      setSaveMessage(error?.message || 'Failed to update profile. Please try again.');
       setTimeout(() => setSaveMessage(''), 3000);
     } finally {
       setIsLoading(false);
