@@ -6,18 +6,21 @@ const footprintItems = [
     description:
       "Our main operations center providing expert support and managing the valley's fibre backbone.",
     icon: BuildingOffice2Icon,
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=6%20Church%20Rd%2C%20Riebeek-Kasteel%2C%207307',
   },
   {
     title: 'Malmesbury Coverage',
     description:
       'Full ISP and technical support services extended to the growing business and residential hubs of Malmesbury.',
     icon: CpuChipIcon,
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Malmesbury%2C%20Western%20Cape%2C%20South%20Africa',
   },
   {
     title: 'Swartland Region',
     description:
       'Comprehensive coverage across the wider Swartland area, serving surrounding farms and communities with reliable connectivity.',
     icon: MapIcon,
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Swartland%2C%20Western%20Cape%2C%20South%20Africa',
   },
 ]
 
@@ -36,7 +39,8 @@ const LocalFootprint = () => {
             {footprintItems.map((item) => (
               <article
                 key={item.title}
-                className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+                className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] cursor-pointer transition-all duration-300 hover:border-[#f97316] hover:shadow-[0_0_20px_rgba(249,115,22,0.15)]"
+                onClick={() => window.open(item.mapUrl, '_blank', 'noopener,noreferrer')}
               >
                 <div className="flex items-start gap-4">
                   <div className="mt-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#f97316] text-white">
