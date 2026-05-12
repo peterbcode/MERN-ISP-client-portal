@@ -66,8 +66,20 @@ export default function RegisterForm() {
     } else {
       const requirements = [];
       
-      if (formData.password.length < 8) {
-        requirements.push('at least 8 characters');
+      if (formData.password.length < 6) {
+        requirements.push('at least 6 characters');
+      }
+      
+      if (!/[a-zA-Z]/.test(formData.password)) {
+        requirements.push('at least 1 letter');
+      }
+      
+      if (!/[0-9]/.test(formData.password)) {
+        requirements.push('at least 1 number');
+      }
+      
+      if (!/[!@#$%^&*()_+\-=\[\]{};:'",.<>?\/]/.test(formData.password)) {
+        requirements.push('at least 1 symbol');
       }
       
       if (requirements.length > 0) {
