@@ -63,8 +63,16 @@ export default function RegisterForm() {
     // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters long';
+    } else {
+      const requirements = [];
+      
+      if (formData.password.length < 8) {
+        requirements.push('at least 8 characters');
+      }
+      
+      if (requirements.length > 0) {
+        newErrors.password = `Password must have:\n• ${requirements.join('\n• ')}`;
+      }
     }
 
     // Confirm password validation
