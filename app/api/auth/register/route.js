@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/mongoose";
 import User from "@/models/User";
 import jwt from "jsonwebtoken";
 import { validateInput, validatePassword, authRateLimiter } from "@/lib/security";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -169,6 +170,15 @@ export async function POST(request) {
 
     const token = generateToken(user._id);
     console.log("🔑 Token generated");
+    
+    // Send welcome email
+    try {
+      await sendWelcomeEmail(user.email, user.profile?.firstName);
+      console.log("📧 Welcome email sent successfully");
+    } catch (emailError) {
+      console.error("❌ Failed to send welcome email:", emailError);
+      // Don't fail registration if email fails
+    }
     
     return Response.json(createUserResponse(user, token), { status: 201 });
   } catch (error) {

@@ -35,6 +35,7 @@ export default function RegisterForm() {
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
@@ -136,8 +137,23 @@ export default function RegisterForm() {
       console.log('Registration response:', response);
       
       if (response.success) {
-        // Redirect to dashboard or onboarding
-        router.push('/dashboard');
+        // Show success message
+        setSuccessMessage('Account created successfully! Welcome to ISP Portal.');
+        
+        // Clear form
+        setFormData({
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          firstName: '',
+          lastName: ''
+        });
+        
+        // Redirect after a short delay
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 2000);
       }
     } catch (error: any) {
       console.error('Registration error:', error);
@@ -317,6 +333,12 @@ export default function RegisterForm() {
             <p className="mt-1 text-sm text-red-400">{errors.confirmPassword}</p>
           )}
         </div>
+
+        {successMessage && (
+          <div className="bg-green-900/50 border border-green-500 rounded-lg p-3 mb-4">
+            <p className="text-sm text-green-400">{successMessage}</p>
+          </div>
+        )}
 
         {errors.general && (
           <div className="bg-red-900/50 border border-red-500 rounded-lg p-3">
