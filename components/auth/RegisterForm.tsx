@@ -124,8 +124,12 @@ export default function RegisterForm() {
     e.preventDefault();
     
     console.log('Form submitted:', formData);
+    console.log('Form valid:', validateForm());
     
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      console.log('Form validation failed');
+      return;
+    }
 
     setIsLoading(true);
     setErrors({});
