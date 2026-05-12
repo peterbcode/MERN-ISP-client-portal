@@ -56,37 +56,61 @@ export default function LoginForm() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('=== LOGIN SUBMISSION START ===');
     e.preventDefault();
     
-    if (!validateForm()) return;
+    console.log('Form data:', formData);
+    console.log('Form valid:', validateForm());
+    
+    if (!validateForm()) {
+      console.log('Login validation failed');
+      return;
+    }
 
     setIsLoading(true);
     setErrors({});
 
     try {
+      console.log('Attempting login with:', { email: formData.email });
       const response = await auth.login(formData);
       
+      console.log('Login response:', response);
+      
       if (response.success) {
+        console.log('Login successful, redirecting to dashboard');
         // Redirect to dashboard or home
         router.push('/dashboard');
+      } else {
+        console.log('Login failed - no success flag');
+        setErrors({
+          general: response.message || 'Login failed'
+        });
       }
     } catch (error: any) {
-      console.error('Login error:', error);
+      console.error('=== LOGIN ERROR ===');
+      console.error('Error object:', error);
+      console.error('Error code:', error.code);
+      console.error('Error message:', error.message);
+      console.error('Error response:', error.response);
+      console.error('Error response data:', error.response?.data);
+      
       let errorMessage = 'Login failed. Please try again.';
       
       if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
-        errorMessage = 'Cannot connect to server. Please make sure the Next.js development server is running';
+        errorMessage = 'Cannot connect to server. Please make sure that Next.js development server is running';
       } else if (error.message) {
         errorMessage = error.message;
       } else if (error.error) {
         errorMessage = error.error;
       }
       
+      console.log('Setting error message:', errorMessage);
       setErrors({
         general: errorMessage
       });
     } finally {
       setIsLoading(false);
+      console.log('=== LOGIN SUBMISSION END ===');
     }
   };
 
