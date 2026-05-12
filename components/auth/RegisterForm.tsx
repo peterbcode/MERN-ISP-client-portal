@@ -146,7 +146,17 @@ export default function RegisterForm() {
     try {
       const { confirmPassword, ...registrationData } = formData;
       console.log('Sending registration data:', registrationData);
-      const response = await auth.register(registrationData);
+      
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timeout - server not responding')), 15000);
+      });
+      
+      const response = await Promise.race([
+        auth.register(registrationData),
+        timeoutPromise
+      ]);
+      
       console.log('Registration response:', response);
       
       if (response.success) {
