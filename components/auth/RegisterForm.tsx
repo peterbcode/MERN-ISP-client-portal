@@ -72,6 +72,9 @@ export default function RegisterForm() {
       
       if (requirements.length > 0) {
         newErrors.password = `Password must have:\n• ${requirements.join('\n• ')}`;
+      } else {
+        // Clear password error if all requirements are met
+        newErrors.password = undefined;
       }
     }
 
