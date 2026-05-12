@@ -212,6 +212,7 @@ p {
   background-color: var(--accent-primary-hover);
   box-shadow: var(--shadow-hover);
   transform: translateY(-1px);
+  cursor: pointer;
 }
 
 .btn-soft-secondary {
