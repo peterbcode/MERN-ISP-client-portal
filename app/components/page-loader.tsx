@@ -40,14 +40,14 @@ const PageLoader = () => {
       setSubText(loadingMessages[messageIndex])
     }, 2000) // Slower message rotation for better readability
 
-    // Force hide loader after minimum 4 seconds regardless of anything else
+    // Force hide loader after minimum 5 seconds regardless of anything else
     const forceHideTimer = window.setTimeout(() => {
       setVisible(false)
-    }, 4000)
+    }, 5000)
 
     const hideLoader = () => {
       const elapsedTime = Date.now() - startTime
-      if (elapsedTime >= 4000) {
+      if (elapsedTime >= 5000) {
         // Only hide if minimum time has passed
         setVisible(false)
       }
