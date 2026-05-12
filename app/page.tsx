@@ -7,6 +7,7 @@ import BrandCarousel from "./components/brand-carousel"
 import Services from "./components/services"
 import Gallery from "./components/gallery"
 import SuccessStories from "./components/success-stories"
+import LocalFootprint from "./components/local-footprint"
 import ContactStrip from "./components/contact-strip"
 import EasterEggGames from "./components/easter-egg-games"
 import SiteFooter from "./components/site-footer"
@@ -25,6 +26,7 @@ const Page = () => {
       <Services />
       <Gallery />
       <SuccessStories />
+      <LocalFootprint />
       <ContactStrip />
       <EasterEggGames />
       <SiteFooter />
