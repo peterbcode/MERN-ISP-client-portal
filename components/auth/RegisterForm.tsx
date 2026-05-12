@@ -12,6 +12,7 @@ interface FormData {
   confirmPassword: string;
   firstName: string;
   lastName: string;
+  terms: boolean;
 }
 
 interface FormErrors {
@@ -21,6 +22,7 @@ interface FormErrors {
   confirmPassword?: string;
   firstName?: string;
   lastName?: string;
+  terms?: string;
   general?: string;
 }
 
@@ -31,7 +33,8 @@ export default function RegisterForm() {
     password: '',
     confirmPassword: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
+    terms: false
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -106,13 +109,19 @@ export default function RegisterForm() {
       newErrors.lastName = 'Last name cannot exceed 50 characters';
     }
 
+    // Terms validation
+    if (!formData.terms) {
+      newErrors.terms = 'You must agree to the Terms of Service';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    const fieldValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    setFormData(prev => ({ ...prev, [name]: fieldValue }));
     
     // Clear error for this field
     if (errors[name as keyof FormErrors]) {
@@ -151,7 +160,8 @@ export default function RegisterForm() {
           password: '',
           confirmPassword: '',
           firstName: '',
-          lastName: ''
+          lastName: '',
+          terms: false
         });
         
         // Redirect after a short delay
@@ -338,6 +348,12 @@ export default function RegisterForm() {
           )}
         </div>
 
+        {errors.terms && (
+          <div className="bg-red-900/50 border border-red-500 rounded-lg p-3">
+            <p className="text-sm text-red-400">{errors.terms}</p>
+          </div>
+        )}
+
         {successMessage && (
           <div className="bg-green-900/50 border border-green-500 rounded-lg p-3 mb-4">
             <p className="text-sm text-green-400">{successMessage}</p>
@@ -356,6 +372,8 @@ export default function RegisterForm() {
             name="terms"
             type="checkbox"
             required
+            checked={formData.terms}
+            onChange={handleChange}
             className="w-4 h-4 bg-zinc-800 border-zinc-600 rounded focus:ring-2 focus:ring-orange-500 focus:border-transparent"
           />
           <label htmlFor="terms" className="ml-2 text-sm text-zinc-300">
