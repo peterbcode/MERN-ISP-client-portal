@@ -72,24 +72,6 @@ const stories = [
   },
 ];
 
-const footprintItems = [
-  {
-    title: 'Riebeek Kasteel',
-    description: 'Core support hub and fibre backbone operations.',
-    icon: BuildingOffice2Icon,
-  },
-  {
-    title: 'Malmesbury',
-    description: 'Business and residential ISP coverage and support.',
-    icon: CpuChipIcon,
-  },
-  {
-    title: 'Swartland',
-    description: 'Reliable connectivity across surrounding towns and farms.',
-    icon: MapIcon,
-  },
-]
-
 const SuccessStories = () => {
   const [index, setIndex] = useState(0)
   const [cardsPerView, setCardsPerView] = useState(1)
@@ -239,65 +221,6 @@ const SuccessStories = () => {
             >
               <ChevronRightIcon className="h-4 w-4" />
             </PremiumButton>
-          </div>
-        </AnimatedSection>
-
-        {/* Service Footprint */}
-        <AnimatedSection direction="up" delay={400} className="mt-20">
-          <div className="mx-auto max-w-4xl text-center">
-            <h3 className="text-2xl font-bold sm:text-3xl">Service Footprint</h3>
-            <p className="mx-auto mt-4 max-w-2xl text-zinc-300">
-              Comprehensive coverage across Riebeek Valley and surrounding areas.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {footprintItems.map((item, index) => (
-              <AnimatedSection
-                key={item.title}
-                direction="up"
-                delay={500 + index * 100}
-                duration={600}
-              >
-                <HoverCard hoverScale={1.02} shadowIntensity="light">
-                  <div className="p-6 text-center">
-                    <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#f97316]/10 text-[#f97316]">
-                      <item.icon className="h-6 w-6" />
-                    </div>
-                    <h4 className="text-lg font-bold text-white">{item.title}</h4>
-                    <p className="mt-2 text-sm text-zinc-300">{item.description}</p>
-                  </div>
-                </HoverCard>
-              </AnimatedSection>
-            ))}
-          </div>
-
-          <div className="mt-8 text-center">
-            <a
-              href="https://maps.google.com/maps?q=Riebeek+Kasteel+Malmesbury+Chatsworth+Swartland&t=&z=11&ie=UTF8&iwloc=&output=embed"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-md border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-semibold text-zinc-100 shadow hover:border-[#f97316] transition-colors duration-300"
-            >
-              <MapIcon className="mr-2 h-4 w-4" />
-              Open in Maps
-            </a>
-          </div>
-
-          <div className="mt-8 relative rounded-2xl border border-zinc-700 bg-zinc-900/95 px-4 py-3 shadow-lg">
-            <p className="text-sm font-bold uppercase tracking-wide text-zinc-300">
-              Coverage: Riebeek Kasteel, Malmesbury, Chatsworth and wider Swartland.
-            </p>
-          </div>
-
-          <div className="mt-6 rounded-2xl overflow-hidden border border-zinc-700">
-            <iframe
-              title="Swartland coverage map"
-              src="https://maps.google.com/maps?q=Riebeek+Kasteel+Malmesbury+Chatsworth+Swartland&t=&z=11&ie=UTF8&iwloc=&output=embed"
-              className="h-[420px] w-full"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
           </div>
         </AnimatedSection>
       </div>
