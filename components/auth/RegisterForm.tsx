@@ -88,9 +88,6 @@ export default function RegisterForm() {
       
       if (requirements.length > 0) {
         newErrors.password = `Password must have:\n• ${requirements.join('\n• ')}`;
-      } else {
-        // Clear password error if all requirements are met
-        newErrors.password = undefined;
       }
     }
 
@@ -101,11 +98,15 @@ export default function RegisterForm() {
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
-    // Name validation (optional but if provided should be valid)
-    if (formData.firstName && formData.firstName.length > 50) {
+    // Name validation
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    } else if (formData.firstName.length > 50) {
       newErrors.firstName = 'First name cannot exceed 50 characters';
     }
-    if (formData.lastName && formData.lastName.length > 50) {
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+    } else if (formData.lastName.length > 50) {
       newErrors.lastName = 'Last name cannot exceed 50 characters';
     }
 
@@ -134,9 +135,10 @@ export default function RegisterForm() {
     e.preventDefault();
     
     console.log('Form submitted:', formData);
-    console.log('Form valid:', validateForm());
+    const isFormValid = validateForm();
+    console.log('Form valid:', isFormValid);
     
-    if (!validateForm()) {
+    if (!isFormValid) {
       console.log('Form validation failed');
       console.log('=== FORM SUBMISSION FAILED (VALIDATION) ===');
       return;
@@ -148,6 +150,10 @@ export default function RegisterForm() {
 
     try {
       const { confirmPassword, ...registrationData } = formData;
+      registrationData.username = registrationData.username.trim();
+      registrationData.email = registrationData.email.trim();
+      registrationData.firstName = registrationData.firstName.trim();
+      registrationData.lastName = registrationData.lastName.trim();
       console.log('Sending registration data:', registrationData);
       console.log('API endpoint:', process.env.NEXT_PUBLIC_API_URL || '/api');
       
@@ -159,7 +165,7 @@ export default function RegisterForm() {
       const response = await Promise.race([
         auth.register(registrationData),
         timeoutPromise
-      ]);
+      ]) as Awaited<ReturnType<typeof auth.register>>;
       
       console.log('Registration response:', response);
       
