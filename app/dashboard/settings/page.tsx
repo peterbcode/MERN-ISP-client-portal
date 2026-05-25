@@ -1,346 +1,431 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { safeAlert } from '@/lib/native-dialog';
 
 const SETTINGS_STORAGE_KEY = 'vc_dashboard_settings';
 
-export default function SettingsPage() {
-  const [user, setUser] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [notifications, setNotifications] = useState({
+type Notifications = {
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  smsNotifications: boolean;
+  marketingEmails: boolean;
+};
+
+type Privacy = {
+  profileVisibility: 'public' | 'private' | 'friends';
+  showEmail: boolean;
+  showPhone: boolean;
+  allowDataCollection: boolean;
+};
+
+type Preferences = {
+  theme: 'dark' | 'light' | 'auto';
+  language: 'en' | 'es' | 'fr' | 'de';
+  timezone: 'UTC' | 'EST' | 'PST' | 'GMT' | 'CAT';
+  dateFormat: 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'YYYY-MM-DD';
+};
+
+type SettingsState = {
+  notifications: Notifications;
+  privacy: Privacy;
+  preferences: Preferences;
+};
+
+const defaultSettings: SettingsState = {
+  notifications: {
     emailNotifications: true,
     pushNotifications: false,
     smsNotifications: false,
-    marketingEmails: false
-  });
-  const [privacy, setPrivacy] = useState({
+    marketingEmails: false,
+  },
+  privacy: {
     profileVisibility: 'public',
     showEmail: false,
     showPhone: false,
-    allowDataCollection: true
-  });
-  const [preferences, setPreferences] = useState({
+    allowDataCollection: true,
+  },
+  preferences: {
     theme: 'dark',
     language: 'en',
     timezone: 'UTC',
-    dateFormat: 'MM/DD/YYYY'
-  });
+    dateFormat: 'MM/DD/YYYY',
+  },
+};
 
+const isBoolean = (value: unknown): value is boolean => typeof value === 'boolean';
+const isOption = <T extends string>(value: unknown, options: readonly T[]): value is T =>
+  typeof value === 'string' && options.includes(value as T);
+
+const sanitizeSettings = (value: unknown): SettingsState => {
+  const raw = value && typeof value === 'object' ? value as Partial<SettingsState> : {};
+  const notifications = raw.notifications || {};
+  const privacy = raw.privacy || {};
+  const preferences = raw.preferences || {};
+
+  return {
+    notifications: {
+      emailNotifications: isBoolean(notifications.emailNotifications)
+        ? notifications.emailNotifications
+        : defaultSettings.notifications.emailNotifications,
+      pushNotifications: isBoolean(notifications.pushNotifications)
+        ? notifications.pushNotifications
+        : defaultSettings.notifications.pushNotifications,
+      smsNotifications: isBoolean(notifications.smsNotifications)
+        ? notifications.smsNotifications
+        : defaultSettings.notifications.smsNotifications,
+      marketingEmails: isBoolean(notifications.marketingEmails)
+        ? notifications.marketingEmails
+        : defaultSettings.notifications.marketingEmails,
+    },
+    privacy: {
+      profileVisibility: isOption(privacy.profileVisibility, ['public', 'private', 'friends'] as const)
+        ? privacy.profileVisibility
+        : defaultSettings.privacy.profileVisibility,
+      showEmail: isBoolean(privacy.showEmail) ? privacy.showEmail : defaultSettings.privacy.showEmail,
+      showPhone: isBoolean(privacy.showPhone) ? privacy.showPhone : defaultSettings.privacy.showPhone,
+      allowDataCollection: isBoolean(privacy.allowDataCollection)
+        ? privacy.allowDataCollection
+        : defaultSettings.privacy.allowDataCollection,
+    },
+    preferences: {
+      theme: isOption(preferences.theme, ['dark', 'light', 'auto'] as const)
+        ? preferences.theme
+        : defaultSettings.preferences.theme,
+      language: isOption(preferences.language, ['en', 'es', 'fr', 'de'] as const)
+        ? preferences.language
+        : defaultSettings.preferences.language,
+      timezone: isOption(preferences.timezone, ['UTC', 'EST', 'PST', 'GMT', 'CAT'] as const)
+        ? preferences.timezone
+        : defaultSettings.preferences.timezone,
+      dateFormat: isOption(preferences.dateFormat, ['MM/DD/YYYY', 'DD/MM/YYYY', 'YYYY-MM-DD'] as const)
+        ? preferences.dateFormat
+        : defaultSettings.preferences.dateFormat,
+    },
+  };
+};
+
+function ToggleRow({
+  title,
+  description,
+  checked,
+  onChange,
+}: {
+  title: string;
+  description: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0">
+        <h3 className="heading-compact text-sm font-semibold text-white">{title}</h3>
+        <p className="mt-1 text-sm text-zinc-400">{description}</p>
+      </div>
+      <label className="relative inline-flex w-fit cursor-pointer items-center">
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={(event) => onChange(event.target.checked)}
+          className="peer sr-only"
+        />
+        <span className="h-6 w-11 rounded-full bg-zinc-700 transition-colors peer-checked:bg-orange-500 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-orange-400" />
+        <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white transition-transform peer-checked:translate-x-5" />
+      </label>
+    </div>
+  );
+}
+
+function SelectField<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: T;
+  options: Array<{ label: string; value: T }>;
+  onChange: (value: T) => void;
+}) {
+  return (
+    <label className="block py-3">
+      <span className="mb-2 block text-sm font-medium text-zinc-300">{label}</span>
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value as T)}
+        className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-3 text-sm text-white outline-none transition-colors focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function SettingsSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="rounded-lg border border-white/10 bg-[#101114]">
+      <div className="border-b border-white/10 px-4 py-4 sm:px-6">
+        <h2 className="heading-compact text-base font-semibold text-white">{title}</h2>
+      </div>
+      <div className="divide-y divide-white/10 px-4 sm:px-6">{children}</div>
+    </section>
+  );
+}
+
+export default function SettingsPage() {
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [settings, setSettings] = useState<SettingsState>(defaultSettings);
+  const [lastSavedSettings, setLastSavedSettings] = useState<SettingsState>(defaultSettings);
+  const [saveMessage, setSaveMessage] = useState('');
   const router = useRouter();
 
   useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        if (!auth.isAuthenticated()) {
+          router.push('/login');
+          return;
+        }
+
+        const response = await auth.getCurrentUser();
+        if (response.success) {
+          setUser(response.user);
+        } else {
+          auth.clearToken();
+          router.push('/login');
+        }
+      } catch {
+        auth.clearToken();
+        router.push('/login');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     checkAuth();
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem(SETTINGS_STORAGE_KEY);
       if (!saved) return;
 
-      const parsed = JSON.parse(saved);
-      if (parsed.notifications) setNotifications(parsed.notifications);
-      if (parsed.privacy) setPrivacy(parsed.privacy);
-      if (parsed.preferences) setPreferences(parsed.preferences);
+      const parsed = sanitizeSettings(JSON.parse(saved));
+      setSettings(parsed);
+      setLastSavedSettings(parsed);
     } catch {
       window.localStorage.removeItem(SETTINGS_STORAGE_KEY);
     }
   }, []);
 
-  const checkAuth = async () => {
-    try {
-      if (!auth.isAuthenticated()) {
-        router.push('/login');
-        return;
-      }
+  useEffect(() => {
+    document.documentElement.dataset.portalTheme = settings.preferences.theme;
+  }, [settings.preferences.theme]);
 
-      const response = await auth.getCurrentUser();
-      if (response.success) {
-        setUser(response.user);
-      } else {
-        auth.clearToken();
-        router.push('/login');
-      }
-    } catch (error) {
-      router.push('/login');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const hasUnsavedChanges = useMemo(
+    () => JSON.stringify(settings) !== JSON.stringify(lastSavedSettings),
+    [settings, lastSavedSettings],
+  );
 
-  const handleNotificationChange = (key: string, value: boolean) => {
-    setNotifications(prev => ({
+  const updateNotifications = <K extends keyof Notifications>(key: K, value: Notifications[K]) => {
+    setSaveMessage('');
+    setSettings((prev) => ({
       ...prev,
-      [key]: value
+      notifications: { ...prev.notifications, [key]: value },
     }));
   };
 
-  const handlePrivacyChange = (key: string, value: string | boolean) => {
-    setPrivacy(prev => ({
+  const updatePrivacy = <K extends keyof Privacy>(key: K, value: Privacy[K]) => {
+    setSaveMessage('');
+    setSettings((prev) => ({
       ...prev,
-      [key]: value
+      privacy: { ...prev.privacy, [key]: value },
     }));
   };
 
-  const handlePreferenceChange = (key: string, value: string) => {
-    setPreferences(prev => ({
+  const updatePreferences = <K extends keyof Preferences>(key: K, value: Preferences[K]) => {
+    setSaveMessage('');
+    setSettings((prev) => ({
       ...prev,
-      [key]: value
+      preferences: { ...prev.preferences, [key]: value },
     }));
   };
 
   const saveSettings = async () => {
-    setIsLoading(true);
+    setIsSaving(true);
     try {
-      window.localStorage.setItem(
-        SETTINGS_STORAGE_KEY,
-        JSON.stringify({ notifications, privacy, preferences })
-      );
+      window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+      setLastSavedSettings(settings);
+      setSaveMessage('Settings saved on this device.');
       safeAlert('Settings saved successfully!');
-    } catch (error) {
+    } catch {
+      setSaveMessage('');
       safeAlert('Failed to save settings. Please try again.');
     } finally {
-      setIsLoading(false);
+      setIsSaving(false);
     }
   };
 
+  const resetSettings = () => {
+    setSettings(defaultSettings);
+    setSaveMessage('');
+  };
+
   if (isLoading && !user) {
-    return <div className="flex items-center justify-center h-64 text-white">Loading settings...</div>;
+    return (
+      <div className="flex h-64 items-center justify-center text-white">
+        Loading settings...
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-white mb-2">Settings</h1>
-        <p className="text-zinc-400">Manage your account preferences and configuration</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="heading-compact text-2xl font-bold text-white">Settings</h1>
+          <p className="mt-2 text-sm text-zinc-400">Manage your account preferences and configuration</p>
+        </div>
+        <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-zinc-300">
+          {hasUnsavedChanges ? 'Unsaved changes' : saveMessage || 'All changes saved'}
+        </div>
       </div>
 
       <div className="rounded-lg border border-blue-500/30 bg-blue-500/10 p-4 text-sm text-blue-100">
         These preferences are saved locally on this device until server-side account preferences are connected.
       </div>
 
-      {/* Notification Settings */}
-      <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-        <h2 className="text-xl font-bold text-white mb-4">Notification Preferences</h2>
-        
-        <div className="space-y-4">
-          <div className="flex justify-between items-center py-3">
-            <div>
-              <h3 className="text-white font-medium">Email Notifications</h3>
-              <p className="text-sm text-zinc-400">Receive updates and alerts via email</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={notifications.emailNotifications}
-                onChange={(e) => handleNotificationChange('emailNotifications', e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-zinc-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-          
-          <div className="flex justify-between items-center py-3">
-            <div>
-              <h3 className="text-white font-medium">Push Notifications</h3>
-              <p className="text-sm text-zinc-400">Receive browser push notifications</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={notifications.pushNotifications}
-                onChange={(e) => handleNotificationChange('pushNotifications', e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-zinc-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-          
-          <div className="flex justify-between items-center py-3">
-            <div>
-              <h3 className="text-white font-medium">SMS Notifications</h3>
-              <p className="text-sm text-zinc-400">Receive text message alerts</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={notifications.smsNotifications}
-                onChange={(e) => handleNotificationChange('smsNotifications', e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-zinc-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-          
-          <div className="flex justify-between items-center py-3">
-            <div>
-              <h3 className="text-white font-medium">Marketing Emails</h3>
-              <p className="text-sm text-zinc-400">Receive promotional offers and newsletters</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={notifications.marketingEmails}
-                onChange={(e) => handleNotificationChange('marketingEmails', e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-zinc-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-        </div>
-      </div>
+      <SettingsSection title="Notification Preferences">
+        <ToggleRow
+          title="Email Notifications"
+          description="Receive updates and alerts via email"
+          checked={settings.notifications.emailNotifications}
+          onChange={(checked) => updateNotifications('emailNotifications', checked)}
+        />
+        <ToggleRow
+          title="Push Notifications"
+          description="Receive browser push notifications"
+          checked={settings.notifications.pushNotifications}
+          onChange={(checked) => updateNotifications('pushNotifications', checked)}
+        />
+        <ToggleRow
+          title="SMS Notifications"
+          description="Receive text message alerts"
+          checked={settings.notifications.smsNotifications}
+          onChange={(checked) => updateNotifications('smsNotifications', checked)}
+        />
+        <ToggleRow
+          title="Marketing Emails"
+          description="Receive promotional offers and newsletters"
+          checked={settings.notifications.marketingEmails}
+          onChange={(checked) => updateNotifications('marketingEmails', checked)}
+        />
+      </SettingsSection>
 
-      {/* Privacy Settings */}
-      <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-        <h2 className="text-xl font-bold text-white mb-4">Privacy Settings</h2>
-        
-        <div className="space-y-4">
-          <div className="py-3">
-            <label className="block text-sm font-medium text-zinc-300 mb-2">
-              Profile Visibility
-            </label>
-            <select
-              value={privacy.profileVisibility}
-              onChange={(e) => handlePrivacyChange('profileVisibility', e.target.value)}
-              className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white"
-            >
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-              <option value="friends">Friends Only</option>
-            </select>
-          </div>
-          
-          <div className="flex justify-between items-center py-3">
-            <div>
-              <h3 className="text-white font-medium">Show Email Address</h3>
-              <p className="text-sm text-zinc-400">Display email in your profile</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={privacy.showEmail}
-                onChange={(e) => handlePrivacyChange('showEmail', e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-zinc-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-          
-          <div className="flex justify-between items-center py-3">
-            <div>
-              <h3 className="text-white font-medium">Show Phone Number</h3>
-              <p className="text-sm text-zinc-400">Display phone in your profile</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={privacy.showPhone}
-                onChange={(e) => handlePrivacyChange('showPhone', e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-zinc-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-          
-          <div className="flex justify-between items-center py-3">
-            <div>
-              <h3 className="text-white font-medium">Data Collection</h3>
-              <p className="text-sm text-zinc-400">Allow us to collect usage data for improvements</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={privacy.allowDataCollection}
-                onChange={(e) => handlePrivacyChange('allowDataCollection', e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-zinc-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-        </div>
-      </div>
+      <SettingsSection title="Privacy Settings">
+        <SelectField
+          label="Profile Visibility"
+          value={settings.privacy.profileVisibility}
+          onChange={(value) => updatePrivacy('profileVisibility', value)}
+          options={[
+            { label: 'Public', value: 'public' },
+            { label: 'Private', value: 'private' },
+            { label: 'Friends Only', value: 'friends' },
+          ]}
+        />
+        <ToggleRow
+          title="Show Email Address"
+          description="Display email in your profile"
+          checked={settings.privacy.showEmail}
+          onChange={(checked) => updatePrivacy('showEmail', checked)}
+        />
+        <ToggleRow
+          title="Show Phone Number"
+          description="Display phone in your profile"
+          checked={settings.privacy.showPhone}
+          onChange={(checked) => updatePrivacy('showPhone', checked)}
+        />
+        <ToggleRow
+          title="Data Collection"
+          description="Allow us to collect usage data for improvements"
+          checked={settings.privacy.allowDataCollection}
+          onChange={(checked) => updatePrivacy('allowDataCollection', checked)}
+        />
+      </SettingsSection>
 
-      {/* Appearance Settings */}
-      <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-        <h2 className="text-xl font-bold text-white mb-4">Appearance</h2>
-        
-        <div className="space-y-4">
-          <div className="py-3">
-            <label className="block text-sm font-medium text-zinc-300 mb-2">
-              Theme
-            </label>
-            <select
-              value={preferences.theme}
-              onChange={(e) => handlePreferenceChange('theme', e.target.value)}
-              className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white"
-            >
-              <option value="dark">Dark</option>
-              <option value="light">Light</option>
-              <option value="auto">Auto</option>
-            </select>
-          </div>
-          
-          <div className="py-3">
-            <label className="block text-sm font-medium text-zinc-300 mb-2">
-              Language
-            </label>
-            <select
-              value={preferences.language}
-              onChange={(e) => handlePreferenceChange('language', e.target.value)}
-              className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white"
-            >
-              <option value="en">English</option>
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
-              <option value="de">German</option>
-            </select>
-          </div>
-          
-          <div className="py-3">
-            <label className="block text-sm font-medium text-zinc-300 mb-2">
-              Timezone
-            </label>
-            <select
-              value={preferences.timezone}
-              onChange={(e) => handlePreferenceChange('timezone', e.target.value)}
-              className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white"
-            >
-              <option value="UTC">UTC</option>
-              <option value="EST">Eastern Time</option>
-              <option value="PST">Pacific Time</option>
-              <option value="GMT">GMT</option>
-            </select>
-          </div>
-          
-          <div className="py-3">
-            <label className="block text-sm font-medium text-zinc-300 mb-2">
-              Date Format
-            </label>
-            <select
-              value={preferences.dateFormat}
-              onChange={(e) => handlePreferenceChange('dateFormat', e.target.value)}
-              className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white"
-            >
-              <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-              <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-              <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <SettingsSection title="Appearance">
+        <SelectField
+          label="Theme"
+          value={settings.preferences.theme}
+          onChange={(value) => updatePreferences('theme', value)}
+          options={[
+            { label: 'Dark', value: 'dark' },
+            { label: 'Light', value: 'light' },
+            { label: 'Auto', value: 'auto' },
+          ]}
+        />
+        <SelectField
+          label="Language"
+          value={settings.preferences.language}
+          onChange={(value) => updatePreferences('language', value)}
+          options={[
+            { label: 'English', value: 'en' },
+            { label: 'Spanish', value: 'es' },
+            { label: 'French', value: 'fr' },
+            { label: 'German', value: 'de' },
+          ]}
+        />
+        <SelectField
+          label="Timezone"
+          value={settings.preferences.timezone}
+          onChange={(value) => updatePreferences('timezone', value)}
+          options={[
+            { label: 'UTC', value: 'UTC' },
+            { label: 'Eastern Time', value: 'EST' },
+            { label: 'Pacific Time', value: 'PST' },
+            { label: 'GMT', value: 'GMT' },
+            { label: 'Central Africa Time', value: 'CAT' },
+          ]}
+        />
+        <SelectField
+          label="Date Format"
+          value={settings.preferences.dateFormat}
+          onChange={(value) => updatePreferences('dateFormat', value)}
+          options={[
+            { label: 'MM/DD/YYYY', value: 'MM/DD/YYYY' },
+            { label: 'DD/MM/YYYY', value: 'DD/MM/YYYY' },
+            { label: 'YYYY-MM-DD', value: 'YYYY-MM-DD' },
+          ]}
+        />
+      </SettingsSection>
 
-      {/* Save Button */}
-      <div className="flex justify-end">
-        <button
-          onClick={saveSettings}
-          disabled={isLoading}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-        >
-          {isLoading ? 'Saving...' : 'Save Settings'}
-        </button>
+      <div className="sticky bottom-0 -mx-4 border-t border-white/10 bg-[#08090b]/90 px-4 py-4 backdrop-blur-xl sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0">
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            onClick={resetSettings}
+            disabled={isSaving}
+            className="w-full rounded-lg border border-white/10 px-5 py-3 text-sm font-semibold text-zinc-200 hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+          >
+            Reset Defaults
+          </button>
+          <button
+            type="button"
+            onClick={saveSettings}
+            disabled={isSaving || !hasUnsavedChanges}
+            className="w-full rounded-lg bg-orange-500 px-6 py-3 text-sm font-semibold text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+          >
+            {isSaving ? 'Saving...' : hasUnsavedChanges ? 'Save Settings' : 'Saved'}
+          </button>
+        </div>
       </div>
     </div>
   );
