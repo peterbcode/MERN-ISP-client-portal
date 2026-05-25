@@ -14,7 +14,12 @@ import {
   ChatBubbleLeftRightIcon,
   TicketIcon,
   PlusIcon,
-  XMarkIcon
+  XMarkIcon,
+  ArrowPathIcon,
+  BoltIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  ShieldCheckIcon,
 } from '@heroicons/react/24/outline';
 
 interface User {
@@ -298,10 +303,76 @@ export default function Dashboard() {
     }
   };
 
+  const getSpeedLabel = (speed: number, type: 'download' | 'upload') => {
+    const excellent = type === 'download' ? 50 : 20;
+    const good = type === 'download' ? 25 : 10;
+    const fair = type === 'download' ? 10 : 5;
+
+    if (speed <= 0) return 'Not tested';
+    if (speed >= excellent) return 'Excellent';
+    if (speed >= good) return 'Good';
+    if (speed >= fair) return 'Fair';
+    return 'Needs attention';
+  };
+
+  const getLatencyLabel = (latency: number) => {
+    if (latency <= 0) return 'Not tested';
+    if (latency <= 20) return 'Excellent';
+    if (latency <= 50) return 'Good';
+    return 'High';
+  };
+
+  const metricCards = [
+    {
+      label: 'Public IP',
+      value: stats.publicIP,
+      sublabel: 'Detected from this connection',
+      icon: GlobeAltIcon,
+      accent: 'text-sky-300',
+      iconBg: 'bg-sky-500/10',
+      valueClass: 'break-all text-xl',
+    },
+    {
+      label: 'Download',
+      value: stats.downloadSpeed > 0 ? stats.downloadSpeed.toString() : '--',
+      unit: 'Mbps',
+      sublabel: getSpeedLabel(stats.downloadSpeed, 'download'),
+      icon: ArrowDownIcon,
+      accent: 'text-emerald-300',
+      iconBg: 'bg-emerald-500/10',
+      progress: Math.min(stats.downloadSpeed, 100),
+      progressColor: 'bg-emerald-400',
+    },
+    {
+      label: 'Upload',
+      value: stats.uploadSpeed > 0 ? stats.uploadSpeed.toString() : '--',
+      unit: 'Mbps',
+      sublabel: getSpeedLabel(stats.uploadSpeed, 'upload'),
+      icon: ArrowUpIcon,
+      accent: 'text-orange-300',
+      iconBg: 'bg-orange-500/10',
+      progress: Math.min(stats.uploadSpeed * 2, 100),
+      progressColor: 'bg-orange-400',
+    },
+    {
+      label: 'Latency',
+      value: stats.latency > 0 ? stats.latency.toString() : '--',
+      unit: 'ms',
+      sublabel: getLatencyLabel(stats.latency),
+      icon: SignalIcon,
+      accent: 'text-violet-300',
+      iconBg: 'bg-violet-500/10',
+      progress: stats.latency > 0 ? Math.max(12, 100 - Math.min(stats.latency, 100)) : 0,
+      progressColor: stats.latency <= 20 ? 'bg-emerald-400' : stats.latency <= 50 ? 'bg-yellow-400' : 'bg-red-400',
+    },
+  ];
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#050505] flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="rounded-lg border border-white/10 bg-white/[0.03] px-5 py-4 text-sm text-zinc-300">
+          Loading your portal...
+        </div>
       </div>
     );
   }
@@ -311,245 +382,168 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white">
-      {/* Header */}
-      <div className="bg-[#050505] border-b border-zinc-800 px-4 sm:px-6 py-4">
-        <div className="flex flex-col gap-4 sm:gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-center sm:text-left">
-            <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">
-              Welcome back, {user.profile.firstName || user.username}!
-            </h1>
-            <p className="text-sm text-zinc-400 mt-1">
-              Network performance dashboard
-            </p>
+    <div className="space-y-6 text-white">
+      <section className="overflow-hidden rounded-lg border border-white/10 bg-[#101114]">
+        <div className="border-b border-white/10 bg-gradient-to-r from-orange-500/12 via-sky-500/8 to-emerald-500/10 px-4 py-5 sm:px-6">
+          <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+            <div>
+              <div className="mb-3 inline-flex items-center gap-2 rounded-md border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+                <span className="h-2 w-2 rounded-full bg-emerald-300" />
+                Service online
+              </div>
+              <h1 className="heading-compact text-2xl font-bold text-white sm:text-3xl">
+                Welcome back, {user.profile.firstName || user.username}
+              </h1>
+              <p className="mt-2 max-w-2xl text-sm text-zinc-400">
+                Monitor your connection, run a quick speed test, and send support everything they need in one place.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 xl:min-w-[520px]">
+              <div className="rounded-lg border border-white/10 bg-black/20 p-3">
+                <p className="text-xs text-zinc-500">Connection</p>
+                <p className="mt-1 truncate text-sm font-semibold text-zinc-100">{stats.networkType}</p>
+              </div>
+              <div className="rounded-lg border border-white/10 bg-black/20 p-3">
+                <p className="text-xs text-zinc-500">Session</p>
+                <p className="mt-1 text-sm font-semibold text-zinc-100">{stats.connectionTime}</p>
+              </div>
+              <div className="rounded-lg border border-white/10 bg-black/20 p-3">
+                <p className="text-xs text-zinc-500">Updated</p>
+                <p className="mt-1 text-sm font-semibold text-zinc-100">{stats.lastUpdated}</p>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+        </div>
+
+        <div className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {metricCards.map((card) => (
+              <div key={card.label} className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+                <div className="mb-4 flex items-start justify-between gap-3">
+                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${card.iconBg}`}>
+                    <card.icon className={`h-5 w-5 ${card.accent}`} />
+                  </div>
+                  <span className={`min-w-0 max-w-[70%] truncate rounded-md bg-white/5 px-2 py-1 text-xs font-medium ${card.accent}`}>
+                    {card.sublabel}
+                  </span>
+                </div>
+                <p className="text-sm text-zinc-500">{card.label}</p>
+                <div className="mt-2 flex items-end gap-2">
+                  <p className={`heading-compact font-bold text-white ${card.valueClass || 'text-3xl'}`}>{card.value}</p>
+                  {card.unit && <span className="pb-1 text-sm font-medium text-zinc-500">{card.unit}</span>}
+                </div>
+                {typeof card.progress === 'number' && (
+                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+                    <div className={`h-full rounded-full ${card.progressColor}`} style={{ width: `${card.progress}%` }} />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {testProgress && (
+            <div className="mt-4 flex items-center gap-3 rounded-lg border border-orange-400/20 bg-orange-400/10 px-4 py-3 text-sm text-orange-200">
+              <ArrowPathIcon className="h-4 w-4 animate-spin" />
+              {testProgress}
+            </div>
+          )}
+
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <button
               onClick={runSpeedTest}
               disabled={isSpeedTestRunning}
-              className="w-full sm:w-auto px-4 py-2 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
-              {isSpeedTestRunning ? 'Testing...' : 'Run Speed Test'}
+              <BoltIcon className="h-4 w-4" />
+              {isSpeedTestRunning ? 'Testing connection...' : 'Run Speed Test'}
             </button>
             <button
               onClick={() => setShowTicketForm(true)}
-              className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center text-sm font-medium"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white hover:bg-white/10 sm:w-auto"
             >
-              <TicketIcon className="h-4 w-4 mr-2" />
+              <TicketIcon className="h-4 w-4" />
               New Ticket
             </button>
             <button
               onClick={handleLogout}
-              className="w-full sm:w-auto px-4 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors text-sm font-medium"
+              className="inline-flex w-full items-center justify-center rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold text-zinc-300 hover:bg-white/5 hover:text-white sm:ml-auto sm:w-auto"
             >
               Logout
             </button>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Main Content */}
-      <div className="p-6">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-          {/* Public IP */}
-          <div className="bg-zinc-900 rounded-xl p-4 sm:p-6 border border-zinc-800">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 sm:p-3 bg-blue-500/20 rounded-lg">
-                <GlobeAltIcon className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
-              </div>
-            </div>
-            <h3 className="text-lg sm:text-2xl font-bold text-zinc-100 mb-2 break-all">{stats.publicIP}</h3>
-            <p className="text-xs sm:text-sm text-zinc-400">Public IP Address</p>
-          </div>
-
-          {/* Download Speed */}
-          <div className="bg-zinc-900 rounded-xl p-4 sm:p-6 border border-zinc-800 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-green-500/10 to-transparent rounded-full -mr-12 -mt-12 sm:-mr-16 sm:-mt-16"></div>
-            <div className="relative">
-              <div className="flex items-center justify-between mb-4">
-                <div className="p-2 sm:p-3 bg-green-500/20 rounded-lg">
-                  <ArrowDownIcon className="h-5 w-5 sm:h-6 sm:w-6 text-green-400" />
-                </div>
-                {stats.downloadSpeed > 0 && (
-                  <span className="text-xs text-green-400 font-medium bg-green-500/20 px-2 py-1 rounded-full">
-                    ACTIVE
-                  </span>
-                )}
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-zinc-100 mb-2">
-                {stats.downloadSpeed > 0 ? `${stats.downloadSpeed}` : '--'}
-                <span className="text-sm sm:text-lg font-normal text-zinc-400 ml-1">Mbps</span>
-              </h3>
-              <p className="text-xs sm:text-sm text-zinc-400 mb-2">Download Speed</p>
-              {stats.downloadSpeed > 0 && (
-                <div className="space-y-2">
-                  <div className="w-full bg-zinc-700 rounded-full h-2">
-                    <div 
-                      className="bg-green-500 h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${Math.min((stats.downloadSpeed / 100) * 100, 100)}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-xs text-zinc-500">
-                    {stats.downloadSpeed >= 50 ? 'Excellent' : 
-                     stats.downloadSpeed >= 25 ? 'Good' : 
-                     stats.downloadSpeed >= 10 ? 'Fair' : 'Poor'}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Upload Speed */}
-          <div className="bg-zinc-900 rounded-xl p-4 sm:p-6 border border-zinc-800 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full -mr-12 -mt-12 sm:-mr-16 sm:-mt-16"></div>
-            <div className="relative">
-              <div className="flex items-center justify-between mb-4">
-                <div className="p-2 sm:p-3 bg-orange-500/20 rounded-lg">
-                  <ArrowUpIcon className="h-5 w-5 sm:h-6 sm:w-6 text-orange-400" />
-                </div>
-                {stats.uploadSpeed > 0 && (
-                  <span className="text-xs text-orange-400 font-medium bg-orange-500/20 px-2 py-1 rounded-full">
-                    ACTIVE
-                  </span>
-                )}
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-zinc-100 mb-2">
-                {stats.uploadSpeed > 0 ? `${stats.uploadSpeed}` : '--'}
-                <span className="text-sm sm:text-lg font-normal text-zinc-400 ml-1">Mbps</span>
-              </h3>
-              <p className="text-xs sm:text-sm text-zinc-400 mb-2">Upload Speed</p>
-              {stats.uploadSpeed > 0 && (
-                <div className="space-y-2">
-                  <div className="w-full bg-zinc-700 rounded-full h-2">
-                    <div 
-                      className="bg-orange-500 h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${Math.min((stats.uploadSpeed / 50) * 100, 100)}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-xs text-zinc-500">
-                    {stats.uploadSpeed >= 20 ? 'Excellent' : 
-                     stats.uploadSpeed >= 10 ? 'Good' : 
-                     stats.uploadSpeed >= 5 ? 'Fair' : 'Poor'}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Latency */}
-          <div className="bg-zinc-900 rounded-xl p-4 sm:p-6 border border-zinc-800 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full -mr-12 -mt-12 sm:-mr-16 sm:-mt-16"></div>
-            <div className="relative">
-              <div className="flex items-center justify-between mb-4">
-                <div className="p-2 sm:p-3 bg-purple-500/20 rounded-lg">
-                  <SignalIcon className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400" />
-                </div>
-                {stats.latency > 0 && (
-                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                    stats.latency <= 20 ? 'text-green-400 bg-green-500/20' :
-                    stats.latency <= 50 ? 'text-yellow-400 bg-yellow-500/20' :
-                    'text-red-400 bg-red-500/20'
-                  }`}>
-                    {stats.latency <= 20 ? 'EXCELLENT' :
-                     stats.latency <= 50 ? 'GOOD' : 'HIGH'}
-                  </span>
-                )}
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-zinc-100 mb-2">
-                {stats.latency > 0 ? `${stats.latency}` : '--'}
-                <span className="text-sm sm:text-lg font-normal text-zinc-400 ml-1">ms</span>
-              </h3>
-              <p className="text-xs sm:text-sm text-zinc-400 mb-2">Latency (Ping)</p>
-              {stats.latency > 0 && (
-                <div className="space-y-2">
-                  <div className="w-full bg-zinc-700 rounded-full h-2">
-                    <div 
-                      className={`h-2 rounded-full transition-all duration-500 ${
-                        stats.latency <= 20 ? 'bg-green-500 w-4/5' :
-                        stats.latency <= 50 ? 'bg-yellow-500 w-3/5' :
-                        'bg-red-500 w-2/5'
-                      }`}
-                    ></div>
-                  </div>
-                  <p className="text-xs text-zinc-500">
-                    {stats.latency <= 20 ? 'Gaming Ready' : 
-                     stats.latency <= 50 ? 'Good for Video' : 'May Lag'}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Detailed Info */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-          {/* Network Information */}
-          <div className="bg-zinc-900 rounded-xl border border-zinc-800">
-            <div className="p-4 sm:p-6 border-b border-zinc-800">
-              <h2 className="text-lg sm:text-xl font-bold text-zinc-100 flex items-center">
-                <WifiIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-[#f97316]" />
-                Network Information
-              </h2>
-            </div>
-            <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-              <div className="flex justify-between items-center py-2 sm:py-3 border-b border-zinc-800">
-                <span className="text-sm text-zinc-400">Connection Type</span>
-                <span className="text-sm text-zinc-100 font-medium">{stats.networkType}</span>
-              </div>
-              <div className="flex justify-between items-center py-2 sm:py-3 border-b border-zinc-800">
-                <span className="text-sm text-zinc-400">Connection Time</span>
-                <span className="text-sm text-zinc-100 font-medium">{stats.connectionTime}</span>
-              </div>
-              <div className="flex justify-between items-center py-2 sm:py-3">
-                <span className="text-sm text-zinc-400">Last Updated</span>
-                <span className="text-sm text-zinc-100 font-medium">{stats.lastUpdated}</span>
-              </div>
-            </div>
-          </div>
-
-        {/* Support Tickets Section */}
-        <div className="bg-zinc-900 rounded-xl border border-zinc-800">
-          <div className="p-4 sm:p-6 border-b border-zinc-800">
-            <h2 className="text-lg sm:text-xl font-bold text-zinc-100 flex items-center justify-between">
-              <span className="flex items-center">
-                <ChatBubbleLeftRightIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-[#f97316]" />
-                Support Tickets
-              </span>
-              <button
-                onClick={() => setShowTicketForm(true)}
-                className="px-2 sm:px-3 py-1 sm:py-2 bg-[#f97316] text-white text-sm rounded-lg hover:bg-orange-600 transition-colors flex items-center"
-              >
-                <PlusIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                New Ticket
-              </button>
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_1.15fr]">
+        <section className="rounded-lg border border-white/10 bg-[#101114]">
+          <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+            <h2 className="heading-compact flex items-center gap-2 text-base font-semibold text-white">
+              <WifiIcon className="h-5 w-5 text-orange-300" />
+              Network Information
             </h2>
           </div>
-          
-          <div className="p-4 sm:p-6">
+          <div className="divide-y divide-white/10 px-4 sm:px-5">
+            {[
+              { label: 'Connection Type', value: stats.networkType, icon: ShieldCheckIcon },
+              { label: 'Connection Time', value: stats.connectionTime, icon: ClockIcon },
+              { label: 'Last Updated', value: stats.lastUpdated, icon: CheckCircleIcon },
+            ].map((item) => (
+              <div key={item.label} className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5">
+                    <item.icon className="h-4 w-4 text-zinc-400" />
+                  </div>
+                  <span className="text-sm text-zinc-400">{item.label}</span>
+                </div>
+                <span className="break-all text-sm font-semibold text-zinc-100 sm:text-right">{item.value}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-lg border border-white/10 bg-[#101114]">
+          <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-4 sm:px-5">
+            <h2 className="heading-compact flex items-center gap-2 text-base font-semibold text-white">
+              <ChatBubbleLeftRightIcon className="h-5 w-5 text-orange-300" />
+              Support Tickets
+            </h2>
+            <button
+              onClick={() => setShowTicketForm(true)}
+              className="inline-flex items-center gap-2 rounded-lg bg-orange-500 px-3 py-2 text-sm font-semibold text-white hover:bg-orange-600"
+            >
+              <PlusIcon className="h-4 w-4" />
+              New
+            </button>
+          </div>
+
+          <div className="p-4 sm:p-5">
             {tickets.length === 0 ? (
-              <div className="text-center py-6 sm:py-8">
-                <ChatBubbleLeftRightIcon className="h-10 w-10 sm:h-12 sm:w-12 text-zinc-600 mx-auto mb-3 sm:mb-4" />
-                <p className="text-sm text-zinc-400">No support tickets yet. Create your first ticket for any network issues.</p>
+              <div className="rounded-lg border border-dashed border-white/10 bg-white/[0.02] px-5 py-8 text-center">
+                <TicketIcon className="mx-auto mb-3 h-10 w-10 text-zinc-600" />
+                <h3 className="heading-compact text-base font-semibold text-white">No open tickets</h3>
+                <p className="mx-auto mt-2 max-w-sm text-sm text-zinc-500">
+                  Start a support request and your latest connection details will be prepared for the team.
+                </p>
               </div>
             ) : (
               <div className="space-y-3">
                 {tickets.map((ticket) => (
-                  <div key={ticket.id} className="p-3 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
+                  <div key={ticket.id} className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+                    <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className={`text-xs font-medium ${getPriorityColor(ticket.priority)}`}>
+                        <div className="mb-2 flex items-center gap-2">
+                          <span className={`rounded-md bg-white/5 px-2 py-1 text-xs font-medium ${getPriorityColor(ticket.priority)}`}>
                             {ticket.priority.toUpperCase()}
                           </span>
-                          <span className={`text-xs font-medium ${getStatusColor(ticket.status)}`}>
+                          <span className={`rounded-md bg-white/5 px-2 py-1 text-xs font-medium ${getStatusColor(ticket.status)}`}>
                             {ticket.status.replace('-', ' ').toUpperCase()}
                           </span>
                         </div>
-                        <h4 className="text-white font-medium text-sm">{ticket.subject}</h4>
-                        <p className="text-zinc-400 text-sm mt-1 line-clamp-2">{ticket.message}</p>
+                        <h4 className="text-sm font-semibold text-white">{ticket.subject}</h4>
+                        <p className="mt-1 line-clamp-2 text-sm text-zinc-400">{ticket.message}</p>
                       </div>
-                      <div className="text-zinc-500 text-xs sm:text-right">
+                      <div className="text-xs text-zinc-500 sm:text-right">
                         {new Date(ticket.createdAt).toLocaleDateString()}
                       </div>
                     </div>
@@ -558,34 +552,34 @@ export default function Dashboard() {
               </div>
             )}
           </div>
-        </div>
+        </section>
       </div>
 
-      {/* Ticket Form Modal */}
       {showTicketForm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-0 sm:p-4">
-          <div className="bg-zinc-900 rounded-t-2xl sm:rounded-xl border border-zinc-700 w-full h-full sm:h-auto sm:max-w-md sm:mx-auto sm:max-h-[90vh] flex flex-col">
-            {/* Header */}
-            <div className="flex justify-between items-center p-4 sm:p-6 border-b border-zinc-700 flex-shrink-0">
-              <h3 className="text-lg sm:text-xl font-bold text-zinc-100">Create Support Ticket</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-0 backdrop-blur-sm sm:p-4">
+          <div className="flex h-full w-full flex-col border border-white/10 bg-[#101114] shadow-2xl sm:h-auto sm:max-h-[90vh] sm:max-w-lg sm:rounded-lg">
+            <div className="flex shrink-0 items-center justify-between border-b border-white/10 p-5">
+              <div>
+                <h3 className="heading-compact text-lg font-semibold text-white">Create Support Ticket</h3>
+                <p className="mt-1 max-w-[16rem] text-sm text-zinc-500 sm:max-w-none">A speed test will run first if no current result is available.</p>
+              </div>
               <button
                 onClick={() => setShowTicketForm(false)}
-                className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                className="rounded-lg p-2 text-zinc-400 hover:bg-white/5 hover:text-zinc-200"
                 aria-label="Close ticket form"
               >
                 <XMarkIcon className="h-5 w-5" />
               </button>
             </div>
             
-            {/* Scrollable Content Area */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+            <div className="flex-1 overflow-y-auto p-5">
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">Priority</label>
+                  <label className="mb-2 block text-sm font-medium text-zinc-300">Priority</label>
                   <select
                     value={newTicket.priority}
                     onChange={(e) => setNewTicket(prev => ({ ...prev, priority: e.target.value as 'low' | 'medium' | 'high' }))}
-                    className="w-full px-3 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-[#f97316] text-sm"
+                    className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-3 text-sm text-white focus:border-orange-500 focus:outline-none"
                   >
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -594,42 +588,41 @@ export default function Dashboard() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">Subject</label>
+                  <label className="mb-2 block text-sm font-medium text-zinc-300">Subject</label>
                   <input
                     type="text"
                     value={newTicket.subject}
                     onChange={(e) => setNewTicket(prev => ({ ...prev, subject: e.target.value }))}
                     placeholder="e.g., WiFi password change, IP configuration issue"
-                    className="w-full px-3 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316] text-sm"
+                    className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-3 text-sm text-white placeholder-zinc-500 focus:border-orange-500 focus:outline-none"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">Message</label>
+                  <label className="mb-2 block text-sm font-medium text-zinc-300">Message</label>
                   <textarea
                     value={newTicket.message}
                     onChange={(e) => setNewTicket(prev => ({ ...prev, message: e.target.value }))}
                     placeholder="Describe your issue in detail..."
                     rows={6}
-                    className="w-full px-3 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-[#f97316] resize-none text-sm"
+                    className="w-full resize-none rounded-lg border border-white/10 bg-zinc-900 px-3 py-3 text-sm text-white placeholder-zinc-500 focus:border-orange-500 focus:outline-none"
                   />
                 </div>
               </div>
             </div>
             
-            {/* Fixed Footer */}
-            <div className="p-4 sm:p-6 border-t border-zinc-700 flex-shrink-0">
+            <div className="shrink-0 border-t border-white/10 p-5">
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={() => setShowTicketForm(false)}
-                  className="w-full sm:w-auto px-4 py-3 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors text-sm font-medium"
+                  className="w-full rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold text-zinc-200 hover:bg-white/5 sm:w-auto"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={submitTicket}
                   disabled={isSubmittingTicket}
-                  className="w-full sm:w-auto px-4 py-3 bg-[#f97316] text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                  className="w-full rounded-lg bg-orange-500 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
                 >
                   {isSubmittingTicket ? 'Submitting...' : 'Submit Ticket'}
                 </button>
@@ -638,7 +631,6 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-    </div>
     </div>
   );
 }
