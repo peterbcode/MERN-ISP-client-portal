@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { AlertCircle, CheckCircle2, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { auth } from '@/lib/auth';
 
 interface FormData {
@@ -34,7 +35,7 @@ export default function RegisterForm() {
     confirmPassword: '',
     firstName: '',
     lastName: '',
-    terms: false
+    terms: false,
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -43,74 +44,89 @@ export default function RegisterForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
 
+  const inputClass = (hasError?: boolean) =>
+    `w-full rounded-lg border bg-zinc-800 px-4 py-3 text-white placeholder-zinc-500 transition-colors focus:border-transparent focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:cursor-not-allowed disabled:opacity-60 ${
+      hasError ? 'border-red-500' : 'border-zinc-700'
+    }`;
+
+  const getErrorMessage = (error: any, fallback: string) => {
+    if (error?.code === 'ECONNREFUSED' || error?.code === 'ERR_NETWORK') {
+      return 'Cannot connect to the server. Please try again in a moment.';
+    }
+
+    if (Array.isArray(error?.errors) && error.errors.length > 0) {
+      return error.errors.join('\n');
+    }
+
+    return error?.message || error?.error || fallback;
+  };
+
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
+    const username = formData.username.trim();
+    const email = formData.email.trim();
+    const firstName = formData.firstName.trim();
+    const lastName = formData.lastName.trim();
 
-    // Username validation
-    if (!formData.username) {
+    if (!username) {
       newErrors.username = 'Username is required';
-    } else if (formData.username.length < 3) {
+    } else if (username.length < 3) {
       newErrors.username = 'Username must be at least 3 characters';
-    } else if (formData.username.length > 30) {
+    } else if (username.length > 30) {
       newErrors.username = 'Username cannot exceed 30 characters';
-    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
+    } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
       newErrors.username = 'Username can only contain letters, numbers, and underscores';
     }
 
-    // Email validation
-    if (!formData.email) {
+    if (!email) {
       newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Email is invalid';
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else {
-      const requirements = [];
-      
-      if (formData.password.length < 6) {
-        requirements.push('at least 6 characters');
+      const requirements: string[] = [];
+
+      if (formData.password.length < 12) requirements.push('at least 12 characters');
+      if (formData.password.length > 128) requirements.push('no more than 128 characters');
+      if ((formData.password.match(/\d/g) || []).length < 3) requirements.push('at least 3 numbers');
+      if ((formData.password.match(/[A-Z]/g) || []).length < 2) requirements.push('at least 2 uppercase letters');
+      if ((formData.password.match(/[a-z]/g) || []).length < 2) requirements.push('at least 2 lowercase letters');
+      if ((formData.password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g) || []).length < 2) {
+        requirements.push('at least 2 symbols');
       }
-      
-      if (!/[a-zA-Z]/.test(formData.password)) {
-        requirements.push('at least 1 letter');
+      if (/password|123456|qwerty|admin|letmein|welcome|login/i.test(formData.password)) {
+        requirements.push('no common words or patterns');
       }
-      
-      if (!/[0-9]/.test(formData.password)) {
-        requirements.push('at least 1 number');
+      if (/(.)\1{2,}/.test(formData.password)) {
+        requirements.push('no character repeated 3 times in a row');
       }
-      
-      if (!/[!@#$%^&*()_+\-=\[\]{};:'",.<>?\/]/.test(formData.password)) {
-        requirements.push('at least 1 symbol');
-      }
-      
+
       if (requirements.length > 0) {
-        newErrors.password = `Password must have:\n• ${requirements.join('\n• ')}`;
+        newErrors.password = `Password must have:\n- ${requirements.join('\n- ')}`;
       }
     }
 
-    // Confirm password validation
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
-    // Name validation
-    if (!formData.firstName.trim()) {
+    if (!firstName) {
       newErrors.firstName = 'First name is required';
-    } else if (formData.firstName.length > 50) {
+    } else if (firstName.length > 50) {
       newErrors.firstName = 'First name cannot exceed 50 characters';
     }
-    if (!formData.lastName.trim()) {
+
+    if (!lastName) {
       newErrors.lastName = 'Last name is required';
-    } else if (formData.lastName.length > 50) {
+    } else if (lastName.length > 50) {
       newErrors.lastName = 'Last name cannot exceed 50 characters';
     }
 
-    // Terms validation
     if (!formData.terms) {
       newErrors.terms = 'You must agree to the Terms of Service';
     }
@@ -121,59 +137,46 @@ export default function RegisterForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
-    const fieldValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    const fieldValue = type === 'checkbox' ? e.target.checked : value;
+
     setFormData(prev => ({ ...prev, [name]: fieldValue }));
-    
-    // Clear error for this field
+
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
+    if (errors.general) {
+      setErrors(prev => ({ ...prev, general: undefined }));
+    }
+    if (successMessage) {
+      setSuccessMessage('');
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('=== FORM SUBMISSION START ===');
     e.preventDefault();
-    
-    console.log('Form submitted:', formData);
-    const isFormValid = validateForm();
-    console.log('Form valid:', isFormValid);
-    
-    if (!isFormValid) {
-      console.log('Form validation failed');
-      console.log('=== FORM SUBMISSION FAILED (VALIDATION) ===');
-      return;
-    }
 
-    console.log('Starting registration process...');
+    if (!validateForm()) return;
+
     setIsLoading(true);
     setErrors({});
 
     try {
-      const { confirmPassword, ...registrationData } = formData;
-      registrationData.username = registrationData.username.trim();
-      registrationData.email = registrationData.email.trim();
-      registrationData.firstName = registrationData.firstName.trim();
-      registrationData.lastName = registrationData.lastName.trim();
-      console.log('Sending registration data:', registrationData);
-      console.log('API endpoint:', process.env.NEXT_PUBLIC_API_URL || '/api');
-      
-      // Add timeout to prevent hanging
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout - server not responding')), 15000);
-      });
-      
       const response = await Promise.race([
-        auth.register(registrationData),
-        timeoutPromise
-      ]) as Awaited<ReturnType<typeof auth.register>>;
-      
-      console.log('Registration response:', response);
-      
+        auth.register({
+          username: formData.username.trim(),
+          email: formData.email.trim().toLowerCase(),
+          password: formData.password,
+          firstName: formData.firstName.trim(),
+          lastName: formData.lastName.trim(),
+          terms: formData.terms,
+        }),
+        new Promise<never>((_, reject) => {
+          setTimeout(() => reject(new Error('Request timeout - server not responding')), 15000);
+        }),
+      ]);
+
       if (response.success) {
-        // Show success message
         setSuccessMessage('Account created successfully! Welcome to ISP Portal.');
-        
-        // Clear form
         setFormData({
           username: '',
           email: '',
@@ -181,47 +184,30 @@ export default function RegisterForm() {
           confirmPassword: '',
           firstName: '',
           lastName: '',
-          terms: false
+          terms: false,
         });
-        
-        // Redirect after a short delay
+
         setTimeout(() => {
           router.push('/dashboard');
         }, 2000);
+      } else {
+        setErrors({ general: response.message || 'Registration failed. Please try again.' });
       }
     } catch (error: any) {
-      console.error('=== REGISTRATION ERROR ===');
-      console.error('Error object:', error);
-      console.error('Error message:', error.message);
-      console.error('Error code:', error.code);
-      console.error('Error response:', error.response?.data);
-      
-      let errorMessage = 'Registration failed. Please try again.';
-      
-      if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
-        errorMessage = 'Cannot connect to server. Please try again later.';
-      } else if (error.message) {
-        errorMessage = error.message;
-      } else if (error.error) {
-        errorMessage = error.error;
-      }
-      
-      console.log('Setting error message:', errorMessage);
       setErrors({
-        general: errorMessage
+        general: getErrorMessage(error, 'Registration failed. Please try again.'),
       });
     } finally {
       setIsLoading(false);
-      console.log('=== FORM SUBMISSION END ===');
     }
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="mx-auto w-full max-w-md">
+      <form onSubmit={handleSubmit} className="space-y-6" noValidate>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="firstName" className="block text-sm font-medium text-zinc-300 mb-2">
+            <label htmlFor="firstName" className="mb-2 block text-sm font-medium text-zinc-300">
               First Name
             </label>
             <input
@@ -231,19 +217,17 @@ export default function RegisterForm() {
               autoComplete="given-name"
               value={formData.firstName}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-                errors.firstName ? 'border-red-500' : 'border-zinc-700'
-              }`}
+              className={inputClass(!!errors.firstName)}
               placeholder="John"
               disabled={isLoading}
+              aria-invalid={!!errors.firstName}
+              aria-describedby={errors.firstName ? 'firstName-error' : undefined}
             />
-            {errors.firstName && (
-              <p className="mt-1 text-sm text-red-400">{errors.firstName}</p>
-            )}
+            {errors.firstName && <p id="firstName-error" className="mt-1 text-sm text-red-400">{errors.firstName}</p>}
           </div>
 
           <div>
-            <label htmlFor="lastName" className="block text-sm font-medium text-zinc-300 mb-2">
+            <label htmlFor="lastName" className="mb-2 block text-sm font-medium text-zinc-300">
               Last Name
             </label>
             <input
@@ -253,20 +237,18 @@ export default function RegisterForm() {
               autoComplete="family-name"
               value={formData.lastName}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-                errors.lastName ? 'border-red-500' : 'border-zinc-700'
-              }`}
+              className={inputClass(!!errors.lastName)}
               placeholder="Doe"
               disabled={isLoading}
+              aria-invalid={!!errors.lastName}
+              aria-describedby={errors.lastName ? 'lastName-error' : undefined}
             />
-            {errors.lastName && (
-              <p className="mt-1 text-sm text-red-400">{errors.lastName}</p>
-            )}
+            {errors.lastName && <p id="lastName-error" className="mt-1 text-sm text-red-400">{errors.lastName}</p>}
           </div>
         </div>
 
         <div>
-          <label htmlFor="username" className="block text-sm font-medium text-zinc-300 mb-2">
+          <label htmlFor="username" className="mb-2 block text-sm font-medium text-zinc-300">
             Username
           </label>
           <input
@@ -276,19 +258,17 @@ export default function RegisterForm() {
             autoComplete="username"
             value={formData.username}
             onChange={handleChange}
-            className={`w-full px-4 py-3 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-              errors.username ? 'border-red-500' : 'border-zinc-700'
-            }`}
+            className={inputClass(!!errors.username)}
             placeholder="johndoe"
             disabled={isLoading}
+            aria-invalid={!!errors.username}
+            aria-describedby={errors.username ? 'username-error' : undefined}
           />
-          {errors.username && (
-            <p className="mt-1 text-sm text-red-400">{errors.username}</p>
-          )}
+          {errors.username && <p id="username-error" className="mt-1 text-sm text-red-400">{errors.username}</p>}
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-2">
+          <label htmlFor="email" className="mb-2 block text-sm font-medium text-zinc-300">
             Email Address
           </label>
           <input
@@ -298,19 +278,17 @@ export default function RegisterForm() {
             autoComplete="email"
             value={formData.email}
             onChange={handleChange}
-            className={`w-full px-4 py-3 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-              errors.email ? 'border-red-500' : 'border-zinc-700'
-            }`}
+            className={inputClass(!!errors.email)}
             placeholder="john@example.com"
             disabled={isLoading}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? 'email-error' : undefined}
           />
-          {errors.email && (
-            <p className="mt-1 text-sm text-red-400">{errors.email}</p>
-          )}
+          {errors.email && <p id="email-error" className="mt-1 text-sm text-red-400">{errors.email}</p>}
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-zinc-300 mb-2">
+          <label htmlFor="password" className="mb-2 block text-sm font-medium text-zinc-300">
             Password
           </label>
           <div className="relative">
@@ -321,28 +299,33 @@ export default function RegisterForm() {
               autoComplete="new-password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full px-4 py-3 pr-12 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-                errors.password ? 'border-red-500' : 'border-zinc-700'
-              }`}
+              className={`${inputClass(!!errors.password)} pr-12`}
               placeholder="Create a strong password"
               disabled={isLoading}
+              aria-invalid={!!errors.password}
+              aria-describedby={errors.password ? 'password-error' : 'password-hint'}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-zinc-400 transition-colors hover:bg-zinc-700 hover:text-white disabled:opacity-50"
               disabled={isLoading}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
-              {showPassword ? 'Hide' : 'Show'}
+              {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>
           </div>
-          {errors.password && (
-            <p className="mt-1 text-sm text-red-400">{errors.password}</p>
+          {errors.password ? (
+            <p id="password-error" className="mt-1 whitespace-pre-line text-sm text-red-400">{errors.password}</p>
+          ) : (
+            <p id="password-hint" className="mt-1 text-xs text-zinc-500">
+              Use 12+ characters with uppercase, lowercase, numbers, and symbols.
+            </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-zinc-300 mb-2">
+          <label htmlFor="confirmPassword" className="mb-2 block text-sm font-medium text-zinc-300">
             Confirm Password
           </label>
           <div className="relative">
@@ -353,61 +336,65 @@ export default function RegisterForm() {
               autoComplete="new-password"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className={`w-full px-4 py-3 pr-12 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-                errors.confirmPassword ? 'border-red-500' : 'border-zinc-700'
-              }`}
+              className={`${inputClass(!!errors.confirmPassword)} pr-12`}
               placeholder="Confirm your password"
               disabled={isLoading}
+              aria-invalid={!!errors.confirmPassword}
+              aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-zinc-400 transition-colors hover:bg-zinc-700 hover:text-white disabled:opacity-50"
               disabled={isLoading}
+              aria-label={showConfirmPassword ? 'Hide password confirmation' : 'Show password confirmation'}
             >
-              {showConfirmPassword ? 'Hide' : 'Show'}
+              {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>
           </div>
           {errors.confirmPassword && (
-            <p className="mt-1 text-sm text-red-400">{errors.confirmPassword}</p>
+            <p id="confirmPassword-error" className="mt-1 text-sm text-red-400">{errors.confirmPassword}</p>
           )}
         </div>
 
         {errors.terms && (
-          <div className="bg-red-900/50 border border-red-500 rounded-lg p-3">
+          <div className="flex gap-2 rounded-lg border border-red-500 bg-red-900/50 p-3">
+            <AlertCircle className="mt-0.5 h-4 w-4 flex-none text-red-300" />
             <p className="text-sm text-red-400">{errors.terms}</p>
           </div>
         )}
 
         {successMessage && (
-          <div className="bg-green-900/50 border border-green-500 rounded-lg p-3 mb-4">
+          <div className="flex gap-2 rounded-lg border border-green-500 bg-green-900/50 p-3">
+            <CheckCircle2 className="mt-0.5 h-4 w-4 flex-none text-green-300" />
             <p className="text-sm text-green-400">{successMessage}</p>
           </div>
         )}
 
         {errors.general && (
-          <div className="bg-red-900/50 border border-red-500 rounded-lg p-3">
-            <p className="text-sm text-red-400">{errors.general}</p>
+          <div className="flex gap-2 rounded-lg border border-red-500 bg-red-900/50 p-3">
+            <AlertCircle className="mt-0.5 h-4 w-4 flex-none text-red-300" />
+            <p className="whitespace-pre-line text-sm text-red-400">{errors.general}</p>
           </div>
         )}
 
-        <div className="flex items-center">
+        <div className="flex items-start">
           <input
             id="terms"
             name="terms"
             type="checkbox"
-            required
             checked={formData.terms}
             onChange={handleChange}
-            className="w-4 h-4 bg-zinc-800 border-zinc-600 rounded focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            disabled={isLoading}
+            className="mt-0.5 h-4 w-4 rounded border-zinc-600 bg-zinc-800 focus:ring-2 focus:ring-orange-500 focus:ring-offset-0 disabled:opacity-50"
           />
           <label htmlFor="terms" className="ml-2 text-sm text-zinc-300">
             I agree to{' '}
-            <Link href="/terms" className="text-orange-500 hover:text-orange-400 transition-all duration-200 hover:scale-105 font-medium inline-block">
+            <Link href="/terms" className="font-medium text-orange-500 transition-colors hover:text-orange-400">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href="/privacy" className="text-orange-500 hover:text-orange-400 transition-all duration-200 hover:scale-105 font-medium inline-block">
+            <Link href="/privacy" className="font-medium text-orange-500 transition-colors hover:text-orange-400">
               Privacy Policy
             </Link>
           </label>
@@ -416,19 +403,16 @@ export default function RegisterForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed relative z-10"
-          style={{ position: 'relative', zIndex: 10 }}
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 px-6 py-3 font-medium text-white transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
+          {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
           {isLoading ? 'Creating account...' : 'Create Account'}
         </button>
 
         <div className="text-center">
           <p className="text-sm text-zinc-400">
             Already have an account?{' '}
-            <Link
-              href="/login"
-              className="text-orange-500 hover:text-orange-400 transition-all duration-200 hover:scale-105 font-medium inline-block"
-            >
+            <Link href="/login" className="font-medium text-orange-500 transition-colors hover:text-orange-400">
               Sign in
             </Link>
           </p>

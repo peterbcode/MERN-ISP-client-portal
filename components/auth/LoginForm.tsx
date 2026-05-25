@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { auth } from '@/lib/auth';
 
 interface FormData {
@@ -26,12 +27,26 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
+  const inputClass = (hasError?: boolean) =>
+    `w-full px-4 py-3 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
+      hasError ? 'border-red-500' : 'border-zinc-700'
+    }`;
+
+  const getErrorMessage = (error: any, fallback: string) => {
+    if (error?.code === 'ECONNREFUSED' || error?.code === 'ERR_NETWORK') {
+      return 'Cannot connect to the server. Please try again in a moment.';
+    }
+
+    return error?.message || error?.error || fallback;
+  };
+
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
+    const email = formData.email.trim();
 
-    if (!formData.email) {
+    if (!email) {
       newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Email is invalid';
     }
 
@@ -49,21 +64,19 @@ export default function LoginForm() {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     
-    // Clear error for this field
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
+    if (errors.general) {
+      setErrors(prev => ({ ...prev, general: undefined }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('=== LOGIN SUBMISSION START ===');
     e.preventDefault();
-    
-    console.log('Form data:', formData);
-    console.log('Form valid:', validateForm());
-    
-    if (!validateForm()) {
-      console.log('Login validation failed');
+
+    const isFormValid = validateForm();
+    if (!isFormValid) {
       return;
     }
 
@@ -71,46 +84,24 @@ export default function LoginForm() {
     setErrors({});
 
     try {
-      console.log('Attempting login with:', { email: formData.email });
-      const response = await auth.login(formData);
-      
-      console.log('Login response:', response);
+      const response = await auth.login({
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password,
+      });
       
       if (response.success) {
-        console.log('Login successful, redirecting to dashboard');
-        // Redirect to dashboard or home
         router.push('/dashboard');
       } else {
-        console.log('Login failed - no success flag');
         setErrors({
           general: response.message || 'Login failed'
         });
       }
     } catch (error: any) {
-      console.error('=== LOGIN ERROR ===');
-      console.error('Error object:', error);
-      console.error('Error code:', error.code);
-      console.error('Error message:', error.message);
-      console.error('Error response:', error.response);
-      console.error('Error response data:', error.response?.data);
-      
-      let errorMessage = 'Login failed. Please try again.';
-      
-      if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
-        errorMessage = 'Cannot connect to server. Please make sure that Next.js development server is running';
-      } else if (error.message) {
-        errorMessage = error.message;
-      } else if (error.error) {
-        errorMessage = error.error;
-      }
-      
-      console.log('Setting error message:', errorMessage);
       setErrors({
-        general: errorMessage
+        general: getErrorMessage(error, 'Login failed. Please try again.')
       });
     } finally {
       setIsLoading(false);
-      console.log('=== LOGIN SUBMISSION END ===');
     }
   };
 
@@ -144,14 +135,14 @@ export default function LoginForm() {
             autoComplete="email"
             value={formData.email}
             onChange={handleChange}
-            className={`w-full px-4 py-3 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-              errors.email ? 'border-red-500' : 'border-zinc-700'
-            }`}
+            className={inputClass(!!errors.email)}
             placeholder="Enter your email"
             disabled={isLoading}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? 'email-error' : undefined}
           />
           {errors.email && (
-            <p className="mt-1 text-sm text-red-400">{errors.email}</p>
+            <p id="email-error" className="mt-1 text-sm text-red-400">{errors.email}</p>
           )}
         </div>
 
@@ -167,28 +158,30 @@ export default function LoginForm() {
               autoComplete="current-password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full px-4 py-3 pr-12 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-                errors.password ? 'border-red-500' : 'border-zinc-700'
-              }`}
+              className={`${inputClass(!!errors.password)} pr-12`}
               placeholder="Enter your password"
               disabled={isLoading}
+              aria-invalid={!!errors.password}
+              aria-describedby={errors.password ? 'password-error' : undefined}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-zinc-400 transition-colors hover:bg-zinc-700 hover:text-white disabled:opacity-50"
               disabled={isLoading}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
-              {showPassword ? 'Hide' : 'Show'}
+              {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>
           </div>
           {errors.password && (
-            <p className="mt-1 text-sm text-red-400">{errors.password}</p>
+            <p id="password-error" className="mt-1 text-sm text-red-400">{errors.password}</p>
           )}
         </div>
 
         {errors.general && (
-          <div className="bg-red-900/50 border border-red-500 rounded-lg p-3">
+          <div className="flex gap-2 rounded-lg border border-red-500 bg-red-900/50 p-3">
+            <AlertCircle className="mt-0.5 h-4 w-4 flex-none text-red-300" />
             <p className="text-sm text-red-400">{errors.general}</p>
           </div>
         )}
@@ -216,8 +209,9 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 px-6 py-3 font-medium text-white transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
+          {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
           {isLoading ? 'Signing in...' : 'Sign In'}
         </button>
 
@@ -262,6 +256,3 @@ export default function LoginForm() {
     </div>
   );
 }
-
-
-//Test

@@ -1,5 +1,4 @@
 import { connectDB } from "@/lib/mongoose";
-import { connectDB } from "@/lib/mongoose";
 import User from "@/models/User";
 import jwt from "jsonwebtoken";
 import { validateInput, validatePassword, authRateLimiter } from "@/lib/security";
@@ -60,7 +59,12 @@ export async function POST(request) {
 
     await connectDB();
 
-    const { username, email, password, firstName, lastName } = await request.json();
+    const body = await request.json();
+    const username = typeof body.username === "string" ? body.username.trim() : body.username;
+    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : body.email;
+    const password = body.password;
+    const firstName = typeof body.firstName === "string" ? body.firstName.trim() : body.firstName;
+    const lastName = typeof body.lastName === "string" ? body.lastName.trim() : body.lastName;
 
     // Validate all inputs
     const usernameValidation = validateInput(username, {
