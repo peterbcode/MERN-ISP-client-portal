@@ -122,11 +122,8 @@ export default function ForgotPasswordPage() {
               <p className="mt-2 text-sm text-zinc-400">
                 We've sent a password reset link to your email address.
               </p>
-              <div className="mt-4 p-4 bg-zinc-800 rounded-lg border border-zinc-700">
-                <p className="text-xs text-zinc-300 mb-2">
-                  <strong>Development Mode:</strong> In production, this would be sent via email.
-                </p>
-                {resetToken && (
+              {resetToken && (
+                <div className="mt-4 p-4 bg-zinc-800 rounded-lg border border-zinc-700">
                   <div className="mt-2">
                     <p className="text-xs text-zinc-300 mb-2">
                       <strong>Quick Reset Link:</strong>
@@ -156,8 +153,8 @@ export default function ForgotPasswordPage() {
                       </Link>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             <div className="mt-6">
