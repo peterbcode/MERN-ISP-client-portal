@@ -7,9 +7,9 @@ import PremiumButton from '../ui/premium-button';
 import { safeAlert } from '@/lib/native-dialog'
 
 const details = [
-  { label: "Phone", value: "079 938 1260" },
-  { label: "Email", value: "info@valley-computers.co.za" },
-  { label: "Location", value: "Riebeek Kasteel, Western Cape" },
+  { label: "Call Us", value: "079 938 1260", href: "tel:+27799381260" },
+  { label: "Email", value: "info@valley-computers.co.za", href: "mailto:info@valley-computers.co.za" },
+  { label: "Location", value: "Riebeek Kasteel, Western Cape", href: "https://www.google.com/maps/search/?api=1&query=Riebeek%20Kasteel%2C%20Western%20Cape", target: "_blank" },
 ];
 
 const ContactPage = () => {
@@ -99,12 +99,21 @@ const ContactPage = () => {
           <AnimatedSection direction="up" delay={300}>
             <div className="space-y-3">
               {details.map((item) => (
-                <article key={item.label} className="group rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 backdrop-blur-sm transition-all duration-300 hover:border-[#f97316]/50 hover:bg-zinc-900/70">
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target={item.target || undefined}
+                  rel={item.target ? "noopener noreferrer" : undefined}
+                  className="group block rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 backdrop-blur-sm transition-all duration-300 hover:border-[#f97316]/50 hover:bg-zinc-900/70 cursor-pointer"
+                >
                   <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316] transition-colors group-hover:text-[#f97316]/80">{item.label}</p>
                   <div className="mt-2 flex items-center justify-between">
                     <p className="text-sm text-zinc-200 group-hover:text-white transition-colors">{item.value}</p>
                     <button
-                      onClick={() => copyToClipboard(item.value)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        copyToClipboard(item.value);
+                      }}
                       className="opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus:opacity-100 focus:outline-none"
                       aria-label={`Copy ${item.label}`}
                     >
@@ -113,7 +122,7 @@ const ContactPage = () => {
                       </svg>
                     </button>
                   </div>
-                </article>
+                </a>
               ))}
             </div>
           </AnimatedSection>
