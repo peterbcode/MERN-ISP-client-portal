@@ -1,6 +1,7 @@
 import { connectDB } from '@/lib/mongoose';
 import User from '@/models/User';
 import jwt from 'jsonwebtoken';
+import validator from 'validator';
 
 export const runtime = 'nodejs'
 
@@ -86,19 +87,65 @@ export async function PUT(request) {
       }, { status: 401 });
     }
 
-    const { firstName, lastName, profile = {} } = await request.json();
+    const { username, firstName, lastName, profile = {} } = await request.json();
+    const updates = {};
+
+    if (typeof username === 'string') {
+      const nextUsername = username.trim();
+
+      if (nextUsername.length < 3 || nextUsername.length > 30) {
+        return Response.json({
+          success: false,
+          message: 'Username must be between 3 and 30 characters'
+        }, { status: 400 });
+      }
+
+      if (!/^[a-zA-Z0-9_]+$/.test(nextUsername)) {
+        return Response.json({
+          success: false,
+          message: 'Username can only contain letters, numbers, and underscores'
+        }, { status: 400 });
+      }
+
+      const usernameOwner = await User.findOne({
+        username: nextUsername,
+        _id: { $ne: user._id },
+      });
+
+      if (usernameOwner) {
+        return Response.json({
+          success: false,
+          message: 'Username is already taken'
+        }, { status: 409 });
+      }
+
+      updates.username = nextUsername;
+    }
+
+    const avatar = typeof profile.avatar === 'string' ? profile.avatar.trim() : profile.avatar;
+    if (avatar) {
+      if (avatar.length > 500 || !validator.isURL(avatar, { protocols: ['http', 'https'], require_protocol: true })) {
+        return Response.json({
+          success: false,
+          message: 'Profile picture must be a valid http or https URL'
+        }, { status: 400 });
+      }
+    }
+
     const currentProfile = user.profile?.toObject?.() || user.profile || {};
     const nextProfile = {
       ...currentProfile,
       ...profile,
       firstName: firstName ?? profile.firstName ?? user.profile?.firstName,
       lastName: lastName ?? profile.lastName ?? user.profile?.lastName,
+      avatar: avatar || null,
     };
+    updates.profile = nextProfile;
 
     // Update user
     const updatedUser = await User.findByIdAndUpdate(
       user._id,
-      { profile: nextProfile },
+      updates,
       { new: true, runValidators: true }
     );
 

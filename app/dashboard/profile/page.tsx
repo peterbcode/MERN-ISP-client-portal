@@ -27,9 +27,11 @@ export default function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
+    username: '',
     firstName: '',
     lastName: '',
     email: '',
+    avatar: '',
     phone: '',
     address: ''
   });
@@ -52,9 +54,11 @@ export default function ProfilePage() {
       if (response.success) {
         setUser(response.user);
         setFormData({
+          username: response.user.username || '',
           firstName: response.user.profile?.firstName || '',
           lastName: response.user.profile?.lastName || '',
           email: response.user.email || '',
+          avatar: response.user.profile?.avatar || '',
           phone: response.user.profile?.phone || '',
           address: response.user.profile?.address || ''
         });
@@ -79,9 +83,11 @@ export default function ProfilePage() {
     setSaveMessage('');
     if (user) {
       setFormData({
+        username: user.username || '',
         firstName: user.profile?.firstName || '',
         lastName: user.profile?.lastName || '',
         email: user.email || '',
+        avatar: user.profile?.avatar || '',
         phone: user.profile?.phone || '',
         address: user.profile?.address || ''
       });
@@ -94,9 +100,11 @@ export default function ProfilePage() {
     setIsLoading(true);
     try {
       const response = await auth.updateProfile({
+        username: formData.username.trim(),
         profile: {
           firstName: formData.firstName.trim(),
           lastName: formData.lastName.trim(),
+          avatar: formData.avatar.trim(),
           phone: formData.phone.trim(),
           address: formData.address.trim(),
         },
@@ -108,9 +116,11 @@ export default function ProfilePage() {
 
       setUser(response.user);
       setFormData({
+        username: response.user.username || '',
         firstName: response.user.profile?.firstName || '',
         lastName: response.user.profile?.lastName || '',
         email: response.user.email || '',
+        avatar: response.user.profile?.avatar || '',
         phone: response.user.profile?.phone || '',
         address: response.user.profile?.address || ''
       });
@@ -188,7 +198,55 @@ export default function ProfilePage() {
         </div>
 
         <form onSubmit={handleSave} className="space-y-6">
+          <div className="flex flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-900/50 p-4 sm:flex-row sm:items-center">
+            <div className="flex h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-orange-500 to-amber-400">
+              {formData.avatar ? (
+                <span
+                  className="block h-full w-full bg-cover bg-center"
+                  style={{ backgroundImage: `url(${JSON.stringify(formData.avatar)})` }}
+                  aria-hidden="true"
+                />
+              ) : (
+                <span className="flex h-full w-full items-center justify-center text-2xl font-bold uppercase text-white">
+                  {(formData.firstName || formData.username || user?.username || 'U').charAt(0)}
+                </span>
+              )}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold text-white">Profile Picture</p>
+              <p className="mt-1 text-sm text-zinc-400">Use an image URL for your dashboard avatar.</p>
+              <input
+                type="url"
+                name="avatar"
+                value={formData.avatar}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+                className="mt-3 w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white disabled:opacity-50"
+                placeholder="https://example.com/avatar.jpg"
+              />
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-2">
+                Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+                className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white disabled:opacity-50"
+                placeholder="Choose a username"
+                minLength={3}
+                maxLength={30}
+                pattern="[A-Za-z0-9_]+"
+              />
+              <p className="mt-1 text-xs text-zinc-500">Letters, numbers, and underscores only.</p>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-2">
                 First Name
@@ -228,10 +286,11 @@ export default function ProfilePage() {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                disabled={!isEditing}
+                disabled
                 className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white disabled:opacity-50"
                 placeholder="Enter your email"
               />
+              <p className="mt-1 text-xs text-zinc-500">Email changes are handled by support.</p>
             </div>
 
             <div>

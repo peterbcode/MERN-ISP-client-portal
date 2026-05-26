@@ -51,6 +51,7 @@ export default function DashboardSidebar({ showLogout = true }: DashboardSidebar
     }
   };
 
+  const avatar = user?.profile?.avatar;
   const initial = user?.profile?.firstName?.[0] || user?.username?.[0] || 'U';
   const displayName = user?.profile?.firstName || user?.username || 'Client';
 
@@ -59,18 +60,26 @@ export default function DashboardSidebar({ showLogout = true }: DashboardSidebar
       <div className="border-b border-white/10 p-5">
         <Link href="/" className="mb-6 flex min-w-0 items-center gap-3 pr-10 text-white no-accent-hover lg:pr-0">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-orange-500 text-sm font-black text-white shadow-lg shadow-orange-500/20">
-            RV
+            VC
           </div>
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold leading-tight text-white">Rainbow Velocity</p>
-            <p className="text-xs text-zinc-500">Client portal</p>
+            <p className="truncate text-sm font-semibold leading-tight text-white">Valley Computers Client portal</p>
+            <p className="text-xs text-zinc-500">Customer dashboard</p>
           </div>
         </Link>
 
         <div className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
           <div className="mb-3 flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-400">
-              <span className="text-lg font-bold uppercase text-white">{initial}</span>
+            <div className="flex h-11 w-11 overflow-hidden rounded-lg bg-gradient-to-br from-orange-500 to-amber-400">
+              {avatar ? (
+                <span
+                  className="block h-full w-full bg-cover bg-center"
+                  style={{ backgroundImage: `url(${JSON.stringify(avatar)})` }}
+                  aria-hidden="true"
+                />
+              ) : (
+                <span className="flex h-full w-full items-center justify-center text-lg font-bold uppercase text-white">{initial}</span>
+              )}
             </div>
             <div className="min-w-0">
               <h3 className="truncate text-sm font-semibold text-white">{displayName}</h3>
