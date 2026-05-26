@@ -1,9 +1,22 @@
 import { connectDB } from '@/lib/mongoose';
 import User from '@/models/User';
 import jwt from 'jsonwebtoken';
-import validator from 'validator';
 
 export const runtime = 'nodejs'
+
+const MAX_AVATAR_LENGTH = 1_200_000;
+
+const isHttpImageUrl = (value) => {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
+
+const isAvatarDataUrl = (value) =>
+  /^data:image\/(?:png|jpeg|jpg|webp|gif);base64,[a-z0-9+/=]+$/i.test(value);
 
 // Authentication middleware for serverless
 const protect = async (request) => {
@@ -124,10 +137,10 @@ export async function PUT(request) {
 
     const avatar = typeof profile.avatar === 'string' ? profile.avatar.trim() : profile.avatar;
     if (avatar) {
-      if (avatar.length > 500 || !validator.isURL(avatar, { protocols: ['http', 'https'], require_protocol: true })) {
+      if (avatar.length > MAX_AVATAR_LENGTH || (!isHttpImageUrl(avatar) && !isAvatarDataUrl(avatar))) {
         return Response.json({
           success: false,
-          message: 'Profile picture must be a valid http or https URL'
+          message: 'Profile picture must be a valid image URL or uploaded PNG, JPG, WebP, or GIF'
         }, { status: 400 });
       }
     }

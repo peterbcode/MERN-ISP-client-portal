@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/auth';
 
+const MAX_AVATAR_UPLOAD_BYTES = 750 * 1024;
+const ALLOWED_AVATAR_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+
 interface User {
   id: string;
   username: string;
@@ -145,6 +148,40 @@ export default function ProfilePage() {
     }));
   };
 
+  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+
+    if (!file) return;
+
+    if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
+      setSaveMessage('Please upload a PNG, JPG, WebP, or GIF image.');
+      setTimeout(() => setSaveMessage(''), 3000);
+      return;
+    }
+
+    if (file.size > MAX_AVATAR_UPLOAD_BYTES) {
+      setSaveMessage('Profile picture uploads must be smaller than 750 KB.');
+      setTimeout(() => setSaveMessage(''), 3000);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setFormData(prev => ({
+          ...prev,
+          avatar: reader.result as string,
+        }));
+      }
+    };
+    reader.onerror = () => {
+      setSaveMessage('Could not read that image. Please try another file.');
+      setTimeout(() => setSaveMessage(''), 3000);
+    };
+    reader.readAsDataURL(file);
+  };
+
   if (isLoading && !user) {
     return <div className="flex items-center justify-center h-64 text-white">Loading profile...</div>;
   }
@@ -214,9 +251,9 @@ export default function ProfilePage() {
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold text-white">Profile Picture</p>
-              <p className="mt-1 text-sm text-zinc-400">Use an image URL for your dashboard avatar.</p>
+              <p className="mt-1 text-sm text-zinc-400">Paste an image address or upload a small image from your device.</p>
               <input
-                type="url"
+                type="text"
                 name="avatar"
                 value={formData.avatar}
                 onChange={handleInputChange}
@@ -224,6 +261,28 @@ export default function ProfilePage() {
                 className="mt-3 w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white disabled:opacity-50"
                 placeholder="https://example.com/avatar.jpg"
               />
+              {isEditing && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <label className="inline-flex cursor-pointer items-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700">
+                    Upload Image
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,image/gif"
+                      className="sr-only"
+                      onChange={handleAvatarUpload}
+                    />
+                  </label>
+                  {formData.avatar && (
+                    <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, avatar: '' }))}
+                      className="rounded-lg bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-200 transition-colors hover:bg-zinc-600"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
