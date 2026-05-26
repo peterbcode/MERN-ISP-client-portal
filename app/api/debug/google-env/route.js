@@ -1,5 +1,12 @@
 export async function GET() {
   try {
+    if (process.env.NODE_ENV === 'production' || process.env.DEBUG_API_ERRORS !== 'true') {
+      return Response.json(
+        { success: false, message: 'Debug endpoint disabled' },
+        { status: 404 }
+      );
+    }
+
     const envVars = {
       GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID ? 'SET' : 'MISSING',
       GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET ? 'SET' : 'MISSING',

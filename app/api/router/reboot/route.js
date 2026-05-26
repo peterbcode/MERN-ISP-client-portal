@@ -1,13 +1,16 @@
 import TendaRouterAPI from '@/lib/tenda-router';
+import { getProtectedRouterConfig } from '@/lib/router-security';
+
+export const runtime = 'nodejs';
 
 export async function POST(request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const routerIP = searchParams.get('routerIP') || '192.168.0.1';
+    const config = await getProtectedRouterConfig(request);
+    if (config.error) return config.error;
     
-    const tenda = new TendaRouterAPI(routerIP);
+    const tenda = new TendaRouterAPI(config.routerIP);
     
-    const loginResult = await tenda.login('admin');
+    const loginResult = await tenda.login(config.routerPassword);
     
     if (loginResult.success) {
       const rebootResult = await tenda.reboot();

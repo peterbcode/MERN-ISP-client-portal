@@ -16,10 +16,24 @@ interface InternetStats {
   lastSpeedTest: string;
 }
 
+interface CurrentUser {
+  username?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  profile?: {
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+  };
+}
+
 export default function StatsPage() {
+  const [user, setUser] = useState<CurrentUser | null>(null);
   const [stats, setStats] = useState<InternetStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSpeedTestRunning, setIsSpeedTestRunning] = useState(false);
+  const [isSubmittingPlanChange, setIsSubmittingPlanChange] = useState(false);
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [ticketForm, setTicketForm] = useState({
     subject: '',
@@ -42,6 +56,7 @@ export default function StatsPage() {
 
       const response = await auth.getCurrentUser();
       if (response.success) {
+        setUser(response.user);
         loadStats();
       } else {
         auth.clearToken();
@@ -102,19 +117,48 @@ export default function StatsPage() {
       return;
     }
 
-    setIsLoading(true);
+    setIsSubmittingPlanChange(true);
     try {
-      // Simulate ticket submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const firstName = user?.profile?.firstName || user?.firstName || '';
+      const lastName = user?.profile?.lastName || user?.lastName || '';
+      const name = `${firstName} ${lastName}`.trim() || user?.username || 'Dashboard User';
+      const email = user?.email;
+
+      if (!email) {
+        safeAlert('We could not find your account email. Please contact support directly.');
+        return;
+      }
+
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          phone: user?.profile?.phone || '',
+          service: 'Plan Change Request',
+          message:
+            `Dashboard plan change request\n\n` +
+            `Request type: ${ticketForm.subject}\n` +
+            `Priority: ${ticketForm.priority}\n` +
+            `Current plan: ${stats?.planType || 'Unknown'}\n\n` +
+            ticketForm.description.trim(),
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Failed to submit plan change request');
+      }
       
       setShowTicketModal(false);
       setTicketForm({ subject: '', description: '', priority: 'medium' });
-      safeAlert('Support ticket submitted successfully! We will contact you soon.');
+      safeAlert('Plan change request submitted successfully! We will contact you soon.');
     } catch (error) {
-      console.error('Ticket submission failed:', error);
-      safeAlert('Failed to submit ticket. Please try again.');
+      console.error('Plan change submission failed:', error);
+      safeAlert(error instanceof Error ? error.message : 'Failed to submit plan change request. Please try again.');
     } finally {
-      setIsLoading(false);
+      setIsSubmittingPlanChange(false);
     }
   };
 
@@ -269,10 +313,10 @@ export default function StatsPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isSubmittingPlanChange}
                   className="flex-1 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors disabled:opacity-50"
                 >
-                  {isLoading ? 'Submitting...' : 'Submit Ticket'}
+                  {isSubmittingPlanChange ? 'Submitting...' : 'Submit Request'}
                 </button>
               </div>
             </form>

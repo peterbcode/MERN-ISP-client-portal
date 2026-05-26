@@ -3,6 +3,13 @@ export const runtime = 'nodejs';
 // GET /api/router/detect - Auto-detect router IP
 export async function GET(request) {
   try {
+    if (process.env.ENABLE_ROUTER_API !== 'true') {
+      return Response.json({
+        success: false,
+        message: 'Router detection is disabled until a real router integration is configured.'
+      }, { status: 503 });
+    }
+
     // Get client IP
     const ipResponse = await fetch('https://api.ipify.org?format=json');
     const ipData = await ipResponse.json();

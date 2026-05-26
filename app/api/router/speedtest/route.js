@@ -3,6 +3,13 @@ export const runtime = 'nodejs';
 // GET /api/router/speedtest - Run speed test
 export async function GET(request) {
   try {
+    if (process.env.ENABLE_ROUTER_API !== 'true') {
+      return Response.json({
+        success: false,
+        message: 'Router speed testing is disabled until a real router integration is configured.'
+      }, { status: 503 });
+    }
+
     const startTime = Date.now();
     
     // Test download speed

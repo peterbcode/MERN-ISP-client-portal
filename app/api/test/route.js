@@ -2,6 +2,13 @@ import { connectDB } from "@/lib/mongoose";
 
 export async function GET() {
   try {
+    if (process.env.NODE_ENV === 'production' || process.env.DEBUG_API_ERRORS !== 'true') {
+      return Response.json(
+        { success: false, message: 'Debug endpoint disabled' },
+        { status: 404 }
+      );
+    }
+
     // Test MongoDB connection
     await connectDB();
     
