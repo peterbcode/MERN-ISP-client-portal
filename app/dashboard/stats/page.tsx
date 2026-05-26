@@ -12,7 +12,6 @@ interface InternetStats {
   ping: number;
   connectionType: string;
   ispName: string;
-  planType: string;
   lastSpeedTest: string;
 }
 
@@ -33,7 +32,6 @@ export default function StatsPage() {
   const [stats, setStats] = useState<InternetStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSpeedTestRunning, setIsSpeedTestRunning] = useState(false);
-  const [isSubmittingPlanChange, setIsSubmittingPlanChange] = useState(false);
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [ticketForm, setTicketForm] = useState({
     subject: '',
@@ -76,7 +74,6 @@ export default function StatsPage() {
         ping: 12,
         connectionType: 'Fiber',
         ispName: 'Valley Computers ISP',
-        planType: 'Premium 500GB',
         lastSpeedTest: new Date().toISOString()
       });
     } catch (error) {
@@ -117,7 +114,6 @@ export default function StatsPage() {
       return;
     }
 
-    setIsSubmittingPlanChange(true);
     try {
       const firstName = user?.profile?.firstName || user?.firstName || '';
       const lastName = user?.profile?.lastName || user?.lastName || '';
@@ -136,29 +132,21 @@ export default function StatsPage() {
           name,
           email,
           phone: user?.profile?.phone || '',
-          service: 'Plan Change Request',
           message:
-            `Dashboard plan change request\n\n` +
             `Request type: ${ticketForm.subject}\n` +
             `Priority: ${ticketForm.priority}\n` +
-            `Current plan: ${stats?.planType || 'Unknown'}\n\n` +
             ticketForm.description.trim(),
         }),
       });
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        throw new Error(data.message || 'Failed to submit plan change request');
       }
       
       setShowTicketModal(false);
       setTicketForm({ subject: '', description: '', priority: 'medium' });
-      safeAlert('Plan change request submitted successfully! We will contact you soon.');
     } catch (error) {
-      console.error('Plan change submission failed:', error);
-      safeAlert(error instanceof Error ? error.message : 'Failed to submit plan change request. Please try again.');
     } finally {
-      setIsSubmittingPlanChange(false);
     }
   };
 
@@ -174,7 +162,7 @@ export default function StatsPage() {
       </div>
 
       {stats && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="lg:col-span-2 bg-zinc-800 rounded-lg p-6 border border-zinc-700">
             <h2 className="text-xl font-bold text-white mb-4">Connection Overview</h2>
             
@@ -200,7 +188,7 @@ export default function StatsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-2">
               <div>
                 <div className="text-2xl font-bold text-white mb-1">{stats.ping.toFixed(3)}</div>
                 <div className="text-sm text-zinc-400">Ping (ms)</div>
@@ -208,10 +196,6 @@ export default function StatsPage() {
               <div>
                 <div className="text-2xl font-bold text-white mb-1">{stats.connectionType}</div>
                 <div className="text-sm text-zinc-400">Connection</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-white mb-1">{stats.planType}</div>
-                <div className="text-sm text-zinc-400">Plan</div>
               </div>
             </div>
 
@@ -243,7 +227,6 @@ export default function StatsPage() {
               onClick={() => setShowTicketModal(true)}
               className="w-full px-4 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
             >
-              Request Plan Change
             </button>
           </div>
         </div>
@@ -265,8 +248,6 @@ export default function StatsPage() {
                   className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white"
                 >
                   <option value="">Select a request type</option>
-                  <option value="plan_upgrade">Upgrade Plan</option>
-                  <option value="plan_downgrade">Downgrade Plan</option>
                   <option value="speed_issue">Speed Issues</option>
                   <option value="data_limit">Increase Data Limit</option>
                   <option value="technical_support">Technical Support</option>
@@ -313,10 +294,8 @@ export default function StatsPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmittingPlanChange}
                   className="flex-1 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors disabled:opacity-50"
                 >
-                  {isSubmittingPlanChange ? 'Submitting...' : 'Submit Request'}
                 </button>
               </div>
             </form>
