@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from "../components/navbar";
 import SiteFooter from "../components/site-footer";
@@ -22,7 +22,6 @@ function ResetPasswordContent() {
   const [isReset, setIsReset] = useState(false);
   const [isValidToken, setIsValidToken] = useState<boolean | null>(null);
   
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -47,8 +46,8 @@ function ResetPasswordContent() {
 
     if (!formData.newPassword) {
       newErrors.newPassword = 'New password is required';
-    } else if (formData.newPassword.length < 6) {
-      newErrors.newPassword = 'Password must be at least 6 characters long';
+    } else if (formData.newPassword.length < 12) {
+      newErrors.newPassword = 'Password must be at least 12 characters long';
     }
 
     if (!formData.confirmPassword) {
@@ -97,7 +96,9 @@ function ResetPasswordContent() {
         setIsReset(true);
       } else {
         setErrors({
-          general: data.message || 'Failed to reset password'
+          general: Array.isArray(data.errors) && data.errors.length
+            ? data.errors.join('\n')
+            : data.message || 'Failed to reset password'
         });
       }
     } catch (error: any) {
@@ -267,7 +268,7 @@ function ResetPasswordContent() {
 
             {errors.general && (
               <div className="bg-red-900/50 border border-red-500 rounded-lg p-3">
-                <p className="text-sm text-red-400">{errors.general}</p>
+                <p className="whitespace-pre-line text-sm text-red-400">{errors.general}</p>
               </div>
             )}
 

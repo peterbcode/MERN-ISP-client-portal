@@ -1,7 +1,6 @@
 ﻿'use client'
 
 import { useState, useEffect } from 'react'
-import Link from "next/link";
 import AnimatedSection from '../ui/animated-section';
 import PremiumButton from '../ui/premium-button';
 import { safeAlert } from '@/lib/native-dialog'
@@ -21,6 +20,7 @@ const ContactPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [copiedDetail, setCopiedDetail] = useState<string | null>(null);
 
   // Get service type from URL query parameter
   const [serviceType, setServiceType] = useState('General Inquiry');
@@ -79,9 +79,10 @@ const ContactPage = () => {
     }
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    // You could add a toast notification here
+  const copyToClipboard = async (label: string, text: string) => {
+    await navigator.clipboard.writeText(text);
+    setCopiedDetail(label);
+    window.setTimeout(() => setCopiedDetail(null), 1600);
   };
 
   return (
@@ -99,30 +100,32 @@ const ContactPage = () => {
           <AnimatedSection direction="up" delay={300}>
             <div className="space-y-3">
               {details.map((item) => (
-                <a
+                <div
                   key={item.label}
-                  href={item.href}
-                  target={item.target || undefined}
-                  rel={item.target ? "noopener noreferrer" : undefined}
                   className="group block rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 backdrop-blur-sm transition-all duration-300 hover:border-[#f97316]/50 hover:bg-zinc-900/70 cursor-pointer"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316] transition-colors group-hover:text-[#f97316]/80">{item.label}</p>
                   <div className="mt-2 flex items-center justify-between">
                     <p className="text-sm text-zinc-200 group-hover:text-white transition-colors">{item.value}</p>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        copyToClipboard(item.value);
-                      }}
-                      className="opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus:opacity-100 focus:outline-none"
-                      aria-label={`Copy ${item.label}`}
+                  </div>
+                  <div className="mt-4 flex gap-2">
+                    <a
+                      href={item.href}
+                      target={item.target || undefined}
+                      rel={item.target ? "noopener noreferrer" : undefined}
+                      className="inline-flex flex-1 items-center justify-center rounded-lg bg-[#f97316] px-3 py-2 text-sm font-bold text-white transition hover:brightness-110"
                     >
-                      <svg className="h-4 w-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2zm0 2h4v4H8v-4z" />
-                      </svg>
+                      {item.label === "Call Us" ? "Call" : item.label === "Email" ? "Email" : "Open Map"}
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(item.label, item.value)}
+                      className="inline-flex min-w-20 items-center justify-center rounded-lg border border-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-200 transition hover:border-[#f97316] hover:text-white"
+                    >
+                      {copiedDetail === item.label ? "Copied" : "Copy"}
                     </button>
                   </div>
-                </a>
+                </div>
               ))}
             </div>
           </AnimatedSection>

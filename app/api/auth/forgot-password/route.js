@@ -14,6 +14,24 @@ const genericResetResponse = () =>
 const hashResetToken = (token) =>
   crypto.createHash("sha256").update(token).digest("hex");
 
+const getAppUrl = (request) => {
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const forwardedProto = request.headers.get("x-forwarded-proto");
+  const host = forwardedHost || request.headers.get("host");
+  const configuredUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+  if (configuredUrl && !configuredUrl.includes("localhost")) {
+    return configuredUrl;
+  }
+
+  if (!host) {
+    return configuredUrl || "http://localhost:3000";
+  }
+
+  const protocol = forwardedProto || (host.startsWith("localhost") ? "http" : "https");
+  return `${protocol}://${host}`;
+};
+
 export async function POST(request) {
   try {
     await connectDB();
@@ -46,7 +64,7 @@ export async function POST(request) {
       return genericResetResponse();
     }
 
-    const emailResult = await sendPasswordResetEmail(normalizedEmail, resetToken);
+    const emailResult = await sendPasswordResetEmail(normalizedEmail, resetToken, getAppUrl(request));
     if (!emailResult.success) {
       console.error("Failed to send password reset email:", emailResult.error);
     }

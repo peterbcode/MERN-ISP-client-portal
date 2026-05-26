@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { WifiIcon } from '@heroicons/react/24/solid'
 import PremiumButton from './ui/premium-button'
 
@@ -18,6 +19,7 @@ const Hero = () => {
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const [pointer, setPointer] = useState({ x: 0, y: 0 })
+  const router = useRouter()
 
   const nodes = useMemo(
     () => [
@@ -168,7 +170,7 @@ const Hero = () => {
           <PremiumButton 
             variant="primary" 
             size="lg"
-            onClick={() => window.location.href = '/contact'}
+            onClick={() => router.push('/contact')}
           >
             Get Connected
           </PremiumButton>
