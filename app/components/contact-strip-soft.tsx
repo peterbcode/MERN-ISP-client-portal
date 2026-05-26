@@ -52,7 +52,7 @@ const ContactStripSoft = () => {
 
             {/* Contact Info */}
             <div className="space-y-6">
-              <div className="flex items-start space-x-4">
+              <a href="mailto:info@valley-computers.co.za" className="flex items-start space-x-4 transition-transform duration-200 hover:scale-105 cursor-pointer">
                 <div className="soft-card p-3">
                   <EnvelopeIcon className="h-5 w-5 text-accent-primary" />
                 </div>
@@ -60,19 +60,19 @@ const ContactStripSoft = () => {
                   <h3 className="font-semibold text-text-primary">Email</h3>
                   <p className="text-text-secondary">info@valley-computers.co.za</p>
                 </div>
-              </div>
+              </a>
 
-              <div className="flex items-start space-x-4">
+              <a href="tel:+27799381260" className="flex items-start space-x-4 transition-transform duration-200 hover:scale-105 cursor-pointer">
                 <div className="soft-card p-3">
                   <PhoneIcon className="h-5 w-5 text-accent-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-text-primary">Phone</h3>
-                  <p className="text-text-secondary">+27 21 234 5678</p>
+                  <h3 className="font-semibold text-text-primary">Call Us</h3>
+                  <p className="text-text-secondary">079 938 1260</p>
                 </div>
-              </div>
+              </a>
 
-              <div className="flex items-start space-x-4">
+              <a href="https://www.google.com/maps/search/?api=1&query=Riebeek%20Kasteel%2C%20Western%20Cape" target="_blank" rel="noopener noreferrer" className="flex items-start space-x-4 transition-transform duration-200 hover:scale-105 cursor-pointer">
                 <div className="soft-card p-3">
                   <MapPinIcon className="h-5 w-5 text-accent-primary" />
                 </div>
@@ -80,7 +80,7 @@ const ContactStripSoft = () => {
                   <h3 className="font-semibold text-text-primary">Location</h3>
                   <p className="text-text-secondary">Riebeek Kasteel, Western Cape</p>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
 
