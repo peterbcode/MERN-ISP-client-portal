@@ -58,7 +58,7 @@ export default function DashboardSidebar({ showLogout = true }: DashboardSidebar
   return (
     <aside className="flex min-h-screen w-full flex-col border-r border-white/10 bg-[#0c0d10]">
       <div className="border-b border-white/10 p-5">
-        <Link href="/" className="mb-6 flex min-w-0 items-center gap-3 pr-10 text-white no-accent-hover lg:pr-0">
+        <Link href="/dashboard" className="mb-6 flex min-w-0 items-center gap-3 pr-10 text-white no-accent-hover lg:pr-0">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-orange-500 text-sm font-black text-white shadow-lg shadow-orange-500/20">
             VC
           </div>

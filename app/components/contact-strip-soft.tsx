@@ -72,13 +72,13 @@ const ContactStripSoft = () => {
                 </div>
               </a>
 
-              <a href="https://www.google.com/maps/search/?api=1&query=Riebeek%20Kasteel%2C%20Western%20Cape" target="_blank" rel="noopener noreferrer" className="flex items-start space-x-4 transition-transform duration-200 hover:scale-105 cursor-pointer">
+              <a href="https://www.google.com/maps/search/?api=1&query=6%20Church%20Rd%2C%20Riebeek-Kasteel%2C%207307" target="_blank" rel="noopener noreferrer" className="flex items-start space-x-4 transition-transform duration-200 hover:scale-105 cursor-pointer">
                 <div className="soft-card p-3">
                   <MapPinIcon className="h-5 w-5 text-accent-primary" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-text-primary">Location</h3>
-                  <p className="text-text-secondary">Riebeek Kasteel, Western Cape</p>
+                  <p className="text-text-secondary">6 Church Rd, Riebeek-Kasteel, 7307</p>
                 </div>
               </a>
             </div>
