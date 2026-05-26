@@ -99,11 +99,6 @@ export default function Navbar() {
               <PhoneIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               <span className="hidden font-bold sm:inline">Call Us:</span> 079 938 1260
             </a>
-            <span className="hidden h-3 w-px bg-white/30 sm:block" aria-hidden="true" />
-            <a href="https://wa.me/27799381260" target="_blank" rel="noopener noreferrer" className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-white/95 transition-all duration-200 hover:text-white hover:scale-105">
-              <ChatBubbleOvalLeftEllipsisIcon className="h-3.5 w-3.5 stroke-[2.25]" />
-              <span className="hidden sm:inline">WhatsApp</span>
-            </a>
           </div>
         </div>
       </div>
