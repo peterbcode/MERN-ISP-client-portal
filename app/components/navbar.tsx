@@ -84,7 +84,12 @@ export default function Navbar() {
               Riebeek Kasteel, Western Cape
             </a>
             <span className="h-3 w-px bg-white/30" aria-hidden="true" />
-            <a href="mailto:info@valley-computers.co.za" className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-white/95 transition-all duration-200 hover:text-white hover:scale-105">
+            <a 
+              href="mailto:info@valley-computers.co.za" 
+              aria-label="Send email to info@valley-computers.co.za"
+              title="Send email to info@valley-computers.co.za"
+              className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-white/95 transition-colors duration-200 hover:text-white cursor-pointer"
+            >
               <EnvelopeIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               info@valley-computers.co.za
             </a>
