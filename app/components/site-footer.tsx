@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import type { FormEvent } from 'react'
 import { useState } from 'react'
-import { MapPinIcon, PhoneIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid'
-import { Facebook } from 'lucide-react'
+import { MapPinIcon, PhoneIcon, PaperAirplaneIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid'
+import { Facebook, Linkedin } from 'lucide-react'
 import ManageCookiesButton from './manage-cookies-button'
 
 const services = [
@@ -70,7 +70,7 @@ const SiteFooter = () => {
         <div className="grid gap-10 border-b border-zinc-800/80 pb-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <p className="text-3xl font-black tracking-tight text-zinc-100">
-              <span className="text-[#f97316]">V</span>COMPUTERS
+              <span className="text-[#f97316]">VALLEY</span> COMPUTERS
             </p>
             <p className="mt-5 max-w-sm text-base leading-relaxed text-zinc-400">
               Powering the Riebeek Valley with high-speed connectivity and precision IT engineering.
@@ -85,6 +85,24 @@ const SiteFooter = () => {
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-lg font-bold text-zinc-200 transition hover:border-[#f97316] hover:bg-zinc-800 hover:text-zinc-100"
               >
                 <Facebook className="h-5 w-5" />
+              </a>
+              <a
+                href="https://wa.me/27799381260"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-lg font-bold text-zinc-200 transition hover:border-[#25D366] hover:bg-zinc-800 hover:text-zinc-100"
+              >
+                <ChatBubbleLeftRightIcon className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/valley-computers"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-lg font-bold text-zinc-200 transition hover:border-[#f97316] hover:bg-zinc-800 hover:text-zinc-100"
+              >
+                <Linkedin className="h-5 w-5" />
               </a>
             </div>
           </div>
@@ -177,6 +195,15 @@ const SiteFooter = () => {
                 <PhoneIcon className="h-5 w-5 text-[#f97316]" />
                 079 938 1260
               </a>
+              <a
+                href="https://wa.me/27799381260"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 transition hover:text-[#f97316]"
+              >
+                <ChatBubbleLeftRightIcon className="h-5 w-5 text-[#f97316]" />
+                WhatsApp
+              </a>
             </div>
           </div>
         </div>
@@ -192,7 +219,7 @@ const SiteFooter = () => {
             <span>|</span>
             <ManageCookiesButton />
           </p>
-          <p className="mt-3 sm:mt-0">Reg No: 20XX/XXXXXX/07 | ICASA Licensed Provider</p>
+          <p className="mt-3 sm:mt-0">ICASA Licensed Provider</p>
         </div>
       </div>
     </footer>

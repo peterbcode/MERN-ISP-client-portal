@@ -156,7 +156,7 @@ const Hero = () => {
       <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-6 pt-32 text-center sm:px-6 lg:px-8 lg:pb-10 lg:pt-40">
         <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#f97316]" />
         <h1 className="mt-6 max-w-5xl text-4xl font-black leading-[0.9] tracking-[-0.02em] sm:text-5xl lg:text-8xl">
-          <span className="block text-[#f97316] drop-shadow-[0_0_24px_rgba(243,111,0,0.35)]">We Build</span>
+          <span className="block text-[#f97316] drop-shadow-[0_0_24px_rgba(243,111,0,0.35)]">We Build Better</span>
           <span className="block min-h-[1.05em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]">
             {displayText}
           </span>

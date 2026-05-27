@@ -8,7 +8,6 @@ import {
   CpuChipIcon,
   MapIcon,
 } from '@heroicons/react/24/solid'
-import Image from 'next/image'
 import { StarIcon } from '@heroicons/react/24/solid'
 import AnimatedSection from './ui/animated-section'
 import HoverCard from './ui/hover-card'
@@ -21,7 +20,6 @@ const stories = [
     author: "Sarah J.",
     role: "Operations Manager",
     location: "Riebeek-Kasteel",
-    avatar: "https://i.pravatar.cc/150?img=47",
     company: "Riebeek Valley Logistics",
     rating: 5,
     date: "2 months ago"
@@ -32,7 +30,6 @@ const stories = [
     author: "David M.",
     role: "Business Owner",
     location: "Malmesbury",
-    avatar: "https://i.pravatar.cc/150?img=32",
     company: "Digital Marketing Agency",
     rating: 5,
     date: "3 months ago"
@@ -43,7 +40,6 @@ const stories = [
     author: "John P.",
     role: "IT Coordinator",
     location: "Swartland",
-    avatar: "https://i.pravatar.cc/150?img=12",
     company: "Manufacturing Company",
     rating: 4,
     date: "1 month ago"
@@ -54,7 +50,6 @@ const stories = [
     author: "Alicia K.",
     role: "Office Manager",
     location: "Piketberg",
-    avatar: "https://i.pravatar.cc/150?img=45",
     company: "Financial Services Firm",
     rating: 5,
     date: "2 weeks ago"
@@ -65,7 +60,6 @@ const stories = [
     author: "Mark T.",
     role: "Retail Owner",
     location: "Wellington",
-    avatar: "https://i.pravatar.cc/150?img=20",
     company: "Retail Chain",
     rating: 5,
     date: "4 months ago"
@@ -133,14 +127,9 @@ const SuccessStories = () => {
                   <div className="mx-auto max-w-4xl text-center">
                     <div className="mb-6 flex justify-center">
                       <div className="relative">
-                        <Image
-                          src={story.avatar}
-                          alt={`${story.author} avatar`}
-                          width={80}
-                          height={80}
-                          className="h-20 w-20 rounded-full border-2 border-[#f97316] shadow-[0_8px_24px_rgba(243,111,0,0.25)]"
-                          loading="lazy"
-                        />
+                        <div className="h-20 w-20 rounded-full border-2 border-[#f97316] bg-gradient-to-br from-[#f97316] to-[#f97316]/80 shadow-[0_8px_24px_rgba(243,111,0,0.25)] flex items-center justify-center text-2xl font-bold text-white">
+                          {story.author.charAt(0)}
+                        </div>
                         <div className="absolute -bottom-2 -right-2 rounded-full bg-[#f97316] p-1.5">
                           <StarIcon className="h-4 w-4 text-white" />
                         </div>
@@ -150,13 +139,24 @@ const SuccessStories = () => {
                     <div className="mb-4">
                       <div className="flex items-center justify-center gap-1 mb-2">
                         {[...Array(story.rating)].map((_, i) => (
-                          <StarIcon 
-                            key={i} 
+                          <StarIcon
+                            key={i}
                             className={`h-4 w-4 ${
                               i < story.rating ? 'text-yellow-400' : 'text-zinc-600'
-                            }`} 
+                            }`}
                           />
                         ))}
+                      </div>
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400 border border-emerald-500/20">
+                          <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                          </svg>
+                          Verified via Google
+                        </span>
                       </div>
                       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                         {story.company} • {story.date}
@@ -222,6 +222,20 @@ const SuccessStories = () => {
               <ChevronRightIcon className="h-4 w-4" />
             </PremiumButton>
           </div>
+        </AnimatedSection>
+
+        <AnimatedSection direction="up" delay={300} className="mt-8 text-center">
+          <a
+            href="https://www.google.com/search?q=Valley+Computers+Riebeek+Kasteel+reviews"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-300 transition hover:text-[#f97316]"
+          >
+            See our Google Reviews
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
         </AnimatedSection>
       </div>
     </section>
