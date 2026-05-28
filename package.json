@@ -1,0 +1,11 @@
+{
+  "name": "valley-computers-website",
+  "version": "1.0.0",
+  "description": "Valley Computers - IT Services & ISP Website",
+  "scripts": {
+    "vercel-build": "echo 'Static site - no build step required'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
