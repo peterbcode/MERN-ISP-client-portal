@@ -191,7 +191,7 @@ const SiteFooter = () => {
                 href="https://wa.me/27799381260"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 transition hover:text-[#f97316]"
+                className="hidden sm:flex items-center gap-2 transition hover:text-[#f97316]"
               >
                 <ChatBubbleLeftRightIcon className="h-5 w-5 text-[#f97316]" />
                 WhatsApp
