@@ -85,9 +85,12 @@ const Hero = () => {
       }}
       onMouseLeave={() => setPointer({ x: 0, y: 0 })}
     >
-      {/* Simplified networking background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(34,197,94,0.15),transparent_42%),radial-gradient(circle_at_85%_10%,rgba(59,130,246,0.12),transparent_35%),linear-gradient(to_bottom,rgba(0,0,0,0.45),rgba(0,0,0,0.92))]" />
-      <div className="hero-grid absolute inset-0 opacity-15" />
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/gallery/Rainbow.png')" }}
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.82),rgba(0,0,0,0.58)_48%,rgba(0,0,0,0.78)),linear-gradient(to_bottom,rgba(0,0,0,0.35),rgba(0,0,0,0.95))]" />
+      <div className="hero-grid absolute inset-0 opacity-10" />
 
       <div
         className="pointer-events-none absolute inset-0 transition-transform duration-300 ease-out"

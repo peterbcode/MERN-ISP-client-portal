@@ -1,7 +1,14 @@
 ﻿'use client'
 
 import Link from 'next/link'
-import { ArrowRightIcon, ComputerDesktopIcon, CpuChipIcon, WifiIcon } from '@heroicons/react/24/outline'
+import {
+  ArrowRightIcon,
+  BoltIcon,
+  ClockIcon,
+  ServerStackIcon,
+  WifiIcon,
+  WrenchScrewdriverIcon,
+} from '@heroicons/react/24/outline'
 import AnimatedSection from './ui/animated-section'
 import HoverCard from './ui/hover-card'
 
@@ -20,7 +27,7 @@ const services = [
       'Expert diagnostics, repairs, and upgrades. Data recovery, virus removal, hardware replacement, and performance optimization with same-day service available.',
     cta: 'Get Support',
     href: '/contact',
-    icon: ComputerDesktopIcon,
+    icon: WrenchScrewdriverIcon,
   },
   {
     title: 'Network Engineering',
@@ -28,15 +35,15 @@ const services = [
       'Custom network design and installation for businesses. Managed switches, access points, and enterprise-grade security for reliable operations.',
     cta: 'Contact Us',
     href: '/contact',
-    icon: CpuChipIcon,
+    icon: ServerStackIcon,
   },
 ]
 
 const stats = [
-  { value: '99%', label: 'ISP Uptime' },
-  { value: '15k+', label: 'Repairs Done' },
-  { value: '24/7', label: 'Network Monitoring' },
-  { value: 'Same Day', label: 'Response Time' },
+  { value: '99%', label: 'ISP Uptime', icon: WifiIcon },
+  { value: '15k+', label: 'Repairs Done', icon: WrenchScrewdriverIcon },
+  { value: '24/7', label: 'Network Monitoring', icon: ClockIcon },
+  { value: 'Same Day', label: 'Response Time', icon: BoltIcon },
 ]
 
 const Services = () => {
@@ -61,10 +68,10 @@ const Services = () => {
               delay={index * 150}
               duration={600}
             >
-              <HoverCard hoverScale={1.03} shadowIntensity="medium">
-                <div className="p-8">
-                  <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f97316] text-white shadow-[0_10px_25px_rgba(243,111,0,0.25)] transition-transform duration-300 group-hover:scale-110">
-                    <service.icon className="h-8 w-8" />
+              <HoverCard hoverScale={1.03} shadowIntensity="heavy" className="h-full hover:border-[#f97316]/60">
+                <div className="p-9 sm:p-10">
+                  <div className="mb-7 inline-flex h-20 w-20 items-center justify-center rounded-2xl border border-[#f97316]/40 bg-[#f97316]/15 text-[#f97316] shadow-[0_14px_30px_rgba(243,111,0,0.18)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110 group-hover:bg-[#f97316] group-hover:text-white">
+                    <service.icon className="h-10 w-10" />
                   </div>
                   <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{service.title}</h3>
                   <p className="mt-5 text-base leading-relaxed text-zinc-300 sm:text-lg">{service.description}</p>
@@ -82,28 +89,33 @@ const Services = () => {
         </div>
 
         <AnimatedSection direction="up" delay={450} className="mt-14">
-          <div className="grid gap-8 text-center sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((item, index) => (
-              <AnimatedSection
-                key={item.label}
-                direction="up"
-                delay={index * 100}
-                duration={500}
-              >
-                <div className="group">
-                  <p
-                    className={`font-black tracking-tight text-[#f97316] transition-transform duration-300 group-hover:scale-105 ${
-                      item.value.includes(' ') ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl lg:text-5xl'
-                    }`}
-                  >
-                    {item.value}
-                  </p>
-                  <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-zinc-400 transition-colors duration-300 group-hover:text-zinc-300">
-                    {item.label}
-                  </p>
-                </div>
-              </AnimatedSection>
-            ))}
+          <div className="rounded-3xl border border-zinc-800 bg-[linear-gradient(135deg,#111111,#1a120d_55%,#0b0b0b)] p-5 shadow-[0_18px_38px_rgba(0,0,0,0.3)] sm:p-8">
+            <div className="grid gap-4 text-center sm:grid-cols-2 lg:grid-cols-4">
+              {stats.map((item, index) => (
+                <AnimatedSection
+                  key={item.label}
+                  direction="up"
+                  delay={index * 100}
+                  duration={500}
+                >
+                  <div className="group rounded-2xl border border-white/10 bg-black/25 p-6 transition duration-300 hover:-translate-y-1 hover:border-[#f97316]/50 hover:bg-black/40">
+                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f97316] text-white shadow-[0_8px_24px_rgba(249,115,22,0.35)]">
+                      <item.icon className="h-6 w-6" />
+                    </div>
+                    <p
+                      className={`font-black tracking-tight text-[#f97316] transition-transform duration-300 group-hover:scale-105 ${
+                        item.value.includes(' ') ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl lg:text-5xl'
+                      }`}
+                    >
+                      {item.value}
+                    </p>
+                    <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-zinc-400 transition-colors duration-300 group-hover:text-zinc-300">
+                      {item.label}
+                    </p>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
           </div>
         </AnimatedSection>
       </div>

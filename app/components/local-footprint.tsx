@@ -1,25 +1,22 @@
-﻿import { BuildingOffice2Icon, CpuChipIcon, MapIcon } from '@heroicons/react/24/solid'
+import { MapPinIcon } from '@heroicons/react/24/solid'
 
 const footprintItems = [
   {
     title: 'Riebeek Kasteel HQ',
     description:
       "Our main operations center providing expert support and managing the valley's fibre backbone.",
-    icon: BuildingOffice2Icon,
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=6%20Church%20Rd%2C%20Riebeek-Kasteel%2C%207307',
   },
   {
     title: 'Malmesbury Coverage',
     description:
       'Full ISP and technical support services extended to the growing business and residential hubs of Malmesbury.',
-    icon: CpuChipIcon,
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=Malmesbury%2C%20Western%20Cape%2C%20South%20Africa',
   },
   {
     title: 'Swartland Region',
     description:
       'Comprehensive coverage across the wider Swartland area, serving surrounding farms and communities with reliable connectivity.',
-    icon: MapIcon,
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=Swartland%2C%20Western%20Cape%2C%20South%20Africa',
   },
 ]
@@ -27,49 +24,59 @@ const footprintItems = [
 const LocalFootprint = () => {
   return (
     <section className="scroll-mt-28 bg-[radial-gradient(circle_at_50%_5%,rgba(249,115,22,0.09),transparent_45%),linear-gradient(to_bottom,#070707,#0b0b0b)] py-14 text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
-        <div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f97316]">Coverage</p>
           <h2 className="heading-compact mt-3 text-3xl font-black tracking-tight sm:text-4xl">Our Local Footprint</h2>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-zinc-300">
+          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-zinc-300">
             We are deeply rooted in the Western Cape. Our network infrastructure is purpose-built to provide reliable, high-speed internet to the valley and its surrounding hubs.
           </p>
-
-          <div className="mt-8 space-y-4">
-            {footprintItems.map((item) => (
-              <article
-                key={item.title}
-                className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] cursor-pointer transition-all duration-300 hover:border-[#f97316] hover:shadow-[0_0_20px_rgba(249,115,22,0.15)]"
-                onClick={() => window.open(item.mapUrl, '_blank', 'noopener,noreferrer')}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="mt-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#f97316] text-white">
-                    <item.icon className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-extrabold tracking-tight sm:text-2xl">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-zinc-300 sm:text-base">{item.description}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
         </div>
 
-        <div className="relative self-center overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950 shadow-[0_22px_45px_rgba(0,0,0,0.45)]">
-          <div className="absolute left-4 right-4 top-4 z-10 rounded-2xl border border-zinc-700 bg-zinc-900/95 px-4 py-3 shadow">
-            <p className="text-sm font-bold uppercase tracking-wide text-zinc-300">
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
+          {footprintItems.map((item) => (
+            <article
+              key={item.title}
+              className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-[#f97316] hover:shadow-[0_18px_34px_rgba(249,115,22,0.13)]"
+              onClick={() => window.open(item.mapUrl, '_blank', 'noopener,noreferrer')}
+            >
+              <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#f97316] text-white shadow-[0_8px_22px_rgba(249,115,22,0.3)] transition group-hover:scale-110">
+                <MapPinIcon className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-extrabold tracking-tight sm:text-2xl">{item.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-300 sm:text-base">{item.description}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-10 grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-stretch">
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+            <p className="text-sm font-bold uppercase tracking-wide text-[#f97316]">Active Service Area</p>
+            <p className="mt-4 text-base leading-relaxed text-zinc-300">
               Coverage: Riebeek Kasteel, Malmesbury, Gouda, Riebeek West, Hermon, Abbotsdale, Chatsworth and Swartland region
             </p>
+            <div className="mt-6 rounded-2xl border border-[#f97316]/30 bg-[#f97316]/10 p-4">
+              <p className="text-sm font-semibold text-zinc-100">
+                Local technicians, regional routing, and practical site surveys keep coverage grounded in real terrain.
+              </p>
+            </div>
           </div>
 
-          <iframe
-            title="Swartland coverage map"
-            src="https://maps.google.com/maps?q=Riebeek+Kasteel+Swartland&t=&z=11&ie=UTF8&iwloc=&output=embed"
-            className="h-[560px] w-full"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <div className="relative self-center overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950 shadow-[0_22px_45px_rgba(0,0,0,0.45)]">
+            <div className="absolute left-4 right-4 top-4 z-10 rounded-2xl border border-zinc-700 bg-zinc-900/95 px-4 py-3 shadow">
+              <p className="text-sm font-bold uppercase tracking-wide text-zinc-300">
+                Swartland coverage map
+              </p>
+            </div>
+
+            <iframe
+              title="Swartland coverage map"
+              src="https://maps.google.com/maps?q=Riebeek+Kasteel+Swartland&t=&z=11&ie=UTF8&iwloc=&output=embed"
+              className="h-[520px] w-full"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
       </div>
     </section>

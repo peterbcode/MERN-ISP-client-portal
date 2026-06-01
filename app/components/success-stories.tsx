@@ -118,7 +118,7 @@ const SuccessStories = () => {
                   key={storyIndex}
                   className="w-full flex-shrink-0 px-8 py-12 sm:px-12 lg:px-16"
                 >
-                  <div className="mx-auto max-w-4xl text-center">
+                  <div className="mx-auto max-w-4xl border-l-4 border-[#f97316] bg-black/20 px-6 py-8 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:px-10">
                     <div className="mb-6 flex justify-center">
                       <div className="relative">
                         <div className="h-20 w-20 rounded-full border-2 border-[#f97316] bg-gradient-to-br from-[#f97316] to-[#f97316]/80 shadow-[0_8px_24px_rgba(243,111,0,0.25)] flex items-center justify-center text-2xl font-bold text-white">
@@ -130,8 +130,9 @@ const SuccessStories = () => {
                       </div>
                     </div>
                     
-                    <div className="mb-4">
-                      <div className="flex items-center justify-center gap-1 mb-2">
+                    <div className="mb-5 text-center">
+                      <p className="text-sm font-bold text-white">{story.author}</p>
+                      <div className="mt-2 flex items-center justify-center gap-1">
                         {[...Array(story.rating)].map((_, i) => (
                           <StarIcon
                             key={i}
@@ -141,20 +142,17 @@ const SuccessStories = () => {
                           />
                         ))}
                       </div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
-                        {story.company} • {story.date}
-                      </p>
-                    </div>
-                    
-                    <blockquote className="mb-6 text-lg leading-relaxed text-zinc-200 sm:text-xl">
-                      "{story.quote}"
-                    </blockquote>
-                    <div>
-                      <p className="text-sm font-bold text-white">{story.author}</p>
-                      <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
+                      <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                         {story.role} • {story.location}
                       </p>
                     </div>
+                    
+                    <blockquote className="mb-6 text-xl leading-relaxed text-zinc-100 sm:text-2xl">
+                      "{story.quote}"
+                    </blockquote>
+                    <p className="text-center text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+                      {story.company} • {story.date}
+                    </p>
                   </div>
                 </div>
               ))}
