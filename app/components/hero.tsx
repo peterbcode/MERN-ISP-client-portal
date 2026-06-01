@@ -13,8 +13,7 @@ const DELETE_SPEED_BASE = 55
 const DELETE_SPEED_VARIANCE = 30
 const HOLD_DELAY = 1200
 const NEXT_WORD_DELAY = 220
-const heroImageUrl =
-  'https://swartlandwineandolives.co.za/wp-content/uploads/2020/06/Kasteelberg-Riebeek-Valley.jpg'
+const heroImageUrl = '/hero-riebeek-valley.png'
 
 const Hero = () => {
   const [wordIndex, setWordIndex] = useState(0)
