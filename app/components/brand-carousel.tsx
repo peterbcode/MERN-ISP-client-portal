@@ -17,7 +17,7 @@ const brands = [
   {
     name: "Genius",
     href: "https://www.geniusnet.com/",
-    logo: "https://www.geniusnet.com/images/logo.svg",
+    logo: "https://www.geniusnet.com/images/logo-w.svg",
   },
   { name: "ADATA", href: "https://www.adata.com/", logo: "/brands/adata-logo.png" },
   { name: "Canon", href: "https://www.canon.co.za/", logo: "/brands/canon-logo.png" },
@@ -48,7 +48,11 @@ const BrandCarousel = () => {
                   src={brand.logo}
                   alt={`${brand.name} logo`}
                   loading="lazy"
-                  className="max-h-12 max-w-36 object-contain grayscale opacity-70 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+                  className={`max-h-12 max-w-36 object-contain transition duration-300 ${
+                    brand.name === 'Genius'
+                      ? 'brightness-50 opacity-70 group-hover:brightness-100 group-hover:opacity-100'
+                      : 'grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100'
+                  }`}
                 />
               </a>
             ))}
