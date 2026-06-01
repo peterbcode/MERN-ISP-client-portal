@@ -12,7 +12,7 @@ const brands = [
   {
     name: "Ubiquiti",
     href: "https://ui.com/",
-    logo: "https://p7.hiclipart.com/preview/371/446/532/ubiquiti-networks-dominion-design-and-integration-wireless-access-points-computer-network-unifi-business.jpg",
+    logo: "/brands/ubiquiti-logo.png",
   },
   {
     name: "Genius",
