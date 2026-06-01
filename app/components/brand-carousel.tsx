@@ -1,10 +1,26 @@
 const brands = [
-  { name: "Tenda", href: "https://www.tendacn.com/", logo: "https://logo.clearbit.com/tendacn.com" },
-  { name: "MikroTik", href: "https://mikrotik.com/", logo: "https://logo.clearbit.com/mikrotik.com" },
-  { name: "Ubiquiti", href: "https://ui.com/", logo: "https://logo.clearbit.com/ui.com" },
-  { name: "Genius", href: "https://www.geniusnet.com/", logo: "https://logo.clearbit.com/geniusnet.com" },
-  { name: "ADATA", href: "https://www.adata.com/", logo: "https://logo.clearbit.com/adata.com" },
-  { name: "Canon", href: "https://www.canon.co.za/", logo: "https://logo.clearbit.com/canon.co.za" },
+  {
+    name: "Tenda",
+    href: "https://www.tendacn.com/",
+    logo: "https://static.tenda.com.cn/public/logo-light.png?x-oss-process=image%2Fresize%2Cw_320%2Fformat%2Cavif",
+  },
+  {
+    name: "MikroTik",
+    href: "https://mikrotik.com/",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/MikroTik_Logo_%282022%29.svg/3840px-MikroTik_Logo_%282022%29.svg.png",
+  },
+  {
+    name: "Ubiquiti",
+    href: "https://ui.com/",
+    logo: "https://p7.hiclipart.com/preview/371/446/532/ubiquiti-networks-dominion-design-and-integration-wireless-access-points-computer-network-unifi-business.jpg",
+  },
+  {
+    name: "Genius",
+    href: "https://www.geniusnet.com/",
+    logo: "https://www.geniusnet.com/images/logo-w.svg",
+  },
+  { name: "ADATA", href: "https://www.adata.com/", logo: "/brands/adata-logo.png" },
+  { name: "Canon", href: "https://www.canon.co.za/", logo: "/brands/canon-logo.jpg" },
 ];
 
 const BrandCarousel = () => {
@@ -26,13 +42,13 @@ const BrandCarousel = () => {
                 href={brand.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex h-20 w-40 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-950/80 px-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#f97316]/60 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-inset"
+                className="group flex h-20 w-44 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-950/80 px-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#f97316]/60 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-inset"
               >
                 <img
                   src={brand.logo}
                   alt={`${brand.name} logo`}
                   loading="lazy"
-                  className="max-h-10 max-w-28 object-contain grayscale opacity-70 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+                  className="max-h-12 max-w-36 object-contain grayscale opacity-70 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100"
                 />
               </a>
             ))}
