@@ -13,6 +13,8 @@ const DELETE_SPEED_BASE = 55
 const DELETE_SPEED_VARIANCE = 30
 const HOLD_DELAY = 1200
 const NEXT_WORD_DELAY = 220
+const heroImageUrl =
+  'https://swartlandwineandolives.co.za/wp-content/uploads/2020/06/Kasteelberg-Riebeek-Valley.jpg'
 
 const Hero = () => {
   const [wordIndex, setWordIndex] = useState(0)
@@ -87,7 +89,7 @@ const Hero = () => {
     >
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/gallery/Rainbow.png')" }}
+        style={{ backgroundImage: `url('${heroImageUrl}')` }}
       />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.82),rgba(0,0,0,0.58)_48%,rgba(0,0,0,0.78)),linear-gradient(to_bottom,rgba(0,0,0,0.35),rgba(0,0,0,0.95))]" />
       <div className="hero-grid absolute inset-0 opacity-10" />

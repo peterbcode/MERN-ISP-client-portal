@@ -35,17 +35,19 @@ const LocalFootprint = () => {
 
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {footprintItems.map((item) => (
-            <article
+            <a
               key={item.title}
+              href={item.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-[#f97316] hover:shadow-[0_18px_34px_rgba(249,115,22,0.13)]"
-              onClick={() => window.open(item.mapUrl, '_blank', 'noopener,noreferrer')}
             >
               <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#f97316] text-white shadow-[0_8px_22px_rgba(249,115,22,0.3)] transition group-hover:scale-110">
                 <MapPinIcon className="h-6 w-6" />
               </div>
               <h3 className="text-xl font-extrabold tracking-tight sm:text-2xl">{item.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-zinc-300 sm:text-base">{item.description}</p>
-            </article>
+            </a>
           ))}
         </div>
 
