@@ -4,7 +4,7 @@ import Link from 'next/link'
 import type { FormEvent } from 'react'
 import { useState } from 'react'
 import { MapPinIcon, PhoneIcon, PaperAirplaneIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid'
-import { Facebook, Linkedin } from 'lucide-react'
+import { Facebook } from 'lucide-react'
 import ManageCookiesButton from './manage-cookies-button'
 
 const services = [
@@ -94,15 +94,6 @@ const SiteFooter = () => {
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-lg font-bold text-zinc-200 transition hover:border-[#25D366] hover:bg-zinc-800 hover:text-zinc-100"
               >
                 <ChatBubbleLeftRightIcon className="h-5 w-5" />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/valley-computers"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-lg font-bold text-zinc-200 transition hover:border-[#f97316] hover:bg-zinc-800 hover:text-zinc-100"
-              >
-                <Linkedin className="h-5 w-5" />
               </a>
             </div>
           </div>
