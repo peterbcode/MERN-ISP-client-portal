@@ -9,7 +9,7 @@ import {
   MapPinIcon,
   ShieldCheckIcon,
   WifiIcon,
-  ArrowRightIcon,
+  ChatBubbleLeftRightIcon,
   CheckIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
@@ -67,6 +67,21 @@ const IspPageColorful = () => {
               className="rounded-xl bg-[#f97316] px-7 py-3 text-sm font-bold text-white transition hover:brightness-110 shadow-lg"
             >
               View Plans
+            </a>
+            <a
+              href="tel:+27799381260"
+              className="rounded-xl border border-zinc-700 bg-zinc-900 px-7 py-3 text-sm font-bold text-zinc-100 transition hover:border-[#f97316]/70"
+            >
+              Call 079 938 1260
+            </a>
+            <a
+              href="https://wa.me/27799381260"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#f97316] px-7 py-3 text-sm font-bold text-white shadow-lg transition hover:brightness-110"
+            >
+              <ChatBubbleLeftRightIcon className="h-4 w-4" />
+              WhatsApp
             </a>
             <Link
               href="/contact"

@@ -163,11 +163,11 @@ const SiteFooter = () => {
               />
               <button
                 type="submit"
-                aria-label="Subscribe"
                 disabled={status === 'loading'}
-                className="inline-flex w-14 items-center justify-center bg-[#f97316] text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex items-center justify-center gap-2 bg-[#f97316] px-4 text-sm font-bold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
               >
-                <PaperAirplaneIcon className="h-5 w-5" />
+                <PaperAirplaneIcon className="h-4 w-4" />
+                {status === 'loading' ? 'Joining' : 'Subscribe'}
               </button>
             </form>
             {message && (
