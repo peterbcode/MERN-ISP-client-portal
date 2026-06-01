@@ -86,23 +86,25 @@ const ContactPage = () => {
   };
 
   return (
-    <main className="bg-black text-white">
-      <AnimatedSection direction="up" className="mx-auto max-w-7xl px-4 pb-14 pt-32 sm:px-6 lg:px-8 lg:pt-40">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f97316]">Contact</p>
-        <h1 className="mt-4 text-4xl font-black sm:text-5xl lg:text-6xl">Get In Touch</h1>
-        <p className="mt-5 max-w-3xl text-zinc-300">
-          Reach out for ISP signups, support requests, and project enquiries.
-        </p>
+    <main className="site-page text-white">
+      <AnimatedSection direction="up" className="site-hero px-4 pb-14 pt-32 text-center sm:px-6 lg:px-8 lg:pt-40">
+        <div className="relative mx-auto max-w-4xl">
+          <p className="site-eyebrow">Contact</p>
+          <h1 className="mt-4 text-4xl font-black sm:text-5xl lg:text-6xl">Get In Touch</h1>
+          <p className="mx-auto mt-5 max-w-3xl text-zinc-300">
+            Reach out for ISP signups, support requests, and project enquiries.
+          </p>
+        </div>
       </AnimatedSection>
 
       <AnimatedSection direction="up" delay={200} className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 pt-12 lg:grid-cols-3">
           <AnimatedSection direction="up" delay={300}>
             <div className="space-y-3">
               {details.map((item) => (
                 <div
                   key={item.label}
-                  className="group block rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 backdrop-blur-sm transition-all duration-300 hover:border-[#f97316]/50 hover:bg-zinc-900/70 cursor-pointer"
+                  className="site-card group block rounded-xl p-5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#f97316]/50 hover:bg-zinc-900/70 cursor-pointer"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316] transition-colors group-hover:text-[#f97316]/80">{item.label}</p>
                   <div className="mt-2 flex items-center justify-between">
@@ -130,7 +132,7 @@ const ContactPage = () => {
             </div>
           </AnimatedSection>
 
-          <AnimatedSection direction="up" delay={400} className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 lg:col-span-2">
+          <AnimatedSection direction="up" delay={400} className="site-card rounded-xl p-6 lg:col-span-2">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="mb-2 block text-sm font-semibold text-zinc-200">

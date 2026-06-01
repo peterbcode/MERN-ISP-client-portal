@@ -163,17 +163,19 @@ const FaqPage = () => {
   }
 
   return (
-    <main className="bg-black text-white">
-      <section className="mx-auto max-w-4xl px-4 pb-14 pt-32 text-center sm:px-6 lg:pt-40">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f97316]">Support Center</p>
-        <h1 className="mt-4 text-4xl font-black sm:text-5xl">Frequently Asked Questions</h1>
-        <p className="mx-auto mt-5 max-w-2xl text-zinc-300">
-          Quick answers about our internet services, support process, billing, and technical assistance.
-        </p>
+    <main className="site-page text-white">
+      <section className="site-hero px-4 pb-14 pt-32 text-center sm:px-6 lg:pt-40">
+        <div className="relative mx-auto max-w-4xl">
+          <p className="site-eyebrow">Support Center</p>
+          <h1 className="mt-4 text-4xl font-black sm:text-5xl">Frequently Asked Questions</h1>
+          <p className="mx-auto mt-5 max-w-2xl text-zinc-300">
+            Quick answers about our internet services, support process, billing, and technical assistance.
+          </p>
+        </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-2 sm:p-3">
+      <section className="mx-auto max-w-5xl px-4 py-12 pb-20 sm:px-6">
+        <div className="site-card rounded-xl p-2 sm:p-3">
           {faqItems.map((item, index) => {
             const isOpen = openItems.has(index)
             return (

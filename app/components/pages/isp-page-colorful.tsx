@@ -46,9 +46,9 @@ const IspPageColorful = () => {
   const [selectedPlan, setSelectedPlan] = useState<typeof plans[0] | null>(null);
 
   return (
-    <main className="bg-[#050505] text-white">
+    <main className="site-page text-white">
       {/* Hero Section - Matching homepage style with variety */}
-      <section className="relative overflow-hidden bg-[#050505] text-white">
+      <section className="site-hero text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_15%,rgba(249,115,22,0.18),transparent_45%),radial-gradient(circle_at_75%_85%,rgba(249,115,22,0.12),transparent_40%),linear-gradient(to_bottom,rgba(0,0,0,0.4),rgba(0,0,0,0.95))]" />
         <div className="hero-grid absolute inset-0 opacity-10" />
         
@@ -92,7 +92,7 @@ const IspPageColorful = () => {
           </div>
           <div className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {serviceAreas.map((area) => (
-              <div key={area} className="rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-4">
+            <div key={area} className="site-card rounded-xl px-4 py-4">
                 <MapPinIcon className="mx-auto h-4 w-4 text-[#f97316]" />
                 <p className="mt-2 text-sm font-semibold text-zinc-200">{area}</p>
               </div>
@@ -102,7 +102,7 @@ const IspPageColorful = () => {
       </section>
 
       {/* Value Section - Consistent background */}
-      <section className="bg-[#050505] py-16 sm:py-20">
+      <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316]">Why Valley Internet</p>
@@ -112,7 +112,7 @@ const IspPageColorful = () => {
             {valueCards.map((card) => (
               <article
                 key={card.title}
-                className="rounded-2xl border border-zinc-800 bg-zinc-950 p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+                className="site-card rounded-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#f97316]/50"
               >
                 <card.icon className="h-8 w-8 text-[#f97316]" />
                 <h3 className="mt-5 text-xl font-extrabold text-zinc-100">{card.title}</h3>
@@ -131,7 +131,7 @@ const IspPageColorful = () => {
       </section>
 
       {/* Plans Section - Black background */}
-      <section id="plans" className="bg-[#050505] py-16 sm:py-20">
+      <section id="plans" className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316]">Transparent Pricing</p>
@@ -145,7 +145,7 @@ const IspPageColorful = () => {
             {plans.map((plan) => (
               <article
                 key={plan.speed}
-                className={`group relative rounded-2xl border border-[#f97316] bg-gradient-to-b from-zinc-900 to-black p-6 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl shadow-[0_0_40px_rgba(249,115,22,0.3)]`}
+                className="site-card group relative cursor-pointer rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#f97316]/60 hover:shadow-2xl hover:shadow-[#f97316]/10"
                 onClick={() => setSelectedPlan(plan)}
               >
                 {plan.featured && (
@@ -199,7 +199,7 @@ const IspPageColorful = () => {
             ))}
           </div>
 
-          <div className="mt-7 grid gap-3 rounded-2xl border border-[#f97316] bg-gradient-to-b from-zinc-900 to-black p-5 sm:grid-cols-3 shadow-[0_0_40px_rgba(249,115,22,0.3)]">
+          <div className="site-card mt-7 grid gap-3 rounded-xl border-[#f97316]/50 p-5 sm:grid-cols-3">
             <p className="text-center text-sm text-zinc-300">
               <span className="font-black text-white">R1,000</span> one-time installation
             </p>
@@ -249,7 +249,7 @@ const IspPageColorful = () => {
       </section>
 
       {/* Technology Section - Consistent background */}
-      <section className="bg-[#050505] py-16 sm:py-20">
+      <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316]">Our Technology</p>
@@ -305,9 +305,9 @@ const IspPageColorful = () => {
       </section>
 
       {/* CTA Section - Black background */}
-      <section className="bg-[#050505] py-16 sm:py-20">
+      <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-8 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:p-10">
+          <div className="site-card rounded-xl p-8 text-center sm:p-10">
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316]">Next Step</p>
             <h2 className="mt-3 text-4xl font-black text-zinc-100 sm:text-5xl">Ready to get connected?</h2>
             <p className="mx-auto mt-4 max-w-2xl text-sm text-zinc-300 sm:text-base">
