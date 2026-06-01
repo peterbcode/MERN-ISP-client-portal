@@ -92,7 +92,7 @@ const SiteFooter = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-lg font-bold text-zinc-200 transition hover:border-[#25D366] hover:bg-zinc-800 hover:text-zinc-100"
+                className="hidden sm:inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-lg font-bold text-zinc-200 transition hover:border-[#25D366] hover:bg-zinc-800 hover:text-zinc-100"
               >
                 <ChatBubbleLeftRightIcon className="h-5 w-5" />
               </a>
