@@ -119,7 +119,7 @@ export default function DashboardSidebar({ showLogout = true }: DashboardSidebar
               className="flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-emerald-300 transition-colors hover:bg-emerald-500/10 hover:text-emerald-200"
             >
               <ChatBubbleLeftRightIcon className="mr-3 h-5 w-5" />
-              Support Ticket
+              Chat with us
             </button>
             <button
               onClick={handleLogout}
