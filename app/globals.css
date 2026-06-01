@@ -56,8 +56,13 @@ body {
   color: #d4d4d4;
 }
 
+a[href],
 button:not(:disabled),
-[role="button"]:not(:disabled) {
+[role="button"]:not(:disabled),
+input[type="button"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="reset"]:not(:disabled),
+summary {
   cursor: pointer;
 }
 
