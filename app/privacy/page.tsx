@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import Link from 'next/link'
+import Navbar from '../components/navbar'
+import SiteFooter from '../components/site-footer'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy - Riebeek Valley Computers',
@@ -53,12 +55,12 @@ const Section = ({
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-[#070707] text-zinc-100">
-      <section className="border-b border-zinc-800 bg-[radial-gradient(circle_at_20%_20%,rgba(249,115,22,0.14),transparent_34%),linear-gradient(180deg,#101010,#070707)] px-4 pb-12 pt-20 sm:px-6 lg:px-8">
+    <>
+      <Navbar />
+      <main className="site-page min-h-screen text-zinc-100">
+      <section className="site-hero px-4 pb-12 pt-32 sm:px-6 lg:px-8 lg:pt-40">
         <div className="mx-auto max-w-4xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#f97316]">
-            Legal
-          </p>
+          <p className="site-eyebrow">Legal</p>
           <h1 className="mt-4 text-4xl font-black tracking-tight text-white sm:text-5xl">
             Privacy Policy
           </h1>
@@ -73,7 +75,7 @@ export default function PrivacyPage() {
 
       <section className="px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[260px_1fr]">
-          <aside className="h-fit border border-zinc-800 bg-zinc-950/70 p-5 lg:sticky lg:top-8">
+          <aside className="site-panel h-fit rounded-xl p-5 lg:sticky lg:top-28">
             <h2 className="heading-compact text-lg font-bold text-zinc-100">Quick Links</h2>
             <nav className="mt-4 space-y-3 text-sm text-zinc-400">
               <Link className="block hover:text-[#f97316]" href="/">
@@ -91,7 +93,7 @@ export default function PrivacyPage() {
             </nav>
           </aside>
 
-          <article className="border border-zinc-800 bg-zinc-950/70 p-6 shadow-2xl shadow-black/20 sm:p-8 lg:p-10">
+          <article className="site-card rounded-xl p-6 sm:p-8 lg:p-10">
             <div className="space-y-10">
               <Section title="1. Who We Are">
                 <p>
@@ -242,6 +244,8 @@ export default function PrivacyPage() {
           </article>
         </div>
       </section>
-    </main>
+      </main>
+      <SiteFooter />
+    </>
   )
 }

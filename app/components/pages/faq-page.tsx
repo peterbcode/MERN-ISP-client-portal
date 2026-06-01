@@ -2,6 +2,12 @@
 
 import { useState } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
+import {
+  ComputerDesktopIcon,
+  CreditCardIcon,
+  LifebuoyIcon,
+  SignalIcon,
+} from '@heroicons/react/24/solid'
 
 const faqItems = [
   {
@@ -147,6 +153,13 @@ const faqItems = [
   },
 ]
 
+const faqStats = [
+  { label: 'Internet', value: 'Coverage, speeds and installs', icon: SignalIcon },
+  { label: 'Support', value: 'Faults, Wi-Fi and outages', icon: LifebuoyIcon },
+  { label: 'IT Services', value: 'Repairs and office networks', icon: ComputerDesktopIcon },
+  { label: 'Billing', value: 'Packages, upgrades and invoices', icon: CreditCardIcon },
+]
+
 const FaqPage = () => {
   const [openItems, setOpenItems] = useState<Set<number>>(new Set([0]))
 
@@ -167,14 +180,39 @@ const FaqPage = () => {
       <section className="site-hero px-4 pb-14 pt-32 text-center sm:px-6 lg:pt-40">
         <div className="relative mx-auto max-w-4xl">
           <p className="site-eyebrow">Support Center</p>
-          <h1 className="mt-4 text-4xl font-black sm:text-5xl">Frequently Asked Questions</h1>
-          <p className="mx-auto mt-5 max-w-2xl text-zinc-300">
+          <h1 className="mt-4 text-4xl font-black leading-none sm:text-5xl lg:text-7xl">Frequently Asked Questions</h1>
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-zinc-300 sm:text-lg">
             Quick answers about our internet services, support process, billing, and technical assistance.
           </p>
+          <div className="mx-auto mt-8 grid max-w-5xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {faqStats.map((item) => (
+              <div key={item.label} className="site-card rounded-xl p-4 text-left">
+                <item.icon className="h-5 w-5 text-[#f97316]" />
+                <p className="mt-3 text-sm font-black text-white">{item.label}</p>
+                <p className="mt-1 text-xs leading-5 text-zinc-400">{item.value}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 py-12 pb-20 sm:px-6">
+      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-16 sm:px-6 lg:grid-cols-[320px_1fr] lg:px-8">
+        <aside className="site-panel h-fit rounded-xl p-6 lg:sticky lg:top-28">
+          <p className="site-eyebrow">Need it faster?</p>
+          <h2 className="mt-3 text-2xl font-black text-white">Talk to support directly</h2>
+          <p className="mt-3 text-sm leading-7 text-zinc-300">
+            If your connection is down or you need urgent help, call or WhatsApp the team so we can start diagnostics immediately.
+          </p>
+          <div className="mt-6 grid gap-3">
+            <a className="rounded-lg bg-[#f97316] px-4 py-3 text-center text-sm font-bold text-white transition hover:brightness-110" href="tel:+27799381260">
+              Call 079 938 1260
+            </a>
+            <a className="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-center text-sm font-bold text-zinc-100 transition hover:border-[#f97316]" href="https://wa.me/27799381260" target="_blank" rel="noopener noreferrer">
+              WhatsApp Support
+            </a>
+          </div>
+        </aside>
+
         <div className="site-card rounded-xl p-2 sm:p-3">
           {faqItems.map((item, index) => {
             const isOpen = openItems.has(index)
@@ -190,7 +228,8 @@ const FaqPage = () => {
                   aria-controls={`faq-answer-${index}`}
                 >
                   <span className="text-base font-semibold text-zinc-100 pr-4 transition-colors duration-300 group-hover:text-[#f97316]">
-                    {index + 1}. {item.question}
+                    <span className="mr-3 text-sm font-black text-[#f97316]">{String(index + 1).padStart(2, '0')}</span>
+                    {item.question}
                   </span>
                   <div className="flex-shrink-0 transform transition-transform duration-300 group-hover:scale-110">
                     {isOpen ? (
