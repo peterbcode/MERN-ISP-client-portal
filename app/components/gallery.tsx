@@ -23,19 +23,17 @@ const Gallery = () => {
         </AnimatedSection>
 
         <AnimatedSection direction="up" delay={200} className="mx-auto w-full max-w-[1800px] pb-6 lg:pb-12">
-          <div className="grid gap-4 md:grid-cols-3 md:grid-rows-2">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {galleryItems.map((item, index) => (
               <article
                 key={item.src}
-                className={`group relative h-full min-h-[320px] overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 shadow-[0_18px_32px_rgba(0,0,0,0.35)] ${
-                  index === 0 ? 'md:col-span-2 md:row-span-2' : ''
-                }`}
+                className="group relative h-[350px] overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 shadow-[0_18px_32px_rgba(0,0,0,0.35)]"
               >
                 <img
                   src={item.src}
                   alt={item.alt}
                   loading="lazy"
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105 group-hover:brightness-110"
+                  className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/10 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 translate-y-2 p-5 opacity-90 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
