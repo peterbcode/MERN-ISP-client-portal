@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           />
 
           <div className="fixed inset-y-0 left-0 z-50 w-[min(18rem,calc(100vw-1rem))] border-r border-white/10 bg-[#0c0d10] shadow-2xl lg:hidden">
-            <DashboardSidebar showLogout={false} />
+            <DashboardSidebar showLogout={true} />
             <button
               onClick={() => setIsSidebarOpen(false)}
               className="absolute right-4 top-4 rounded-lg p-2 text-zinc-400 hover:bg-white/5 hover:text-white lg:hidden"
