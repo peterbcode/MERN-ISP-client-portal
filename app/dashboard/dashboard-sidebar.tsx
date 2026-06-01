@@ -10,6 +10,7 @@ import {
   Cog6ToothIcon,
   HomeIcon,
   UserCircleIcon,
+  ChatBubbleLeftRightIcon,
 } from '@heroicons/react/24/outline';
 
 const dashboardNavigation = [
@@ -112,7 +113,14 @@ export default function DashboardSidebar({ showLogout = true }: DashboardSidebar
         </div>
 
         {showLogout && (
-          <div className="mt-8 border-t border-white/10 pt-4">
+          <div className="mt-8 border-t border-white/10 pt-4 space-y-2">
+            <button
+              onClick={() => window.open('https://wa.me/27799381260', '_blank')}
+              className="flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-emerald-300 transition-colors hover:bg-emerald-500/10 hover:text-emerald-200"
+            >
+              <ChatBubbleLeftRightIcon className="mr-3 h-5 w-5" />
+              Support Ticket
+            </button>
             <button
               onClick={handleLogout}
               className="flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-red-300 transition-colors hover:bg-red-500/10 hover:text-red-200"
