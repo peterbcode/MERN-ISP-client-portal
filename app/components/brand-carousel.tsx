@@ -17,7 +17,7 @@ const brands = [
   {
     name: "Genius",
     href: "https://www.geniusnet.com/",
-    logo: "https://www.geniusnet.com/images/logo-w.svg",
+    logo: "https://www.geniusnet.com/images/logo.svg",
   },
   { name: "ADATA", href: "https://www.adata.com/", logo: "/brands/adata-logo.png" },
   { name: "Canon", href: "https://www.canon.co.za/", logo: "/brands/canon-logo.png" },
