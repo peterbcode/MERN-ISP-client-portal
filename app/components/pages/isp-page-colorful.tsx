@@ -72,7 +72,7 @@ const IspPageColorful = () => {
               href="tel:+27799381260"
               className="rounded-xl border border-zinc-700 bg-zinc-900 px-7 py-3 text-sm font-bold text-zinc-100 transition hover:border-[#f97316]/70"
             >
-              Call 079 938 1260
+              Call Us
             </a>
             <a
               href="https://wa.me/27799381260"
