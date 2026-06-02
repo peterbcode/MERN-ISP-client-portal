@@ -150,50 +150,48 @@ const ContactStrip = () => {
     group
     relative
     lg:w-auto
-    overflow-hidden
     rounded-2xl
-    px-7 py-4
+    px-7
+    py-4
     font-semibold
     tracking-tight
-    shadow-lg shadow-orange-500/20
-    transition-all duration-300
+    transition-all
+    duration-300
     hover:-translate-y-0.5
-    hover:shadow-xl hover:shadow-orange-500/30
+    hover:shadow-lg
+    active:scale-[0.98]
+    disabled:opacity-60
     disabled:cursor-not-allowed
-    disabled:opacity-70
     disabled:hover:translate-y-0
+    disabled:hover:shadow-none
   "
               >
-                {/* subtle hover shine */}
-                <span className="
-    absolute inset-0
-    -translate-x-full
-    bg-gradient-to-r
-    from-transparent
-    via-white/10
-    to-transparent
-    transition-transform duration-700
-    group-hover:translate-x-full
-  " />
+                <span className="flex items-center gap-3">
 
-                <span className="relative flex items-center gap-3">
-
-                  <span className="
-      flex h-9 w-9 items-center justify-center
-      rounded-full
-      bg-white/10
-      ring-1 ring-white/10
-      transition duration-300
-      group-hover:scale-110
-    ">
+                  {/* Icon container */}
+                  <span
+                    className="
+        flex
+        h-9
+        w-9
+        items-center
+        justify-center
+        rounded-full
+        bg-black/10
+        transition-transform
+        duration-300
+        group-hover:scale-105
+      "
+                  >
                     <MagnifyingGlassIcon
                       className={`h-5 w-5 transition-all duration-300 ${isChecking
-                        ? 'animate-spin'
-                        : 'group-hover:rotate-6'
+                          ? 'animate-spin'
+                          : 'group-hover:rotate-6'
                         }`}
                     />
                   </span>
 
+                  {/* Text */}
                   <span>
                     {isChecking ? 'Checking Coverage...' : 'Check Coverage'}
                   </span>
