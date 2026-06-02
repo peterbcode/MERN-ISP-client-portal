@@ -36,12 +36,12 @@ const ContactStrip = () => {
     // Simulate coverage check API call
     try {
       await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate API delay
-      
+
       // Simple coverage logic based on area/postal code
       const coveredAreas = ['riebeek kasteel', 'malmesbury', 'chatsworth', 'swartland']
       const coveredPostalCodes = ['7307', '7308', '7309', '7310']
-      
-      const isCovered = coveredAreas.some(area => 
+
+      const isCovered = coveredAreas.some(area =>
         formData.area.toLowerCase().includes(area)
       ) || coveredPostalCodes.includes(formData.postalCode)
 
@@ -96,8 +96,8 @@ const ContactStrip = () => {
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="block group">
                 <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">Street Address</span>
-                <input 
-                  className={inputClass} 
+                <input
+                  className={inputClass}
                   placeholder="6 Church Rd"
                   value={formData.streetAddress}
                   onChange={(e) => handleInputChange('streetAddress', e.target.value)}
@@ -107,8 +107,8 @@ const ContactStrip = () => {
               </label>
               <label className="block group">
                 <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">Area/Suburb</span>
-                <input 
-                  className={inputClass} 
+                <input
+                  className={inputClass}
                   placeholder="Riebeek Kasteel"
                   value={formData.area}
                   onChange={(e) => handleInputChange('area', e.target.value)}
@@ -121,8 +121,8 @@ const ContactStrip = () => {
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
               <label className="block group">
                 <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">City</span>
-                <input 
-                  className={inputClass} 
+                <input
+                  className={inputClass}
                   placeholder="Western Cape"
                   value={formData.city}
                   onChange={(e) => handleInputChange('city', e.target.value)}
@@ -132,8 +132,8 @@ const ContactStrip = () => {
               </label>
               <label className="block group">
                 <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">Postal Code</span>
-                <input 
-                  className={inputClass} 
+                <input
+                  className={inputClass}
                   placeholder="7307"
                   value={formData.postalCode}
                   onChange={(e) => handleInputChange('postalCode', e.target.value)}
@@ -141,15 +141,64 @@ const ContactStrip = () => {
                   onBlur={(e) => e.target.parentElement?.classList.remove('focus-within')}
                 />
               </label>
-              <PremiumButton 
+              <PremiumButton
                 variant="primary"
                 size="lg"
                 type="submit"
                 disabled={isChecking}
-                className="lg:w-auto group disabled:opacity-50 disabled:cursor-not-allowed"
+                className="
+    group
+    relative
+    lg:w-auto
+    overflow-hidden
+    rounded-2xl
+    px-7 py-4
+    font-semibold
+    tracking-tight
+    shadow-lg shadow-orange-500/20
+    transition-all duration-300
+    hover:-translate-y-0.5
+    hover:shadow-xl hover:shadow-orange-500/30
+    disabled:cursor-not-allowed
+    disabled:opacity-70
+    disabled:hover:translate-y-0
+  "
               >
-                <MagnifyingGlassIcon className={`h-5 w-5 transition-transform duration-300 ${isChecking ? 'animate-spin' : 'group-hover:scale-110'}`} />
-                {isChecking ? 'Checking...' : 'Check Coverage'}
+                {/* subtle hover shine */}
+                <span className="
+    absolute inset-0
+    -translate-x-full
+    bg-gradient-to-r
+    from-transparent
+    via-white/10
+    to-transparent
+    transition-transform duration-700
+    group-hover:translate-x-full
+  " />
+
+                <span className="relative flex items-center gap-3">
+
+                  <span className="
+      flex h-9 w-9 items-center justify-center
+      rounded-full
+      bg-white/10
+      ring-1 ring-white/10
+      transition duration-300
+      group-hover:scale-110
+    ">
+                    <MagnifyingGlassIcon
+                      className={`h-5 w-5 transition-all duration-300 ${isChecking
+                        ? 'animate-spin'
+                        : 'group-hover:rotate-6'
+                        }`}
+                    />
+                  </span>
+
+                  <span>
+                    {isChecking ? 'Checking Coverage...' : 'Check Coverage'}
+                  </span>
+
+                </span>
               </PremiumButton>
             </div>
           </form>
