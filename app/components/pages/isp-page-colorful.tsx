@@ -327,11 +327,10 @@ const IspPageColorful = () => {
 
       {/* CTA Section - Black background */}
       {/* Premium CTA Section */}
-      <section className="relative py-24 overflow-hidden">
+      <section className="relative py-24 overflow-hidden bg-black">
 
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950" />
-        <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-500/10 blur-[140px]" />
+        <div className="absolute inset-0 bg-black" />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
