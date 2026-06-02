@@ -51,7 +51,7 @@ const IspPageColorful = () => {
       <section className="site-hero text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_15%,rgba(249,115,22,0.18),transparent_45%),radial-gradient(circle_at_75%_85%,rgba(249,115,22,0.12),transparent_40%),linear-gradient(to_bottom,rgba(0,0,0,0.4),rgba(0,0,0,0.95))]" />
         <div className="hero-grid absolute inset-0 opacity-10" />
-        
+
         <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-36 text-center sm:px-6 lg:px-8 lg:pb-16 lg:pt-44">
           <WifiIcon className="mx-auto h-6 w-6 text-[#f97316]" />
           <h1 className="mx-auto mt-6 max-w-5xl text-4xl font-black leading-[0.9] tracking-[-0.02em] sm:text-5xl lg:text-7xl">
@@ -92,7 +92,7 @@ const IspPageColorful = () => {
           </div>
           <div className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {serviceAreas.map((area) => (
-            <div key={area} className="site-card rounded-xl px-4 py-4">
+              <div key={area} className="site-card rounded-xl px-4 py-4">
                 <MapPinIcon className="mx-auto h-4 w-4 text-[#f97316]" />
                 <p className="mt-2 text-sm font-semibold text-zinc-200">{area}</p>
               </div>
@@ -155,7 +155,7 @@ const IspPageColorful = () => {
                     </span>
                   </div>
                 )}
-                
+
                 <div className="text-center">
                   <p className="text-2xl font-bold text-white">
                     {plan.speed}
@@ -164,7 +164,7 @@ const IspPageColorful = () => {
                     {plan.label}
                   </p>
                 </div>
-                
+
                 <div className="mt-6 text-center border-t border-zinc-700 pt-6">
                   <div className="flex items-baseline justify-center">
                     <span className="text-4xl font-bold text-white">
@@ -172,7 +172,7 @@ const IspPageColorful = () => {
                     </span>
                   </div>
                 </div>
-                
+
                 <ul className="mt-6 space-y-3 text-zinc-300">
                   <li className="flex items-center gap-2">
                     <CheckIcon className="h-4 w-4 text-[#f97316] flex-shrink-0" />
@@ -187,7 +187,7 @@ const IspPageColorful = () => {
                     <span className="text-sm">24/7 Local Support</span>
                   </li>
                 </ul>
-                
+
                 <Link
                   href="/contact"
                   className="mt-8 block w-full rounded-xl bg-[#f97316] px-4 py-3 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-orange-600 shadow-lg"
@@ -249,58 +249,81 @@ const IspPageColorful = () => {
       </section>
 
       {/* Technology Section - Consistent background */}
-      <section className="py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="relative py-20 overflow-hidden">
+        {/* Background glow */}
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950" />
+        <div className="absolute top-0 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-orange-500/10 blur-[120px]" />
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          {/* Header */}
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316]">Our Technology</p>
-            <h2 className="mt-3 text-4xl font-black text-zinc-100 sm:text-5xl">Modern Infrastructure</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-orange-400">
+              Our Technology
+            </p>
+
+            <h2 className="mt-4 text-4xl font-black text-white sm:text-5xl">
+              Infrastructure Built for
+              <span className="block text-orange-400">
+                Speed, Security & Reliability
+              </span>
+            </h2>
+
+            <p className="mt-6 text-lg leading-relaxed text-zinc-400">
+              Enterprise-grade networking infrastructure engineered to deliver
+              exceptional uptime, ultra-fast connectivity, and scalable performance.
+            </p>
           </div>
-          
-          <div className="mt-12 grid gap-8 md:grid-cols-2">
-            <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <div className="rounded-lg bg-[#f97316] p-3">
-                  <WifiIcon className="h-6 w-6 text-white" />
+
+          {/* Technology Cards */}
+          <div className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+
+            {[
+              {
+                icon: WifiIcon,
+                title: "Fibre Optic Network",
+                desc: "Ultra-fast fibre backbone with redundant routing for maximum uptime.",
+              },
+              {
+                icon: ChartBarIcon,
+                title: "Fixed Wireless",
+                desc: "Advanced wireless infrastructure connecting rural & remote regions.",
+              },
+              {
+                icon: ShieldCheckIcon,
+                title: "Enterprise Security",
+                desc: "Bank-grade encryption, DDoS mitigation, and hardened infrastructure.",
+              },
+              {
+                icon: BoltIcon,
+                title: "24/7 Monitoring",
+                desc: "Real-time system monitoring with proactive incident response.",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="group relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-sm transition-all duration-300 hover:border-orange-500/50 hover:bg-zinc-900 hover:-translate-y-1"
+              >
+                {/* Top accent line */}
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 to-amber-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                {/* Icon */}
+                <div className="inline-flex rounded-2xl bg-orange-500/10 p-4 ring-1 ring-orange-500/20 transition-all duration-300 group-hover:bg-orange-500 group-hover:shadow-lg group-hover:shadow-orange-500/30">
+                  <item.icon className="h-7 w-7 text-orange-400 group-hover:text-white" />
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold text-zinc-100">Fibre Optic Network</h3>
-                  <p className="mt-1 text-zinc-300">High-speed fibre with redundant paths.</p>
-                </div>
+
+                {/* Content */}
+                <h3 className="mt-6 text-xl font-bold text-white">
+                  {item.title}
+                </h3>
+
+                <p className="mt-4 leading-relaxed text-zinc-400">
+                  {item.desc}
+                </p>
               </div>
-              
-              <div className="flex items-start space-x-4">
-                <div className="rounded-lg bg-[#f97316] p-3">
-                  <ChartBarIcon className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-zinc-100">Fixed Wireless</h3>
-                  <p className="mt-1 text-zinc-300">Advanced wireless for rural areas.</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <div className="rounded-lg bg-[#f97316] p-3">
-                  <ShieldCheckIcon className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-zinc-100">Enterprise Security</h3>
-                  <p className="mt-1 text-zinc-300">Bank-grade encryption and DDoS protection.</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-4">
-                <div className="rounded-lg bg-[#f97316] p-3">
-                  <BoltIcon className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-zinc-100">24/7 Monitoring</h3>
-                  <p className="mt-1 text-zinc-300">Proactive monitoring with instant resolution.</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
+
         </div>
       </section>
 
@@ -327,7 +350,7 @@ const IspPageColorful = () => {
                 Send Enquiry
               </Link>
             </div>
-            
+
             <div className="mt-12 grid gap-6 sm:grid-cols-3">
               <div className="text-center">
                 <div className="text-3xl font-bold text-[#f97316]">500+</div>
