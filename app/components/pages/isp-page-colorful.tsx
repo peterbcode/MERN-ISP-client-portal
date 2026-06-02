@@ -334,7 +334,7 @@ const IspPageColorful = () => {
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-          <div className="relative overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-900/70 p-10 shadow-2xl backdrop-blur-xl sm:p-14">
+          <div className="relative overflow-hidden rounded-[2rem] border border-zinc-800 bg-black p-10 shadow-2xl sm:p-14">
 
             {/* Accent gradient */}
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500" />
