@@ -123,18 +123,18 @@ export default function Navbar() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between sm:h-20">
               <div
-                className="-ml-1 flex items-center gap-3 px-3 py-1.5 text-left leading-none transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-105 hover:bg-orange-500/10 hover:shadow-[0_10px_24px_rgba(249,115,22,0.3)] hover:px-4 cursor-pointer sm:ml-0 sm:gap-4 sm:px-3.5 sm:py-2 hover:sm:px-4.5"
+                className="-ml-1 flex items-center gap-3 px-3 py-1.5 text-left leading-none transition-all duration-300 ease-out cursor-pointer sm:ml-0 sm:gap-4 sm:px-3.5 sm:py-2"
                 onClick={() => router.push('/')}
               >
-                <span className="flex items-center transition-all duration-300 ease-out hover:scale-110">
-                  <span className={`text-[1.1rem] font-black tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out hover:tracking-widest ${
+                <span className="flex items-center transition-all duration-300 ease-out hover:scale-105">
+                  <span className={`text-[1.1rem] font-black tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out ${
                     isScrolled ? 'text-[#f97316]' : 'text-[#f97316]'
                   }`}>
                     VALLEY
                   </span>
-                  <span className={`ml-1.5 text-[0.95rem] font-extrabold tracking-tight sm:text-[1.05rem] lg:text-[1.15rem] transition-all duration-300 ease-out hover:tracking-wider ${
+                  <span className={`ml-1.5 text-[0.95rem] font-extrabold tracking-tight sm:text-[1.05rem] lg:text-[1.15rem] transition-all duration-300 ease-out ${
                     isScrolled ? 'text-white' : 'text-zinc-100'
-                  } hover:text-white`}>
+                  }`}>
                     COMPUTERS
                   </span>
                 </span>
