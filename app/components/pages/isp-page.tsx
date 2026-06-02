@@ -189,7 +189,7 @@ const IspPage = () => {
                 href="tel:+27799381260"
                 className="rounded-xl bg-[#f97316] px-7 py-3 text-sm font-bold text-white transition hover:brightness-110"
               >
-                Call 079 938 1260
+                Call Us
               </a>
               <Link
                 href="/contact"
