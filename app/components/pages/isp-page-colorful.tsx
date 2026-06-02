@@ -339,9 +339,6 @@ const IspPageColorful = () => {
             {/* Accent gradient */}
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500" />
 
-            {/* Floating glow */}
-            <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-orange-500/10 blur-3xl" />
-
             <div className="relative text-center">
 
               <p className="text-xs font-semibold uppercase tracking-[0.25em] text-orange-400">

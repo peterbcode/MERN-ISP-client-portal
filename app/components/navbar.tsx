@@ -127,12 +127,12 @@ export default function Navbar() {
                 onClick={() => router.push('/')}
               >
                 <span className="flex items-center transition-all duration-300 ease-out hover:scale-105">
-                  <span className={`text-[1.1rem] font-black tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out ${
+                  <span className={`text-[1.05rem] font-black tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out ${
                     isScrolled ? 'text-[#f97316]' : 'text-[#f97316]'
                   }`}>
                     VALLEY
                   </span>
-                  <span className={`ml-1.5 text-[0.95rem] font-extrabold tracking-tight sm:text-[1.05rem] lg:text-[1.15rem] transition-all duration-300 ease-out ${
+                  <span className={`ml-1.5 text-[1.05rem] font-extrabold tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out ${
                     isScrolled ? 'text-white' : 'text-zinc-100'
                   }`}>
                     COMPUTERS
