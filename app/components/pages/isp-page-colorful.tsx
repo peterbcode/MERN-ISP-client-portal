@@ -328,42 +328,84 @@ const IspPageColorful = () => {
       </section>
 
       {/* CTA Section - Black background */}
-      <section className="py-16 sm:py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="site-card rounded-xl p-8 text-center sm:p-10">
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316]">Next Step</p>
-            <h2 className="mt-3 text-4xl font-black text-zinc-100 sm:text-5xl">Ready to get connected?</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm text-zinc-300 sm:text-base">
-              Contact us for coverage checks and installation.
-            </p>
-            <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <a
-                href="tel:+27799381260"
-                className="rounded-xl bg-[#f97316] px-7 py-3 text-sm font-bold text-white transition hover:brightness-110"
-              >
-                Call 079 938 1260
-              </a>
-              <Link
-                href="/contact"
-                className="rounded-xl border border-zinc-700 bg-zinc-900 px-7 py-3 text-sm font-bold text-zinc-100 transition hover:border-[#f97316]/70"
-              >
-                Send Enquiry
-              </Link>
-            </div>
+      {/* Premium CTA Section */}
+      <section className="relative py-24 overflow-hidden">
 
-            <div className="mt-12 grid gap-6 sm:grid-cols-3">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#f97316]">500+</div>
-                <div className="text-sm text-zinc-400">Happy Customers</div>
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950" />
+        <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-500/10 blur-[140px]" />
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          <div className="relative overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-900/70 p-10 shadow-2xl backdrop-blur-xl sm:p-14">
+
+            {/* Accent gradient */}
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500" />
+
+            {/* Floating glow */}
+            <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-orange-500/10 blur-3xl" />
+
+            <div className="relative text-center">
+
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-orange-400">
+                Next Step
+              </p>
+
+              <h2 className="mt-5 text-4xl font-black text-white sm:text-6xl">
+                Ready to get
+                <span className="block text-orange-400">
+                  connected?
+                </span>
+              </h2>
+
+              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400">
+                Fast installations, reliable connectivity, and local support
+                you can depend on. Check coverage and get connected today.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+
+                <a
+                  href="tel:+27799381260"
+                  className="group inline-flex items-center rounded-2xl bg-orange-500 px-8 py-4 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition-all duration-300 hover:-translate-y-1 hover:bg-orange-400"
+                >
+                  Call 079 938 1260
+                </a>
+
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center rounded-2xl border border-zinc-700 bg-zinc-800/80 px-8 py-4 text-sm font-bold text-zinc-100 transition-all duration-300 hover:border-orange-500/60 hover:bg-zinc-800"
+                >
+                  Send Enquiry
+                </Link>
+
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#f97316]">99%</div>
-                <div className="text-sm text-zinc-400">Uptime Guarantee</div>
+
+              {/* Trust Metrics */}
+              <div className="mt-14 grid gap-6 sm:grid-cols-3">
+
+                {[
+                  ["500+", "Happy Customers"],
+                  ["99%", "Uptime Guarantee"],
+                  ["24/7", "Local Support"],
+                ].map(([value, label], i) => (
+                  <div
+                    key={i}
+                    className="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-6 transition duration-300 hover:border-orange-500/40"
+                  >
+                    <div className="text-4xl font-black text-orange-400">
+                      {value}
+                    </div>
+
+                    <div className="mt-2 text-sm text-zinc-400">
+                      {label}
+                    </div>
+                  </div>
+                ))}
+
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#f97316]">24/7</div>
-                <div className="text-sm text-zinc-400">Local Support</div>
-              </div>
+
             </div>
           </div>
         </div>
