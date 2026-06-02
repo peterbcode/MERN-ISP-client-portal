@@ -205,7 +205,7 @@ const FaqPage = () => {
           </p>
           <div className="mt-6 grid gap-3">
             <a className="rounded-lg bg-[#f97316] px-4 py-3 text-center text-sm font-bold text-white transition hover:brightness-110" href="tel:+27799381260">
-              Call
+              Call Us
             </a>
             <a className="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-center text-sm font-bold text-zinc-100 transition hover:border-[#f97316]" href="https://wa.me/27799381260" target="_blank" rel="noopener noreferrer">
               WhatsApp Support

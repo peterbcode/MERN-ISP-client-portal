@@ -47,12 +47,10 @@ const IspPageColorful = () => {
 
   return (
     <main className="site-page text-white">
-      {/* Hero Section - Matching homepage style with variety */}
-      <section className="site-hero text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_15%,rgba(249,115,22,0.18),transparent_45%),radial-gradient(circle_at_75%_85%,rgba(249,115,22,0.12),transparent_40%),linear-gradient(to_bottom,rgba(0,0,0,0.4),rgba(0,0,0,0.95))]" />
-        <div className="hero-grid absolute inset-0 opacity-10" />
+      {/* Hero Section - Matching FAQ page style */}
+      <section className="site-hero text-white px-4 pb-14 pt-32 text-center sm:px-6 lg:pt-40">
 
-        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-36 text-center sm:px-6 lg:px-8 lg:pb-16 lg:pt-44">
+        <div className="relative mx-auto max-w-7xl">
           <WifiIcon className="mx-auto h-6 w-6 text-[#f97316]" />
           <h1 className="mx-auto mt-6 max-w-5xl text-4xl font-black leading-[0.9] tracking-[-0.02em] sm:text-5xl lg:text-7xl">
             <span className="block text-[#f97316] drop-shadow-[0_0_24px_rgba(243,111,0,0.35)]">Professional Internet</span>
