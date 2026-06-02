@@ -133,10 +133,13 @@ export default function DashboardSidebar({ showLogout = true }: DashboardSidebar
       </nav>
 
       <div className="border-t border-white/10 p-4">
-        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+        <Link
+          href="/contact"
+          className="block rounded-lg border border-white/10 bg-white/[0.03] p-3 transition hover:border-orange-500/50 hover:bg-white/[0.05]"
+        >
           <p className="text-xs font-medium text-zinc-300">Need support?</p>
           <p className="mt-1 text-xs leading-5 text-zinc-500">Create a ticket with your latest network test attached.</p>
-        </div>
+        </Link>
       </div>
     </aside>
   );
