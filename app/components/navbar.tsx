@@ -103,7 +103,8 @@ export default function Navbar() {
               className="no-accent-hover relative z-10 flex touch-manipulation items-center gap-1.5 whitespace-nowrap text-white/95 transition-all duration-200 hover:scale-105 hover:text-white"
             >
               <PhoneIcon className="h-3.5 w-3.5 stroke-[2.25]" />
-              <span className="hidden font-bold sm:inline">Call Us:</span> 079 938 1260
+              <span className="hidden font-bold sm:inline">Call Us:</span>
+              <span className="hidden sm:inline">079 938 1260</span>
             </a>
           </div>
         </div>
@@ -253,7 +254,7 @@ export default function Navbar() {
           <DisclosurePanel className="md:hidden">
             <div className="fixed inset-0 z-50 flex">
               {/* Backdrop */}
-              <div className="fixed inset-0 bg-black/80" />
+              <div className="fixed inset-0 bg-black/80" onClick={() => close()} />
               
               {/* Menu Panel */}
               <div className="relative flex w-full max-w-sm flex-1 flex-col bg-black/95 backdrop-blur-sm">
