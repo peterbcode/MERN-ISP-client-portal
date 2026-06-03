@@ -14,8 +14,6 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
   const cardRef   = useRef<HTMLDivElement>(null)
   const imgRef    = useRef<HTMLImageElement>(null)
   const shineRef  = useRef<HTMLDivElement>(null)
-  const magRef    = useRef<HTMLDivElement>(null)
-  const magImgRef = useRef<HTMLImageElement>(null)
 
   const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current!
@@ -35,22 +33,10 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
       shineRef.current.style.background = `radial-gradient(circle at ${px*100}% ${py*100}%,rgba(255,255,255,.15) 0%,transparent 60%)`
 
     if (imgRef.current) {
-      const sx = (px - 0.5) * -12
-      const sy = (py - 0.5) * -12
-      imgRef.current.style.transform  = `scale(1.08) translate(${sx}px,${sy}px)`
+      const sx = (px - 0.5) * -6
+      const sy = (py - 0.5) * -6
+      imgRef.current.style.transform  = `scale(1.04) translate(${sx}px,${sy}px)`
       imgRef.current.style.transition = 'transform .1s ease, filter .6s ease'
-    }
-
-    if (magRef.current && magImgRef.current) {
-      const mw = 100, mh = 100
-      magRef.current.style.opacity = '1'
-      magRef.current.style.left    = x - mw/2 + 'px'
-      magRef.current.style.top     = y - mh/2 + 'px'
-      const zoom = 2.5
-      magImgRef.current.style.width  = r.width  * zoom + 'px'
-      magImgRef.current.style.height = r.height * zoom + 'px'
-      magImgRef.current.style.left   = -(x * zoom - mw/2) + 'px'
-      magImgRef.current.style.top    = -(y * zoom - mh/2) + 'px'
     }
   }, [])
 
@@ -64,7 +50,6 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
       imgRef.current.style.transform  = 'scale(1) translate(0,0)'
       imgRef.current.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1), filter .6s ease'
     }
-    if (magRef.current) magRef.current.style.opacity = '0'
   }, [])
 
   const colSpan =
@@ -76,7 +61,7 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
       ref={cardRef}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      className={`group relative col-span-12 overflow-hidden rounded-xl bg-black cursor-crosshair
+      className={`group relative col-span-12 overflow-hidden rounded-xl bg-black
                   ${colSpan} ${index < 2 ? 'h-[320px]' : 'h-[240px]'}`}
     >
       {/* Main image — parallax + brightness */}
@@ -85,8 +70,8 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
         src={item.src}
         alt={item.alt}
         loading="lazy"
-        className="block absolute inset-0 h-[102%] w-[102%] object-cover
-                   brightness-75 saturate-90 transition-[filter] duration-600"
+        className="block absolute inset-0 h-full w-full object-cover object-center
+                   brightness-90 transition-[filter] duration-600"
       />
 
       {/* Mouse-tracked radial shine */}
@@ -128,14 +113,6 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
         <p className="text-[14px] font-light italic leading-snug text-white/90">{item.caption}</p>
       </div>
 
-      {/* Magnifier lens */}
-      <div
-        ref={magRef}
-        className="absolute w-[100px] h-[100px] rounded-full border-2 border-[#f97316]/60
-                   overflow-hidden pointer-events-none opacity-0 transition-opacity duration-200 z-10"
-      >
-        <img ref={magImgRef} src={item.src} alt="" className="block absolute object-cover" />
-      </div>
     </article>
   )
 }
