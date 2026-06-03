@@ -150,9 +150,9 @@ function GalleryCard({ item, index }: { item: (typeof galleryItems)[number]; ind
 const Gallery = () => (
   <section
     id="gallerySection"
-    className="relative scroll-mt-28 overflow-hidden border-y border-white/10 bg-[#070707] py-20 text-white sm:py-24"
+    className="relative scroll-mt-28 overflow-hidden border-y border-white/10 bg-[#101215] py-20 text-white sm:py-24"
   >
-    <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(115deg,rgba(249,115,22,.16),transparent_34%),linear-gradient(245deg,rgba(34,197,94,.08),transparent_32%)]" />
+    <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(115deg,rgba(245,158,11,.12),transparent_34%),linear-gradient(245deg,rgba(20,184,166,.1),transparent_32%)]" />
     <div className="hero-grid absolute inset-0 opacity-10" />
 
     <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -193,11 +193,11 @@ const Gallery = () => (
       <AnimatedSection direction="up" delay={220} className="mt-8">
         <div className="grid gap-3 sm:grid-cols-3">
           <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
-            <RadioTower className="h-5 w-5 text-[#f97316]" aria-hidden="true" />
+            <RadioTower className="h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
             <span className="text-sm font-semibold text-zinc-200">Wireless and fibre-ready installs</span>
           </div>
           <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
-            <MapPin className="h-5 w-5 text-[#22c55e]" aria-hidden="true" />
+            <MapPin className="h-5 w-5 text-[#14b8a6]" aria-hidden="true" />
             <span className="text-sm font-semibold text-zinc-200">Riebeek Valley terrain knowledge</span>
           </div>
           <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">

@@ -22,8 +22,7 @@ export default function ProfessionalCursor() {
 
   useEffect(() => {
     const finePointer = window.matchMedia('(pointer: fine)')
-    const coarsePointer = window.matchMedia('(pointer: coarse)')
-    const shouldEnable = finePointer.matches && !coarsePointer.matches
+    const shouldEnable = finePointer.matches
 
     if (!shouldEnable) return
 

@@ -98,27 +98,31 @@ body {
 }
 
 .professional-cursor__dot {
-  width: 5px;
-  height: 5px;
+  width: 7px;
+  height: 7px;
   border-radius: 999px;
-  background: #f97316;
-  box-shadow: 0 0 16px rgba(249, 115, 22, 0.55);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 2px rgba(245, 158, 11, 0.85),
+    0 0 18px rgba(245, 158, 11, 0.68);
 }
 
 .professional-cursor__ring {
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(249, 115, 22, 0.58);
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(245, 158, 11, 0.78);
   border-radius: 999px;
-  background: rgba(249, 115, 22, 0.04);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+  background: rgba(245, 158, 11, 0.06);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 28px rgba(245, 158, 11, 0.22);
 }
 
 .professional-cursor__ring.professional-cursor--action {
-  width: 44px;
-  height: 44px;
-  border-color: rgba(255, 255, 255, 0.74);
-  background: rgba(249, 115, 22, 0.12);
+  width: 48px;
+  height: 48px;
+  border-color: rgba(255, 255, 255, 0.86);
+  background: rgba(245, 158, 11, 0.14);
 }
 
 .professional-cursor__dot.professional-cursor--action {
@@ -126,11 +130,12 @@ body {
 }
 
 .professional-cursor__ring.professional-cursor--gallery {
-  width: 58px;
-  height: 58px;
+  width: 62px;
+  height: 62px;
   border-color: rgba(255, 255, 255, 0.82);
   background:
-    radial-gradient(circle at center, rgba(249, 115, 22, 0.18), transparent 62%),
+    radial-gradient(circle at center, rgba(20, 184, 166, 0.18), transparent 52%),
+    radial-gradient(circle at center, rgba(245, 158, 11, 0.2), transparent 68%),
     rgba(8, 8, 9, 0.1);
 }
 
@@ -143,7 +148,7 @@ body {
 body.cursor-pressed .professional-cursor__ring {
   width: 28px;
   height: 28px;
-  background: rgba(249, 115, 22, 0.2);
+  background: rgba(245, 158, 11, 0.2);
 }
 
 a[href],

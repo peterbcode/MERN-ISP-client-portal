@@ -7,7 +7,7 @@ import PremiumButton from './ui/premium-button'
 import { safeAlert } from '@/lib/native-dialog'
 
 const inputClass =
-  'w-full rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 text-base text-zinc-100 placeholder:text-zinc-500 focus:border-[#f97316] focus:outline-none focus:ring-2 focus:ring-[#f97316]/20 transition-all duration-300'
+  'w-full rounded-xl border border-white/10 bg-[#0f1114] px-4 py-3 text-base text-zinc-100 placeholder:text-zinc-500 focus:border-[#f59e0b] focus:outline-none focus:ring-2 focus:ring-[#f59e0b]/20 transition-all duration-300'
 
 const ContactStrip = () => {
   const [formData, setFormData] = useState({
@@ -82,20 +82,20 @@ const ContactStrip = () => {
   const resultMessage = getResultMessage()
 
   return (
-    <section className="scroll-mt-28 bg-[#f97316] py-16 text-white sm:py-20">
+    <section className="scroll-mt-28 border-y border-white/10 bg-[radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.14),transparent_35%),linear-gradient(135deg,#111315,#15181b_52%,#0b0d10)] py-16 text-white sm:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto mb-8 max-w-3xl text-center">
-          <h2 className="text-3xl font-extrabold !text-black sm:text-5xl">Check Your Coverage</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-white/90 sm:text-lg">
+          <h2 className="text-3xl font-extrabold text-white sm:text-5xl">Check Your Coverage</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base text-zinc-300 sm:text-lg">
             Enter your address to see if we provide service in your area.
           </p>
         </AnimatedSection>
 
-        <AnimatedSection direction="up" delay={200} className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_16px_35px_rgba(0,0,0,0.35)] sm:p-8">
+        <AnimatedSection direction="up" delay={200} className="rounded-3xl border border-white/10 bg-[#15181b]/95 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_16px_35px_rgba(0,0,0,0.3)] sm:p-8">
           <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); handleCheckCoverage() }}>
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="block group">
-                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">Street Address</span>
+                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f59e0b]">Street Address</span>
                 <input
                   className={inputClass}
                   placeholder="6 Church Rd"
@@ -106,7 +106,7 @@ const ContactStrip = () => {
                 />
               </label>
               <label className="block group">
-                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">Area/Suburb</span>
+                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f59e0b]">Area/Suburb</span>
                 <input
                   className={inputClass}
                   placeholder="Riebeek Kasteel"
@@ -120,7 +120,7 @@ const ContactStrip = () => {
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
               <label className="block group">
-                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">City</span>
+                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f59e0b]">City</span>
                 <input
                   className={inputClass}
                   placeholder="Western Cape"
@@ -131,7 +131,7 @@ const ContactStrip = () => {
                 />
               </label>
               <label className="block group">
-                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">Postal Code</span>
+                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f59e0b]">Postal Code</span>
                 <input
                   className={inputClass}
                   placeholder="7307"

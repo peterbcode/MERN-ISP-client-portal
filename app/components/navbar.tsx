@@ -72,7 +72,7 @@ export default function Navbar() {
 
   return (
     <header className="relative z-50 w-full">
-      <div className="relative z-[60] bg-[#f97316] text-white">
+      <div className="relative z-[60] border-b border-white/10 bg-[#101215] text-white">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-3 text-[10px] font-medium sm:px-6 sm:text-xs lg:px-8">
           <div className="hidden items-center gap-5 md:flex">
             <a
@@ -114,8 +114,8 @@ export default function Navbar() {
         as="nav"
         className={`transition-all duration-300 ${
           isScrolled
-            ? 'fixed left-0 right-0 top-0 border-b border-gray-800 bg-black/95 shadow-[0_8px_28px_rgba(0,0,0,0.8)] backdrop-blur supports-[backdrop-filter]:bg-black/85'
-            : 'absolute inset-x-0 top-10 bg-transparent'
+            ? 'fixed left-0 right-0 top-0 border-b border-white/10 bg-[#090b0e]/95 shadow-[0_8px_28px_rgba(0,0,0,0.55)] backdrop-blur supports-[backdrop-filter]:bg-[#090b0e]/86'
+            : 'absolute inset-x-0 top-10 bg-gradient-to-b from-black/42 to-transparent'
         }`}
       >
         {({ close }) => (
