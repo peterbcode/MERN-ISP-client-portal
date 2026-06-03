@@ -33,9 +33,9 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
       shineRef.current.style.background = `radial-gradient(circle at ${px*100}% ${py*100}%,rgba(255,255,255,.15) 0%,transparent 60%)`
 
     if (imgRef.current) {
-      const sx = (px - 0.5) * -6
-      const sy = (py - 0.5) * -6
-      imgRef.current.style.transform  = `scale(1.04) translate(${sx}px,${sy}px)`
+      const sx = (px - 0.5) * -10
+      const sy = (py - 0.5) * -10
+      imgRef.current.style.transform  = `scale(1.18) translate(${sx}px,${sy}px)`
       imgRef.current.style.transition = 'transform .1s ease, filter .6s ease'
     }
   }, [])
@@ -71,7 +71,7 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
         alt={item.alt}
         loading="lazy"
         className={`block absolute inset-0 h-full w-full object-cover transition-[filter] duration-600
-                   transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-105
+                   transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-125
                    ${index === 0 ? 'object-top' : 'object-center'} brightness-90`}
       />
 
