@@ -85,7 +85,7 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
         src={item.src}
         alt={item.alt}
         loading="lazy"
-        className="block absolute inset-0 h-full w-full object-cover
+        className="block absolute inset-0 h-[102%] w-[102%] object-cover
                    brightness-75 saturate-90 transition-[filter] duration-600"
       />
 
