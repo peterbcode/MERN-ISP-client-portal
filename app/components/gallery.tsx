@@ -70,8 +70,9 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
         src={item.src}
         alt={item.alt}
         loading="lazy"
-        className="block absolute inset-0 h-full w-full object-cover object-center
-                   brightness-90 transition-[filter] duration-600"
+        className={`block absolute inset-0 h-full w-full object-cover transition-[filter] duration-600
+                   transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-105
+                   ${index === 0 ? 'object-top' : 'object-center'} brightness-90`}
       />
 
       {/* Mouse-tracked radial shine */}
