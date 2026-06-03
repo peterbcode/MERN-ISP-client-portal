@@ -135,13 +135,6 @@ const Gallery = () => (
         <div className="grid grid-cols-12 gap-2">
           {galleryItems.map((item, i) => <GalleryCard key={item.src} item={item} index={i} />)}
         </div>
-        <div className="mt-4 flex items-center gap-2.5">
-          <span className="font-mono text-[10px] font-bold uppercase tracking-[.14em] text-white">
-            5 projects
-          </span>
-          <div className="h-px flex-1 bg-white/30" />
-          <div className="h-1.5 w-1.5 rounded-full bg-white/60" />
-        </div>
       </AnimatedSection>
     </div>
   </section>

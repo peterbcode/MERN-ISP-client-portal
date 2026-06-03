@@ -65,10 +65,8 @@ export default function RootLayout({
     var ring = document.createElement('div');
     dot.className  = 'vc-dot';
     ring.className = 'vc-ring';
-    document.addEventListener('DOMContentLoaded', function() {
-      document.body.appendChild(dot);
-      document.body.appendChild(ring);
-    });
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
     var mx=0,my=0,rx=0,ry=0;
     window.addEventListener('mousemove', function(e) {
       mx = e.clientX; my = e.clientY;
@@ -94,10 +92,8 @@ export default function RootLayout({
         });
       });
     }
-    document.addEventListener('DOMContentLoaded', function() {
-      bindHover();
-      new MutationObserver(bindHover).observe(document.body, { childList:true, subtree:true });
-    });
+    bindHover();
+    new MutationObserver(bindHover).observe(document.body, { childList:true, subtree:true });
   })();
 ` }} />
         <ConsentProvider>
