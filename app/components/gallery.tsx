@@ -1,52 +1,87 @@
 import AnimatedSection from './ui/animated-section'
 
 const galleryItems = [
-  { src: '/gallery/RBV-Dish.jpeg', alt: 'RBV dish installation', caption: 'Wireless dish installation' },
-  { src: '/gallery/High-speed.png', alt: 'High-speed internet setup', caption: 'High-speed network equipment' },
-  { src: '/gallery/solar-and-dish.jpeg', alt: 'Solar and dish installation', caption: 'Solar-backed field connectivity' },
-  { src: '/gallery/storefront.png', alt: 'Storefront service deployment', caption: 'Local support storefront' },
-  { src: '/gallery/Rainbow.png', alt: 'Rainbow connectivity shot', caption: 'Riebeek Valley coverage' },
+  { src: '/gallery/RBV-Dish.jpeg', alt: 'Wireless dish installation', tag: 'Installation', caption: 'Wireless dish installation' },
+  { src: '/gallery/High-speed.png', alt: 'High-speed internet setup', tag: 'Network', caption: 'High-speed network equipment' },
+  { src: '/gallery/solar-and-dish.jpeg', alt: 'Solar and dish installation', tag: 'Off-grid', caption: 'Solar-backed field connectivity' },
+  { src: '/gallery/storefront.png', alt: 'Storefront service deployment', tag: 'Storefront', caption: 'Local support storefront' },
+  { src: '/gallery/Rainbow.png', alt: 'Rainbow connectivity shot', tag: 'Coverage', caption: 'Riebeek Valley coverage' },
 ]
 
 const Gallery = () => {
   return (
-    <section
-      id="gallerySection"
-      className="scroll-mt-28 bg-[#f97316] py-20 text-white"
-    >
+    <section id="gallerySection" className="scroll-mt-28 bg-[#f97316] py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <AnimatedSection direction="up" className="mx-auto mb-14 max-w-3xl text-center">
-          <h2 className="mt-3 text-3xl font-extrabold sm:text-5xl !text-black">Our Work in Action</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-white/90 sm:text-lg">
-            See how we are transforming connectivity in the Riebeek Valley.
+
+        <AnimatedSection direction="up" className="mb-10">
+          <p className="text-[11px] font-bold tracking-[0.18em] uppercase text-black/60 mb-1.5">
+            Portfolio
+          </p>
+          <h2 className="font-display text-4xl font-extrabold leading-[1.1] tracking-tight text-black sm:text-5xl">
+            Our work in action
+          </h2>
+          <p className="mt-2 text-sm font-light text-white/80">
+            Transforming connectivity across the Riebeek Valley
           </p>
         </AnimatedSection>
 
-        <AnimatedSection direction="up" delay={200} className="mx-auto w-full max-w-[1800px] pb-6 lg:pb-12">
-          <div className="grid gap-4 md:grid-cols-3">
-            {galleryItems.map((item, index) => (
+        <AnimatedSection direction="up" delay={150}>
+          <div className="grid grid-cols-12 gap-2.5">
+            {galleryItems.map((item, i) => (
               <article
                 key={item.src}
-                className={`group relative h-[320px] overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 shadow-[0_18px_32px_rgba(0,0,0,0.35)] md:h-[360px] lg:h-[420px] ${
-                  index === 0 ? 'md:col-span-2' : ''
+                className={`group relative overflow-hidden rounded-xl bg-zinc-900 ${
+                  i === 0
+                    ? 'col-span-12 h-[340px] md:col-span-7'
+                    : i === 1
+                    ? 'col-span-12 h-[340px] md:col-span-5'
+                    : 'col-span-12 h-[260px] md:col-span-4'
                 }`}
               >
                 <img
                   src={item.src}
                   alt={item.alt}
                   loading="lazy"
-                  className="absolute inset-0 !h-full !w-full object-cover transition duration-500 group-hover:scale-105 group-hover:brightness-110"
+                  className="absolute inset-0 h-full w-full object-cover brightness-[0.88] saturate-110
+                             transition-all duration-[650ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]
+                             group-hover:scale-[1.06] group-hover:brightness-100 group-hover:saturate-[1.2]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/10 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 translate-y-2 p-5 opacity-90 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                  <p className="inline-flex rounded-full bg-[#f97316] px-4 py-2 text-sm font-bold text-white shadow-lg">
+
+                {/* Directional gradient — appears on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/70
+                                opacity-0 transition-opacity duration-400 group-hover:opacity-100" />
+
+                {/* Index counter */}
+                <span className="absolute right-3.5 top-3.5 font-mono text-[11px] font-bold tracking-wide
+                                 text-white/50 transition-colors duration-300 group-hover:text-white/85">
+                  {String(i + 1).padStart(2, '0')} / {String(galleryItems.length).padStart(2, '0')}
+                </span>
+
+                {/* Caption */}
+                <div className="absolute inset-x-0 bottom-0 translate-y-1.5 p-4 opacity-0
+                                transition-all duration-350 group-hover:translate-y-0 group-hover:opacity-100">
+                  <span className="mb-1.5 inline-block rounded bg-[#f97316] px-2.5 py-1
+                                   text-[11px] font-bold uppercase tracking-[0.12em] text-white">
+                    {item.tag}
+                  </span>
+                  <p className="text-[15px] font-light leading-snug text-white/92">
                     {item.caption}
                   </p>
                 </div>
               </article>
             ))}
           </div>
+
+          {/* Footer rule */}
+          <div className="mt-5 flex items-center gap-3">
+            <span className="font-mono text-[11px] font-bold tracking-widest text-black/50">
+              {galleryItems.length} PROJECTS
+            </span>
+            <div className="h-px flex-1 bg-black/20" />
+            <div className="h-1.5 w-1.5 rounded-full bg-black/50" />
+          </div>
         </AnimatedSection>
+
       </div>
     </section>
   )

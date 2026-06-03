@@ -134,7 +134,7 @@ export default function DashboardSidebar({ showLogout = true }: DashboardSidebar
 
       <div className="border-t border-white/10 p-4">
         <Link
-          href="/contact"
+          href="/dashboard?openTicket=true"
           className="block rounded-lg border border-white/10 bg-white/[0.03] p-3 transition hover:border-orange-500/50 hover:bg-white/[0.05]"
         >
           <p className="text-xs font-medium text-zinc-300">Need support?</p>
