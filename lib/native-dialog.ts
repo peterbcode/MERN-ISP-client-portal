@@ -1,7 +1,20 @@
 export function withSystemCursor<T>(fn: () => T): T {
   if (typeof document === 'undefined') return fn()
 
-  return fn()
+  const body = document.body
+  const hadEnhancedCursor = body.classList.contains('cursor-enhanced')
+
+  if (hadEnhancedCursor) {
+    body.classList.remove('cursor-enhanced')
+  }
+
+  try {
+    return fn()
+  } finally {
+    if (hadEnhancedCursor) {
+      body.classList.add('cursor-enhanced')
+    }
+  }
 }
 
 export function safeAlert(message: string) {

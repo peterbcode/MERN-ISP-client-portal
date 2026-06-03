@@ -7,6 +7,7 @@ import { ConsentProvider } from "./components/consent-provider";
 import AnalyticsLoader from "./components/analytics-loader";
 import PageLoader from "./components/page-loader";
 import DevIndicatorRemover from "./components/dev-indicator-remover";
+import ProfessionalCursor from "./components/professional-cursor";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://valley-computers.co.za"),
@@ -62,6 +63,7 @@ export default function RootLayout({
         <ConsentProvider>
           <PageLoader />
           <DevIndicatorRemover />
+          <ProfessionalCursor />
           {children}
           <CookieConsent />
           <FloatingActions />

@@ -1,139 +1,209 @@
 'use client'
-import { useRef, useCallback } from 'react'
+
+import { useCallback, useRef } from 'react'
+import Image from 'next/image'
+import { Camera, MapPin, RadioTower, ShieldCheck } from 'lucide-react'
 import AnimatedSection from './ui/animated-section'
 
 const galleryItems = [
-  { src: '/gallery/RBV-Dish.jpeg',      alt: 'Wireless dish installation',   tag: 'Installation', caption: 'Wireless dish installation'    },
-  { src: '/gallery/High-speed.png',     alt: 'High-speed internet setup',     tag: 'Network',      caption: 'High-speed network equipment'  },
-  { src: '/gallery/solar-and-dish.jpeg',alt: 'Solar and dish installation',   tag: 'Off-grid',     caption: 'Solar-backed field connectivity'},
-  { src: '/gallery/storefront.png',     alt: 'Storefront service deployment', tag: 'Storefront',   caption: 'Local support storefront'      },
-  { src: '/gallery/Rainbow.png',        alt: 'Rainbow connectivity shot',     tag: 'Coverage',     caption: 'Riebeek Valley coverage'       },
+  {
+    src: '/gallery/RBV-Dish.jpeg',
+    alt: 'Wireless dish installation on a Riebeek Valley property',
+    tag: 'Installation',
+    caption: 'Precision wireless links for homes and farms',
+    detail: 'Aligned for stable valley coverage',
+  },
+  {
+    src: '/gallery/High-speed.png',
+    alt: 'High-speed internet networking equipment',
+    tag: 'Network',
+    caption: 'High-speed equipment installed and tuned',
+    detail: 'Built for clean throughput',
+  },
+  {
+    src: '/gallery/solar-and-dish.jpeg',
+    alt: 'Solar-backed dish installation',
+    tag: 'Off-grid',
+    caption: 'Solar-backed connectivity in the field',
+    detail: 'Power-conscious site deployments',
+  },
+  {
+    src: '/gallery/storefront.png',
+    alt: 'Valley Computers storefront',
+    tag: 'Support',
+    caption: 'Local support with a real storefront',
+    detail: 'Riebeek-Kasteel service desk',
+  },
+  {
+    src: '/gallery/Rainbow.png',
+    alt: 'Rainbow over the Riebeek Valley service area',
+    tag: 'Coverage',
+    caption: 'Coverage across the Riebeek Valley',
+    detail: 'Local network, local terrain knowledge',
+  },
 ]
 
-function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: number }) {
-  const cardRef   = useRef<HTMLDivElement>(null)
-  const imgRef    = useRef<HTMLImageElement>(null)
-  const shineRef  = useRef<HTMLDivElement>(null)
+const galleryStats = [
+  { value: '5', label: 'field views' },
+  { value: '24/7', label: 'network focus' },
+  { value: 'Local', label: 'support team' },
+]
 
-  const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const card = cardRef.current!
-    const r = card.getBoundingClientRect()
-    const x = e.clientX - r.left
-    const y = e.clientY - r.top
-    const px = x / r.width
-    const py = y / r.height
+function GalleryCard({ item, index }: { item: (typeof galleryItems)[number]; index: number }) {
+  const cardRef = useRef<HTMLElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
+  const shineRef = useRef<HTMLDivElement>(null)
 
-    const tiltX = (py - 0.5) * 10
-    const tiltY = (px - 0.5) * -10
-    card.style.transform    = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`
-    card.style.transition   = 'transform .1s ease'
-    card.style.zIndex       = '2'
+  const onMove = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    const card = cardRef.current
+    if (!card) return
 
-    if (shineRef.current)
-      shineRef.current.style.background = `radial-gradient(circle at ${px*100}% ${py*100}%,rgba(255,255,255,.15) 0%,transparent 60%)`
+    const rect = card.getBoundingClientRect()
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+    const px = x / rect.width
+    const py = y / rect.height
+
+    const tiltX = (py - 0.5) * 5
+    const tiltY = (px - 0.5) * -5
+
+    card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-4px)`
+    card.style.transition = 'transform 120ms ease'
+
+    if (shineRef.current) {
+      shineRef.current.style.background = `radial-gradient(circle at ${px * 100}% ${py * 100}%, rgba(255,255,255,.18), transparent 42%)`
+    }
 
     if (imgRef.current) {
-      const sx = (px - 0.5) * -10
-      const sy = (py - 0.5) * -10
-      imgRef.current.style.transform  = `scale(1.18) translate(${sx}px,${sy}px)`
-      imgRef.current.style.transition = 'transform .1s ease, filter .6s ease'
+      const sx = (px - 0.5) * -8
+      const sy = (py - 0.5) * -8
+      imgRef.current.style.transform = `scale(1.08) translate(${sx}px, ${sy}px)`
     }
   }, [])
 
   const onLeave = useCallback(() => {
-    const card = cardRef.current!
-    card.style.transform  = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)'
-    card.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)'
-    card.style.zIndex     = ''
+    if (cardRef.current) {
+      cardRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)'
+      cardRef.current.style.transition = 'transform 520ms cubic-bezier(.16,1,.3,1)'
+    }
 
     if (imgRef.current) {
-      imgRef.current.style.transform  = 'scale(1) translate(0,0)'
-      imgRef.current.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1), filter .6s ease'
+      imgRef.current.style.transform = 'scale(1) translate(0, 0)'
+    }
+
+    if (shineRef.current) {
+      shineRef.current.style.background = 'transparent'
     }
   }, [])
 
-  const colSpan =
-    index === 0 ? 'md:col-span-7' :
-    index === 1 ? 'md:col-span-5' : 'md:col-span-4'
+  const cardSize =
+    index === 0
+      ? 'lg:col-span-7 lg:row-span-2 min-h-[420px]'
+      : index === 1
+        ? 'lg:col-span-5 min-h-[250px]'
+        : 'lg:col-span-4 min-h-[260px]'
 
   return (
     <article
       ref={cardRef}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      className={`group relative col-span-12 overflow-hidden rounded-xl bg-black
-                  ${colSpan} ${index < 2 ? 'h-[320px]' : 'h-[240px]'}`}
+      data-cursor="gallery"
+      className={`group relative col-span-12 overflow-hidden rounded-lg border border-white/10 bg-zinc-950 shadow-[0_24px_70px_rgba(0,0,0,0.34)] ${cardSize}`}
     >
-      {/* Main image — parallax + brightness */}
-      <img
+      <Image
         ref={imgRef}
         src={item.src}
         alt={item.alt}
-        loading="lazy"
-        className={`block absolute inset-0 h-full w-full object-cover transition-[filter] duration-600
-                   transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-125
-                   ${index === 0 ? 'object-top' : 'object-center'} brightness-90`}
+        fill
+        priority={index < 2}
+        sizes={index === 0 ? '(min-width: 1024px) 58vw, 100vw' : '(min-width: 1024px) 34vw, 100vw'}
+        className={`absolute inset-0 h-full w-full object-cover transition-[transform,filter] duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:brightness-105 ${
+          index === 0 ? 'object-top' : 'object-center'
+        }`}
       />
 
-      {/* Mouse-tracked radial shine */}
-      <div ref={shineRef} className="absolute inset-0 opacity-0 transition-opacity duration-300
-                                      group-hover:opacity-100 pointer-events-none" />
+      <div ref={shineRef} className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.88),rgba(0,0,0,.28)_52%,rgba(0,0,0,.08))]" />
+      <div className="pointer-events-none absolute inset-0 opacity-0 ring-1 ring-inset ring-white/30 transition-opacity duration-300 group-hover:opacity-100" />
 
-      {/* Always-on vignette */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
-
-      {/* Scan line on enter */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none
-                      after:absolute after:inset-x-0 after:top-0 after:h-[2px]
-                      after:bg-gradient-to-r after:from-transparent after:via-[#f97316]/80 after:to-transparent
-                      after:-translate-y-full group-hover:after:animate-[scan_.6s_ease_forwards]" />
-
-      {/* Corner brackets */}
-      <div className="absolute top-0 left-0 w-5 h-5 pointer-events-none
-                      before:absolute before:top-0 before:left-0 before:h-[2px] before:bg-[#f97316] before:w-0 group-hover:before:w-5 before:transition-[width] before:duration-300
-                      after:absolute after:top-0 after:left-0 after:w-[2px] after:bg-[#f97316] after:h-0 group-hover:after:h-5 after:transition-[height] after:duration-300" />
-      <div className="absolute bottom-0 right-0 w-5 h-5 pointer-events-none
-                      before:absolute before:bottom-0 before:right-0 before:h-[2px] before:bg-[#f97316] before:w-0 group-hover:before:w-5 before:transition-[width] before:duration-300
-                      after:absolute after:bottom-0 after:right-0 after:w-[2px] after:bg-[#f97316] after:h-0 group-hover:after:h-5 after:transition-[height] after:duration-300" />
-
-      {/* Index */}
-      <span className="absolute top-3 right-3 font-mono text-[10px] font-bold tracking-wide
-                       text-white/35 pointer-events-none transition-[color,transform] duration-300
-                       group-hover:text-white/80 group-hover:-translate-y-0.5">
-        {String(index + 1).padStart(2,'0')} / {String(galleryItems.length).padStart(2,'0')}
-      </span>
-
-      {/* Caption */}
-      <div className="absolute inset-x-0 bottom-0 p-4 translate-y-2 opacity-0 pointer-events-none
-                      transition-all duration-400 ease-[cubic-bezier(.16,1,.3,1)]
-                      group-hover:translate-y-0 group-hover:opacity-100">
-        <span className="inline-block mb-1.5 rounded-sm bg-[#f97316] px-2.5 py-1
-                         font-mono text-[10px] font-bold uppercase tracking-[.14em] text-white">
+      <div className="absolute left-4 top-4 flex items-center gap-2">
+        <span className="rounded-full border border-white/20 bg-black/45 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-white backdrop-blur">
           {item.tag}
         </span>
-        <p className="text-[14px] font-light italic leading-snug text-white/90">{item.caption}</p>
       </div>
 
+      <span className="absolute right-4 top-4 rounded-full bg-black/40 px-2.5 py-1 font-mono text-[11px] font-semibold text-white/70 backdrop-blur">
+        {String(index + 1).padStart(2, '0')}
+      </span>
+
+      <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+        <p className="heading-compact max-w-[24rem] text-xl font-semibold leading-tight text-white sm:text-2xl">
+          {item.caption}
+        </p>
+        <p className="mt-2 max-w-[25rem] text-sm leading-6 text-zinc-200">{item.detail}</p>
+      </div>
     </article>
   )
 }
 
 const Gallery = () => (
-  <section id="gallerySection" className="scroll-mt-28 bg-[#f97316] py-20">
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <AnimatedSection direction="up" className="mb-10 text-center">
-        <p className="text-[11px] font-bold tracking-[.18em] uppercase text-white mb-1.5">Portfolio</p>
-        <h2 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl">
-          Our work in action
-        </h2>
-        <p className="mt-2 text-sm font-light text-white">
-          Transforming connectivity across the Riebeek Valley — hover to explore
-        </p>
+  <section
+    id="gallerySection"
+    className="relative scroll-mt-28 overflow-hidden border-y border-white/10 bg-[#070707] py-20 text-white sm:py-24"
+  >
+    <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(115deg,rgba(249,115,22,.16),transparent_34%),linear-gradient(245deg,rgba(34,197,94,.08),transparent_32%)]" />
+    <div className="hero-grid absolute inset-0 opacity-10" />
+
+    <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <AnimatedSection direction="up" className="mb-10">
+        <div className="grid gap-8 lg:grid-cols-[1fr_420px] lg:items-end">
+          <div>
+            <p className="site-eyebrow mb-3 flex items-center gap-2">
+              <Camera className="h-4 w-4" aria-hidden="true" />
+              Field Portfolio
+            </p>
+            <h2 className="heading-compact max-w-3xl text-4xl font-bold leading-[1.04] tracking-tight text-white sm:text-5xl">
+              Real installations, local coverage, practical network work.
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-300">
+              A closer look at the equipment, terrain, and support footprint behind Valley Computers connectivity.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-3 overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] backdrop-blur">
+            {galleryStats.map((stat) => (
+              <div key={stat.label} className="border-r border-white/10 p-4 last:border-r-0">
+                <p className="heading-compact text-xl font-bold leading-none text-white">{stat.value}</p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-zinc-400">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </AnimatedSection>
 
-      <AnimatedSection direction="up" delay={150}>
-        <div className="grid grid-cols-12 gap-2">
-          {galleryItems.map((item, i) => <GalleryCard key={item.src} item={item} index={i} />)}
+      <AnimatedSection direction="up" delay={120}>
+        <div className="grid auto-rows-[minmax(230px,auto)] grid-cols-12 gap-3 lg:gap-4">
+          {galleryItems.map((item, index) => (
+            <GalleryCard key={item.src} item={item} index={index} />
+          ))}
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection direction="up" delay={220} className="mt-8">
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
+            <RadioTower className="h-5 w-5 text-[#f97316]" aria-hidden="true" />
+            <span className="text-sm font-semibold text-zinc-200">Wireless and fibre-ready installs</span>
+          </div>
+          <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
+            <MapPin className="h-5 w-5 text-[#22c55e]" aria-hidden="true" />
+            <span className="text-sm font-semibold text-zinc-200">Riebeek Valley terrain knowledge</span>
+          </div>
+          <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
+            <ShieldCheck className="h-5 w-5 text-[#60a5fa]" aria-hidden="true" />
+            <span className="text-sm font-semibold text-zinc-200">Supportable, maintainable setups</span>
+          </div>
         </div>
       </AnimatedSection>
     </div>
