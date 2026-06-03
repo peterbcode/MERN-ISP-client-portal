@@ -7,7 +7,6 @@ import { ConsentProvider } from "./components/consent-provider";
 import AnalyticsLoader from "./components/analytics-loader";
 import PageLoader from "./components/page-loader";
 import DevIndicatorRemover from "./components/dev-indicator-remover";
-import CustomCursor from "./components/ui/CustomCursor";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://valley-computers.co.za"),
@@ -60,7 +59,47 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans")}>
       <body suppressHydrationWarning className="antialiased">
-        <CustomCursor />
+        <script dangerouslySetInnerHTML={{ __html: `
+  (function() {
+    var dot  = document.createElement('div');
+    var ring = document.createElement('div');
+    dot.className  = 'vc-dot';
+    ring.className = 'vc-ring';
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.appendChild(dot);
+      document.body.appendChild(ring);
+    });
+    var mx=0,my=0,rx=0,ry=0;
+    window.addEventListener('mousemove', function(e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
+    });
+    (function tick() {
+      rx += (mx - rx) * 0.1;
+      ry += (my - ry) * 0.1;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(tick);
+    })();
+    function bindHover() {
+      document.querySelectorAll('a,button,[role="button"],article').forEach(function(el) {
+        el.addEventListener('mouseenter', function() {
+          dot.classList.add('vc-dot-hover');
+          ring.classList.add('vc-ring-hover');
+        });
+        el.addEventListener('mouseleave', function() {
+          dot.classList.remove('vc-dot-hover');
+          ring.classList.remove('vc-ring-hover');
+        });
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      bindHover();
+      new MutationObserver(bindHover).observe(document.body, { childList:true, subtree:true });
+    });
+  })();
+` }} />
         <ConsentProvider>
           <PageLoader />
           <DevIndicatorRemover />
