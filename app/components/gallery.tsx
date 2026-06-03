@@ -85,7 +85,7 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
         src={item.src}
         alt={item.alt}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover
+        className="block absolute inset-0 h-full w-full object-cover
                    brightness-75 saturate-90 transition-[filter] duration-600"
       />
 
@@ -134,7 +134,7 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
         className="absolute w-[100px] h-[100px] rounded-full border-2 border-[#f97316]/60
                    overflow-hidden pointer-events-none opacity-0 transition-opacity duration-200 z-10"
       >
-        <img ref={magImgRef} src={item.src} alt="" className="absolute object-cover" />
+        <img ref={magImgRef} src={item.src} alt="" className="block absolute object-cover" />
       </div>
     </article>
   )
@@ -143,12 +143,12 @@ function GalleryCard({ item, index }: { item: typeof galleryItems[0]; index: num
 const Gallery = () => (
   <section id="gallerySection" className="scroll-mt-28 bg-[#f97316] py-20">
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <AnimatedSection direction="up" className="mb-10">
-        <p className="text-[11px] font-bold tracking-[.18em] uppercase text-black/60 mb-1.5">Portfolio</p>
-        <h2 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-black sm:text-5xl">
+      <AnimatedSection direction="up" className="mb-10 text-center">
+        <p className="text-[11px] font-bold tracking-[.18em] uppercase text-white mb-1.5">Portfolio</p>
+        <h2 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl">
           Our work in action
         </h2>
-        <p className="mt-2 text-sm font-light text-white/80">
+        <p className="mt-2 text-sm font-light text-white">
           Transforming connectivity across the Riebeek Valley — hover to explore
         </p>
       </AnimatedSection>
@@ -158,11 +158,11 @@ const Gallery = () => (
           {galleryItems.map((item, i) => <GalleryCard key={item.src} item={item} index={i} />)}
         </div>
         <div className="mt-4 flex items-center gap-2.5">
-          <span className="font-mono text-[10px] font-bold uppercase tracking-[.14em] text-black/50">
+          <span className="font-mono text-[10px] font-bold uppercase tracking-[.14em] text-white">
             5 projects
           </span>
-          <div className="h-px flex-1 bg-black/20" />
-          <div className="h-1.5 w-1.5 rounded-full bg-black/50" />
+          <div className="h-px flex-1 bg-white/30" />
+          <div className="h-1.5 w-1.5 rounded-full bg-white/60" />
         </div>
       </AnimatedSection>
     </div>
