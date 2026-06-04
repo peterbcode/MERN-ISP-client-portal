@@ -193,7 +193,7 @@ const Gallery = () => (
       <AnimatedSection direction="up" delay={220} className="mt-8">
         <div className="grid gap-3 sm:grid-cols-3">
           <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
-            <RadioTower className="h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
+            <RadioTower className="h-5 w-5 text-[#f97316]" aria-hidden="true" />
             <span className="text-sm font-semibold text-zinc-200">Wireless and fibre-ready installs</span>
           </div>
           <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
