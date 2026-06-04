@@ -7,6 +7,7 @@ import { ConsentProvider } from "./components/consent-provider";
 import AnalyticsLoader from "./components/analytics-loader";
 import PageLoader from "./components/page-loader";
 import DevIndicatorRemover from "./components/dev-indicator-remover";
+import CustomCursor from "./components/custom-cursor";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://valley-computers.co.za"),
