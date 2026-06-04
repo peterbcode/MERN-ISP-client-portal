@@ -189,23 +189,6 @@ const Gallery = () => (
           ))}
         </div>
       </AnimatedSection>
-
-      <AnimatedSection direction="up" delay={220} className="mt-8">
-        <div className="grid gap-3 sm:grid-cols-3">
-          <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
-            <RadioTower className="h-5 w-5 text-[#f97316]" aria-hidden="true" />
-            <span className="text-sm font-semibold text-zinc-200">Wireless and fibre-ready installs</span>
-          </div>
-          <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
-            <MapPin className="h-5 w-5 text-[#14b8a6]" aria-hidden="true" />
-            <span className="text-sm font-semibold text-zinc-200">Riebeek Valley terrain knowledge</span>
-          </div>
-          <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3">
-            <ShieldCheck className="h-5 w-5 text-[#60a5fa]" aria-hidden="true" />
-            <span className="text-sm font-semibold text-zinc-200">Supportable, maintainable setups</span>
-          </div>
-        </div>
-      </AnimatedSection>
     </div>
   </section>
 )
