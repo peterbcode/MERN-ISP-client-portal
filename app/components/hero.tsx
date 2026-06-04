@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -77,7 +77,7 @@ const Hero = () => {
   return (
     <section
       id="hero-section"
-      className="relative min-h-[76vh] overflow-hidden bg-[#050505] text-white lg:min-h-[84vh]"
+      className="hero-vignette relative min-h-[76vh] overflow-hidden bg-[#050505] text-white lg:min-h-[84vh]"
       onMouseMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect()
         const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2
@@ -172,14 +172,14 @@ const Hero = () => {
 
         <div className="mt-8 flex w-full max-w-2xl flex-col gap-3 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4">
           <PremiumButton 
-            variant="primary" 
+            variant="primary" className="cta-highlight" 
             size="lg"
             onClick={() => router.push('/contact')}
           >
             Get Connected
           </PremiumButton>
           <PremiumButton 
-            variant="secondary" 
+            variant="secondary" className="cta-highlight" 
             size="lg"
             onClick={() => window.location.href = '#services'}
           >

@@ -50,7 +50,7 @@ const Services = () => {
   return (
     <section
       id="services"
-      className="scroll-mt-28 bg-[radial-gradient(circle_at_12%_20%,rgba(20,184,166,0.08),transparent_34%),radial-gradient(circle_at_88%_82%,rgba(245,158,11,0.09),transparent_38%),linear-gradient(to_bottom,#0b0d10,#111315)] py-20 text-white"
+      className="texture-dots relative scroll-mt-28 bg-[radial-gradient(circle_at_12%_20%,rgba(20,184,166,0.08),transparent_34%),radial-gradient(circle_at_88%_82%,rgba(245,158,11,0.09),transparent_38%),linear-gradient(to_bottom,#0b0d10,#111315)] py-20 text-white"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto max-w-3xl text-center">
@@ -68,7 +68,7 @@ const Services = () => {
               delay={index * 150}
               duration={600}
             >
-              <HoverCard hoverScale={1.03} shadowIntensity="heavy" className="h-full border-white/10 bg-[#14171a]/92 hover:border-[#f97316]/55">
+              <HoverCard hoverScale={1.03} shadowIntensity="heavy" className="service-card-highlight h-full border-white/10 bg-[#14171a]/92 hover:border-[#f97316]/55">
                 <div className="p-9 sm:p-10">
                   <div className="mb-7 inline-flex h-20 w-20 items-center justify-center rounded-2xl border border-[#f97316]/35 bg-[#f97316]/12 text-[#f97316] shadow-[0_14px_30px_rgba(249,115,22,0.14)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110 group-hover:bg-[#f97316] group-hover:text-black">
                     <service.icon className="h-10 w-10" />
@@ -89,7 +89,7 @@ const Services = () => {
         </div>
 
         <AnimatedSection direction="up" delay={450} className="mt-14">
-          <div className="rounded-3xl border border-white/10 bg-[linear-gradient(135deg,#15181b,#14191a_55%,#0e1012)] p-5 shadow-[0_18px_38px_rgba(0,0,0,0.28)] sm:p-8">
+          <div className="texture-grain relative rounded-3xl border border-white/10 bg-[linear-gradient(135deg,#15181b,#14191a_55%,#0e1012)] p-5 shadow-[0_18px_38px_rgba(0,0,0,0.28)] sm:p-8">
             <div className="grid gap-4 text-center sm:grid-cols-2 lg:grid-cols-4">
               {stats.map((item, index) => (
                 <AnimatedSection
