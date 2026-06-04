@@ -29,6 +29,9 @@ export default function ProfessionalCursor() {
     setEnabled(true)
     document.body.classList.add('cursor-enhanced')
 
+    const showCustomCursor = () => document.body.classList.add('cursor-active')
+    const hideCustomCursor = () => document.body.classList.remove('cursor-active')
+
     const animate = () => {
       ringPosition.current.x += (position.current.x - ringPosition.current.x) * 0.22
       ringPosition.current.y += (position.current.y - ringPosition.current.y) * 0.22
@@ -54,16 +57,23 @@ export default function ProfessionalCursor() {
 
       if (target?.closest(hiddenTargets)) {
         setMode('hidden')
+        hideCustomCursor()
       } else if (target?.closest('[data-cursor="gallery"]')) {
         setMode('gallery')
+        showCustomCursor()
       } else if (target?.closest(actionTargets)) {
         setMode('action')
+        showCustomCursor()
       } else {
         setMode('default')
+        showCustomCursor()
       }
     }
 
-    const onPointerLeave = () => setVisible(false)
+    const onPointerLeave = () => {
+      setVisible(false)
+      hideCustomCursor()
+    }
     const onPointerDown = () => document.body.classList.add('cursor-pressed')
     const onPointerUp = () => document.body.classList.remove('cursor-pressed')
 
@@ -74,7 +84,7 @@ export default function ProfessionalCursor() {
     window.addEventListener('pointerup', onPointerUp)
 
     return () => {
-      document.body.classList.remove('cursor-enhanced', 'cursor-pressed')
+      document.body.classList.remove('cursor-enhanced', 'cursor-active', 'cursor-pressed')
       window.removeEventListener('pointermove', onPointerMove)
       window.removeEventListener('pointerleave', onPointerLeave)
       window.removeEventListener('pointerdown', onPointerDown)
@@ -88,7 +98,7 @@ export default function ProfessionalCursor() {
 
   if (!enabled) return null
 
-  const isHidden = !visible || mode === 'hidden'
+  const isHidden = mode === 'hidden'
 
   return (
     <>

@@ -303,7 +303,7 @@ const IspPageColorful = () => {
                 className="group relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-sm transition-all duration-300 hover:border-orange-500/50 hover:bg-zinc-900 hover:-translate-y-1"
               >
                 {/* Top accent line */}
-                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 to-amber-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                 {/* Icon */}
                 <div className="inline-flex rounded-2xl bg-orange-500/10 p-4 ring-1 ring-orange-500/20 transition-all duration-300 group-hover:bg-orange-500 group-hover:shadow-lg group-hover:shadow-orange-500/30">
@@ -337,7 +337,7 @@ const IspPageColorful = () => {
           <div className="relative overflow-hidden rounded-[2rem] border border-zinc-800 bg-black p-10 shadow-2xl sm:p-14">
 
             {/* Accent gradient */}
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500" />
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 via-orange-400 to-orange-500" />
 
             <div className="relative text-center">
 

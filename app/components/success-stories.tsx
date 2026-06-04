@@ -137,7 +137,7 @@ const SuccessStories = () => {
                           <StarIcon
                             key={i}
                             className={`h-4 w-4 ${
-                              i < story.rating ? 'text-yellow-400' : 'text-zinc-600'
+                              i < story.rating ? 'text-orange-400' : 'text-zinc-600'
                             }`}
                           />
                         ))}

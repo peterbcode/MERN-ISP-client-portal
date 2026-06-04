@@ -71,7 +71,7 @@ export default function DashboardSidebar({ showLogout = true }: DashboardSidebar
 
         <div className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
           <div className="mb-3 flex items-center gap-3">
-            <div className="flex h-11 w-11 overflow-hidden rounded-lg bg-gradient-to-br from-orange-500 to-amber-400">
+            <div className="flex h-11 w-11 overflow-hidden rounded-lg bg-gradient-to-br from-orange-500 to-orange-400">
               {avatar ? (
                 <span
                   className="block h-full w-full bg-cover bg-center"

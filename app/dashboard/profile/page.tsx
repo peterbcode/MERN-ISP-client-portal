@@ -236,7 +236,7 @@ export default function ProfilePage() {
 
         <form onSubmit={handleSave} className="space-y-6">
           <div className="flex flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-900/50 p-4 sm:flex-row sm:items-center">
-            <div className="flex h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-orange-500 to-amber-400">
+            <div className="flex h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-orange-500 to-orange-400">
               {formData.avatar ? (
                 <span
                   className="block h-full w-full bg-cover bg-center"

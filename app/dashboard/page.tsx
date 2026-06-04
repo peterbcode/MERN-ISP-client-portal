@@ -288,7 +288,7 @@ export default function Dashboard() {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'text-red-400';
-      case 'medium': return 'text-yellow-400';
+      case 'medium': return 'text-orange-400';
       case 'low': return 'text-green-400';
       default: return 'text-zinc-400';
     }
@@ -297,7 +297,7 @@ export default function Dashboard() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open': return 'text-blue-400';
-      case 'in-progress': return 'text-yellow-400';
+      case 'in-progress': return 'text-orange-400';
       case 'resolved': return 'text-green-400';
       default: return 'text-zinc-400';
     }
@@ -363,7 +363,7 @@ export default function Dashboard() {
       accent: 'text-violet-300',
       iconBg: 'bg-violet-500/10',
       progress: stats.latency > 0 ? Math.max(12, 100 - Math.min(stats.latency, 100)) : 0,
-      progressColor: stats.latency <= 20 ? 'bg-emerald-400' : stats.latency <= 50 ? 'bg-yellow-400' : 'bg-red-400',
+      progressColor: stats.latency <= 20 ? 'bg-emerald-400' : stats.latency <= 50 ? 'bg-orange-400' : 'bg-red-400',
     },
   ];
 
