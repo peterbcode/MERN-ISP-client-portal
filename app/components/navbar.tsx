@@ -79,7 +79,7 @@ export default function Navbar() {
               href="https://www.google.com/maps/search/?api=1&query=6%20Church%20Rd%2C%20Riebeek-Kasteel%2C%207307"
               target="_blank"
               rel="noopener noreferrer"
-              className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-white/95 transition-all duration-200 hover:text-white hover:scale-105"
+              className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-[#f97316] transition-all duration-200 hover:text-[#fb923c] hover:scale-105"
             >
               <MapPinIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               6 Church Rd, Riebeek-Kasteel, 7307
@@ -89,7 +89,7 @@ export default function Navbar() {
               href="mailto:info@valley-computers.co.za" 
               aria-label="Send email to info@valley-computers.co.za"
               title="Send email to info@valley-computers.co.za"
-              className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-white/95 transition-colors duration-200 hover:text-white cursor-pointer"
+              className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-[#f97316] transition-colors duration-200 hover:text-[#fb923c] cursor-pointer"
             >
               <EnvelopeIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               info@valley-computers.co.za
@@ -100,7 +100,7 @@ export default function Navbar() {
               href={phoneHref}
               aria-label="Call Valley Computers at 079 938 1260"
               title="Call 079 938 1260"
-              className="no-accent-hover relative z-10 flex touch-manipulation items-center gap-1.5 whitespace-nowrap text-white/95 transition-all duration-200 hover:scale-105 hover:text-white"
+              className="no-accent-hover relative z-10 flex touch-manipulation items-center gap-1.5 whitespace-nowrap text-[#f97316] transition-all duration-200 hover:scale-105 hover:text-[#fb923c]"
             >
               <PhoneIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               <span className="hidden font-bold sm:inline">Call Us:</span>
