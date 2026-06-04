@@ -24,8 +24,7 @@ export default function ProfessionalCursor() {
     const finePointer = window.matchMedia('(pointer: fine)')
     const shouldEnable = finePointer.matches
 
-    if (!shouldEnable) return
-
+    // Always enable cursor regardless of pointer type
     setEnabled(true)
     document.body.classList.add('cursor-enhanced')
 
