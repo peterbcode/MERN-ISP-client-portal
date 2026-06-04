@@ -25,7 +25,7 @@ const brands = [
 
 const BrandCarousel = () => {
   return (
-    <section className="relative overflow-hidden border-y border-zinc-800 bg-[#090909] py-8 text-white">
+    <section className="relative overflow-hidden bg-[#090909] py-8 text-white">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.08),transparent_55%)]" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <p className="text-center text-[10px] font-extrabold uppercase tracking-[0.2em] text-zinc-500/95 sm:text-xs">

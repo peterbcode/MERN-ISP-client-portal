@@ -65,7 +65,7 @@ const SiteFooter = () => {
   }
 
   return (
-    <footer className="texture-grain relative border-t border-zinc-800 bg-[#060607] text-zinc-300">
+    <footer className="texture-grain relative bg-[#060607] text-zinc-300">
       <div className="h-1 bg-gradient-to-r from-transparent via-[#f97316] to-transparent" />
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 border-b border-zinc-800/80 pb-12 md:grid-cols-2 lg:grid-cols-4">
