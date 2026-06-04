@@ -57,12 +57,17 @@
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  cursor: none;
+  cursor: auto;
   overflow-x: hidden;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   color: #d4d4d4;
+}
+
+/* Only hide cursor when custom cursor is active */
+body.cursor-active {
+  cursor: none;
 }
 
 /* Custom Cursor System */
