@@ -62,6 +62,7 @@ export default function RootLayout({
         <ConsentProvider>
           <PageLoader />
           <DevIndicatorRemover />
+          <CustomCursor />
           {children}
           <CookieConsent />
           <FloatingActions />
