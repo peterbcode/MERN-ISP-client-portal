@@ -526,7 +526,7 @@ const EasterEggGames = () => {
 
   // ── JSX ───────────────────────────────────────────────────────────────────
   return (
-    <section className="relative overflow-hidden border-y border-zinc-900 bg-[radial-gradient(circle_at_16%_15%,rgba(249,115,22,0.12),transparent_38%),radial-gradient(circle_at_82%_80%,rgba(249,115,22,0.09),transparent_36%),linear-gradient(to_bottom,#070708,#0a0a0c)] py-10 sm:py-20 text-white">
+    <section className="bg-saas-dark relative overflow-hidden border-y border-zinc-900 py-10 sm:py-20 text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}

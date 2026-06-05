@@ -23,7 +23,7 @@ const footprintItems = [
 
 const LocalFootprint = () => {
   return (
-    <section className="scroll-mt-28 bg-[radial-gradient(circle_at_18%_10%,rgba(20,184,166,0.08),transparent_38%),linear-gradient(to_bottom,#0c0e11,#111315)] py-14 text-white">
+    <section className="bg-saas-dark scroll-mt-28 py-14 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f97316]">Coverage</p>

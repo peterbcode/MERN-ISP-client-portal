@@ -50,7 +50,7 @@ const Services = () => {
   return (
     <section
       id="services"
-      className="texture-dots relative scroll-mt-28 bg-[radial-gradient(circle_at_12%_20%,rgba(20,184,166,0.08),transparent_34%),radial-gradient(circle_at_88%_82%,rgba(245,158,11,0.09),transparent_38%),linear-gradient(to_bottom,#0b0d10,#111315)] py-20 text-white"
+      className="bg-saas-dark relative scroll-mt-28 py-20 text-white"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto max-w-3xl text-center">
