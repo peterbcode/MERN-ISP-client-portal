@@ -82,7 +82,7 @@ const ContactStrip = () => {
   const resultMessage = getResultMessage()
 
   return (
-    <section className="relative scroll-mt-28 bg-[#0a0a0c] text-white py-20">
+    <section className="section-spaced section-divider relative scroll-mt-28 text-white sm:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto mb-8 max-w-3xl text-center">
           <h2 className="text-3xl font-extrabold text-white sm:text-5xl">Check Your Coverage</h2>
