@@ -2,50 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-:root {
-  --bg: #080807;
-  --accent: #FF4500;
-  --accent-hover: #FF6020;
-  --accent-glow: rgba(255, 69, 0, 0.15);
-  --text-primary: #F2F2F0;
-  --text-muted: #737370;
-  --border: rgba(255, 255, 255, 0.07);
-}
-
-html,
-body {
-  background-color: var(--bg);
-}
-
-/* Texture layers */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-  opacity: 0.045;
-  mix-blend-mode: overlay;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 72px 72px;
-}
-
-/* Ensure content sits above textures */
-* {
-  position: relative;
-  z-index: 1;
-}
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -1248,39 +1204,49 @@ html {
   display: none !important;
 }
 
-/* Hero glow - orange bleed */
-.hero-glow::before {
+/* Hide console warnings in production (optional) */
+.console-warning {
+  display: none !important;
+}
+
+/* Website textures */
+.texture-grain::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse 75% 50% at 50% -5%,
-    rgba(255, 69, 0, 0.12),
-    transparent 70%
-  );
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
   pointer-events: none;
   z-index: 0;
 }
 
-/* Section spacing */
-.section-spaced {
-  padding-top: 100px;
-  padding-bottom: 100px;
+.texture-dots::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.section-divider {
-  border-top: 1px solid var(--border);
+/* Smooth element polish */
+.hero-vignette {
+  box-shadow: inset 0 0 120px rgba(0,0,0,0.4);
 }
 
-/* Typography hierarchy */
-.eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent);
+.cta-highlight {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
-/* Hide console warnings in production (optional) */
-.console-warning {
-  display: none !important;
+.service-card-highlight {
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Ensure content sits above textures */
+.texture-grain > *,
+.texture-dots > * {
+  position: relative;
+  z-index: 1;
 }

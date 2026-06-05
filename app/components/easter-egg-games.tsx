@@ -221,7 +221,7 @@ const EasterEggGames = () => {
     if (!isClient) return
     const isHomepage = window.location.pathname === '/' || window.location.pathname === ''
     // Always use random chance on each page load (don't store in sessionStorage)
-    const show = Math.random() < 0.7 // 70% chance on each page load
+    const show = Math.random() < 0.8 // 80% chance on each page load
     setTimeout(() => setShouldRenderGames(show && isHomepage), 0)
   }, [isClient])
 
@@ -526,13 +526,13 @@ const EasterEggGames = () => {
 
   // ── JSX ───────────────────────────────────────────────────────────────────
   return (
-    <section className="section-spaced section-divider relative overflow-hidden text-white sm:py-20">
+    <section className="relative overflow-hidden border-y border-zinc-900 bg-[radial-gradient(circle_at_16%_15%,rgba(249,115,22,0.12),transparent_38%),radial-gradient(circle_at_82%_80%,rgba(249,115,22,0.09),transparent_36%),linear-gradient(to_bottom,#070708,#0a0a0c)] py-10 sm:py-20 text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="eyebrow mb-2">Easter Eggs</p>
-          <h2 className="mt-2 text-3xl font-black sm:text-5xl text-[#F2F2F0]">Play While You Wait</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f97316]">Easter Eggs</p>
+          <h2 className="mt-2 text-3xl font-black sm:text-5xl">Play While You Wait</h2>
           <p className="mt-3 text-sm text-zinc-300 sm:text-base">Two mini games hidden in the site.</p>
           <p className="mt-3 inline-flex items-center rounded-full border border-zinc-700 bg-zinc-900/90 px-4 py-1.5 text-sm font-bold text-zinc-200">
             Global Best: <span className="ml-2 text-[#f97316]">{globalBest}</span>
