@@ -77,7 +77,7 @@ const Hero = () => {
   return (
     <section
       id="hero-section"
-      className="hero-vignette relative min-h-[76vh] overflow-hidden bg-[#050505] text-white lg:min-h-[84vh]"
+      className="metal-bg relative min-h-[76vh] overflow-hidden text-white lg:min-h-[84vh]"
       onMouseMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect()
         const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2
@@ -90,7 +90,7 @@ const Hero = () => {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url('${heroImageUrl}')` }}
       />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.82),rgba(0,0,0,0.58)_48%,rgba(0,0,0,0.78)),linear-gradient(to_bottom,rgba(0,0,0,0.35),rgba(0,0,0,0.95))]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.55)_100%)]" />
       <div className="hero-grid absolute inset-0 opacity-10" />
 
       <div
@@ -159,14 +159,14 @@ const Hero = () => {
 
       <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-6 pt-32 text-center sm:px-6 lg:px-8 lg:pb-10 lg:pt-40">
         <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#f97316]" />
-        <h1 className="mt-6 max-w-5xl text-4xl font-black leading-[0.9] tracking-[-0.02em] sm:text-5xl lg:text-8xl">
+        <h1 className="mt-6 max-w-5xl font-black leading-[0.9] tracking-[-0.03em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
           <span className="block text-[#f97316] drop-shadow-[0_0_24px_rgba(243,111,0,0.35)]">We Build Better</span>
-          <span className="block min-h-[1.05em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]">
+          <span className="block min-h-[1.05em]">
             {displayText}
           </span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-zinc-300 sm:mt-8 sm:text-lg lg:text-xl">
+        <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-[#9ca3af] sm:mt-8 sm:text-lg lg:text-xl">
           From blazing-fast Fibre &amp; Wireless to expert PC repairs and full network engineering - we keep Riebeek Valley connected.
         </p>
 

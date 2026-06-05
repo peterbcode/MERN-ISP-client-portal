@@ -526,13 +526,16 @@ const EasterEggGames = () => {
 
   // ── JSX ───────────────────────────────────────────────────────────────────
   return (
-    <section className="bg-saas-dark relative overflow-hidden py-10 sm:py-20 text-white">
+    <section className="relative overflow-hidden py-10 sm:py-20 text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f97316]">Easter Eggs</p>
-          <h2 className="mt-2 text-3xl font-black sm:text-5xl">Play While You Wait</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#ff6a00]">Easter Eggs</p>
+          <h2 className="relative inline-block mt-2 text-3xl font-black sm:text-5xl">
+            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff6a00]"></span>
+            Play While You Wait
+          </h2>
           <p className="mt-3 text-sm text-zinc-300 sm:text-base">Two mini games hidden in the site.</p>
           <p className="mt-3 inline-flex items-center rounded-full border border-zinc-700 bg-zinc-900/90 px-4 py-1.5 text-sm font-bold text-zinc-200">
             Global Best: <span className="ml-2 text-[#f97316]">{globalBest}</span>

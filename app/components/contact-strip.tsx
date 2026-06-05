@@ -82,10 +82,13 @@ const ContactStrip = () => {
   const resultMessage = getResultMessage()
 
   return (
-    <section className="texture-metal-dark scroll-mt-28 py-16 text-white sm:py-20">
+    <section className="relative scroll-mt-28 py-16 text-white sm:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto mb-8 max-w-3xl text-center">
-          <h2 className="text-3xl font-extrabold text-white sm:text-5xl">Check Your Coverage</h2>
+          <h2 className="relative inline-block text-3xl font-extrabold text-white sm:text-5xl">
+            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff6a00]"></span>
+            Check Your Coverage
+          </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-zinc-300 sm:text-lg">
             Enter your address to see if we provide service in your area.
           </p>

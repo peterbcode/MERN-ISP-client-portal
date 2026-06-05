@@ -65,10 +65,10 @@ const SiteFooter = () => {
   }
 
   return (
-    <footer className="texture-grain relative border-t border-zinc-800 bg-[#060607] text-zinc-300">
-      <div className="h-1 bg-gradient-to-r from-transparent via-[#f97316] to-transparent" />
+    <footer className="metal-bg relative border-t border-white/6 text-zinc-300">
+      <div className="h-1 bg-gradient-to-r from-transparent via-[#ff6a00] to-transparent" />
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 border-b border-zinc-800/80 pb-12 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 border-b border-white/6 pb-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <p className="text-3xl font-black tracking-tight text-zinc-100">
               <span className="text-[#f97316]">VALLEY</span> COMPUTERS
@@ -101,11 +101,11 @@ const SiteFooter = () => {
 
           <div>
             <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Services</h3>
-            <div className="mt-3 h-0.5 w-[4.5rem] bg-[#f97316]" />
+            <div className="mt-3 h-0.5 w-[4.5rem] bg-[#ff6a00]" />
             <ul className="mt-5 space-y-3 text-base text-zinc-400">
               {services.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="transition hover:text-[#f97316]">
+                  <Link href={item.href} className="transition hover:text-[#ff8c00]">
                     {item.label}
                   </Link>
                 </li>
@@ -115,11 +115,11 @@ const SiteFooter = () => {
 
           <div>
             <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Support Hub</h3>
-            <div className="mt-3 h-0.5 w-28 bg-[#f97316]" />
+            <div className="mt-3 h-0.5 w-28 bg-[#ff6a00]" />
             <ul className="mt-5 space-y-3 text-base text-zinc-400">
               {supportHub.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="transition hover:text-[#f97316]">
+                  <Link href={item.href} className="transition hover:text-[#ff8c00]">
                     {item.label}
                   </Link>
                 </li>
@@ -129,7 +129,7 @@ const SiteFooter = () => {
 
           <div>
             <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Stay Connected</h3>
-            <div className="mt-3 h-0.5 w-32 bg-[#f97316]" />
+            <div className="mt-3 h-0.5 w-32 bg-[#ff6a00]" />
             <p className="mt-8 text-sm font-bold uppercase tracking-[0.14em] text-zinc-300">
               Join our mailing list
             </p>

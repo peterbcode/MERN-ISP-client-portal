@@ -97,10 +97,13 @@ const SuccessStories = () => {
   }, [maxIndex])
 
   return (
-    <section id="testimonials" className="texture-metal-dark relative scroll-mt-28 py-20 text-white">
+    <section id="testimonials" className="relative scroll-mt-28 py-20 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto mb-14 max-w-3xl text-center">
-          <h2 className="text-3xl font-black sm:text-5xl">Success Stories</h2>
+          <h2 className="relative inline-block text-3xl font-black sm:text-5xl">
+            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff6a00]"></span>
+            Success Stories
+          </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-zinc-300 sm:text-lg">
             Real results from businesses and homes we have connected across the valley.
           </p>
@@ -108,7 +111,7 @@ const SuccessStories = () => {
 
         {/* Testimonials Carousel */}
         <AnimatedSection direction="up" delay={200} className="relative">
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#15181b]/80 backdrop-blur-sm">
+          <div className="relative overflow-hidden rounded-3xl border border-white/8 bg-[#16181c] backdrop-blur-sm">
             <div
               className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(-${activeIndex * 100}%)` }}
@@ -118,20 +121,20 @@ const SuccessStories = () => {
                   key={storyIndex}
                   className="w-full flex-shrink-0 px-8 py-12 sm:px-12 lg:px-16"
                 >
-                  <div className="mx-auto max-w-4xl border-l-4 border-[#FF4500] bg-white/[0.035] px-6 py-8 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:px-10">
+                  <div className="mx-auto max-w-4xl border-l-[3px] border-[#ff6a00] bg-white/[0.035] px-6 py-8 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:px-10">
                     <div className="mb-6 flex justify-center">
                       <div className="relative">
-                        <div className="h-20 w-20 rounded-full border-2 border-[#FF4500] bg-gradient-to-br from-[#FF4500] to-[#FF4500] shadow-[0_8px_24px_rgba(20,184,166,0.18)] flex items-center justify-center text-2xl font-bold text-black">
+                        <div className="h-20 w-20 rounded-full border-2 border-[#ff6a00] bg-gradient-to-br from-[#ff6a00] to-[#ff6a00] shadow-[0_8px_24px_rgba(255,106,0,0.18)] flex items-center justify-center text-2xl font-bold text-black">
                           {story.author.charAt(0)}
                         </div>
-                        <div className="absolute -bottom-2 -right-2 rounded-full bg-[#FF4500] p-1.5">
+                        <div className="absolute -bottom-2 -right-2 rounded-full bg-[#ff6a00] p-1.5">
                           <StarIcon className="h-4 w-4 text-white" />
                         </div>
                       </div>
                     </div>
                     
                     <div className="mb-5 text-center">
-                      <p className="text-sm font-bold text-white">{story.author}</p>
+                      <p className="text-sm font-bold text-[#e8ecf0]">{story.author}</p>
                       <div className="mt-2 flex items-center justify-center gap-1">
                         {[...Array(story.rating)].map((_, i) => (
                           <StarIcon
@@ -142,12 +145,12 @@ const SuccessStories = () => {
                           />
                         ))}
                       </div>
-                      <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
+                      <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
                         {story.role} • {story.location}
                       </p>
                     </div>
-                    
-                    <blockquote className="mb-6 text-xl leading-relaxed text-zinc-100 sm:text-2xl">
+
+                    <blockquote className="mb-6 text-xl leading-relaxed text-[#9ca3af] sm:text-2xl">
                       "{story.quote}"
                     </blockquote>
                     <p className="text-center text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">

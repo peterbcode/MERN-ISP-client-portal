@@ -24,7 +24,7 @@ const Page = () => {
       <Navbar />
       <Hero />
       <BrandCarousel />
-      <section className="relative bg-[#050505]">
+      <section className="relative bg-[#0a0a0b]">
         <Services />
         <Gallery />
         <SuccessStories />

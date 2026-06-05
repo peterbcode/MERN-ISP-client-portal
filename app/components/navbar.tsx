@@ -114,7 +114,7 @@ export default function Navbar() {
         as="nav"
         className={`transition-all duration-300 ${
           isScrolled
-            ? 'fixed left-0 right-0 top-0 border-b border-white/10 bg-[#090b0e]/95 shadow-[0_8px_28px_rgba(0,0,0,0.55)] backdrop-blur supports-[backdrop-filter]:bg-[#090b0e]/86'
+            ? 'fixed left-0 right-0 top-0 border-b border-white/6 metal-bg shadow-[0_8px_28px_rgba(0,0,0,0.55)] backdrop-blur supports-[backdrop-filter]:bg-[#111214]/86'
             : 'absolute inset-x-0 top-10 bg-gradient-to-b from-black/42 to-transparent'
         }`}
       >
@@ -147,17 +147,17 @@ export default function Navbar() {
                     <button
                       key={item.name}
                       onClick={(e) => handleAnchorNavigation(item.href, e)}
-                      className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
+                      className={`relative text-[13px] font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
                         isScrolled
-                          ? 'text-white hover:text-[#FF4500]'
+                          ? 'text-[#d1d5db] hover:text-[#ff6a00]'
                           : isActive(item.href)
-                            ? 'text-white'
-                            : 'text-white/90 hover:text-[#FF4500]'
+                            ? 'text-[#ff6a00]'
+                            : 'text-[#d1d5db] hover:text-[#ff6a00]'
                       }`}
                     >
                       <span className="relative">
                         {item.name}
-                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#FF4500] transition-all duration-300 group-hover:w-full"></span>
+                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#ff6a00] transition-all duration-300 group-hover:w-full"></span>
                       </span>
                     </button>
                   ) : (
@@ -165,17 +165,17 @@ export default function Navbar() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
+                      className={`relative text-[13px] font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
                         isScrolled
-                          ? 'text-white hover:text-[#FF4500]'
+                          ? 'text-[#d1d5db] hover:text-[#ff6a00]'
                           : isActive(item.href)
-                            ? 'text-white'
-                            : 'text-white/90 hover:text-[#FF4500]'
+                            ? 'text-[#ff6a00]'
+                            : 'text-[#d1d5db] hover:text-[#ff6a00]'
                       }`}
                     >
                       <span className="relative">
                         {item.name}
-                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#FF4500] transition-all duration-300 group-hover:w-full"></span>
+                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#ff6a00] transition-all duration-300 group-hover:w-full"></span>
                       </span>
                     </Link>
                   )

@@ -63,6 +63,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   color: #d4d4d4;
+  background-color: #0a0a0b;
 }
 
 /* Only hide cursor when custom cursor is active */
@@ -243,7 +244,7 @@ h4,
 h5,
 h6 {
   font-family: var(--font-sans), var(--font-inter), Arial, Helvetica, sans-serif;
-  font-weight: 680;
+  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.04;
   color: #f3f4f6;
@@ -1265,6 +1266,16 @@ html {
   z-index: 0;
 }
 
+/* Metal background for SaaS redesign */
+.metal-bg {
+  background-color: #111214;
+  background-image:
+    linear-gradient(160deg, rgba(255,106,0,0.04) 0%, rgba(255,255,255,0) 60%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 100% 100%, 256px 256px;
+}
+
 .texture-dots::before {
   content: '';
   position: absolute;
@@ -1301,4 +1312,18 @@ html {
 .texture-dots > * {
   position: relative;
   z-index: 1;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ff6a00;
+  border-radius: 3px;
 }

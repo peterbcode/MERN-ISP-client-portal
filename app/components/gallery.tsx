@@ -150,7 +150,7 @@ function GalleryCard({ item, index }: { item: (typeof galleryItems)[number]; ind
 const Gallery = () => (
   <section
     id="gallerySection"
-    className="bg-saas-dark relative scroll-mt-28 overflow-hidden py-20 text-white sm:py-24"
+    className="relative scroll-mt-28 overflow-hidden py-20 text-white sm:py-24"
   >
     <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <AnimatedSection direction="up" className="mb-10">
@@ -160,7 +160,8 @@ const Gallery = () => (
               <Camera className="h-4 w-4" aria-hidden="true" />
               Field Portfolio
             </p>
-            <h2 className="heading-compact max-w-3xl text-4xl font-bold leading-[1.04] tracking-tight text-white sm:text-5xl">
+            <h2 className="heading-compact relative inline-block max-w-3xl text-4xl font-bold leading-[1.04] tracking-tight text-white sm:text-5xl">
+              <span className="absolute -top-3 left-0 h-[2px] w-8 bg-[#ff6a00]"></span>
               Real installations, local coverage, practical network work.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-300">
