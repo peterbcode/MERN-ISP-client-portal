@@ -152,9 +152,6 @@ const Gallery = () => (
     id="gallerySection"
     className="bg-saas-dark relative scroll-mt-28 overflow-hidden py-20 text-white sm:py-24"
   >
-    <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(115deg,rgba(245,158,11,.12),transparent_34%),linear-gradient(245deg,rgba(20,184,166,.1),transparent_32%)] opacity-50" />
-    <div className="hero-grid absolute inset-0 opacity-10" />
-
     <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <AnimatedSection direction="up" className="mb-10">
         <div className="grid gap-8 lg:grid-cols-[1fr_420px] lg:items-end">
