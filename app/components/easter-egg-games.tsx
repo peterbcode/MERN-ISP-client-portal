@@ -526,7 +526,7 @@ const EasterEggGames = () => {
 
   // ── JSX ───────────────────────────────────────────────────────────────────
   return (
-    <section className="bg-saas-dark relative overflow-hidden border-y border-zinc-900 py-10 sm:py-20 text-white">
+    <section className="bg-saas-dark relative overflow-hidden py-10 sm:py-20 text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}

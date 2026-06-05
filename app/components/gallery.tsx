@@ -150,7 +150,7 @@ function GalleryCard({ item, index }: { item: (typeof galleryItems)[number]; ind
 const Gallery = () => (
   <section
     id="gallerySection"
-    className="bg-saas-dark relative scroll-mt-28 overflow-hidden border-y border-white/10 py-20 text-white sm:py-24"
+    className="bg-saas-dark relative scroll-mt-28 overflow-hidden py-20 text-white sm:py-24"
   >
     <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(115deg,rgba(245,158,11,.12),transparent_34%),linear-gradient(245deg,rgba(20,184,166,.1),transparent_32%)] opacity-50" />
     <div className="hero-grid absolute inset-0 opacity-10" />
