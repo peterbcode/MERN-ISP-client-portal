@@ -72,7 +72,7 @@ export default function Navbar() {
 
   return (
     <header className="relative z-50 w-full">
-      <div className="relative z-[60] border-b border-[rgba(255,255,255,0.07)] bg-[#080807] text-white">
+      <div className="relative z-[60] border-b border-[rgba(249, 115, 22, 1)] bg-[#080807] text-white">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-3 text-[10px] font-medium sm:px-6 sm:text-xs lg:px-8">
           <div className="hidden items-center gap-5 md:flex">
             <a
