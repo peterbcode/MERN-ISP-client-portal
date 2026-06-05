@@ -221,7 +221,7 @@ const EasterEggGames = () => {
     if (!isClient) return
     const isHomepage = window.location.pathname === '/' || window.location.pathname === ''
     // Always use random chance on each page load (don't store in sessionStorage)
-    const show = Math.random() < 0.7 // 70% chance on each page load
+    const show = Math.random() < 0.8 // 80% chance on each page load
     setTimeout(() => setShouldRenderGames(show && isHomepage), 0)
   }, [isClient])
 

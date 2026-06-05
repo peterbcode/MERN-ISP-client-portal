@@ -77,7 +77,7 @@ const Hero = () => {
   return (
     <section
       id="hero-section"
-      className="hero-glow relative min-h-[76vh] overflow-hidden bg-[#050505] text-white lg:min-h-[84vh]"
+      className="hero-glow relative min-h-[76vh] overflow-hidden text-white lg:min-h-[84vh]"
       onMouseMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect()
         const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2
