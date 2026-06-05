@@ -1,4 +1,4 @@
-'use client'
+ï»¿'use client'
 
 import { useEffect, useState } from 'react'
 import {
@@ -143,7 +143,7 @@ const SuccessStories = () => {
                         ))}
                       </div>
                       <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
-                        {story.role} • {story.location}
+                        {story.role} â€¢ {story.location}
                       </p>
                     </div>
                     
@@ -151,7 +151,7 @@ const SuccessStories = () => {
                       "{story.quote}"
                     </blockquote>
                     <p className="text-center text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
-                      {story.company} • {story.date}
+                      {story.company} â€¢ {story.date}
                     </p>
                   </div>
                 </div>
@@ -224,4 +224,5 @@ const SuccessStories = () => {
 }
 
 export default SuccessStories
+
 
