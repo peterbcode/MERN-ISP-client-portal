@@ -97,7 +97,7 @@ const SuccessStories = () => {
   }, [maxIndex])
 
   return (
-    <section id="testimonials" className="texture-dots relative scroll-mt-28 bg-[linear-gradient(to_bottom,#101215,#0c0e11)] py-20 text-white">
+    <section id="testimonials" className="section-spaced relative scroll-mt-28 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto mb-14 max-w-3xl text-center">
           <h2 className="text-3xl font-black sm:text-5xl">Success Stories</h2>
