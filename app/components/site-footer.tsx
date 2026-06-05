@@ -65,13 +65,13 @@ const SiteFooter = () => {
   }
 
   return (
-    <footer className="texture-grain relative bg-[#060607] text-zinc-300">
-      <div className="h-1 bg-gradient-to-r from-transparent via-[#f97316] to-transparent" />
+    <footer className="texture-grain relative section-divider bg-[#060607] text-zinc-300">
+      <div className="h-1 bg-gradient-to-r from-transparent via-[#FF4500] to-transparent" />
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 border-b border-zinc-800/80 pb-12 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 border-b border-[rgba(255,255,255,0.07)] pb-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <p className="text-3xl font-black tracking-tight text-zinc-100">
-              <span className="text-[#f97316]">VALLEY</span> COMPUTERS
+              <span className="text-[#FF4500]">VALLEY</span> COMPUTERS
             </p>
             <p className="mt-5 max-w-sm text-base leading-relaxed text-zinc-400">
               Powering the Riebeek Valley with high-speed connectivity and precision IT engineering.
@@ -83,7 +83,7 @@ const SiteFooter = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-lg font-bold text-zinc-200 transition hover:border-[#f97316] hover:bg-zinc-800 hover:text-zinc-100"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-lg font-bold text-zinc-200 transition hover:border-[#FF4500] hover:bg-zinc-800 hover:text-zinc-100"
               >
                 <Facebook className="h-5 w-5" />
               </a>
@@ -101,11 +101,11 @@ const SiteFooter = () => {
 
           <div>
             <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Services</h3>
-            <div className="mt-3 h-0.5 w-[4.5rem] bg-[#f97316]" />
+            <div className="mt-3 h-0.5 w-[4.5rem] bg-[#FF4500]" />
             <ul className="mt-5 space-y-3 text-base text-zinc-400">
               {services.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="transition hover:text-[#f97316]">
+                  <Link href={item.href} className="transition hover:text-[#FF4500]">
                     {item.label}
                   </Link>
                 </li>
@@ -115,11 +115,11 @@ const SiteFooter = () => {
 
           <div>
             <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Support Hub</h3>
-            <div className="mt-3 h-0.5 w-28 bg-[#f97316]" />
+            <div className="mt-3 h-0.5 w-28 bg-[#FF4500]" />
             <ul className="mt-5 space-y-3 text-base text-zinc-400">
               {supportHub.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="transition hover:text-[#f97316]">
+                  <Link href={item.href} className="transition hover:text-[#FF4500]">
                     {item.label}
                   </Link>
                 </li>
@@ -129,7 +129,7 @@ const SiteFooter = () => {
 
           <div>
             <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Stay Connected</h3>
-            <div className="mt-3 h-0.5 w-32 bg-[#f97316]" />
+            <div className="mt-3 h-0.5 w-32 bg-[#FF4500]" />
             <p className="mt-8 text-sm font-bold uppercase tracking-[0.14em] text-zinc-300">
               Join our mailing list
             </p>
@@ -156,7 +156,7 @@ const SiteFooter = () => {
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="inline-flex items-center justify-center gap-2 bg-[#f97316] px-4 text-sm font-bold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex items-center justify-center gap-2 bg-[#FF4500] px-4 text-sm font-bold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 <PaperAirplaneIcon className="h-4 w-4" />
                 {status === 'loading' ? 'Joining' : 'Subscribe'}
@@ -178,22 +178,22 @@ const SiteFooter = () => {
                 href="https://www.google.com/maps/search/?api=1&query=6%20Church%20Rd%2C%20Riebeek-Kasteel%2C%207307"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 transition hover:text-[#f97316]"
+                className="flex items-center gap-2 transition hover:text-[#FF4500]"
               >
-                <MapPinIcon className="h-5 w-5 text-[#f97316]" />
+                <MapPinIcon className="h-5 w-5 text-[#FF4500]" />
                 6 Church Rd, Riebeek-Kasteel, 7307
               </a>
-              <a href="tel:+27799381260" className="flex items-center gap-2 transition hover:text-[#f97316]">
-                <PhoneIcon className="h-5 w-5 text-[#f97316]" />
+              <a href="tel:+27799381260" className="flex items-center gap-2 transition hover:text-[#FF4500]">
+                <PhoneIcon className="h-5 w-5 text-[#FF4500]" />
                 079 938 1260
               </a>
               <a
                 href="https://wa.me/27799381260"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:flex items-center gap-2 transition hover:text-[#f97316]"
+                className="hidden sm:flex items-center gap-2 transition hover:text-[#FF4500]"
               >
-                <ChatBubbleLeftRightIcon className="h-5 w-5 text-[#f97316]" />
+                <ChatBubbleLeftRightIcon className="h-5 w-5 text-[#FF4500]" />
                 WhatsApp
               </a>
             </div>
@@ -205,7 +205,7 @@ const SiteFooter = () => {
             <span>(c) 2026 Riebeek Valley Computers (Pty) Ltd.</span>
             <span>|</span>
             <span className="inline-flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#f97316]" />
+              <span className="h-2 w-2 rounded-full bg-[#FF4500]" />
               Network Status: Online
             </span>
             <span>|</span>

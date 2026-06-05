@@ -25,7 +25,7 @@ const brands = [
 
 const BrandCarousel = () => {
   return (
-    <section className="relative overflow-hidden bg-[#090909] py-8 text-white">
+    <section className="section-spaced relative overflow-hidden text-white py-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.08),transparent_55%)]" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <p className="text-center text-[10px] font-extrabold uppercase tracking-[0.2em] text-zinc-500/95 sm:text-xs">
@@ -42,7 +42,7 @@ const BrandCarousel = () => {
                 href={brand.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex h-20 w-44 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-950/80 px-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#f97316]/60 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-inset"
+                className="group flex h-20 w-44 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-950/80 px-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#FF4500]/60 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-inset"
               >
                 <img
                   src={brand.logo}

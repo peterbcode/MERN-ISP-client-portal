@@ -100,7 +100,7 @@ function drawNetworkPreview(canvas: HTMLCanvasElement, nodes: NodeItem[]) {
   const bw = 220 * s, bh = 36 * s
   ctx.fillStyle = 'rgba(249,115,22,0.15)'; ctx.strokeStyle = 'rgba(249,115,22,0.5)'; ctx.lineWidth = 1.5
   ctx.beginPath(); ctx.roundRect(W / 2 - bw / 2, H / 2 - 64 * s, bw, bh, 18 * s); ctx.fill(); ctx.stroke()
-  ctx.fillStyle = '#f97316'; ctx.font = `bold ${13 * s}px Arial`; ctx.textAlign = 'center'
+  ctx.fillStyle = '#FF4500'; ctx.font = `bold ${13 * s}px Arial`; ctx.textAlign = 'center'
   ctx.fillText('NETWORK REPAIR', W / 2, H / 2 - 41 * s)
   ctx.fillStyle = 'rgba(245,245,245,0.95)'; ctx.font = `bold ${26 * s}px Arial`
   ctx.fillText('Tap Start to Play', W / 2, H / 2 + 8 * s)
@@ -145,7 +145,7 @@ function drawPacketPreview(canvas: HTMLCanvasElement) {
 
   // player
   const px = PACKET_PLAYER_X * s, py = lc(1)
-  ctx.fillStyle = '#f97316'; ctx.shadowColor = 'rgba(249,115,22,0.7)'; ctx.shadowBlur = 12 * s
+  ctx.fillStyle = '#FF4500'; ctx.shadowColor = 'rgba(249,115,22,0.7)'; ctx.shadowBlur = 12 * s
   ctx.beginPath(); ctx.moveTo(px - 13 * s, py - 9 * s); ctx.lineTo(px + 11 * s, py); ctx.lineTo(px - 13 * s, py + 9 * s); ctx.closePath(); ctx.fill()
   ctx.shadowBlur = 0
 
@@ -154,7 +154,7 @@ function drawPacketPreview(canvas: HTMLCanvasElement) {
   const bw = 180 * s, bh = 36 * s
   ctx.fillStyle = 'rgba(249,115,22,0.15)'; ctx.strokeStyle = 'rgba(249,115,22,0.5)'; ctx.lineWidth = 1.5
   ctx.beginPath(); ctx.roundRect(W / 2 - bw / 2, H / 2 - 64 * s, bw, bh, 18 * s); ctx.fill(); ctx.stroke()
-  ctx.fillStyle = '#f97316'; ctx.font = `bold ${13 * s}px Arial`; ctx.textAlign = 'center'
+  ctx.fillStyle = '#FF4500'; ctx.font = `bold ${13 * s}px Arial`; ctx.textAlign = 'center'
   ctx.fillText('PACKET RUSH', W / 2, H / 2 - 41 * s)
   ctx.fillStyle = 'rgba(245,245,245,0.95)'; ctx.font = `bold ${26 * s}px Arial`
   ctx.fillText('Tap Start to Play', W / 2, H / 2 + 8 * s)
@@ -461,7 +461,7 @@ const EasterEggGames = () => {
       packetObstacles.current = packetObstacles.current.filter(o => o.x + o.w > -20)
 
       const px = playerX * s, py = playerY * s
-      ctx.fillStyle = '#f97316'; ctx.shadowColor = 'rgba(249,115,22,0.7)'; ctx.shadowBlur = 14 * s
+      ctx.fillStyle = '#FF4500'; ctx.shadowColor = 'rgba(249,115,22,0.7)'; ctx.shadowBlur = 14 * s
       ctx.beginPath()
       ctx.moveTo(px - 13 * s, py - 9 * s); ctx.lineTo(px + 11 * s, py); ctx.lineTo(px - 13 * s, py + 9 * s)
       ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0
@@ -526,27 +526,27 @@ const EasterEggGames = () => {
 
   // ── JSX ───────────────────────────────────────────────────────────────────
   return (
-    <section className="section-spaced section-divider relative overflow-hidden text-white sm:py-20">
+    <section className="relative overflow-hidden bg-[radial-gradient(circle_at_16%_15%,rgba(249,115,22,0.12),transparent_38%),radial-gradient(circle_at_82%_80%,rgba(249,115,22,0.09),transparent_36%),linear-gradient(to_bottom,#070708,#0a0a0c)] py-10 sm:py-20 text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="eyebrow mb-2">Easter Eggs</p>
-          <h2 className="mt-2 text-3xl font-black sm:text-5xl text-[#F2F2F0]">Play While You Wait</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF4500]">Easter Eggs</p>
+          <h2 className="mt-2 text-3xl font-black sm:text-5xl">Play While You Wait</h2>
           <p className="mt-3 text-sm text-zinc-300 sm:text-base">Two mini games hidden in the site.</p>
           <p className="mt-3 inline-flex items-center rounded-full border border-zinc-700 bg-zinc-900/90 px-4 py-1.5 text-sm font-bold text-zinc-200">
-            Global Best: <span className="ml-2 text-[#f97316]">{globalBest}</span>
+            Global Best: <span className="ml-2 text-[#FF4500]">{globalBest}</span>
           </p>
         </div>
 
         {/* Tab switcher */}
         <div className="mx-auto mt-6 flex max-w-xs rounded-xl border border-zinc-700 bg-zinc-900 p-1">
           <button type="button" onClick={() => setActiveGame('network')}
-            className={`w-1/2 rounded-lg px-3 py-2 text-sm font-bold transition ${canShowNetwork ? 'bg-[#f97316] text-white' : 'text-zinc-300'}`}>
+            className={`w-1/2 rounded-lg px-3 py-2 text-sm font-bold transition ${canShowNetwork ? 'bg-[#FF4500] text-white' : 'text-zinc-300'}`}>
             Network Repair
           </button>
           <button type="button" onClick={() => setActiveGame('packet')}
-            className={`w-1/2 rounded-lg px-3 py-2 text-sm font-bold transition ${canShowPacket ? 'bg-[#f97316] text-white' : 'text-zinc-300'}`}>
+            className={`w-1/2 rounded-lg px-3 py-2 text-sm font-bold transition ${canShowPacket ? 'bg-[#FF4500] text-white' : 'text-zinc-300'}`}>
             Packet Rush
           </button>
         </div>
@@ -566,7 +566,7 @@ const EasterEggGames = () => {
                 <span className="rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1">{networkScore}</span>
                 <span className="rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1 text-zinc-400">Best {networkBest}</span>
                 <button type="button" onClick={startNetworkGame}
-                  className="rounded bg-[#f97316] px-3 py-1 font-bold text-white">
+                  className="rounded bg-[#FF4500] px-3 py-1 font-bold text-white">
                   {networkRunning ? 'Restart' : 'Start'}
                 </button>
               </div>
@@ -600,7 +600,7 @@ const EasterEggGames = () => {
                 <span className="rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1 text-zinc-400">Best {packetBest}</span>
                 <span className="rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1 text-zinc-400">{packetGames}×</span>
                 <button type="button" onClick={startPacketGame}
-                  className="rounded bg-[#f97316] px-3 py-1 font-bold text-white">
+                  className="rounded bg-[#FF4500] px-3 py-1 font-bold text-white">
                   {packetRunning ? 'Restart' : 'Start'}
                 </button>
               </div>

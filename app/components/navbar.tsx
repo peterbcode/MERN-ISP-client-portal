@@ -72,14 +72,14 @@ export default function Navbar() {
 
   return (
     <header className="relative z-50 w-full">
-      <div className="relative z-[60] border-b border-white/10 bg-[#101215] text-white">
+      <div className="relative z-[60] border-b border-[rgba(255,255,255,0.07)] bg-[#080807] text-white">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-3 text-[10px] font-medium sm:px-6 sm:text-xs lg:px-8">
           <div className="hidden items-center gap-5 md:flex">
             <a
               href="https://www.google.com/maps/search/?api=1&query=6%20Church%20Rd%2C%20Riebeek-Kasteel%2C%207307"
               target="_blank"
               rel="noopener noreferrer"
-              className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-[#f97316] transition-all duration-200 hover:text-[#fb923c] hover:scale-105"
+              className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-[#FF4500] transition-all duration-200 hover:text-[#FF6020] hover:scale-105"
             >
               <MapPinIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               6 Church Rd, Riebeek-Kasteel, 7307
@@ -89,7 +89,7 @@ export default function Navbar() {
               href="mailto:info@valley-computers.co.za" 
               aria-label="Send email to info@valley-computers.co.za"
               title="Send email to info@valley-computers.co.za"
-              className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-[#f97316] transition-colors duration-200 hover:text-[#fb923c] cursor-pointer"
+              className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-[#FF4500] transition-colors duration-200 hover:text-[#FF6020] cursor-pointer"
             >
               <EnvelopeIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               info@valley-computers.co.za
@@ -100,7 +100,7 @@ export default function Navbar() {
               href={phoneHref}
               aria-label="Call Valley Computers at 079 938 1260"
               title="Call 079 938 1260"
-              className="no-accent-hover relative z-10 flex touch-manipulation items-center gap-1.5 whitespace-nowrap text-[#f97316] transition-all duration-200 hover:scale-105 hover:text-[#fb923c]"
+              className="no-accent-hover relative z-10 flex touch-manipulation items-center gap-1.5 whitespace-nowrap text-[#FF4500] transition-all duration-200 hover:scale-105 hover:text-[#FF6020]"
             >
               <PhoneIcon className="h-3.5 w-3.5 stroke-[2.25]" />
               <span className="hidden font-bold sm:inline">Call Us:</span>
@@ -128,7 +128,7 @@ export default function Navbar() {
               >
                 <span className="flex items-center transition-all duration-300 ease-out hover:scale-105">
                   <span className={`text-[1.05rem] font-black tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out ${
-                    isScrolled ? 'text-[#f97316]' : 'text-[#f97316]'
+                    isScrolled ? 'text-[#FF4500]' : 'text-[#FF4500]'
                   }`}>
                     VALLEY
                   </span>
@@ -149,15 +149,15 @@ export default function Navbar() {
                       onClick={(e) => handleAnchorNavigation(item.href, e)}
                       className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
                         isScrolled
-                          ? 'text-white hover:text-[#f97316]'
+                          ? 'text-white hover:text-[#FF4500]'
                           : isActive(item.href)
                             ? 'text-white'
-                            : 'text-white/90 hover:text-[#f97316]'
+                            : 'text-white/90 hover:text-[#FF4500]'
                       }`}
                     >
                       <span className="relative">
                         {item.name}
-                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#f97316] transition-all duration-300 group-hover:w-full"></span>
+                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#FF4500] transition-all duration-300 group-hover:w-full"></span>
                       </span>
                     </button>
                   ) : (
@@ -167,15 +167,15 @@ export default function Navbar() {
                       href={item.href}
                       className={`relative text-[15px] font-semibold transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
                         isScrolled
-                          ? 'text-white hover:text-[#f97316]'
+                          ? 'text-white hover:text-[#FF4500]'
                           : isActive(item.href)
                             ? 'text-white'
-                            : 'text-white/90 hover:text-[#f97316]'
+                            : 'text-white/90 hover:text-[#FF4500]'
                       }`}
                     >
                       <span className="relative">
                         {item.name}
-                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#f97316] transition-all duration-300 group-hover:w-full"></span>
+                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#FF4500] transition-all duration-300 group-hover:w-full"></span>
                       </span>
                     </Link>
                   )
@@ -184,7 +184,7 @@ export default function Navbar() {
                   <MenuButton className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition ${
                     isScrolled
                       ? 'border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20 hover:text-white'
-                      : 'border-white/20 bg-white/5 text-white/95 hover:border-[#f97316]/60 hover:bg-white/10 hover:text-[#f97316]'
+                      : 'border-white/20 bg-white/5 text-white/95 hover:border-[#FF4500]/60 hover:bg-white/10 hover:text-[#FF4500]'
                   }`}>
                     <ChevronDownIcon className="h-5 w-5" />
                   </MenuButton>
@@ -193,8 +193,8 @@ export default function Navbar() {
                       {({ focus }) => (
                         <Link
                           href="/faq"
-                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#f97316] ${
-                            focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
+                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#FF4500] ${
+                            focus ? 'bg-white/12 text-[#FF4500]' : 'text-white/95'
                           }`}
                         >
                           FAQ
@@ -205,8 +205,8 @@ export default function Navbar() {
                       {({ focus }) => (
                         <Link
                           href="/login"
-                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#f97316] ${
-                            focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
+                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#FF4500] ${
+                            focus ? 'bg-white/12 text-[#FF4500]' : 'text-white/95'
                           }`}
                         >
                           Login
@@ -217,8 +217,8 @@ export default function Navbar() {
                       {({ focus }) => (
                         <Link
                           href="/signup"
-                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#f97316] ${
-                            focus ? 'bg-white/12 text-[#f97316]' : 'text-white/95'
+                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#FF4500] ${
+                            focus ? 'bg-white/12 text-[#FF4500]' : 'text-white/95'
                           }`}
                         >
                           Sign Up
@@ -233,7 +233,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => router.push('/signup')}
-                  className="rounded-full bg-[#f97316] px-6 py-2.5 text-sm font-bold text-white shadow-[0_10px_24px_rgba(243,111,0,0.3)] ring-1 ring-[#f8a258]/40 transition-all hover:-translate-y-0.5 hover:brightness-110 lg:px-7 lg:py-3"
+                  className="rounded-full bg-[#FF4500] px-6 py-2.5 text-sm font-bold text-white shadow-[0_10px_24px_rgba(243,111,0,0.3)] ring-1 ring-[#f8a258]/40 transition-all hover:-translate-y-0.5 hover:brightness-110 lg:px-7 lg:py-3"
                 >
                   Partner With Us
                 </button>
@@ -279,7 +279,7 @@ export default function Navbar() {
                               handleAnchorNavigation(item.href, e)
                               close()
                             }}
-                            className="block w-full rounded-lg px-4 py-3 text-left text-base font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/10 hover:text-[#f97316]"
+                            className="block w-full rounded-lg px-4 py-3 text-left text-base font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/10 hover:text-[#FF4500]"
                           >
                             {item.name}
                           </button>
@@ -289,7 +289,7 @@ export default function Navbar() {
                             as={Link}
                             key={item.name}
                             href={item.href}
-                            className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316]"
+                            className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#FF4500]"
                           >
                             {item.name}
                           </DisclosureButton>
@@ -302,21 +302,21 @@ export default function Navbar() {
                         <DisclosureButton
                           as={Link}
                           href="/faq"
-                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316]"
+                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#FF4500]"
                         >
                           FAQ
                         </DisclosureButton>
                         <DisclosureButton
                           as={Link}
                           href="/login"
-                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316]"
+                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#FF4500]"
                         >
                           Login
                         </DisclosureButton>
                         <DisclosureButton
                           as={Link}
                           href="/signup"
-                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#f97316]"
+                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#FF4500]"
                         >
                           Sign Up
                         </DisclosureButton>
@@ -327,7 +327,7 @@ export default function Navbar() {
                       <DisclosureButton
                         as={Link}
                         href="/signup"
-                        className="block w-full rounded-full bg-[#f97316] px-6 py-3 text-center text-base font-bold text-white shadow-[0_10px_24px_rgba(243,111,0,0.3)] ring-1 ring-[#f8a258]/40 transition-all hover:-translate-y-0.5 hover:brightness-110"
+                        className="block w-full rounded-full bg-[#FF4500] px-6 py-3 text-center text-base font-bold text-white shadow-[0_10px_24px_rgba(243,111,0,0.3)] ring-1 ring-[#f8a258]/40 transition-all hover:-translate-y-0.5 hover:brightness-110"
                       >
                         Partner With Us
                       </DisclosureButton>

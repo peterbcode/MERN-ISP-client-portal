@@ -77,7 +77,7 @@ const Hero = () => {
   return (
     <section
       id="hero-section"
-      className="hero-vignette relative min-h-[76vh] overflow-hidden bg-[#050505] text-white lg:min-h-[84vh]"
+      className="hero-glow relative min-h-[76vh] overflow-hidden text-white lg:min-h-[84vh]"
       onMouseMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect()
         const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2
@@ -139,12 +139,12 @@ const Hero = () => {
             key={node.id}
             className={`node-pulse absolute rounded-full border shadow-lg ${
               node.type === 'core' 
-                ? 'border-[#f97316]/40 bg-[#f97316]/50 shadow-[0_0_12px_rgba(249,115,22,0.4)]' 
+                ? 'border-[#FF4500]/40 bg-[#FF4500]/50 shadow-[0_0_12px_rgba(249,115,22,0.4)]' 
                 : node.type === 'router'
                 ? 'border-[#22c55e]/30 bg-[#22c55e]/40 shadow-[0_0_8px_rgba(34,197,94,0.3)]'
                 : node.type === 'server'
                 ? 'border-[#3b82f6]/30 bg-[#3b82f6]/40 shadow-[0_0_8px_rgba(59,130,246,0.3)]'
-                : 'border-[#f8a258]/25 bg-[#f97316]/30 shadow-[0_0_6px_rgba(243,111,0,0.2)]'
+                : 'border-[#f8a258]/25 bg-[#FF4500]/30 shadow-[0_0_6px_rgba(243,111,0,0.2)]'
             } ${node.size}`}
             style={{ left: node.x, top: node.y, animationDelay: node.delay }}
           >
@@ -158,9 +158,9 @@ const Hero = () => {
       </div>
 
       <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-6 pt-32 text-center sm:px-6 lg:px-8 lg:pb-10 lg:pt-40">
-        <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#f97316]" />
+        <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#FF4500]" />
         <h1 className="mt-6 max-w-5xl text-4xl font-black leading-[0.9] tracking-[-0.02em] sm:text-5xl lg:text-8xl">
-          <span className="block text-[#f97316] drop-shadow-[0_0_24px_rgba(243,111,0,0.35)]">We Build Better</span>
+          <span className="block text-[#FF4500] drop-shadow-[0_0_24px_rgba(255,69,0,0.35)]">We Build Better</span>
           <span className="block min-h-[1.05em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]">
             {displayText}
           </span>
