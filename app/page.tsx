@@ -24,12 +24,14 @@ const Page = () => {
       <Navbar />
       <Hero />
       <BrandCarousel />
-      <Services />
-      <Gallery />
-      <SuccessStories />
-      <LocalFootprint />
-      <ContactStrip />
-      <EasterEggGames />
+      <section className="relative bg-[#050505]">
+        <Services />
+        <Gallery />
+        <SuccessStories />
+        <LocalFootprint />
+        <ContactStrip />
+        <EasterEggGames />
+      </section>
       <SiteFooter />
       <WhatsAppButton />
     </>

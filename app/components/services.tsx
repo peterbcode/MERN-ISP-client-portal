@@ -50,7 +50,7 @@ const Services = () => {
   return (
     <section
       id="services"
-      className="bg-saas-dark relative scroll-mt-28 py-20 text-white"
+      className="texture-metal-dark relative scroll-mt-28 py-20 text-white"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto max-w-3xl text-center">
