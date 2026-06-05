@@ -526,13 +526,13 @@ const EasterEggGames = () => {
 
   // ── JSX ───────────────────────────────────────────────────────────────────
   return (
-    <section className="relative overflow-hidden bg-[radial-gradient(circle_at_16%_15%,rgba(249,115,22,0.12),transparent_38%),radial-gradient(circle_at_82%_80%,rgba(249,115,22,0.09),transparent_36%),linear-gradient(to_bottom,#070708,#0a0a0c)] py-10 sm:py-20 text-white">
+    <section className="section-spaced section-divider relative overflow-hidden text-white sm:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF4500]">Easter Eggs</p>
-          <h2 className="mt-2 text-3xl font-black sm:text-5xl">Play While You Wait</h2>
+          <p className="eyebrow mb-2">Easter Eggs</p>
+          <h2 className="mt-2 text-3xl font-black sm:text-5xl text-[#F2F2F0]">Play While You Wait</h2>
           <p className="mt-3 text-sm text-zinc-300 sm:text-base">Two mini games hidden in the site.</p>
           <p className="mt-3 inline-flex items-center rounded-full border border-zinc-700 bg-zinc-900/90 px-4 py-1.5 text-sm font-bold text-zinc-200">
             Global Best: <span className="ml-2 text-[#FF4500]">{globalBest}</span>
