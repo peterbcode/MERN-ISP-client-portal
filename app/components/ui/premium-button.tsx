@@ -28,7 +28,7 @@ export const PremiumButton = forwardRef<HTMLButtonElement, PremiumButtonProps>(
     const baseStyles = 'relative inline-flex items-center justify-center rounded-full font-bold transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent will-change-transform'
 
     const variants = {
-      primary: 'bg-black text-white shadow-[0_10px_24px_rgba(0,0,0,0.3)] ring-1 ring-white/40 hover:shadow-[0_10px_24px_rgba(0,0,0,0.4)] hover:-translate-y-0.5 hover:brightness-110 focus:ring-white/50',
+      primary: 'bg-[#ff6a00] text-white shadow-[0_0_16px_rgba(255,106,0,0.3)] hover:shadow-[0_0_20px_rgba(255,106,0,0.4)] hover:-translate-y-0.5 hover:brightness-110 focus:ring-[#ff6a00]/50',
       secondary: 'border border-[rgba(255,106,0,0.4)] bg-transparent text-[#ff6a00] backdrop-blur-sm hover:border-[rgba(255,106,0,0.6)] hover:text-[#ff8c00] focus:ring-zinc-500',
       ghost: 'text-zinc-300 hover:text-white hover:bg-zinc-800/50 focus:ring-zinc-500',
     }
