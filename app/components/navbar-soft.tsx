@@ -37,7 +37,7 @@ export default function NavbarSoft() {
   return (
     <>
       {/* Top Bar - Soft Info */}
-      <div className="bg-accent-primary text-text-inverse py-2">
+      <div className="bg-[#f97316] text-white py-2">
         <div className="container-soft">
           <div className="flex items-center justify-between text-xs">
             <div className="hidden items-center gap-4 md:flex">
