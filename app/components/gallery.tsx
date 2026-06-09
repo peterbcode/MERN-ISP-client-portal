@@ -41,10 +41,24 @@ const galleryItems = [
     caption: 'Coverage across the Riebeek Valley',
     detail: 'Local network, local terrain knowledge',
   },
+  {
+    src: '/gallery/tower-view.jpeg',
+    alt: 'Communication tower view over the valley',
+    tag: 'Infrastructure',
+    caption: 'Strategic tower placement for valley coverage',
+    detail: 'Elevated vantage points for reliable links',
+  },
+  {
+    src: '/gallery/installation.jpeg',
+    alt: 'Professional installation work in progress',
+    tag: 'Installation',
+    caption: 'Expert installation by trained technicians',
+    detail: 'Clean, professional setup every time',
+  },
 ]
 
 const galleryStats = [
-  { value: '5', label: 'field views' },
+  { value: '7', label: 'field views' },
   { value: '24/7', label: 'network focus' },
   { value: 'Local', label: 'support team' },
 ]
