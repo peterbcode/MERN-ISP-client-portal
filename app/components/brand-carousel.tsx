@@ -30,7 +30,7 @@ const BrandCarousel = () => {
         <p className="text-center text-[10px] font-extrabold uppercase tracking-[0.2em] text-zinc-500/95 sm:text-xs">
           Hardware Brands We Work With
         </p>
-        <div className="relative mt-6 overflow-hidden pt-2">
+        <div className="relative mt-6 overflow-hidden pt-4 pb-4">
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#0d0e10] to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#0d0e10] to-transparent" />
 
