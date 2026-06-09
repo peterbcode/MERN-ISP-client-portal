@@ -41,10 +41,17 @@ const galleryItems = [
     caption: 'Coverage across the Riebeek Valley',
     detail: 'Local network, local terrain knowledge',
   },
+  {
+    src: '/gallery/tower-view.jpeg',
+    alt: 'Communication tower view over the valley',
+    tag: 'Infrastructure',
+    caption: 'Strategic tower placement for valley coverage',
+    detail: 'Elevated vantage points for reliable links',
+  },
 ]
 
 const galleryStats = [
-  { value: '5', label: 'field views' },
+  { value: '6', label: 'field views' },
   { value: '24/7', label: 'network focus' },
   { value: 'Local', label: 'support team' },
 ]
