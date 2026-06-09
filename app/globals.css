@@ -1328,3 +1328,7 @@ html {
   background: #ff7e26;
   border-radius: 3px;
 }
+
+.overflow-x-scroll::-webkit-scrollbar {
+  display: none;
+}

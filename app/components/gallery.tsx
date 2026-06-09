@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import Image from 'next/image'
 import { Camera, MapPin, RadioTower, ShieldCheck } from 'lucide-react'
 import AnimatedSection from './ui/animated-section'
@@ -110,12 +110,7 @@ function GalleryCard({ item, index }: { item: (typeof galleryItems)[number]; ind
     }
   }, [])
 
-  const cardSize =
-    index === 0
-      ? 'lg:col-span-7 lg:row-span-2 min-h-[420px]'
-      : index === 1
-        ? 'lg:col-span-5 min-h-[250px]'
-        : 'lg:col-span-4 min-h-[260px]'
+  const cardSize = index === 0 ? 'min-h-[420px]' : 'min-h-[210px]'
 
   return (
     <article
@@ -123,7 +118,8 @@ function GalleryCard({ item, index }: { item: (typeof galleryItems)[number]; ind
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       data-cursor="gallery"
-      className={`group relative col-span-12 overflow-hidden rounded-lg border border-white/10 bg-zinc-950 shadow-[0_24px_70px_rgba(0,0,0,0.34)] ${cardSize}`}
+      style={index === 0 ? { gridRow: 'span 2' } : undefined}
+      className={`group relative overflow-hidden rounded-lg border border-white/10 bg-zinc-950 shadow-[0_24px_70px_rgba(0,0,0,0.34)] ${cardSize}`}
     >
       <Image
         ref={imgRef}
@@ -161,12 +157,51 @@ function GalleryCard({ item, index }: { item: (typeof galleryItems)[number]; ind
   )
 }
 
-const Gallery = () => (
-  <section
-    id="gallerySection"
-    className="relative scroll-mt-28 overflow-hidden py-20 text-white sm:py-24"
-  >
-    <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+const Gallery = () => {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const dragState = useRef({ startX: 0, scrollLeft: 0, vel: 0, lastX: 0 })
+  const rafRef = useRef<number | undefined>(undefined)
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    const el = scrollRef.current
+    if (!el) return
+    cancelAnimationFrame(rafRef.current!)
+    setIsDragging(true)
+    dragState.current = {
+      startX: e.pageX,
+      scrollLeft: el.scrollLeft,
+      vel: 0,
+      lastX: e.pageX,
+    }
+    const onMove = (ev: MouseEvent) => {
+      el.scrollLeft = dragState.current.scrollLeft - (ev.pageX - dragState.current.startX)
+      dragState.current.vel = ev.pageX - dragState.current.lastX
+      dragState.current.lastX = ev.pageX
+    }
+    const onUp = () => {
+      setIsDragging(false)
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseup', onUp)
+      let v = -dragState.current.vel * 1.5
+      const coast = () => {
+        if (Math.abs(v) < 0.5) return
+        el.scrollLeft += v
+        v *= 0.92
+        rafRef.current = requestAnimationFrame(coast)
+      }
+      coast()
+    }
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseup', onUp)
+  }
+
+  return (
+    <section
+      id="gallerySection"
+      className="relative scroll-mt-28 overflow-hidden py-20 text-white sm:py-24"
+    >
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <AnimatedSection direction="up" className="mb-10">
         <div className="grid gap-8 lg:grid-cols-[1fr_420px] lg:items-end">
           <div>
@@ -195,14 +230,37 @@ const Gallery = () => (
       </AnimatedSection>
 
       <AnimatedSection direction="up" delay={120}>
-        <div className="grid auto-rows-[minmax(230px,auto)] grid-cols-12 gap-3 lg:gap-4">
-          {galleryItems.map((item, index) => (
-            <GalleryCard key={item.src} item={item} index={index} />
-          ))}
+        <div
+          ref={scrollRef}
+          onMouseDown={onMouseDown}
+          className="relative overflow-x-scroll overflow-y-hidden"
+          style={{
+            maskImage: 'linear-gradient(to right, black 0%, black 68%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to right, black 0%, black 68%, transparent 100%)',
+            cursor: isDragging ? 'grabbing' : 'grab',
+            userSelect: 'none',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+          }}
+        >
+          <div
+            className="grid gap-3 pb-1"
+            style={{
+              gridTemplateRows: 'repeat(3, minmax(210px, auto))',
+              gridAutoFlow: 'column',
+              gridAutoColumns: '300px',
+              width: 'max-content',
+            }}
+          >
+            {galleryItems.map((item, index) => (
+              <GalleryCard key={item.src} item={item} index={index} />
+            ))}
+          </div>
         </div>
       </AnimatedSection>
-    </div>
-  </section>
-)
+      </div>
+    </section>
+  )
+}
 
 export default Gallery
