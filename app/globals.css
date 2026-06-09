@@ -1332,3 +1332,8 @@ html {
 .overflow-x-scroll::-webkit-scrollbar {
   display: none;
 }
+
+/* hide gallery scrollbar */
+#gallerySection ::-webkit-scrollbar {
+  display: none;
+}
