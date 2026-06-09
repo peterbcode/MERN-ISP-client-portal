@@ -48,10 +48,17 @@ const galleryItems = [
     caption: 'Strategic tower placement for valley coverage',
     detail: 'Elevated vantage points for reliable links',
   },
+  {
+    src: '/gallery/installation.jpeg',
+    alt: 'Professional installation work in progress',
+    tag: 'Installation',
+    caption: 'Expert installation by trained technicians',
+    detail: 'Clean, professional setup every time',
+  },
 ]
 
 const galleryStats = [
-  { value: '6', label: 'field views' },
+  { value: '7', label: 'field views' },
   { value: '24/7', label: 'network focus' },
   { value: 'Local', label: 'support team' },
 ]
