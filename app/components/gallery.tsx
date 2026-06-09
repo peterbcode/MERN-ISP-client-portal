@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { X } from "lucide-react";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -72,9 +73,10 @@ const GRID_COUNT = 4;
 
 interface CarouselProps {
   images: GalleryImage[];
+  onImageClick: (image: GalleryImage) => void;
 }
 
-function DraggableCarousel({ images }: CarouselProps) {
+function DraggableCarousel({ images, onImageClick }: CarouselProps) {
   const count = images.length;
   const [angle, setAngle] = useState(0); // current rotation in degrees
   const dragStart = useRef<{ x: number; angle: number } | null>(null);
@@ -166,7 +168,11 @@ function DraggableCarousel({ images }: CarouselProps) {
                   zIndex,
                 }}
               >
-                <div className="carousel-card-inner">
+                <div 
+                  className="carousel-card-inner"
+                  onClick={() => onImageClick(img)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <Image
                     src={img.src}
                     alt={img.alt}
@@ -221,6 +227,25 @@ function DraggableCarousel({ images }: CarouselProps) {
 export default function GallerySection() {
   const gridImages = GALLERY_IMAGES.slice(0, GRID_COUNT);
   const carouselImages = GALLERY_IMAGES.slice(GRID_COUNT);
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+
+  const openImage = (image: GalleryImage) => {
+    setSelectedImage(image);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeImage = () => {
+    setSelectedImage(null);
+    document.body.style.overflow = '';
+  };
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeImage();
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, []);
 
   return (
     <>
@@ -617,7 +642,12 @@ export default function GallerySection() {
           {/* Primary editorial grid */}
           <div className="gallery-grid">
             {gridImages.map((img) => (
-              <div key={img.src} className="gallery-grid-item">
+              <div 
+                key={img.src} 
+                className="gallery-grid-item"
+                onClick={() => openImage(img)}
+                style={{ cursor: 'pointer' }}
+              >
                 <Image
                   src={img.src}
                   alt={img.alt}
@@ -643,12 +673,176 @@ export default function GallerySection() {
               <div className="gallery-carousel-header">
                 <h3>More from the field</h3>
               </div>
-              <DraggableCarousel images={carouselImages} />
+              <DraggableCarousel images={carouselImages} onImageClick={openImage} />
             </>
           )}
 
         </div>
       </section>
+
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div 
+          className="lightbox-overlay"
+          onClick={closeImage}
+        >
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="lightbox-close"
+              onClick={closeImage}
+              aria-label="Close"
+            >
+              <X size={24} />
+            </button>
+            <div className="lightbox-image-wrapper">
+              <Image
+                src={selectedImage.src}
+                alt={selectedImage.alt}
+                fill
+                sizes="100vw"
+                className="lightbox-image"
+                priority
+              />
+            </div>
+            <div className="lightbox-info">
+              <span className="lightbox-tag">{selectedImage.tag}</span>
+              <h3 className="lightbox-title">{selectedImage.label}</h3>
+              <p className="lightbox-alt">{selectedImage.alt}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        /* ── Lightbox Styles ── */
+        .lightbox-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 1000;
+          background: rgba(0, 0, 0, 0.95);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem;
+          animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        .lightbox-content {
+          position: relative;
+          max-width: 90vw;
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+          from { 
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to { 
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .lightbox-close {
+          position: absolute;
+          top: -48px;
+          right: 0;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: white;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          backdrop-filter: blur(8px);
+        }
+
+        .lightbox-close:hover {
+          background: rgba(255, 126, 38, 0.3);
+          border-color: rgba(255, 126, 38, 0.5);
+          transform: scale(1.1);
+        }
+
+        .lightbox-image-wrapper {
+          position: relative;
+          width: 100%;
+          max-width: 1200px;
+          max-height: 70vh;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-image {
+          object-fit: contain;
+          object-position: center;
+        }
+
+        .lightbox-info {
+          margin-top: 1.5rem;
+          text-align: center;
+          max-width: 600px;
+        }
+
+        .lightbox-tag {
+          display: inline-block;
+          font-size: 0.7rem;
+          font-weight: 800;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: #ff7e26;
+          background: rgba(255, 126, 38, 0.15);
+          padding: 6px 12px;
+          border-radius: 4px;
+          margin-bottom: 0.75rem;
+        }
+
+        .lightbox-title {
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #ffffff;
+          margin: 0 0 0.5rem 0;
+          line-height: 1.3;
+        }
+
+        .lightbox-alt {
+          font-size: 0.9rem;
+          color: #9a9a94;
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+          .lightbox-overlay {
+            padding: 1rem;
+          }
+          .lightbox-close {
+            top: -40px;
+            width: 36px;
+            height: 36px;
+          }
+          .lightbox-image-wrapper {
+            max-height: 60vh;
+          }
+          .lightbox-title {
+            font-size: 1rem;
+          }
+        }
+      `}</style>
     </>
   );
 }
