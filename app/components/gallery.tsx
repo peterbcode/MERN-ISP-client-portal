@@ -175,7 +175,7 @@ const Gallery = () => (
               Field Portfolio
             </p>
             <h2 className="heading-compact relative inline-block max-w-3xl text-4xl font-bold leading-[1.04] tracking-tight text-white sm:text-5xl">
-              <span className="absolute -top-3 left-0 h-[2px] w-8 bg-[#ff6a00]"></span>
+              <span className="absolute -top-3 left-0 h-[2px] w-8 bg-[#ff7e26]"></span>
               Real installations, local coverage, practical network work.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-300">

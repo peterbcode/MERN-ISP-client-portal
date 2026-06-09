@@ -41,7 +41,7 @@ const BrandCarousel = () => {
                 href={brand.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex h-20 w-44 items-center justify-center rounded-xl border border-white/8 bg-zinc-950/80 px-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#ff6a00]/40 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-inset"
+                className="group flex h-20 w-44 items-center justify-center rounded-xl border border-white/8 bg-zinc-950/80 px-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#ff7e26]/40 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-inset"
               >
                 <img
                   src={brand.logo}

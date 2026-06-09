@@ -55,7 +55,7 @@ const Services = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto max-w-3xl text-center">
           <h2 className="relative inline-block text-3xl font-black sm:text-5xl">
-            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff6a00]"></span>
+            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
             Our Services
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg">
@@ -71,16 +71,16 @@ const Services = () => {
               delay={index * 150}
               duration={600}
             >
-              <HoverCard hoverScale={1.03} shadowIntensity="heavy" className="h-full rounded-[10px] border border-white/8 bg-[#16181c] hover:border-[#ff6a00]/50 hover:shadow-[0_0_0_1px_rgba(255,106,0,0.15)]">
+              <HoverCard hoverScale={1.03} shadowIntensity="heavy" className="h-full rounded-[10px] border border-white/8 bg-[#16181c] hover:border-[#ff7e26]/50 hover:shadow-[0_0_0_1px_rgba(255,126,38,0.15)]">
                 <div className="p-9 sm:p-10">
-                  <div className="mb-7 inline-flex h-20 w-20 items-center justify-center rounded-2xl border border-[#ff6a00]/35 bg-[#ff6a00]/12 text-[#ff6a00] shadow-[0_14px_30px_rgba(255,106,0,0.14)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110 group-hover:bg-[#ff6a00] group-hover:text-black">
+                  <div className="mb-7 inline-flex h-20 w-20 items-center justify-center rounded-2xl border border-[#ff7e26]/35 bg-[#ff7e26]/12 text-[#ff7e26] shadow-[0_14px_30px_rgba(255,126,38,0.14)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110 group-hover:bg-[#ff7e26] group-hover:text-black">
                     <service.icon className="h-10 w-10" />
                   </div>
                   <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{service.title}</h3>
                   <p className="mt-5 text-base leading-relaxed text-zinc-300 sm:text-lg">{service.description}</p>
                   <Link
                     href={service.href}
-                    className="mt-7 inline-flex items-center gap-2 text-lg font-bold text-[#ff6a00] transition hover:text-[#ff8c00] group-hover:translate-x-1 sm:text-xl"
+                    className="mt-7 inline-flex items-center gap-2 text-lg font-bold text-[#ff7e26] transition hover:text-[#ff7e26] group-hover:translate-x-1 sm:text-xl"
                   >
                     {service.cta}
                     <ArrowRightIcon className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -101,15 +101,15 @@ const Services = () => {
                   delay={index * 100}
                   duration={500}
                 >
-                  <div className="group rounded-2xl border border-white/8 bg-white/[0.035] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#ff6a00]/40 hover:bg-white/[0.055]">
-                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#ff6a00] text-black shadow-[0_8px_24px_rgba(255,106,0,0.26)]">
+                  <div className="group rounded-2xl border border-white/8 bg-white/[0.035] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#ff7e26]/40 hover:bg-white/[0.055]">
+                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#ff7e26] text-black shadow-[0_8px_24px_rgba(255,126,38,0.26)]">
                       <item.icon className="h-6 w-6" />
                     </div>
                     <p
-                      className={`font-semibold tracking-tight text-[#ff6a00] transition-transform duration-300 group-hover:scale-105 ${
+                      className={`font-semibold tracking-tight text-[#ff7e26] transition-transform duration-300 group-hover:scale-105 ${
                         item.value.includes(' ') ? 'text-[2.5rem] sm:text-[2.5rem]' : 'text-[2.5rem] sm:text-[2.5rem] lg:text-[2.5rem]'
                       }`}
-                      style={{ textShadow: '0 0 18px rgba(255,106,0,0.45)' }}
+                      style={{ textShadow: '0 0 18px rgba(255,126,38,0.45)' }}
                     >
                       {item.value}
                     </p>

@@ -26,9 +26,9 @@ const LocalFootprint = () => {
     <section className="relative scroll-mt-28 py-14 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#ff6a00]">Coverage</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#ff7e26]">Coverage</p>
           <h2 className="heading-compact relative inline-block mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff6a00]"></span>
+            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
             Our Local Footprint
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-zinc-300">
@@ -43,9 +43,9 @@ const LocalFootprint = () => {
               href={item.mapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group cursor-pointer rounded-3xl border border-white/8 bg-[#16181c] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#ff6a00]/40 hover:shadow-[0_18px_34px_rgba(255,106,0,0.12)]"
+              className="group cursor-pointer rounded-3xl border border-white/8 bg-[#16181c] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#ff7e26]/40 hover:shadow-[0_18px_34px_rgba(255,126,38,0.12)]"
             >
-              <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#ff6a00] text-black shadow-[0_8px_22px_rgba(255,106,0,0.22)] transition group-hover:scale-110">
+              <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#ff7e26] text-black shadow-[0_8px_22px_rgba(255,126,38,0.22)] transition group-hover:scale-110">
                 <MapPinIcon className="h-6 w-6" />
               </div>
               <h3 className="text-xl font-extrabold tracking-tight sm:text-2xl">{item.title}</h3>
@@ -56,11 +56,11 @@ const LocalFootprint = () => {
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-stretch">
           <div className="rounded-3xl border border-white/8 bg-[#0d0e10] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-            <p className="text-sm font-bold uppercase tracking-wide text-[#ff6a00]">Active Service Area</p>
+            <p className="text-sm font-bold uppercase tracking-wide text-[#ff7e26]">Active Service Area</p>
             <p className="mt-4 text-base leading-relaxed text-zinc-300">
               Coverage: Riebeek Kasteel, Malmesbury, Gouda, Riebeek West, Hermon, Abbotsdale, Chatsworth and Swartland region
             </p>
-            <div className="mt-6 rounded-2xl border border-[rgba(255,106,0,0.25)] bg-[rgba(255,106,0,0.1)] p-4">
+            <div className="mt-6 rounded-2xl border border-[rgba(255,126,38,0.25)] bg-[rgba(255,126,38,0.1)] p-4">
               <p className="text-sm font-semibold text-zinc-100">
                 Local technicians, regional routing, and practical site surveys keep coverage grounded in real terrain.
               </p>

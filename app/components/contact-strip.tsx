@@ -7,7 +7,7 @@ import PremiumButton from './ui/premium-button'
 import { safeAlert } from '@/lib/native-dialog'
 
 const inputClass =
-  'w-full rounded-xl border border-white/10 bg-[#0f1114] px-4 py-3 text-base text-zinc-100 placeholder:text-zinc-500 focus:border-[#f97316] focus:outline-none focus:ring-2 focus:ring-[#f97316]/20 transition-all duration-300'
+  'w-full rounded-xl border border-white/10 bg-[#0f1114] px-4 py-3 text-base text-zinc-100 placeholder:text-zinc-500 focus:border-[#ff7e26] focus:outline-none focus:ring-2 focus:ring-[#ff7e26]/20 transition-all duration-300'
 
 const ContactStrip = () => {
   const [formData, setFormData] = useState({
@@ -86,7 +86,7 @@ const ContactStrip = () => {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto mb-8 max-w-3xl text-center">
           <h2 className="relative inline-block text-3xl font-extrabold text-white sm:text-5xl">
-            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff6a00]"></span>
+            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
             Check Your Coverage
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-zinc-300 sm:text-lg">
@@ -98,7 +98,7 @@ const ContactStrip = () => {
           <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); handleCheckCoverage() }}>
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="block group">
-                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">Street Address</span>
+                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#ff7e26]">Street Address</span>
                 <input
                   className={inputClass}
                   placeholder="6 Church Rd"
@@ -109,7 +109,7 @@ const ContactStrip = () => {
                 />
               </label>
               <label className="block group">
-                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">Area/Suburb</span>
+                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#ff7e26]">Area/Suburb</span>
                 <input
                   className={inputClass}
                   placeholder="Riebeek Kasteel"
@@ -123,7 +123,7 @@ const ContactStrip = () => {
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
               <label className="block group">
-                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">City</span>
+                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#ff7e26]">City</span>
                 <input
                   className={inputClass}
                   placeholder="Western Cape"
@@ -134,7 +134,7 @@ const ContactStrip = () => {
                 />
               </label>
               <label className="block group">
-                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#f97316]">Postal Code</span>
+                <span className="mb-2 block text-sm font-semibold text-zinc-200 transition-colors group-focus-within:text-[#ff7e26]">Postal Code</span>
                 <input
                   className={inputClass}
                   placeholder="7307"

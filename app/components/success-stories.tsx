@@ -101,7 +101,7 @@ const SuccessStories = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mx-auto mb-14 max-w-3xl text-center">
           <h2 className="relative inline-block text-3xl font-black sm:text-5xl">
-            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff6a00]"></span>
+            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
             Success Stories
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-zinc-300 sm:text-lg">
@@ -121,13 +121,13 @@ const SuccessStories = () => {
                   key={storyIndex}
                   className="w-full flex-shrink-0 px-8 py-12 sm:px-12 lg:px-16"
                 >
-                  <div className="mx-auto max-w-4xl border-l-[3px] border-[#ff6a00] bg-white/[0.035] px-6 py-8 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:px-10">
+                  <div className="mx-auto max-w-4xl border-l-[3px] border-[#ff7e26] bg-white/[0.035] px-6 py-8 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:px-10">
                     <div className="mb-6 flex justify-center">
                       <div className="relative">
-                        <div className="h-20 w-20 rounded-full border-2 border-[#ff6a00] bg-gradient-to-br from-[#ff6a00] to-[#ff6a00] shadow-[0_8px_24px_rgba(255,106,0,0.18)] flex items-center justify-center text-2xl font-bold text-black">
+                        <div className="h-20 w-20 rounded-full border-2 border-[#ff7e26] bg-gradient-to-br from-[#ff7e26] to-[#ff7e26] shadow-[0_8px_24px_rgba(255,126,38,0.18)] flex items-center justify-center text-2xl font-bold text-black">
                           {story.author.charAt(0)}
                         </div>
-                        <div className="absolute -bottom-2 -right-2 rounded-full bg-[#ff6a00] p-1.5">
+                        <div className="absolute -bottom-2 -right-2 rounded-full bg-[#ff7e26] p-1.5">
                           <StarIcon className="h-4 w-4 text-white" />
                         </div>
                       </div>
@@ -185,7 +185,7 @@ const SuccessStories = () => {
                   onClick={() => setIndex(dotIndex)}
                   className={`h-2.5 rounded-full transition-all duration-300 ${
                     dotIndex === activeIndex 
-                      ? 'w-8 bg-[#FF4500] shadow-[0_2px_8px_rgba(249,115,22,0.28)]' 
+                      ? 'w-8 bg-[#ff7e26] shadow-[0_2px_8px_rgba(255,126,38,0.28)]' 
                       : 'w-2.5 bg-zinc-600 hover:bg-zinc-500'
                   }`}
                   aria-label={`Go to slide ${dotIndex + 1}`}
@@ -213,7 +213,7 @@ const SuccessStories = () => {
             href="https://www.google.com/search?q=Valley+Computers+Riebeek+Kasteel+reviews"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-300 transition hover:text-[#FF4500]"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-300 transition hover:text-[#ff7e26]"
           >
             See our Google Reviews
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

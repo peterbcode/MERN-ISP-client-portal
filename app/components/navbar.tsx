@@ -72,7 +72,7 @@ export default function Navbar() {
 
   return (
     <header className="relative z-50 w-full">
-      <div className="relative z-[60] border-b border-white/20 bg-[#FF4500] text-white">
+      <div className="relative z-[60] border-b border-white/20 bg-[#ff7e26] text-white">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-3 text-[10px] font-medium sm:px-6 sm:text-xs lg:px-8">
           <div className="hidden items-center gap-5 md:flex">
             <a
@@ -128,7 +128,7 @@ export default function Navbar() {
               >
                 <span className="flex items-center transition-all duration-300 ease-out hover:scale-105">
                   <span className={`text-[1.05rem] font-black tracking-tight sm:text-[1.2rem] lg:text-[1.3rem] transition-all duration-300 ease-out ${
-                    isScrolled ? 'text-[#FF4500]' : 'text-[#FF4500]'
+                    isScrolled ? 'text-[#ff7e26]' : 'text-[#ff7e26]'
                   }`}>
                     VALLEY
                   </span>
@@ -149,15 +149,15 @@ export default function Navbar() {
                       onClick={(e) => handleAnchorNavigation(item.href, e)}
                       className={`relative text-[13px] font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
                         isScrolled
-                          ? 'text-[#d1d5db] hover:text-[#ff6a00]'
+                          ? 'text-[#d1d5db] hover:text-[#ff7e26]'
                           : isActive(item.href)
-                            ? 'text-[#ff6a00]'
-                            : 'text-[#d1d5db] hover:text-[#ff6a00]'
+                            ? 'text-[#ff7e26]'
+                            : 'text-[#d1d5db] hover:text-[#ff7e26]'
                       }`}
                     >
                       <span className="relative">
                         {item.name}
-                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#ff6a00] transition-all duration-300 group-hover:w-full"></span>
+                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#ff7e26] transition-all duration-300 group-hover:w-full"></span>
                       </span>
                     </button>
                   ) : (
@@ -167,15 +167,15 @@ export default function Navbar() {
                       href={item.href}
                       className={`relative text-[13px] font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
                         isScrolled
-                          ? 'text-[#d1d5db] hover:text-[#ff6a00]'
+                          ? 'text-[#d1d5db] hover:text-[#ff7e26]'
                           : isActive(item.href)
-                            ? 'text-[#ff6a00]'
-                            : 'text-[#d1d5db] hover:text-[#ff6a00]'
+                            ? 'text-[#ff7e26]'
+                            : 'text-[#d1d5db] hover:text-[#ff7e26]'
                       }`}
                     >
                       <span className="relative">
                         {item.name}
-                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#ff6a00] transition-all duration-300 group-hover:w-full"></span>
+                        <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#ff7e26] transition-all duration-300 group-hover:w-full"></span>
                       </span>
                     </Link>
                   )
@@ -184,7 +184,7 @@ export default function Navbar() {
                   <MenuButton className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition ${
                     isScrolled
                       ? 'border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20 hover:text-white'
-                      : 'border-white/20 bg-white/5 text-white/95 hover:border-[#FF4500]/60 hover:bg-white/10 hover:text-[#FF4500]'
+                      : 'border-white/20 bg-white/5 text-white/95 hover:border-[#ff7e26]/60 hover:bg-white/10 hover:text-[#ff7e26]'
                   }`}>
                     <ChevronDownIcon className="h-5 w-5" />
                   </MenuButton>
@@ -193,8 +193,8 @@ export default function Navbar() {
                       {({ focus }) => (
                         <Link
                           href="/faq"
-                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#FF4500] ${
-                            focus ? 'bg-white/12 text-[#FF4500]' : 'text-white/95'
+                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#ff7e26] ${
+                            focus ? 'bg-white/12 text-[#ff7e26]' : 'text-white/95'
                           }`}
                         >
                           FAQ
@@ -205,8 +205,8 @@ export default function Navbar() {
                       {({ focus }) => (
                         <Link
                           href="/login"
-                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#FF4500] ${
-                            focus ? 'bg-white/12 text-[#FF4500]' : 'text-white/95'
+                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#ff7e26] ${
+                            focus ? 'bg-white/12 text-[#ff7e26]' : 'text-white/95'
                           }`}
                         >
                           Login
@@ -217,8 +217,8 @@ export default function Navbar() {
                       {({ focus }) => (
                         <Link
                           href="/signup"
-                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#FF4500] ${
-                            focus ? 'bg-white/12 text-[#FF4500]' : 'text-white/95'
+                          className={`block rounded-md px-3 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 hover:bg-white/12 hover:text-[#ff7e26] ${
+                            focus ? 'bg-white/12 text-[#ff7e26]' : 'text-white/95'
                           }`}
                         >
                           Sign Up
@@ -279,7 +279,7 @@ export default function Navbar() {
                               handleAnchorNavigation(item.href, e)
                               close()
                             }}
-                            className="block w-full rounded-lg px-4 py-3 text-left text-base font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/10 hover:text-[#FF4500]"
+                            className="block w-full rounded-lg px-4 py-3 text-left text-base font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/10 hover:text-[#ff7e26]"
                           >
                             {item.name}
                           </button>
@@ -289,7 +289,7 @@ export default function Navbar() {
                             as={Link}
                             key={item.name}
                             href={item.href}
-                            className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#FF4500]"
+                            className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
                           >
                             {item.name}
                           </DisclosureButton>
@@ -302,21 +302,21 @@ export default function Navbar() {
                         <DisclosureButton
                           as={Link}
                           href="/faq"
-                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#FF4500]"
+                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
                         >
                           FAQ
                         </DisclosureButton>
                         <DisclosureButton
                           as={Link}
                           href="/login"
-                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#FF4500]"
+                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
                         >
                           Login
                         </DisclosureButton>
                         <DisclosureButton
                           as={Link}
                           href="/signup"
-                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#FF4500]"
+                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
                         >
                           Sign Up
                         </DisclosureButton>

@@ -73,7 +73,7 @@ const FloatingActions = () => {
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900/95 text-zinc-100 shadow-[0_8px_20px_rgba(0,0,0,0.35)] transition hover:border-[#f97316] hover:text-[#f97316]"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900/95 text-zinc-100 shadow-[0_8px_20px_rgba(0,0,0,0.35)] transition hover:border-[#ff7e26] hover:text-[#ff7e26]"
           aria-label="Scroll to top"
         >
           <ArrowUpIcon className="h-5 w-5" />
@@ -131,7 +131,7 @@ const FloatingActions = () => {
                 value={message}
                 onChange={(event) => setMessage(event.target.value)}
                 placeholder="Type a message..."
-                className="h-11 w-full rounded-full border border-zinc-800 bg-zinc-900 px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-[#f97316] focus:outline-none"
+                className="h-11 w-full rounded-full border border-zinc-800 bg-zinc-900 px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-[#ff7e26] focus:outline-none"
               />
               <button
                 type="button"

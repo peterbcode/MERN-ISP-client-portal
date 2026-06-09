@@ -18,7 +18,7 @@
   
   /* Accent Colors - Muted Orange */
   --accent-primary: #fb923c;
-  --accent-primary-hover: #f97316;
+  --accent-primary-hover: #ff7e26;
   --accent-primary-light: #fed7aa;
   --accent-primary-bg: rgba(251, 146, 60, 0.1);
   
@@ -26,7 +26,7 @@
   --border-light: #e5e5e5;
   --border-medium: #d4d4d4;
   --success: #10b981;
-  --warning: #f97316;
+  --warning: #ff7e26;
   --error: #ef4444;
   
   /* Soft Shadows - Neumorphism */
