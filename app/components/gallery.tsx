@@ -229,44 +229,50 @@ export default function GallerySection() {
         /* ── Section wrapper ── */
         .gallery-section {
           position: relative;
-          padding: 6rem 0 5rem;
+          padding: 8rem 0 6rem;
           overflow: hidden;
+          background: linear-gradient(180deg, #0a0a0b 0%, #111110 100%);
         }
 
         .gallery-eyebrow {
           display: inline-flex;
           align-items: center;
-          gap: 0.5rem;
-          font-size: 0.7rem;
-          font-weight: 700;
-          letter-spacing: 0.18em;
+          gap: 0.75rem;
+          font-size: 0.75rem;
+          font-weight: 800;
+          letter-spacing: 0.2em;
           text-transform: uppercase;
           color: #ff7e26;
-          margin-bottom: 1rem;
+          margin-bottom: 1.5rem;
         }
         .gallery-eyebrow::before {
           content: "";
           display: inline-block;
-          width: 18px;
-          height: 1.5px;
-          background: #ff7e26;
+          width: 24px;
+          height: 2px;
+          background: linear-gradient(90deg, #ff7e26, transparent);
         }
 
         .gallery-heading {
-          font-size: clamp(1.6rem, 3vw, 2.4rem);
-          font-weight: 700;
-          color: #f5f5f0;
-          line-height: 1.15;
-          margin: 0 0 0.5rem;
-          letter-spacing: -0.02em;
+          font-size: clamp(2rem, 4vw, 3.5rem);
+          font-weight: 800;
+          color: #ffffff;
+          line-height: 1.1;
+          margin: 0 0 1rem;
+          letter-spacing: -0.03em;
+          background: linear-gradient(135deg, #ffffff 0%, #e8e4de 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
         .gallery-sub {
-          font-size: 0.92rem;
-          color: #7a7a72;
-          max-width: 480px;
-          line-height: 1.6;
-          margin-bottom: 3rem;
+          font-size: 1rem;
+          color: #9a9a94;
+          max-width: 520px;
+          line-height: 1.7;
+          margin-bottom: 4rem;
+          font-weight: 400;
         }
 
         /* ── Primary grid ── */
@@ -274,8 +280,8 @@ export default function GallerySection() {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
           grid-template-rows: auto;
-          gap: 12px;
-          margin-bottom: 3.5rem;
+          gap: 16px;
+          margin-bottom: 4rem;
         }
 
         /* Card 1 — large landscape, spans 7 cols */
@@ -306,13 +312,21 @@ export default function GallerySection() {
         .gallery-grid-item {
           position: relative;
           overflow: hidden;
-          border-radius: 6px;
+          border-radius: 12px;
           background: #111110;
-          border: 1px solid rgba(255,255,255,0.05);
+          border: 1px solid rgba(255,255,255,0.08);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+          transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                      box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .gallery-grid-item:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.5);
         }
 
         .gallery-grid-item:hover .gallery-img {
-          transform: scale(1.04);
+          transform: scale(1.08);
         }
         .gallery-grid-item:hover .gallery-card-overlay {
           opacity: 1;
@@ -321,7 +335,7 @@ export default function GallerySection() {
         .gallery-img {
           object-fit: cover;
           object-position: center top;
-          transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
           width: 100%;
           height: 100%;
         }
@@ -331,80 +345,84 @@ export default function GallerySection() {
           inset: 0;
           background: linear-gradient(
             to top,
-            rgba(4, 4, 3, 0.88) 0%,
-            rgba(4, 4, 3, 0.3) 45%,
+            rgba(0, 0, 0, 0.95) 0%,
+            rgba(0, 0, 0, 0.4) 50%,
             transparent 100%
           );
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          padding: 1.2rem 1.1rem;
+          padding: 1.5rem 1.25rem;
           opacity: 0;
-          transition: opacity 0.3s ease;
+          transition: opacity 0.4s ease;
         }
 
         .gallery-card-num {
-          font-size: 0.65rem;
-          font-weight: 700;
-          letter-spacing: 0.15em;
+          font-size: 0.7rem;
+          font-weight: 800;
+          letter-spacing: 0.18em;
           color: #ff7e26;
           text-transform: uppercase;
-          margin-bottom: 0.25rem;
+          margin-bottom: 0.4rem;
         }
 
         .gallery-card-label {
-          font-size: 0.85rem;
+          font-size: 0.95rem;
           font-weight: 600;
-          color: #f0ede8;
-          line-height: 1.35;
+          color: #ffffff;
+          line-height: 1.4;
           margin: 0;
         }
 
         .gallery-card-tag {
           position: absolute;
-          top: 12px;
-          left: 12px;
-          font-size: 0.62rem;
-          font-weight: 700;
-          letter-spacing: 0.14em;
+          top: 16px;
+          left: 16px;
+          font-size: 0.65rem;
+          font-weight: 800;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
-          background: rgba(255,126,38,0.9);
+          background: linear-gradient(135deg, rgba(255,126,38,0.95), rgba(255,126,38,0.85));
           color: #fff;
-          padding: 3px 8px;
-          border-radius: 3px;
-          backdrop-filter: blur(4px);
+          padding: 6px 12px;
+          border-radius: 6px;
+          backdrop-filter: blur(8px);
+          box-shadow: 0 2px 8px rgba(255,126,38,0.3);
         }
 
         /* ── Carousel section ── */
         .gallery-carousel-header {
           display: flex;
           align-items: center;
-          gap: 1rem;
-          margin-bottom: 2rem;
+          gap: 1.25rem;
+          margin-bottom: 2.5rem;
         }
         .gallery-carousel-header h3 {
-          font-size: 0.75rem;
-          font-weight: 700;
-          letter-spacing: 0.16em;
+          font-size: 0.8rem;
+          font-weight: 800;
+          letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: #7a7a72;
+          color: #ff7e26;
           margin: 0;
         }
         .gallery-carousel-header::after {
           content: "";
           flex: 1;
           height: 1px;
-          background: rgba(255,255,255,0.07);
+          background: linear-gradient(90deg, rgba(255,126,38,0.3), transparent);
         }
 
         /* ── Carousel 3D wrapper ── */
         .gallery-carousel-wrapper {
           position: relative;
           width: 100%;
-          height: 340px;
-          perspective: 1000px;
+          height: 380px;
+          perspective: 1200px;
           overflow: hidden;
           margin-bottom: 0;
+          background: linear-gradient(180deg, rgba(17,17,16,0.5) 0%, rgba(10,10,11,0.8) 100%);
+          border-radius: 16px;
+          border: 1px solid rgba(255,255,255,0.05);
         }
 
         .carousel-vignette {
@@ -414,10 +432,10 @@ export default function GallerySection() {
           pointer-events: none;
           background: linear-gradient(
             to right,
-            #080807 0%,
-            transparent 22%,
-            transparent 78%,
-            #080807 100%
+            rgba(10,10,11,0.9) 0%,
+            transparent 20%,
+            transparent 80%,
+            rgba(10,10,11,0.9) 100%
           );
         }
 
@@ -433,30 +451,31 @@ export default function GallerySection() {
 
         .carousel-rotor {
           position: relative;
-          width: 240px;
-          height: 280px;
+          width: 260px;
+          height: 300px;
           transform-style: preserve-3d;
           transition: none;
         }
 
         .carousel-card {
           position: absolute;
-          width: 240px;
-          height: 280px;
+          width: 260px;
+          height: 300px;
           top: 0;
           left: 0;
           backface-visibility: hidden;
-          transition: opacity 0.2s ease;
+          transition: opacity 0.3s ease;
         }
 
         .carousel-card-inner {
           position: relative;
           width: 100%;
           height: 100%;
-          border-radius: 8px;
+          border-radius: 12px;
           overflow: hidden;
-          border: 1px solid rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.1);
           background: #111110;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
         .carousel-card-img {
@@ -470,29 +489,29 @@ export default function GallerySection() {
           inset: 0;
           background: linear-gradient(
             to top,
-            rgba(4,4,3,0.85) 0%,
-            transparent 55%
+            rgba(0,0,0,0.9) 0%,
+            transparent 60%
           );
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          padding: 1rem;
-          gap: 0.2rem;
+          padding: 1.25rem;
+          gap: 0.3rem;
         }
 
         .carousel-card-tag {
-          font-size: 0.58rem;
-          font-weight: 700;
-          letter-spacing: 0.15em;
+          font-size: 0.65rem;
+          font-weight: 800;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
           color: #ff7e26;
         }
 
         .carousel-card-label {
-          font-size: 0.75rem;
-          font-weight: 500;
-          color: #e8e4de;
-          line-height: 1.3;
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #ffffff;
+          line-height: 1.4;
           margin: 0;
         }
 
@@ -501,44 +520,56 @@ export default function GallerySection() {
           top: 50%;
           transform: translateY(-50%);
           z-index: 30;
-          background: rgba(15,14,13,0.7);
-          border: 1px solid rgba(255,126,38,0.25);
+          background: rgba(15,14,13,0.8);
+          border: 1px solid rgba(255,126,38,0.3);
           color: #ff7e26;
-          width: 36px;
-          height: 36px;
+          width: 44px;
+          height: 44px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          transition: background 0.2s, border-color 0.2s;
-          backdrop-filter: blur(8px);
+          transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          backdrop-filter: blur(12px);
+          box-shadow: 0 4px 16px rgba(0,0,0,0.3);
         }
         .carousel-arrow:hover {
-          background: rgba(255,126,38,0.15);
-          border-color: rgba(255,126,38,0.6);
+          background: rgba(255,126,38,0.2);
+          border-color: rgba(255,126,38,0.7);
+          transform: translateY(-50%) scale(1.1);
+          box-shadow: 0 6px 24px rgba(255,126,38,0.3);
         }
-        .carousel-arrow-left  { left: 12px; }
-        .carousel-arrow-right { right: 12px; }
+        .carousel-arrow-left  { left: 16px; }
+        .carousel-arrow-right { right: 16px; }
 
         .carousel-hint {
           position: absolute;
-          bottom: 0;
+          bottom: 16px;
           left: 50%;
           transform: translateX(-50%);
           z-index: 30;
-          font-size: 0.65rem;
-          letter-spacing: 0.12em;
+          font-size: 0.7rem;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: #4a4a44;
+          color: #7a7a72;
           white-space: nowrap;
           pointer-events: none;
+          background: rgba(0,0,0,0.6);
+          padding: 8px 16px;
+          border-radius: 20px;
+          backdrop-filter: blur(8px);
         }
 
         /* ── Responsive ── */
         @media (max-width: 768px) {
+          .gallery-section {
+            padding: 5rem 0 4rem;
+          }
+
           .gallery-grid {
             grid-template-columns: 1fr 1fr;
+            gap: 12px;
           }
           .gallery-grid-item:nth-child(1) {
             grid-column: 1 / 3;
@@ -563,9 +594,12 @@ export default function GallerySection() {
 
           .gallery-card-overlay { opacity: 1; }
 
-          .gallery-carousel-wrapper { height: 280px; }
+          .gallery-carousel-wrapper { height: 300px; }
           .carousel-rotor,
-          .carousel-card { width: 180px; height: 210px; }
+          .carousel-card { width: 200px; height: 240px; }
+          .carousel-arrow { width: 40px; height: 40px; }
+          .carousel-arrow-left { left: 12px; }
+          .carousel-arrow-right { right: 12px; }
         }
       `}</style>
 
