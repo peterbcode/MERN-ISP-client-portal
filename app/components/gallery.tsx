@@ -153,7 +153,7 @@ function DraggableCarousel({ images }: CarouselProps) {
             const diff =
               ((cardAngle + angle) % 360 + 360) % 360;
             const normalised = diff > 180 ? 360 - diff : diff;
-            const opacity = Math.max(0.18, 1 - normalised / 110);
+            const opacity = Math.max(0.5, 1 - normalised / 110);
             const zIndex = Math.round((1 - normalised / 180) * 10);
 
             return (
