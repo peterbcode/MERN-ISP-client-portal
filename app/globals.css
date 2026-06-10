@@ -1329,6 +1329,17 @@ html {
   border-radius: 3px;
 }
 
+/* Hide scrollbars entirely */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 .overflow-x-scroll::-webkit-scrollbar {
   display: none;
 }
