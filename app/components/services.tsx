@@ -41,7 +41,7 @@ const services = [
 
 const stats = [
   { value: '99%', label: 'ISP Uptime', icon: WifiIcon },
-  { value: '15k+', label: 'Repairs Done', icon: WrenchScrewdriverIcon },
+  { value: '5 000+', label: 'Repairs since 2015', icon: WrenchScrewdriverIcon },
   { value: '24/7', label: 'Network Monitoring', icon: ClockIcon },
   { value: 'Same Day', label: 'Response Time', icon: BoltIcon },
 ]

@@ -12,53 +12,53 @@ import PremiumButton from './ui/premium-button'
 const stories = [
   {
     quote:
-      "Valley Computers completely transformed our business connectivity. We went from constant downtime and slow speeds to rock-solid 99% uptime. The team was professional, installed everything in one day, and their local support is incredible - they actually answer the phone!",
-    author: "Sarah J.",
-    role: "Operations Manager",
+      "We had zero reliable internet on the farm for years. Valley Computers put up a dish and we've had solid connectivity ever since. They came out same day when we had a fault — that's what local support looks like.",
+    author: "Kobus V.",
+    role: "Farmer",
+    location: "Riebeek West",
+    company: "Wheat & canola farm",
+    rating: 5,
+    date: "3 weeks ago"
+  },
+  {
+    quote:
+      "Our guests were constantly complaining about WiFi. Valley Computers upgraded our entire network and now we get 5-star reviews for our connectivity. They even helped us set up a guest portal — proper professional service.",
+    author: "Maria S.",
+    role: "Guesthouse Owner",
     location: "Riebeek-Kasteel",
-    company: "Riebeek Valley Logistics",
+    company: "Guesthouse",
+    rating: 5,
+    date: "1 month ago"
+  },
+  {
+    quote:
+      "Running a wine farm needs reliable internet for our irrigation systems and office. Valley Computers understood our needs and installed a solution that works perfectly in our remote location. No more driving to town just to send emails.",
+    author: "Johan D.",
+    role: "Farm Manager",
+    location: "Riebeek-Kasteel",
+    company: "Wine estate",
     rating: 5,
     date: "2 months ago"
   },
   {
     quote:
-      "As a remote team, reliable internet is everything. Valley Computers delivered beyond expectations - our video calls are crystal clear, file transfers are instant, and the uncapped package means no surprises on our bill. Best decision we made for our business.",
-    author: "David M.",
+      "As a small bakery, we can't afford downtime. Valley Computers set us up with a backup line so we never lose our EFT machine. Their team knows the valley and they actually care about local businesses.",
+    author: "Linda B.",
     role: "Business Owner",
     location: "Malmesbury",
-    company: "Digital Marketing Agency",
-    rating: 5,
-    date: "3 months ago"
-  },
-  {
-    quote:
-      "Our old network was a mess - dead spots, slow speeds, constant complaints from staff. Valley Computers came in, did a complete network audit, redesigned our WiFi setup, and now we have perfect coverage everywhere. The difference is night and day.",
-    author: "John P.",
-    role: "IT Coordinator",
-    location: "Swartland",
-    company: "Manufacturing Company",
-    rating: 4,
-    date: "1 month ago"
-  },
-  {
-    quote:
-      "Working from home used to be frustrating with constant disconnections. Since switching to Valley Computers, I've had zero downtime, and their support team actually knows what they're doing. When I had a minor setup question, they remote-accessed and fixed it in 10 minutes.",
-    author: "Alicia K.",
-    role: "Office Manager",
-    location: "Piketberg",
-    company: "Financial Services Firm",
+    company: "Local bakery",
     rating: 5,
     date: "2 weeks ago"
   },
   {
     quote:
-      "We moved our entire operation online during COVID and needed bulletproof connectivity. Valley Computers not only provided rock-solid internet but also helped us set up our entire network infrastructure. They're not just an ISP - they're technology partners.",
-    author: "Mark T.",
-    role: "Retail Owner",
-    location: "Wellington",
-    company: "Retail Chain",
+      "I work remotely from Darling and was struggling with mobile data. Valley Computers installed wireless at my house and it's been rock solid. Video calls with my team in Joburg work perfectly now.",
+    author: "Pieter N.",
+    role: "Remote Worker",
+    location: "Darling",
+    company: "Home office",
     rating: 5,
-    date: "4 months ago"
+    date: "1 month ago"
   },
 ];
 

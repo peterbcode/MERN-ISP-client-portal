@@ -35,7 +35,7 @@ const BrandCarousel = () => {
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#0d0e10] to-transparent" />
 
           <div className="brand-marquee-track flex min-w-max items-center gap-10 sm:gap-14">
-            {[...brands, ...brands].map((brand, index) => (
+            {brands.map((brand, index) => (
               <a
                 key={`${brand.name}-${index}`}
                 href={brand.href}

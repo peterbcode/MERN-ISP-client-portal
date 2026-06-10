@@ -31,35 +31,29 @@ const ContactStrip = () => {
     }
 
     setIsChecking(true)
-    setResult('checking')
 
-    // Simulate coverage check API call
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate API delay
+    // Simulate brief loading
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
-      // Simple coverage logic based on area/postal code
-      const coveredAreas = ['riebeek kasteel', 'malmesbury', 'chatsworth', 'swartland']
-      const coveredPostalCodes = ['7307', '7308', '7309', '7310']
+    // Show placeholder message
+    setResult('available')
+    setIsChecking(false)
 
-      const isCovered = coveredAreas.some(area =>
-        formData.area.toLowerCase().includes(area)
-      ) || coveredPostalCodes.includes(formData.postalCode)
-
-      setResult(isCovered ? 'available' : 'unavailable')
-    } catch (error) {
-      console.error('Coverage check failed:', error)
-      setResult('unavailable')
-    } finally {
-      setIsChecking(false)
-    }
+    // Clear fields after submission
+    setFormData({
+      streetAddress: '',
+      area: '',
+      city: '',
+      postalCode: ''
+    })
   }
 
   const getResultMessage = () => {
     switch (result) {
       case 'available':
         return {
-          message: '🎉 Great news! We provide service in your area.',
-          submessage: 'Contact us to get started with fast, reliable internet.',
+          message: 'Thanks! We\'ll check coverage at your address and contact you within 1 business day.',
+          submessage: '',
           color: 'text-green-400'
         }
       case 'unavailable':

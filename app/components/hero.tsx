@@ -161,30 +161,37 @@ const Hero = () => {
       <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-6 pt-32 text-center sm:px-6 lg:px-8 lg:pb-10 lg:pt-40">
         <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#ff7e26]" />
         <h1 className="mt-6 max-w-5xl font-black leading-[0.9] tracking-[-0.03em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
-          <span className="block text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">We Build Better</span>
+          <span className="block text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Riebeek Valley's ISP &amp; IT Experts</span>
           <span className="block min-h-[1.05em]">
             {displayText}
           </span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-[#9ca3af] sm:mt-8 sm:text-lg lg:text-xl">
-          From blazing-fast Fibre &amp; Wireless to expert PC repairs and full network engineering - we keep Riebeek Valley connected.
+          Blazing-fast Fibre &amp; Wireless internet, expert PC repairs, and full network engineering — built for the valley.
         </p>
 
         <div className="mt-8 flex w-full max-w-2xl flex-col gap-3 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4">
-          <PremiumButton 
-            variant="primary" className="cta-highlight" 
+          <PremiumButton
+            variant="primary" className="cta-highlight"
             size="lg"
-            onClick={() => router.push('/contact')}
+            onClick={() => router.push('/isp#plans')}
           >
             Get Connected
           </PremiumButton>
-          <PremiumButton 
-            variant="secondary" className="cta-highlight" 
+          <PremiumButton
+            variant="secondary" className="cta-highlight"
             size="lg"
             onClick={() => window.location.href = '#services'}
           >
             Explore Services
+          </PremiumButton>
+          <PremiumButton
+            variant="secondary" className="cta-highlight"
+            size="lg"
+            onClick={() => window.open('https://wa.me/27799381260', '_blank')}
+          >
+            Chat on WhatsApp
           </PremiumButton>
         </div>
 

@@ -131,7 +131,7 @@ const SiteFooter = () => {
             <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Stay Connected</h3>
             <div className="mt-3 h-0.5 w-32 bg-[#ff7e26]" />
             <p className="mt-8 text-sm font-bold uppercase tracking-[0.14em] text-zinc-300">
-              Join our mailing list
+              Free Site Survey
             </p>
             <form
               onSubmit={handleSubscribe}
@@ -147,7 +147,7 @@ const SiteFooter = () => {
                     setMessage('')
                   }
                 }}
-                placeholder="Email Address"
+                placeholder="Your email address"
                 autoComplete="email"
                 aria-label="Email address"
                 disabled={status === 'loading'}
@@ -159,9 +159,12 @@ const SiteFooter = () => {
                 className="inline-flex items-center justify-center gap-2 bg-[#ff7e26] px-4 text-sm font-bold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 <PaperAirplaneIcon className="h-4 w-4" />
-                {status === 'loading' ? 'Joining' : 'Subscribe'}
+                {status === 'loading' ? 'Requesting' : 'Request Survey'}
               </button>
             </form>
+            <p className="mt-3 max-w-sm text-xs text-zinc-400">
+              Request a free coverage or network survey — no obligation.
+            </p>
             {message && (
               <p
                 className={`mt-3 max-w-sm text-sm ${
