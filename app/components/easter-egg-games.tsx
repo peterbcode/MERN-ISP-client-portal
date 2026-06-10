@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { shouldShowEasterEggGames } from '@/lib/games-visibility'
 
 type GameMode = 'network' | 'packet'
 
@@ -220,8 +221,7 @@ const EasterEggGames = () => {
   useEffect(() => {
     if (!isClient) return
     const isHomepage = window.location.pathname === '/' || window.location.pathname === ''
-    // Always use random chance on each page load (don't store in sessionStorage)
-    const show = Math.random() < 0.7 // 70% chance on each page load
+    const show = shouldShowEasterEggGames()
     setTimeout(() => setShouldRenderGames(show && isHomepage), 0)
   }, [isClient])
 
