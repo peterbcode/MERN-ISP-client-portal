@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 const navigation = [
   { name: 'Services', href: '/#services' },
@@ -25,6 +25,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
+  const orangeTopBarRef = useRef<HTMLDivElement>(null)
 
   // Helper function to check if a navigation item is active
   const isActive = (href: string) => {
@@ -72,27 +73,29 @@ export default function Navbar() {
 
   return (
     <header className="relative z-50 w-full">
-      <div className="relative z-[60] border-b border-white/20 bg-[#ff7e26] text-white">
+      {/* Orange top bar - will be hidden when mobile menu is open */}
+      <div id="orange-top-bar" ref={orangeTopBarRef} className="relative z-[60] border-b border-white/20 bg-[#ff7e26] text-white transition-all duration-300">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-3 text-[10px] font-medium sm:px-6 sm:text-xs lg:px-8">
-          <div className="hidden items-center gap-5 md:flex">
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=6%20Church%20Rd%2C%20Riebeek-Kasteel%2C%207307"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-white transition-all duration-200 hover:text-white/90 hover:scale-105"
-            >
-              <MapPinIcon className="h-3.5 w-3.5 stroke-[2.25]" />
-              6 Church Rd, Riebeek-Kasteel, 7307
-            </a>
-            <span className="h-3 w-px bg-white/30" aria-hidden="true" />
+          <div className="flex items-center gap-3 md:gap-5">
             <a 
-              href="mailto:info@valley-computers.co.za" 
+              href="mailto:info@valley-computers.co.za?subject=Inquiry&body=Hi Valley Computers," 
               aria-label="Send email to info@valley-computers.co.za"
               title="Send email to info@valley-computers.co.za"
               className="no-accent-hover flex items-center gap-1.5 whitespace-nowrap text-white transition-colors duration-200 hover:text-white/90 cursor-pointer"
             >
               <EnvelopeIcon className="h-3.5 w-3.5 stroke-[2.25]" />
-              info@valley-computers.co.za
+              <span className="hidden md:inline">info@valley-computers.co.za</span>
+              <span className="md:hidden">Email</span>
+            </a>
+            <span className="hidden h-3 w-px bg-white/30 md:block" aria-hidden="true" />
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=6%20Church%20Rd%2C%20Riebeek-Kasteel%2C%207307"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="no-accent-hover hidden items-center gap-1.5 whitespace-nowrap text-white transition-all duration-200 hover:text-white/90 hover:scale-105 md:flex"
+            >
+              <MapPinIcon className="h-3.5 w-3.5 stroke-[2.25]" />
+              6 Church Rd, Riebeek-Kasteel, 7307
             </a>
           </div>
           <div className="ml-auto flex items-center gap-2 sm:gap-4">
@@ -118,7 +121,16 @@ export default function Navbar() {
             : 'absolute inset-x-0 top-10 bg-gradient-to-b from-black/42 to-transparent'
         }`}
       >
-        {({ close }) => (
+        {({ open, close }) => {
+          // Hide orange top bar when mobile menu is open
+          if (orangeTopBarRef.current) {
+            if (open) {
+              orangeTopBarRef.current.classList.add('-translate-y-full', 'opacity-0')
+            } else {
+              orangeTopBarRef.current.classList.remove('-translate-y-full', 'opacity-0')
+            }
+          }
+          return (
           <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between sm:h-20">
@@ -338,7 +350,8 @@ export default function Navbar() {
             </div>
           </DisclosurePanel>
           </>
-        )}
+          )
+        }}
       </Disclosure>
     </header>
   )
