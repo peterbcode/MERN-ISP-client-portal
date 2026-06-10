@@ -645,7 +645,7 @@ h6 {
 
 .brand-marquee-track {
   width: max-content;
-  animation: brand-marquee 34s linear infinite;
+  animation: brand-marquee 20s linear infinite;
   will-change: transform;
 }
 
@@ -1131,7 +1131,7 @@ body :where(p, li, label, input, textarea, select, button):not(#hero-section *) 
   }
 
   .brand-marquee-track {
-    animation-duration: 34s !important;
+    animation-duration: 20s !important;
     animation-iteration-count: infinite !important;
   }
 }
