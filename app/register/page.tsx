@@ -2,6 +2,7 @@ import Navbar from "../components/navbar";
 import SiteFooter from "../components/site-footer";
 import RegisterForm from "../../components/auth/RegisterForm";
 
+// Registration page component - displays the account creation form
 const Page = () => {
   return (
     <>
@@ -14,7 +15,7 @@ const Page = () => {
               Create Account
             </h2>
             <p className="mt-2 text-sm text-zinc-400">
-              Join our community and start playing games
+              Join our community
             </p>
           </div>
           <RegisterForm />
