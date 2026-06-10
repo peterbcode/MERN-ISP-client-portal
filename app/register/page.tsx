@@ -14,9 +14,6 @@ const Page = () => {
             <h2 className="mt-3 text-3xl font-black text-white">
               Create Account
             </h2>
-            <p className="mt-2 text-sm text-zinc-400">
-              Join our community
-            </p>
           </div>
           <RegisterForm />
         </div>
