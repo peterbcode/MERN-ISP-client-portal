@@ -15,7 +15,7 @@ import {
 
 const details = [
   { label: "Call Us", value: "079 938 1260", href: "tel:+27799381260", action: "Call", icon: PhoneIcon },
-  { label: "Email", value: "info@valley-computers.co.za", href: "mailto:info@valley-computers.co.za", action: "Email", icon: EnvelopeIcon },
+  { label: "Email", value: "info@valley-computers.co.za", href: "mailto:info@valley-computers.co.za?subject=Inquiry&body=Hi Valley Computers,", action: "Email", icon: EnvelopeIcon },
   { label: "Location", value: "6 Church Rd, Riebeek-Kasteel, 7307", href: "https://www.google.com/maps/search/?api=1&query=6%20Church%20Rd%2C%20Riebeek-Kasteel%2C%207307", target: "_blank", action: "Open Map", icon: MapPinIcon },
 ];
 
