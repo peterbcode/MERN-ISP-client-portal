@@ -14,7 +14,7 @@ const Page = () => {
               Create Account
             </h2>
             <p className="mt-2 text-sm text-zinc-400">
-              Join our community and start playing games
+              Join our community
             </p>
           </div>
           <RegisterForm />
