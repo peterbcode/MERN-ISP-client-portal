@@ -159,7 +159,7 @@ export default function Navbar() {
                     <button
                       key={item.name}
                       onClick={(e) => handleAnchorNavigation(item.href, e)}
-                      className={`relative text-[13px] font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
+                      className={`relative text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
                         isScrolled
                           ? 'text-[#d1d5db] hover:text-[#ff7e26]'
                           : isActive(item.href)
@@ -177,7 +177,7 @@ export default function Navbar() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`relative text-[13px] font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
+                      className={`relative text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
                         isScrolled
                           ? 'text-[#d1d5db] hover:text-[#ff7e26]'
                           : isActive(item.href)
@@ -291,7 +291,7 @@ export default function Navbar() {
                               handleAnchorNavigation(item.href, e)
                               close()
                             }}
-                            className="block w-full rounded-lg px-4 py-3 text-left text-base font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/10 hover:text-[#ff7e26]"
+                            className="block w-full rounded-lg px-4 py-3 text-left text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/10 hover:text-[#ff7e26]"
                           >
                             {item.name}
                           </button>
@@ -301,7 +301,7 @@ export default function Navbar() {
                             as={Link}
                             key={item.name}
                             href={item.href}
-                            className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
+                            className="block rounded-lg px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
                           >
                             {item.name}
                           </DisclosureButton>
@@ -314,21 +314,21 @@ export default function Navbar() {
                         <DisclosureButton
                           as={Link}
                           href="/faq"
-                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
+                          className="block rounded-lg px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
                         >
                           FAQ
                         </DisclosureButton>
                         <DisclosureButton
                           as={Link}
                           href="/login"
-                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
+                          className="block rounded-lg px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
                         >
                           Login
                         </DisclosureButton>
                         <DisclosureButton
                           as={Link}
                           href="/signup"
-                          className="block rounded-lg px-4 py-3 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
+                          className="block rounded-lg px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-translate-y-0.5 hover:text-[#ff7e26]"
                         >
                           Sign Up
                         </DisclosureButton>
@@ -339,7 +339,7 @@ export default function Navbar() {
                       <DisclosureButton
                         as={Link}
                         href="/signup"
-                        className="block w-full rounded-full bg-black px-6 py-3 text-center text-base font-bold text-white shadow-[0_10px_24px_rgba(0,0,0,0.3)] ring-1 ring-white/40 transition-all hover:-translate-y-0.5 hover:brightness-110"
+                        className="block w-full rounded-full bg-black px-6 py-3 text-center text-sm font-bold text-white shadow-[0_10px_24px_rgba(0,0,0,0.3)] ring-1 ring-white/40 transition-all hover:-translate-y-0.5 hover:brightness-110"
                       >
                         Partner With Us
                       </DisclosureButton>
