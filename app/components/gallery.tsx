@@ -67,11 +67,13 @@ const FEATURED_COUNT = 4;
 function GalleryCard({
   image,
   onClick,
-  className,
+  gridClass = "",
+  aspectClass = "aspect-[4/3]",
 }: {
   image: GalleryImage;
   onClick: () => void;
-  className?: string;
+  gridClass?: string;
+  aspectClass?: string;
 }) {
   return (
     <button
@@ -79,24 +81,26 @@ function GalleryCard({
       onClick={onClick}
       data-cursor="gallery"
       aria-label={`View ${image.label}`}
-      className={`group relative overflow-hidden rounded-2xl border border-white/8 bg-[#16181c] text-left shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition duration-300 hover:-translate-y-1 hover:border-[#ff7e26]/40 hover:shadow-[0_16px_40px_rgba(0,0,0,0.35)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7e26]/60 ${className ?? ""}`}
+      className={`group relative block min-h-0 w-full overflow-hidden rounded-2xl border border-white/8 bg-[#16181c] text-left shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition duration-300 hover:-translate-y-1 hover:border-[#ff7e26]/40 hover:shadow-[0_16px_40px_rgba(0,0,0,0.35)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7e26]/60 ${gridClass}`}
     >
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        sizes="(max-width: 768px) 100vw, 50vw"
-        className="object-cover object-center transition duration-500 group-hover:scale-[1.03]"
-        draggable={false}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent opacity-80 transition duration-300 group-hover:opacity-100" />
-      <span className="absolute left-4 top-4 rounded-md border border-white/10 bg-black/55 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[#ff7e26] backdrop-blur-sm">
-        {image.tag}
-      </span>
-      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-        <p className="text-sm font-semibold leading-snug text-white sm:text-base">
-          {image.label}
-        </p>
+      <div className={`relative h-full w-full ${aspectClass}`}>
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover object-center transition duration-500 group-hover:scale-[1.03]"
+          draggable={false}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent opacity-80 transition duration-300 group-hover:opacity-100" />
+        <span className="absolute left-4 top-4 rounded-md border border-white/10 bg-black/55 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[#ff7e26] backdrop-blur-sm">
+          {image.tag}
+        </span>
+        <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+          <p className="text-sm font-semibold leading-snug text-white sm:text-base">
+            {image.label}
+          </p>
+        </div>
       </div>
     </button>
   );
@@ -166,26 +170,30 @@ export default function GallerySection() {
           </AnimatedSection>
 
           <AnimatedSection direction="up" delay={150}>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-4">
+            <div className="grid grid-cols-1 gap-4 md:aspect-[12/7] md:min-h-[360px] md:grid-cols-12 md:grid-rows-6 md:gap-4">
               <GalleryCard
                 image={featuredImages[0]}
                 onClick={() => openImage(0)}
-                className="min-h-[240px] md:col-span-7 md:min-h-[320px] md:aspect-[16/10]"
+                gridClass="md:col-span-7 md:row-span-3 md:h-full"
+                aspectClass="aspect-[16/10] md:aspect-auto md:h-full"
               />
               <GalleryCard
                 image={featuredImages[1]}
                 onClick={() => openImage(1)}
-                className="min-h-[280px] md:col-span-5 md:row-span-2 md:min-h-[420px] md:aspect-[4/5]"
+                gridClass="md:col-span-5 md:col-start-8 md:row-span-6 md:h-full"
+                aspectClass="aspect-[4/5] md:aspect-auto md:h-full"
               />
               <GalleryCard
                 image={featuredImages[2]}
                 onClick={() => openImage(2)}
-                className="min-h-[200px] md:col-span-4 md:min-h-[200px] md:aspect-[4/3]"
+                gridClass="md:col-span-4 md:row-span-3 md:row-start-4 md:h-full"
+                aspectClass="aspect-[4/3] md:aspect-auto md:h-full"
               />
               <GalleryCard
                 image={featuredImages[3]}
                 onClick={() => openImage(3)}
-                className="min-h-[200px] md:col-span-3 md:min-h-[200px] md:aspect-[4/3]"
+                gridClass="md:col-span-3 md:col-start-5 md:row-span-3 md:row-start-4 md:h-full"
+                aspectClass="aspect-[4/3] md:aspect-auto md:h-full"
               />
             </div>
           </AnimatedSection>
@@ -204,7 +212,7 @@ export default function GallerySection() {
                     key={image.src}
                     image={image}
                     onClick={() => openImage(FEATURED_COUNT + index)}
-                    className="min-h-[220px] aspect-[4/3]"
+                    aspectClass="aspect-[4/3]"
                   />
                 ))}
               </div>
