@@ -1330,14 +1330,15 @@ html {
 }
 
 /* Hide scrollbars entirely */
-::-webkit-scrollbar {
-  display: none;
+html, body, * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
-/* Hide scrollbar for Firefox */
-* {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .overflow-x-scroll::-webkit-scrollbar {
