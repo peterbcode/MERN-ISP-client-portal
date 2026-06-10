@@ -85,6 +85,7 @@ function DraggableCarousel({ images, onImageClick }: CarouselProps) {
   const targetAngle = useRef(0);
   const currentAngle = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const dragDistance = useRef(0);
 
   const RADIUS = 320; // px — how "deep" the carousel sits
   const STEP = 360 / count;
@@ -108,6 +109,7 @@ function DraggableCarousel({ images, onImageClick }: CarouselProps) {
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     isDragging.current = true;
+    dragDistance.current = 0;
     dragStart.current = { x: e.clientX, angle: targetAngle.current };
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
   }, []);
@@ -115,12 +117,14 @@ function DraggableCarousel({ images, onImageClick }: CarouselProps) {
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (!isDragging.current || !dragStart.current) return;
     const dx = e.clientX - dragStart.current.x;
+    dragDistance.current = Math.abs(dx);
     // 0.35 deg per px — feels natural
     targetAngle.current = dragStart.current.angle - dx * 0.35;
   }, []);
 
   const onPointerUp = useCallback(() => {
     isDragging.current = false;
+    dragDistance.current = 0;
     // Snap to nearest card
     const nearest = Math.round(targetAngle.current / STEP) * STEP;
     targetAngle.current = nearest;
@@ -170,7 +174,12 @@ function DraggableCarousel({ images, onImageClick }: CarouselProps) {
               >
                 <div 
                   className="carousel-card-inner"
-                  onClick={() => onImageClick(img)}
+                  onClick={(e) => {
+                    // Only trigger click if it wasn't a drag (moved less than 5px)
+                    if (dragDistance.current < 5) {
+                      onImageClick(img);
+                    }
+                  }}
                   style={{ cursor: 'pointer' }}
                 >
                   <Image
