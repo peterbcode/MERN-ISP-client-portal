@@ -69,11 +69,13 @@ function GalleryCard({
   onClick,
   gridClass = "",
   aspectClass = "aspect-[4/3]",
+  isActive = false,
 }: {
   image: GalleryImage;
   onClick: () => void;
   gridClass?: string;
   aspectClass?: string;
+  isActive?: boolean;
 }) {
   return (
     <button
@@ -81,7 +83,7 @@ function GalleryCard({
       onClick={onClick}
       data-cursor="gallery"
       aria-label={`View ${image.label}`}
-      className={`group relative block min-h-0 w-full overflow-hidden rounded-2xl border border-white/8 bg-[#16181c] text-left shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition duration-300 hover:-translate-y-1 hover:border-[#ff7e26]/40 hover:shadow-[0_16px_40px_rgba(0,0,0,0.35)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7e26]/60 ${gridClass}`}
+      className={`gallery-card group relative block min-h-0 w-full overflow-hidden rounded-2xl border border-white/8 bg-[#16181c] text-left shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition duration-300 hover:-translate-y-1 hover:border-[#ff7e26]/40 hover:shadow-[0_16px_40px_rgba(0,0,0,0.35)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7e26]/60 ${isActive ? 'is-active ring-2 ring-[#ff7e26] ring-offset-2 ring-offset-black' : ''} ${gridClass}`}
     >
       <div className={`relative h-full w-full ${aspectClass}`}>
         <Image
@@ -110,6 +112,7 @@ export default function GallerySection() {
   const featuredImages = GALLERY_IMAGES.slice(0, FEATURED_COUNT);
   const moreImages = GALLERY_IMAGES.slice(FEATURED_COUNT);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [rotationIndex, setRotationIndex] = useState(0);
 
   const selectedImage =
     selectedIndex !== null ? GALLERY_IMAGES[selectedIndex] : null;
@@ -138,6 +141,23 @@ export default function GallerySection() {
     });
   }, []);
 
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    const gallerySection = document.getElementById('gallery');
+    if (!gallerySection) return;
+    
+    const rect = gallerySection.getBoundingClientRect();
+    const isInGallery = e.clientY >= rect.top && e.clientY <= rect.bottom;
+    
+    if (isInGallery) {
+      e.preventDefault();
+      setRotationIndex((prev) => {
+        const direction = e.deltaY > 0 ? 1 : -1;
+        const newIndex = prev + direction;
+        return newIndex < 0 ? featuredImages.length - 1 : newIndex >= featuredImages.length ? 0 : newIndex;
+      });
+    }
+  }, [featuredImages.length]);
+
   useEffect(() => {
     if (selectedIndex === null) return;
 
@@ -156,6 +176,7 @@ export default function GallerySection() {
       <section
         id="gallery"
         className="relative scroll-mt-28 py-20 text-white"
+        onWheel={handleWheel}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection direction="up" className="mx-auto mb-14 max-w-3xl text-center">
@@ -172,26 +193,27 @@ export default function GallerySection() {
           <AnimatedSection direction="up" delay={150}>
             <div className="grid grid-cols-1 gap-4 md:aspect-[12/7] md:min-h-[360px] md:grid-cols-12 md:grid-rows-6 md:gap-4">
               <GalleryCard
-                image={featuredImages[0]}
-                onClick={() => openImage(0)}
+                image={featuredImages[rotationIndex % featuredImages.length]}
+                onClick={() => openImage(rotationIndex % featuredImages.length)}
                 gridClass="md:col-span-7 md:row-span-3 md:h-full"
                 aspectClass="aspect-[16/10] md:aspect-auto md:h-full"
+                isActive={true}
               />
               <GalleryCard
-                image={featuredImages[1]}
-                onClick={() => openImage(1)}
+                image={featuredImages[(rotationIndex + 1) % featuredImages.length]}
+                onClick={() => openImage((rotationIndex + 1) % featuredImages.length)}
                 gridClass="md:col-span-5 md:col-start-8 md:row-span-6 md:h-full"
                 aspectClass="aspect-[4/5] md:aspect-auto md:h-full"
               />
               <GalleryCard
-                image={featuredImages[2]}
-                onClick={() => openImage(2)}
+                image={featuredImages[(rotationIndex + 2) % featuredImages.length]}
+                onClick={() => openImage((rotationIndex + 2) % featuredImages.length)}
                 gridClass="md:col-span-4 md:row-span-3 md:row-start-4 md:h-full"
                 aspectClass="aspect-[4/3] md:aspect-auto md:h-full"
               />
               <GalleryCard
-                image={featuredImages[3]}
-                onClick={() => openImage(3)}
+                image={featuredImages[(rotationIndex + 3) % featuredImages.length]}
+                onClick={() => openImage((rotationIndex + 3) % featuredImages.length)}
                 gridClass="md:col-span-3 md:col-start-5 md:row-span-3 md:row-start-4 md:h-full"
                 aspectClass="aspect-[4/3] md:aspect-auto md:h-full"
               />

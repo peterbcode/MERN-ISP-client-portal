@@ -1,56 +1,31 @@
-'use client';
+export function initNavbarScroll(navEl: HTMLElement) {
+  let lastY = 0;
 
-import { useEffect, useRef, useState } from 'react';
+  const onScroll = () => {
+    const y = window.scrollY;
 
-export function useNavbarScroll(navbarRef: React.RefObject<HTMLElement | null>) {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    if (!navbarRef.current) return;
-
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      
-      // Show/hide navbar based on scroll direction
-      if (scrollY > lastScrollY && scrollY > 80) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-
-      // Change background when scrolled past 80px
-      setIsScrolled(scrollY > 80);
-
-      setLastScrollY(scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [navbarRef, lastScrollY]);
-
-  useEffect(() => {
-    if (!navbarRef.current) return;
-
-    const navbar = navbarRef.current;
-    
-    if (isScrolled) {
-      navbar.style.background = 'rgba(8, 8, 7, 0.92)';
-      navbar.style.backdropFilter = 'blur(12px)';
-      navbar.style.transition = 'background 0.3s ease, backdrop-filter 0.3s ease';
+    if (y > 80) {
+      navEl.style.background = 'rgba(8,8,7,0.92)';
+      navEl.style.backdropFilter = 'blur(12px)';
+      (navEl.style as any).webkitBackdropFilter = 'blur(12px)';
     } else {
-      navbar.style.background = 'transparent';
-      navbar.style.backdropFilter = 'none';
+      navEl.style.background = 'transparent';
+      navEl.style.backdropFilter = 'none';
+      (navEl.style as any).webkitBackdropFilter = 'none';
     }
 
-    if (isVisible) {
-      navbar.style.transform = 'translateY(0)';
-      navbar.style.transition = 'transform 0.3s ease, background 0.3s ease, backdrop-filter 0.3s ease';
+    // Hide on scroll down, show on scroll up
+    if (y > lastY && y > 200) {
+      navEl.style.transform = 'translateY(-100%)';
     } else {
-      navbar.style.transform = 'translateY(-100%)';
+      navEl.style.transform = 'translateY(0)';
     }
-  }, [isScrolled, isVisible, navbarRef]);
 
-  return { isScrolled, isVisible };
+    lastY = y;
+  };
+
+  navEl.style.transition = 'background 0.3s ease, backdrop-filter 0.3s ease, transform 0.3s ease';
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  return () => window.removeEventListener('scroll', onScroll);
 }

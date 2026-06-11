@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import PremiumButton from './ui/premium-button'
 import { safeAlert } from '@/lib/native-dialog'
-import { useSectionReveal } from './animations/sectionReveal'
+import { revealSection } from './animations/sectionReveal'
 
 const inputClass =
   'w-full rounded-xl border border-white/10 bg-[#0f1114] px-4 py-3 text-base text-zinc-100 placeholder:text-zinc-500 focus:border-[#ff7e26] focus:outline-none focus:ring-2 focus:ring-[#ff7e26]/20 transition-all duration-300'
@@ -20,14 +20,12 @@ const ContactStrip = () => {
   const [result, setResult] = useState<'checking' | 'available' | 'unavailable' | null>(null)
 
   const sectionRef = useRef<HTMLElement>(null)
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  const formRef = useRef<HTMLDivElement>(null)
 
-  useSectionReveal({
-    sectionRef,
-    headingRef,
-    cardRefs: [formRef],
-  })
+  useEffect(() => {
+    if (!sectionRef.current) return
+    const cleanup = revealSection(sectionRef.current)
+    return cleanup
+  }, [])
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -89,8 +87,8 @@ const ContactStrip = () => {
     <section ref={sectionRef} className="relative scroll-mt-28 py-16 text-white sm:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-8 max-w-3xl text-center">
-          <h2 ref={headingRef} className="relative inline-block text-3xl font-extrabold text-white sm:text-5xl">
-            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
+          <h2 className="reveal-heading relative inline-block text-3xl font-extrabold text-white sm:text-5xl">
+            <span className="reveal-divider absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
             Check Your Coverage
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-zinc-300 sm:text-lg">
@@ -98,7 +96,7 @@ const ContactStrip = () => {
           </p>
         </div>
 
-        <div ref={formRef} className="rounded-3xl border border-white/10 bg-[#15181b]/95 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_16px_35px_rgba(0,0,0,0.3)] sm:p-8">
+        <div className="reveal-card rounded-3xl border border-white/10 bg-[#15181b]/95 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_16px_35px_rgba(0,0,0,0.3)] sm:p-8">
           <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); handleCheckCoverage() }}>
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="block group">

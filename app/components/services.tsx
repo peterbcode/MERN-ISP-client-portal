@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import {
   ArrowRightIcon,
@@ -11,7 +11,7 @@ import {
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline'
 import HoverCard from './ui/hover-card'
-import { useSectionReveal } from './animations/sectionReveal'
+import { revealSection } from './animations/sectionReveal'
 
 const services = [
   {
@@ -49,16 +49,12 @@ const stats = [
 
 const Services = () => {
   const sectionRef = useRef<HTMLElement>(null)
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
-  const statNumberRefs = useRef<(HTMLParagraphElement | null)[]>([])
 
-  useSectionReveal({
-    sectionRef,
-    headingRef,
-    cardRefs: cardRefs.current,
-    statNumbers: statNumberRefs.current,
-  })
+  useEffect(() => {
+    if (!sectionRef.current) return
+    const cleanup = revealSection(sectionRef.current)
+    return cleanup
+  }, [])
 
   return (
     <section
@@ -68,8 +64,8 @@ const Services = () => {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 ref={headingRef} className="relative inline-block text-3xl font-black sm:text-5xl">
-            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
+          <h2 className="reveal-heading relative inline-block text-3xl font-black sm:text-5xl">
+            <span className="reveal-divider absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
             Our Services
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg">
@@ -78,11 +74,8 @@ const Services = () => {
         </div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {services.map((service, index) => (
-            <div
-              key={service.title}
-              ref={(el) => { cardRefs.current[index] = el }}
-            >
+          {services.map((service) => (
+            <div key={service.title} className="reveal-card">
               <HoverCard hoverScale={1.03} shadowIntensity="heavy" className="h-full rounded-[10px] border border-white/8 bg-[#16181c] hover:border-[#ff7e26]/50 hover:shadow-[0_0_0_1px_rgba(255,126,38,0.15)]">
                 <div className="p-9 sm:p-10">
                   <div className="mb-7 inline-flex h-20 w-20 items-center justify-center rounded-2xl border border-[#ff7e26]/35 bg-[#ff7e26]/12 text-[#ff7e26] shadow-[0_14px_30px_rgba(255,126,38,0.14)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110 group-hover:bg-[#ff7e26] group-hover:text-black">
@@ -106,7 +99,7 @@ const Services = () => {
         <div className="mt-14">
           <div className="relative rounded-3xl border border-white/10 bg-[#0d0e10] p-5 shadow-[0_18px_38px_rgba(0,0,0,0.28)] sm:p-8">
             <div className="grid gap-4 text-center sm:grid-cols-2 lg:grid-cols-4">
-              {stats.map((item, index) => (
+              {stats.map((item) => (
                 <div
                   key={item.label}
                   className="group rounded-2xl border border-white/8 bg-white/[0.035] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#ff7e26]/40 hover:bg-white/[0.055]"
@@ -115,11 +108,9 @@ const Services = () => {
                     <item.icon className="h-6 w-6" />
                   </div>
                   <p
-                    ref={(el) => { statNumberRefs.current[index] = el }}
-                    className={`font-semibold tracking-tight text-[#ff7e26] transition-transform duration-300 group-hover:scale-105 ${
-                      item.value.includes(' ') ? 'text-[2.5rem] sm:text-[2.5rem]' : 'text-[2.5rem] sm:text-[2.5rem] lg:text-[2.5rem]'
-                    }`}
+                    className="stat-number font-semibold tracking-tight text-[#ff7e26] transition-transform duration-300 group-hover:scale-105 text-[2.5rem] sm:text-[2.5rem]"
                     style={{ textShadow: '0 0 18px rgba(255,126,38,0.45)' }}
+                    data-target={item.value.replace(/[^0-9.]/g, '')}
                   >
                     {item.value}
                   </p>

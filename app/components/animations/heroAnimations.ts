@@ -1,211 +1,132 @@
-'use client';
-
-import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
 gsap.registerPlugin(ScrollTrigger);
 
-interface HeroAnimationOptions {
-  heroRef: React.RefObject<HTMLElement | null>;
-  headlineRef: React.RefObject<HTMLElement | null> | React.RefObject<HTMLHeadingElement | null>;
-  subtitleRef: React.RefObject<HTMLElement | null> | React.RefObject<HTMLParagraphElement | null>;
-  ctaContainerRef: React.RefObject<HTMLElement | null> | React.RefObject<HTMLDivElement | null>;
-  brandTickerRef?: React.RefObject<HTMLElement | null>;
-}
+export function runHeroAnimations(containerRef: HTMLElement) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-export function useHeroAnimations({
-  heroRef,
-  headlineRef,
-  subtitleRef,
-  ctaContainerRef,
-  brandTickerRef,
-}: HeroAnimationOptions) {
-  const tiltRef = useRef({ x: 0, y: 0 });
-  const targetTiltRef = useRef({ x: 0, y: 0 });
+  const ctx = gsap.context(() => {
 
-  useEffect(() => {
-    if (!heroRef.current || !headlineRef.current) return;
+    // --- ENTRANCE TIMELINE ---
+    const tl = gsap.timeline();
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+    // 1. Glow fades in
+    tl.from('.hero-glow', { opacity: 0, duration: 1.2, ease: 'power2.out' });
 
-    const ctx = gsap.context(() => {
-      // A. Entrance animation
-      const tl = gsap.timeline();
+    // 2. Headline words slide up one by one
+    const words = gsap.utils.toArray<HTMLElement>('.hero-headline .word');
+    tl.from(words, {
+      y: 60,
+      opacity: 0,
+      stagger: 0.12,
+      duration: 0.8,
+      ease: 'power3.out',
+    }, '-=0.8');
 
-      // Background radial glow fade in
-      gsap.fromTo(
-        heroRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 1.2, ease: 'power2.out' }
-      );
+    // 3. Subtitle fades up
+    tl.from('.hero-subtitle', {
+      y: 30,
+      opacity: 0,
+      duration: 0.7,
+      ease: 'power2.out',
+    }, '-=0.5');
 
-      // Hero headline - split into words and stagger
-      if (headlineRef.current) {
-        const headlineWords = headlineRef.current.querySelectorAll('span');
-        gsap.fromTo(
-          headlineWords,
-          { 
-            y: 60, 
-            opacity: 0 
-          },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.12,
-            ease: 'power3.out',
-            delay: 0.2
-          }
-        );
-      }
+    // 4. CTA buttons scale in
+    tl.from('.hero-cta', {
+      scale: 0.92,
+      opacity: 0,
+      stagger: 0.15,
+      duration: 0.6,
+      ease: 'back.out(1.4)',
+    }, '-=0.4');
 
-      // Subtitle fade in + slide up
-      if (subtitleRef.current) {
-        gsap.fromTo(
-          subtitleRef.current,
-          { 
-            y: 30, 
-            opacity: 0 
-          },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: 'power3.out',
-            delay: 0.5
-          }
-        );
-      }
+    // 5. Ticker fades in
+    tl.from('.hero-ticker', { opacity: 0, duration: 0.5 }, '-=0.2');
 
-      // CTA buttons fade in + scale
-      if (ctaContainerRef.current) {
-        const buttons = ctaContainerRef.current.querySelectorAll('button');
-        gsap.fromTo(
-          buttons,
-          { 
-            scale: 0.92, 
-            opacity: 0 
-          },
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.15,
-            ease: 'back.out(1.7)',
-            delay: 0.7
-          }
-        );
-      }
+    // --- SCROLL PARALLAX ---
+    // Headline moves up faster
+    gsap.to('.hero-headline', {
+      y: -80,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'top top',
+        end: '40vh top',
+        scrub: true,
+      },
+    });
 
-      // Brand ticker fade in last
-      if (brandTickerRef?.current) {
-        gsap.fromTo(
-          brandTickerRef.current,
-          { opacity: 0 },
-          {
-            opacity: 1,
-            duration: 0.8,
-            ease: 'power2.out',
-            delay: 1.0
-          }
-        );
-      }
+    // Subtitle + CTAs move up slower
+    gsap.to('.hero-subtitle, .hero-cta', {
+      y: -40,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'top top',
+        end: '40vh top',
+        scrub: true,
+      },
+    });
 
-      // B. Scroll parallax
-      ScrollTrigger.create({
-        trigger: heroRef.current,
+    // Glow scales up and fades as hero leaves
+    gsap.to('.hero-glow', {
+      scale: 1.3,
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero-section',
         start: 'top top',
         end: 'bottom top',
         scrub: true,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          
-          // Headline moves UP at 0.3x scroll speed
-          if (headlineRef.current) {
-            gsap.set(headlineRef.current, {
-              y: progress * -80
-            });
-          }
+      },
+    });
 
-          // Subtitle + CTAs move UP at 0.15x scroll speed
-          if (subtitleRef.current) {
-            gsap.set(subtitleRef.current, {
-              y: progress * -40
-            });
-          }
+    // Hero section pins briefly for a "slow leave" feel
+    ScrollTrigger.create({
+      trigger: '.hero-section',
+      start: 'top top',
+      end: '+=20vh',
+      pin: true,
+      pinSpacing: false,
+    });
 
-          if (ctaContainerRef.current) {
-            gsap.set(ctaContainerRef.current, {
-              y: progress * -40
-            });
-          }
+  }, containerRef);
 
-          // Background glow scale and fade
-          gsap.set(heroRef.current, {
-            scale: 1 + progress * 0.3,
-            opacity: 1 - progress * 0.8
-          });
-        }
-      });
+  return () => ctx.revert();
+}
 
-      // Pin hero for first 20vh
-      ScrollTrigger.create({
-        trigger: heroRef.current,
-        start: 'top top',
-        end: '+=20vh',
-        pin: true,
-        pinSpacing: false
-      });
+export function initHeroTilt(heroEl: HTMLElement, headlineEl: HTMLElement) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => {};
 
-    }, heroRef);
+  let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+  let rafId: number;
 
-    // C. Cursor-reactive tilt
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!heroRef.current) return;
-      
-      const rect = heroRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      
-      const x = ((e.clientX - centerX) / rect.width) * 12; // ±6deg
-      const y = ((e.clientY - centerY) / rect.height) * 8; // ±4deg
-      
-      targetTiltRef.current = { x, y };
-    };
+  const LERP = 0.06;
 
-    const handleMouseLeave = () => {
-      targetTiltRef.current = { x: 0, y: 0 };
-    };
+  const onMove = (e: MouseEvent) => {
+    const rect = heroEl.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    targetX = ((e.clientY - cy) / rect.height) * 6;   // ±6deg
+    targetY = ((e.clientX - cx) / rect.width) * -4;   // ±4deg
+  };
 
-    const animateTilt = () => {
-      const lerp = 0.06;
-      tiltRef.current.x += (targetTiltRef.current.x - tiltRef.current.x) * lerp;
-      tiltRef.current.y += (targetTiltRef.current.y - tiltRef.current.y) * lerp;
+  const onLeave = () => { targetX = 0; targetY = 0; };
 
-      if (headlineRef.current) {
-        gsap.set(headlineRef.current, {
-          rotationX: tiltRef.current.y,
-          rotationY: tiltRef.current.x,
-          transformPerspective: 1000
-        });
-      }
+  const tick = () => {
+    currentX += (targetX - currentX) * LERP;
+    currentY += (targetY - currentY) * LERP;
+    headlineEl.style.transform = `perspective(800px) rotateX(${currentX}deg) rotateY(${currentY}deg)`;
+    rafId = requestAnimationFrame(tick);
+  };
 
-      requestAnimationFrame(animateTilt);
-    };
+  heroEl.addEventListener('mousemove', onMove);
+  heroEl.addEventListener('mouseleave', onLeave);
+  rafId = requestAnimationFrame(tick);
 
-    heroRef.current.addEventListener('mousemove', handleMouseMove);
-    heroRef.current.addEventListener('mouseleave', handleMouseLeave);
-    animateTilt();
-
-    return () => {
-      ctx.revert();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      if (heroRef.current) {
-        heroRef.current.removeEventListener('mousemove', handleMouseMove);
-        heroRef.current.removeEventListener('mouseleave', handleMouseLeave);
-      }
-    };
-  }, [heroRef, headlineRef, subtitleRef, ctaContainerRef, brandTickerRef]);
+  return () => {
+    heroEl.removeEventListener('mousemove', onMove);
+    heroEl.removeEventListener('mouseleave', onLeave);
+    cancelAnimationFrame(rafId);
+  };
 }

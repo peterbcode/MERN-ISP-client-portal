@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/solid'
 import { StarIcon } from '@heroicons/react/24/solid'
 import PremiumButton from './ui/premium-button'
-import { useSectionReveal } from './animations/sectionReveal'
+import { revealSection } from './animations/sectionReveal'
 
 const stories = [
   {
@@ -67,15 +67,12 @@ const SuccessStories = () => {
   const [cardsPerView, setCardsPerView] = useState(1)
 
   const sectionRef = useRef<HTMLElement>(null)
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  const carouselRef = useRef<HTMLDivElement>(null)
-  const linkRef = useRef<HTMLDivElement>(null)
 
-  useSectionReveal({
-    sectionRef,
-    headingRef,
-    cardRefs: [carouselRef],
-  })
+  useEffect(() => {
+    if (!sectionRef.current) return
+    const cleanup = revealSection(sectionRef.current)
+    return cleanup
+  }, [])
 
   useEffect(() => {
     const updateCardsPerView = () => {
@@ -111,8 +108,8 @@ const SuccessStories = () => {
     <section ref={sectionRef} id="testimonials" className="relative scroll-mt-28 py-20 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-14 max-w-3xl text-center">
-          <h2 ref={headingRef} className="relative inline-block text-3xl font-black sm:text-5xl">
-            <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
+          <h2 className="reveal-heading relative inline-block text-3xl font-black sm:text-5xl">
+            <span className="reveal-divider absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
             Success Stories
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-zinc-300 sm:text-lg">
@@ -121,7 +118,7 @@ const SuccessStories = () => {
         </div>
 
         {/* Testimonials Carousel */}
-        <div ref={carouselRef} className="relative">
+        <div className="reveal-card relative">
           <div className="relative overflow-hidden rounded-3xl border border-white/8 bg-[#16181c] backdrop-blur-sm">
             <div
               className="flex transition-transform duration-500 ease-out"
@@ -219,7 +216,7 @@ const SuccessStories = () => {
           </div>
         </div>
 
-        <div ref={linkRef} className="mt-8 text-center">
+        <div className="mt-8 text-center">
           <a
             href="https://www.google.com/search?q=Valley+Computers+Riebeek+Kasteel+reviews"
             target="_blank"

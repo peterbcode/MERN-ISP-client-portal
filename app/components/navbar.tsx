@@ -12,7 +12,7 @@ import {
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
-import { useNavbarScroll } from './animations/navbarScroll'
+import { initNavbarScroll } from './animations/navbarScroll'
 
 const navigation = [
   { name: 'Services', href: '/#services' },
@@ -27,9 +27,12 @@ export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
   const orangeTopBarRef = useRef<HTMLDivElement>(null)
-  const navbarRef = useRef<HTMLElement>(null)
+  const navRef = useRef<HTMLElement>(null)
 
-  const { isScrolled: scrollScrolled, isVisible } = useNavbarScroll(navbarRef)
+  useEffect(() => {
+    if (!navRef.current) return
+    return initNavbarScroll(navRef.current)
+  }, [])
 
   // Helper function to check if a navigation item is active
   const isActive = (href: string) => {
@@ -76,7 +79,7 @@ export default function Navbar() {
   }, [])
 
   return (
-    <header ref={navbarRef} className="relative z-50 w-full">
+    <header ref={navRef} className="relative z-50 w-full">
       {/* Orange top bar - will be hidden when mobile menu is open */}
       <div id="orange-top-bar" ref={orangeTopBarRef} className="relative z-[60] border-b border-white/20 bg-[#ff7e26] text-white transition-all duration-300">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-3 text-[10px] font-medium sm:px-6 sm:text-xs lg:px-8">
@@ -163,7 +166,7 @@ export default function Navbar() {
                     <button
                       key={item.name}
                       onClick={(e) => handleAnchorNavigation(item.href, e)}
-                      className={`relative text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
+                      className={`nav-link relative text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group bg-transparent border-none cursor-pointer ${
                         isScrolled
                           ? 'text-[#d1d5db] hover:text-[#ff7e26]'
                           : isActive(item.href)
@@ -181,7 +184,7 @@ export default function Navbar() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`relative text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
+                      className={`nav-link relative text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
                         isScrolled
                           ? 'text-[#d1d5db] hover:text-[#ff7e26]'
                           : isActive(item.href)
