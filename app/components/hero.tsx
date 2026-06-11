@@ -167,10 +167,6 @@ const Hero = () => {
           </span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-[#9ca3af] sm:mt-8 sm:text-lg lg:text-xl">
-          Blazing-fast Fibre &amp; Wireless internet, expert PC repairs, and full network engineering — built for the valley.
-        </p>
-
         <div className="mt-8 flex w-full max-w-2xl flex-col gap-3 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4">
           <PremiumButton
             variant="primary" className="cta-highlight"
