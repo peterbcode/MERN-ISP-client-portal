@@ -2,6 +2,7 @@
 
 import { forwardRef, useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useMagneticButton } from '../hooks/useMagneticButton'
 
 interface PremiumButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost'
@@ -24,6 +25,7 @@ interface PremiumButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const PremiumButton = forwardRef<HTMLButtonElement, PremiumButtonProps>(
   ({ variant = 'primary', size = 'md', children, className, disabled, ...props }, ref) => {
     const [isPressed, setIsPressed] = useState(false)
+    const magneticRef = useMagneticButton({ strength: 0.4, maxDistance: 60 })
 
     const baseStyles = 'relative inline-flex items-center justify-center rounded-full font-bold transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent will-change-transform'
 
@@ -45,7 +47,7 @@ export const PremiumButton = forwardRef<HTMLButtonElement, PremiumButtonProps>(
 
     return (
       <button
-        ref={ref}
+        ref={variant === 'primary' ? magneticRef : ref}
         className={cn(
           baseStyles,
           variants[variant],

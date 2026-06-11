@@ -2,10 +2,11 @@
 
 import Link from 'next/link'
 import type { FormEvent } from 'react'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { MapPinIcon, PhoneIcon, PaperAirplaneIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid'
 import { Facebook } from 'lucide-react'
 import ManageCookiesButton from './manage-cookies-button'
+import { useFooterReveal } from './animations/footerReveal'
 
 const services = [
   { label: 'Fibre to the Home', href: '/isp#plans' },
@@ -29,6 +30,18 @@ const SiteFooter = () => {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
+
+  const footerRef = useRef<HTMLElement>(null)
+  const logoTextRef = useRef<HTMLParagraphElement>(null)
+  const columnRefs = useRef<(HTMLDivElement | null)[]>([])
+  const bottomBarRef = useRef<HTMLDivElement>(null)
+
+  useFooterReveal({
+    footerRef,
+    logoTextRef,
+    columnRefs: columnRefs.current,
+    bottomBarRef,
+  })
 
   const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -65,12 +78,12 @@ const SiteFooter = () => {
   }
 
   return (
-    <footer className="metal-bg relative border-t border-white/6 text-zinc-300">
+    <footer ref={footerRef} className="metal-bg relative border-t border-white/6 text-zinc-300">
       <div className="h-1 bg-gradient-to-r from-transparent via-[#ff7e26] to-transparent" />
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 border-b border-white/6 pb-12 md:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <p className="text-3xl font-black tracking-tight text-zinc-100">
+          <div ref={(el) => { columnRefs.current[0] = el }}>
+            <p ref={logoTextRef} className="text-3xl font-black tracking-tight text-zinc-100">
               <span className="text-[#ff7e26]">VALLEY</span> COMPUTERS
             </p>
             <p className="mt-5 max-w-sm text-base leading-relaxed text-zinc-400">
@@ -99,7 +112,7 @@ const SiteFooter = () => {
             </div>
           </div>
 
-          <div>
+          <div ref={(el) => { columnRefs.current[1] = el }}>
             <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Services</h3>
             <div className="mt-3 h-0.5 w-[4.5rem] bg-[#ff7e26]" />
             <ul className="mt-5 space-y-3 text-base text-zinc-400">
@@ -113,7 +126,7 @@ const SiteFooter = () => {
             </ul>
           </div>
 
-          <div>
+          <div ref={(el) => { columnRefs.current[2] = el }}>
             <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Support Hub</h3>
             <div className="mt-3 h-0.5 w-28 bg-[#ff7e26]" />
             <ul className="mt-5 space-y-3 text-base text-zinc-400">
@@ -127,7 +140,7 @@ const SiteFooter = () => {
             </ul>
           </div>
 
-          <div>
+          <div ref={(el) => { columnRefs.current[3] = el }}>
             <h3 className="heading-compact text-2xl font-extrabold text-zinc-100">Stay Connected</h3>
             <div className="mt-3 h-0.5 w-32 bg-[#ff7e26]" />
             <p className="mt-8 text-sm font-bold uppercase tracking-[0.14em] text-zinc-300">
@@ -203,7 +216,7 @@ const SiteFooter = () => {
           </div>
         </div>
 
-        <div className="pt-7 text-sm text-zinc-500 sm:flex sm:items-center sm:justify-between">
+        <div ref={bottomBarRef} className="pt-7 text-sm text-zinc-500 sm:flex sm:items-center sm:justify-between">
           <p className="flex flex-wrap items-center gap-3">
             <span>(c) 2026 Riebeek Valley Computers (Pty) Ltd.</span>
             <span>|</span>

@@ -12,6 +12,7 @@ import {
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
+import { useNavbarScroll } from './animations/navbarScroll'
 
 const navigation = [
   { name: 'Services', href: '/#services' },
@@ -26,6 +27,9 @@ export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
   const orangeTopBarRef = useRef<HTMLDivElement>(null)
+  const navbarRef = useRef<HTMLElement>(null)
+
+  const { isScrolled: scrollScrolled, isVisible } = useNavbarScroll(navbarRef)
 
   // Helper function to check if a navigation item is active
   const isActive = (href: string) => {
@@ -72,7 +76,7 @@ export default function Navbar() {
   }, [])
 
   return (
-    <header className="relative z-50 w-full">
+    <header ref={navbarRef} className="relative z-50 w-full">
       {/* Orange top bar - will be hidden when mobile menu is open */}
       <div id="orange-top-bar" ref={orangeTopBarRef} className="relative z-[60] border-b border-white/20 bg-[#ff7e26] text-white transition-all duration-300">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-3 text-[10px] font-medium sm:px-6 sm:text-xs lg:px-8">

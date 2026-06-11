@@ -8,6 +8,7 @@ import AnalyticsLoader from "./components/analytics-loader";
 import PageLoader from "./components/page-loader";
 import DevIndicatorRemover from "./components/dev-indicator-remover";
 import CustomCursor from "./components/custom-cursor";
+import SmoothScroll from "./components/SmoothScroll";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://valley-computers.co.za"),
@@ -66,7 +67,9 @@ export default function RootLayout({
           <PageLoader />
           <DevIndicatorRemover />
           <CustomCursor />
-          {children}
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
           <CookieConsent />
           <FloatingActions />
           <AnalyticsLoader />

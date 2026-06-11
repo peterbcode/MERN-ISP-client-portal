@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef } from 'react'
 import Link from 'next/link'
 import {
   ArrowRightIcon,
@@ -9,8 +10,8 @@ import {
   WifiIcon,
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline'
-import AnimatedSection from './ui/animated-section'
 import HoverCard from './ui/hover-card'
+import { useSectionReveal } from './animations/sectionReveal'
 
 const services = [
   {
@@ -47,29 +48,40 @@ const stats = [
 ]
 
 const Services = () => {
+  const sectionRef = useRef<HTMLElement>(null)
+  const headingRef = useRef<HTMLHeadingElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const statNumberRefs = useRef<(HTMLParagraphElement | null)[]>([])
+
+  useSectionReveal({
+    sectionRef,
+    headingRef,
+    cardRefs: cardRefs.current,
+    statNumbers: statNumberRefs.current,
+  })
+
   return (
     <section
+      ref={sectionRef}
       id="services"
       className="relative scroll-mt-28 py-20 text-white"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <AnimatedSection direction="up" className="mx-auto max-w-3xl text-center">
-          <h2 className="relative inline-block text-3xl font-black sm:text-5xl">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 ref={headingRef} className="relative inline-block text-3xl font-black sm:text-5xl">
             <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
             Our Services
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg">
             Comprehensive IT solutions and high-speed internet for homes and businesses.
           </p>
-        </AnimatedSection>
+        </div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
           {services.map((service, index) => (
-            <AnimatedSection
+            <div
               key={service.title}
-              direction="up"
-              delay={index * 150}
-              duration={600}
+              ref={(el) => { cardRefs.current[index] = el }}
             >
               <HoverCard hoverScale={1.03} shadowIntensity="heavy" className="h-full rounded-[10px] border border-white/8 bg-[#16181c] hover:border-[#ff7e26]/50 hover:shadow-[0_0_0_1px_rgba(255,126,38,0.15)]">
                 <div className="p-9 sm:p-10">
@@ -87,41 +99,38 @@ const Services = () => {
                   </Link>
                 </div>
               </HoverCard>
-            </AnimatedSection>
+            </div>
           ))}
         </div>
 
-        <AnimatedSection direction="up" delay={450} className="mt-14">
+        <div className="mt-14">
           <div className="relative rounded-3xl border border-white/10 bg-[#0d0e10] p-5 shadow-[0_18px_38px_rgba(0,0,0,0.28)] sm:p-8">
             <div className="grid gap-4 text-center sm:grid-cols-2 lg:grid-cols-4">
               {stats.map((item, index) => (
-                <AnimatedSection
+                <div
                   key={item.label}
-                  direction="up"
-                  delay={index * 100}
-                  duration={500}
+                  className="group rounded-2xl border border-white/8 bg-white/[0.035] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#ff7e26]/40 hover:bg-white/[0.055]"
                 >
-                  <div className="group rounded-2xl border border-white/8 bg-white/[0.035] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#ff7e26]/40 hover:bg-white/[0.055]">
-                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#ff7e26] text-black shadow-[0_8px_24px_rgba(255,126,38,0.26)]">
-                      <item.icon className="h-6 w-6" />
-                    </div>
-                    <p
-                      className={`font-semibold tracking-tight text-[#ff7e26] transition-transform duration-300 group-hover:scale-105 ${
-                        item.value.includes(' ') ? 'text-[2.5rem] sm:text-[2.5rem]' : 'text-[2.5rem] sm:text-[2.5rem] lg:text-[2.5rem]'
-                      }`}
-                      style={{ textShadow: '0 0 18px rgba(255,126,38,0.45)' }}
-                    >
-                      {item.value}
-                    </p>
-                    <p className="mt-2 text-[13px] font-bold uppercase tracking-[0.14em] text-[#6b7280] transition-colors duration-300 group-hover:text-zinc-300">
-                      {item.label}
-                    </p>
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#ff7e26] text-black shadow-[0_8px_24px_rgba(255,126,38,0.26)]">
+                    <item.icon className="h-6 w-6" />
                   </div>
-                </AnimatedSection>
+                  <p
+                    ref={(el) => { statNumberRefs.current[index] = el }}
+                    className={`font-semibold tracking-tight text-[#ff7e26] transition-transform duration-300 group-hover:scale-105 ${
+                      item.value.includes(' ') ? 'text-[2.5rem] sm:text-[2.5rem]' : 'text-[2.5rem] sm:text-[2.5rem] lg:text-[2.5rem]'
+                    }`}
+                    style={{ textShadow: '0 0 18px rgba(255,126,38,0.45)' }}
+                  >
+                    {item.value}
+                  </p>
+                  <p className="mt-2 text-[13px] font-bold uppercase tracking-[0.14em] text-[#6b7280] transition-colors duration-300 group-hover:text-zinc-300">
+                    {item.label}
+                  </p>
+                </div>
               ))}
             </div>
           </div>
-        </AnimatedSection>
+        </div>
       </div>
     </section>
   )

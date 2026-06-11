@@ -1,13 +1,13 @@
 ﻿'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from '@heroicons/react/24/solid'
 import { StarIcon } from '@heroicons/react/24/solid'
-import AnimatedSection from './ui/animated-section'
 import PremiumButton from './ui/premium-button'
+import { useSectionReveal } from './animations/sectionReveal'
 
 const stories = [
   {
@@ -66,6 +66,17 @@ const SuccessStories = () => {
   const [index, setIndex] = useState(0)
   const [cardsPerView, setCardsPerView] = useState(1)
 
+  const sectionRef = useRef<HTMLElement>(null)
+  const headingRef = useRef<HTMLHeadingElement>(null)
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const linkRef = useRef<HTMLDivElement>(null)
+
+  useSectionReveal({
+    sectionRef,
+    headingRef,
+    cardRefs: [carouselRef],
+  })
+
   useEffect(() => {
     const updateCardsPerView = () => {
       if (window.innerWidth >= 1024) {
@@ -97,20 +108,20 @@ const SuccessStories = () => {
   }, [maxIndex])
 
   return (
-    <section id="testimonials" className="relative scroll-mt-28 py-20 text-white">
+    <section ref={sectionRef} id="testimonials" className="relative scroll-mt-28 py-20 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <AnimatedSection direction="up" className="mx-auto mb-14 max-w-3xl text-center">
-          <h2 className="relative inline-block text-3xl font-black sm:text-5xl">
+        <div className="mx-auto mb-14 max-w-3xl text-center">
+          <h2 ref={headingRef} className="relative inline-block text-3xl font-black sm:text-5xl">
             <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]"></span>
             Success Stories
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-zinc-300 sm:text-lg">
             Real results from businesses and homes we have connected across the valley.
           </p>
-        </AnimatedSection>
+        </div>
 
         {/* Testimonials Carousel */}
-        <AnimatedSection direction="up" delay={200} className="relative">
+        <div ref={carouselRef} className="relative">
           <div className="relative overflow-hidden rounded-3xl border border-white/8 bg-[#16181c] backdrop-blur-sm">
             <div
               className="flex transition-transform duration-500 ease-out"
@@ -206,9 +217,9 @@ const SuccessStories = () => {
               <ChevronRightIcon className="h-4 w-4" />
             </PremiumButton>
           </div>
-        </AnimatedSection>
+        </div>
 
-        <AnimatedSection direction="up" delay={300} className="mt-8 text-center">
+        <div ref={linkRef} className="mt-8 text-center">
           <a
             href="https://www.google.com/search?q=Valley+Computers+Riebeek+Kasteel+reviews"
             target="_blank"
@@ -220,7 +231,7 @@ const SuccessStories = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </a>
-        </AnimatedSection>
+        </div>
       </div>
     </section>
   )
