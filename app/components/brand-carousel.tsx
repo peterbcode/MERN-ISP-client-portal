@@ -5,22 +5,22 @@ const brands = [
     logo: "https://static.tenda.com.cn/public/logo-light.png?x-oss-process=image%2Fresize%2Cw_320%2Fformat%2Cavif",
   },
   {
+    name: "Genius",
+    href: "https://www.geniusnet.com/",
+    logo: "https://www.geniusnet.com/images/logo-w.svg",
+  },
+  {
     name: "MikroTik",
     href: "https://mikrotik.com/",
     logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/MikroTik_Logo_%282022%29.svg/3840px-MikroTik_Logo_%282022%29.svg.png",
   },
+  { name: "Canon", href: "https://www.canon.co.za/", logo: "/brands/canon-logo.png" },
   {
     name: "Ubiquiti",
     href: "https://ui.com/",
     logo: "/brands/ubiquiti-logo.png",
   },
-  {
-    name: "Genius",
-    href: "https://www.geniusnet.com/",
-    logo: "https://www.geniusnet.com/images/logo-w.svg",
-  },
   { name: "ADATA", href: "https://www.adata.com/", logo: "/brands/adata-logo.png" },
-  { name: "Canon", href: "https://www.canon.co.za/", logo: "/brands/canon-logo.png" },
 ];
 
 const BrandCarousel = () => {
@@ -35,7 +35,7 @@ const BrandCarousel = () => {
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#0d0e10] to-transparent" />
 
           <div className="brand-marquee-track flex min-w-max items-center gap-12 sm:gap-16">
-            {brands.map((brand, index) => (
+            {[...brands, ...brands].map((brand, index) => (
               <a
                 key={`${brand.name}-${index}`}
                 href={brand.href}
