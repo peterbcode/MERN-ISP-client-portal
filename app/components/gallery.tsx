@@ -149,7 +149,6 @@ export default function GallerySection() {
     const isInGallery = e.clientY >= rect.top && e.clientY <= rect.bottom;
     
     if (isInGallery) {
-      e.preventDefault();
       setRotationIndex((prev) => {
         const direction = e.deltaY > 0 ? 1 : -1;
         const newIndex = prev + direction;
