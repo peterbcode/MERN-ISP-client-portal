@@ -188,7 +188,7 @@ const Hero = () => {
           High-speed internet and expert IT support for homes and businesses across the Riebeek Valley.
         </p>
 
-        <div className="mt-12 flex w-full max-w-2xl justify-center sm:mt-16">
+        <div className="mt-8 flex w-full max-w-2xl justify-center sm:mt-10">
           <PremiumButton
             variant="primary" className="hero-cta cta-highlight"
             size="lg"
