@@ -263,8 +263,11 @@ export default function Navbar() {
                   'text-white hover:bg-white/10'
                 }`}>
                   <span className="sr-only">Open menu</span>
-                  <Bars3Icon className="block h-6 w-6 group-data-open:hidden" aria-hidden="true" />
-                  <XMarkIcon className="hidden h-6 w-6 group-data-open:block" aria-hidden="true" />
+                  {open ? (
+                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                  ) : (
+                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                  )}
                 </DisclosureButton>
               </div>
             </div>
