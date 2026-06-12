@@ -148,7 +148,7 @@ const SiteFooter = () => {
             </p>
             <form
               onSubmit={handleSubscribe}
-              className="mt-4 flex w-full max-w-sm overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900"
+              className="mt-4 flex w-full max-w-md overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900"
             >
               <input
                 type="email"
