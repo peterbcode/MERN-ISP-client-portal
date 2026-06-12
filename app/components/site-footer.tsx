@@ -169,7 +169,7 @@ const SiteFooter = () => {
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="inline-flex items-center justify-center gap-2 bg-[#ff7e26] px-4 text-sm font-bold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-[#ff7e26] px-4 text-sm font-bold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 <PaperAirplaneIcon className="h-4 w-4" />
                 {status === 'loading' ? 'Requesting' : 'Request Survey'}
