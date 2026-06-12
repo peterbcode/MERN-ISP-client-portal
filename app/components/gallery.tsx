@@ -197,18 +197,18 @@ export default function GallerySection() {
           </AnimatedSection>
 
           <AnimatedSection direction="up" delay={150}>
-            <div className="grid grid-cols-1 gap-4 md:aspect-[12/7] md:min-h-[360px] md:grid-cols-12 md:grid-rows-6 md:gap-4">
+            <div className="grid grid-cols-1 gap-4 md:aspect-[16/7] md:min-h-[360px] md:grid-cols-12 md:grid-rows-6 md:gap-4">
               <GalleryCard
                 image={featuredImages[rotationIndex % featuredImages.length]}
                 onClick={() => openImage(rotationIndex % featuredImages.length)}
-                gridClass="md:col-span-7 md:row-span-3 md:h-full"
+                gridClass="md:col-span-4 md:row-span-3 md:h-full"
                 aspectClass="aspect-[16/10] md:aspect-auto md:h-full"
                 isActive={true}
               />
               <GalleryCard
                 image={featuredImages[(rotationIndex + 1) % featuredImages.length]}
                 onClick={() => openImage((rotationIndex + 1) % featuredImages.length)}
-                gridClass="md:col-span-5 md:col-start-8 md:row-span-6 md:h-full"
+                gridClass="md:col-span-4 md:col-start-5 md:row-span-6 md:h-full"
                 aspectClass="aspect-[4/5] md:aspect-auto md:h-full"
               />
               <GalleryCard
@@ -220,8 +220,8 @@ export default function GallerySection() {
               <GalleryCard
                 image={featuredImages[(rotationIndex + 3) % featuredImages.length]}
                 onClick={() => openImage((rotationIndex + 3) % featuredImages.length)}
-                gridClass="md:col-span-3 md:col-start-5 md:row-span-3 md:row-start-4 md:h-full"
-                aspectClass="aspect-[4/3] md:aspect-auto md:h-full"
+                gridClass="md:col-span-4 md:col-start-9 md:row-span-6 md:h-full"
+                aspectClass="aspect-[4/5] md:aspect-auto md:h-full"
               />
             </div>
           </AnimatedSection>
