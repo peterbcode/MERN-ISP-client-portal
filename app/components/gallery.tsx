@@ -208,7 +208,7 @@ export default function GallerySection() {
               <GalleryCard
                 image={featuredImages[(rotationIndex + 1) % featuredImages.length]}
                 onClick={() => openImage((rotationIndex + 1) % featuredImages.length)}
-                gridClass="md:col-span-5 md:col-start-9 md:row-span-6 md:h-full"
+                gridClass="md:col-span-5 md:col-start-8 md:row-span-6 md:h-full"
                 aspectClass="aspect-[4/5] md:aspect-auto md:h-full"
               />
               <GalleryCard
