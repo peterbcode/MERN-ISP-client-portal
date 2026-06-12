@@ -169,9 +169,9 @@ const Hero = () => {
         ))}
       </div>
 
-      <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-6 pt-32 text-center sm:px-6 lg:px-8 lg:pb-10 lg:pt-40">
+      <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-12 pt-40 text-center sm:px-6 lg:px-8 lg:pb-16 lg:pt-48">
         <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#ff7e26]" />
-        <h1 ref={headlineRef} className="hero-headline mt-6 max-w-5xl font-black leading-[0.9] tracking-[-0.03em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]" style={{ fontSize: 'clamp(3.5rem, 7vw, 5rem)' }}>
+        <h1 ref={headlineRef} className="hero-headline mt-10 max-w-5xl font-black leading-[0.9] tracking-[-0.03em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]" style={{ fontSize: 'clamp(3.5rem, 7vw, 5rem)' }}>
           <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Riebeek</span>{' '}
           <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Valley's</span>{' '}
           <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Local</span>{' '}
@@ -184,31 +184,17 @@ const Hero = () => {
           </span>
         </h1>
 
-        <p className="hero-subtitle mx-auto mt-6 max-w-3xl text-base leading-relaxed text-[#9ca3af] sm:mt-8 sm:text-lg lg:text-xl">
+        <p className="hero-subtitle mx-auto mt-10 max-w-3xl text-base leading-relaxed text-[#9ca3af] sm:mt-12 sm:text-lg lg:text-xl">
           High-speed internet and expert IT support for homes and businesses across the Riebeek Valley.
         </p>
 
-        <div className="mt-8 flex w-full max-w-2xl flex-col gap-3 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4">
+        <div className="mt-12 flex w-full max-w-2xl justify-center sm:mt-16">
           <PremiumButton
             variant="primary" className="hero-cta cta-highlight"
             size="lg"
             onClick={() => router.push('/isp#plans')}
           >
             Get Connected
-          </PremiumButton>
-          <PremiumButton
-            variant="secondary" className="hero-cta cta-highlight"
-            size="lg"
-            onClick={() => window.location.href = '#services'}
-          >
-            Explore Services
-          </PremiumButton>
-          <PremiumButton
-            variant="secondary" className="hero-cta cta-highlight"
-            size="lg"
-            onClick={() => window.open('https://wa.me/27799381260', '_blank')}
-          >
-            Chat on WhatsApp
           </PremiumButton>
         </div>
 
