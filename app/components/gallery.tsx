@@ -186,8 +186,8 @@ export default function GallerySection() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection direction="up" className="mx-auto mb-14 max-w-3xl text-center">
-            <h2 className="relative inline-block text-3xl font-black sm:text-5xl">
-              <span className="absolute -top-3 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]" />
+            <h2 className="relative pt-5 text-3xl font-black sm:text-5xl">
+              <span className="absolute top-0 left-1/2 h-[2px] w-8 -translate-x-1/2 bg-[#ff7e26]" />
               Our Work in the Field
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg">
