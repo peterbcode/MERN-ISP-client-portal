@@ -3,17 +3,19 @@
 import { useEffect, useRef, useState } from 'react'
 
 export default function CustomCursor() {
-  const cursorRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
-  const circleRef = useRef<HTMLDivElement>(null)
-  const labelRef = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
   const [isError, setIsError] = useState(false)
   
   const mouseX = useRef(0)
   const mouseY = useRef(0)
-  const circleX = useRef(0)
-  const circleY = useRef(0)
+  const dotX = useRef(0)
+  const dotY = useRef(0)
   const rafId = useRef<number | null>(null)
+  const lastMouseX = useRef(0)
+  const lastMouseY = useRef(0)
+  const lastTime = useRef(0)
+  const velocity = useRef(0)
 
   useEffect(() => {
     // Check if device has a fine pointer (mouse/trackpad)
@@ -23,35 +25,47 @@ export default function CustomCursor() {
       return
     }
 
-    const cursor = cursorRef.current
     const dot = dotRef.current
-    const circle = circleRef.current
-    const label = labelRef.current
 
-    if (!cursor || !dot || !circle) {
+    if (!dot) {
       setIsError(true)
       return
     }
 
+    // Fade in on load
+    setTimeout(() => setIsVisible(true), 100)
+
     try {
-      // Lerp factor for smooth trailing
-      const lerpFactor = 0.12
+      // Lerp factor for smooth trailing (0.15 for fluid lag)
+      const lerpFactor = 0.15
 
       // Animation loop
-      const animate = () => {
-        circleX.current += (mouseX.current - circleX.current) * lerpFactor
-        circleY.current += (mouseY.current - circleY.current) * lerpFactor
-
-        // Update dot position (instant)
-        dot.style.transform = `translate(${mouseX.current}px, ${mouseY.current}px) translate(-50%, -50%)`
-
-        // Update circle position (smooth lag)
-        circle.style.transform = `translate(${circleX.current}px, ${circleY.current}px) translate(-50%, -50%)`
-
-        // Update label position
-        if (label) {
-          label.style.transform = `translate(${circleX.current}px, ${circleY.current}px) translate(-50%, -50%)`
+      const animate = (timestamp: number) => {
+        // Calculate velocity for scale effect
+        const timeDelta = timestamp - lastTime.current
+        if (timeDelta > 0) {
+          const dx = mouseX.current - lastMouseX.current
+          const dy = mouseY.current - lastMouseY.current
+          const distance = Math.sqrt(dx * dx + dy * dy)
+          velocity.current = distance / timeDelta
         }
+
+        // Smooth interpolation
+        dotX.current += (mouseX.current - dotX.current) * lerpFactor
+        dotY.current += (mouseY.current - dotY.current) * lerpFactor
+
+        // Scale based on velocity (faster = larger)
+        const scale = 1 + Math.min(velocity.current * 0.02, 0.5)
+        
+        // Update dot position with scale
+        dot.style.transform = `translate(${dotX.current}px, ${dotY.current}px) translate(-50%, -50%) scale(${scale})`
+
+        // Decay velocity
+        velocity.current *= 0.9
+
+        lastMouseX.current = mouseX.current
+        lastMouseY.current = mouseY.current
+        lastTime.current = timestamp
 
         rafId.current = requestAnimationFrame(animate)
       }
@@ -65,59 +79,8 @@ export default function CustomCursor() {
         mouseY.current = e.clientY
       }
 
-      // Handle hover state
-      const onMouseOver = (e: MouseEvent) => {
-        const target = e.target as HTMLElement
-        const isInteractive = target.matches('a, button') || 
-                             target.closest('a, button') ||
-                             target.classList.contains('cursor-hover') ||
-                             target.closest('.cursor-hover') ||
-                             target.dataset.cursor === 'hover' ||
-                             target.closest('[data-cursor="hover"]')
-
-        if (isInteractive) {
-          cursor?.classList.add('cursor--hover')
-          
-          // Get label from data-cursor-label attribute
-          const labelAttr = target.dataset.cursorLabel || 
-                           (target.closest('[data-cursor-label]') as HTMLElement)?.dataset.cursorLabel
-          if (label && labelAttr) {
-            label.textContent = labelAttr
-            label.classList.add('cursor__label--visible')
-          }
-        }
-      }
-
-      const onMouseOut = (e: MouseEvent) => {
-        const target = e.target as HTMLElement
-        const isInteractive = target.matches('a, button') || 
-                             target.closest('a, button') ||
-                             target.classList.contains('cursor-hover') ||
-                             target.closest('.cursor-hover') ||
-                             target.dataset.cursor === 'hover' ||
-                             target.closest('[data-cursor="hover"]')
-
-        if (isInteractive) {
-          cursor?.classList.remove('cursor--hover')
-          label?.classList.remove('cursor__label--visible')
-        }
-      }
-
-      // Handle click state
-      const onMouseDown = () => {
-        cursor?.classList.add('cursor--click')
-      }
-
-      const onMouseUp = () => {
-        cursor?.classList.remove('cursor--click')
-      }
-
       // Add event listeners
       document.addEventListener('mousemove', onMouseMove)
-      document.addEventListener('mouseover', onMouseOver)
-      document.addEventListener('mouseout', onMouseOut)
-      document.addEventListener('mousedown', onMouseDown)
-      document.addEventListener('mouseup', onMouseUp)
 
       // Cleanup
       return () => {
@@ -125,12 +88,6 @@ export default function CustomCursor() {
           cancelAnimationFrame(rafId.current)
         }
         document.removeEventListener('mousemove', onMouseMove)
-        document.removeEventListener('mouseover', onMouseOver)
-        document.removeEventListener('mouseout', onMouseOut)
-        document.removeEventListener('mousedown', onMouseDown)
-        document.removeEventListener('mouseup', onMouseUp)
-        // Remove cursor-active class on cleanup
-        document.body.classList.remove('cursor-active')
       }
     } catch (error) {
       console.error('Custom cursor error:', error)
@@ -144,10 +101,10 @@ export default function CustomCursor() {
   }
 
   return (
-    <div ref={cursorRef} className="custom-cursor">
-      <div ref={dotRef} className="custom-cursor__dot" />
-      <div ref={circleRef} className="custom-cursor__circle" />
-      <div ref={labelRef} className="custom-cursor__label" />
-    </div>
+    <div 
+      ref={dotRef} 
+      className="cursor-dot"
+      style={{ opacity: isVisible ? 1 : 0 }}
+    />
   )
 }
