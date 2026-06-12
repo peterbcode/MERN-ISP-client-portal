@@ -171,7 +171,7 @@ const Hero = () => {
 
       <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-6 pt-32 text-center sm:px-6 lg:px-8 lg:pb-10 lg:pt-40">
         <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#ff7e26]" />
-        <h1 ref={headlineRef} className="hero-headline mt-6 max-w-5xl font-black leading-[0.9] tracking-[-0.03em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
+        <h1 ref={headlineRef} className="hero-headline mt-6 max-w-5xl font-black leading-[0.9] tracking-[-0.03em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]" style={{ fontSize: 'clamp(3rem, 6vw, 4.5rem)' }}>
           <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Riebeek</span>{' '}
           <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Valley's</span>{' '}
           <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Local</span>{' '}
