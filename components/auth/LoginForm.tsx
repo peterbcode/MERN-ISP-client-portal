@@ -220,7 +220,7 @@ export default function LoginForm() {
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-zinc-700"></div>
           </div>
-          <div className="relative flex justify-center text-sm">
+          <div className="relative flex justify-center text-lg">
             <span className="px-2 bg-zinc-900 text-zinc-400">Or continue with</span>
           </div>
         </div>
