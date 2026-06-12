@@ -113,6 +113,7 @@ export default function GallerySection() {
   const moreImages = GALLERY_IMAGES.slice(FEATURED_COUNT);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [rotationIndex, setRotationIndex] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   const selectedImage =
     selectedIndex !== null ? GALLERY_IMAGES[selectedIndex] : null;
@@ -148,14 +149,20 @@ export default function GallerySection() {
     const rect = gallerySection.getBoundingClientRect();
     const isInGallery = e.clientY >= rect.top && e.clientY <= rect.bottom;
     
-    if (isInGallery) {
+    if (isInGallery && !isScrolling) {
+      e.preventDefault();
+      setIsScrolling(true);
       setRotationIndex((prev) => {
         const direction = e.deltaY > 0 ? 1 : -1;
         const newIndex = prev + direction;
         return newIndex < 0 ? featuredImages.length - 1 : newIndex >= featuredImages.length ? 0 : newIndex;
       });
+      
+      setTimeout(() => {
+        setIsScrolling(false);
+      }, 500);
     }
-  }, [featuredImages.length]);
+  }, [featuredImages.length, isScrolling]);
 
   useEffect(() => {
     if (selectedIndex === null) return;
@@ -201,7 +208,7 @@ export default function GallerySection() {
               <GalleryCard
                 image={featuredImages[(rotationIndex + 1) % featuredImages.length]}
                 onClick={() => openImage((rotationIndex + 1) % featuredImages.length)}
-                gridClass="md:col-span-5 md:col-start-8 md:row-span-6 md:h-full"
+                gridClass="md:col-span-5 md:col-start-9 md:row-span-6 md:h-full"
                 aspectClass="aspect-[4/5] md:aspect-auto md:h-full"
               />
               <GalleryCard
