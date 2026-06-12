@@ -21,6 +21,7 @@ export default function CustomCursor() {
     // Check if device has a fine pointer (mouse/trackpad)
     const finePointer = window.matchMedia('(pointer: fine)')
     if (!finePointer.matches) {
+      console.log('Custom cursor: Device does not have fine pointer')
       setIsError(true)
       return
     }
@@ -28,9 +29,14 @@ export default function CustomCursor() {
     const dot = dotRef.current
 
     if (!dot) {
+      console.log('Custom cursor: Dot ref not found')
       setIsError(true)
       return
     }
+
+    // Hide native cursor
+    document.body.classList.add('cursor-active')
+    console.log('Custom cursor: Initialized successfully')
 
     // Fade in on load
     setTimeout(() => setIsVisible(true), 100)
@@ -88,6 +94,7 @@ export default function CustomCursor() {
           cancelAnimationFrame(rafId.current)
         }
         document.removeEventListener('mousemove', onMouseMove)
+        document.body.classList.remove('cursor-active')
       }
     } catch (error) {
       console.error('Custom cursor error:', error)
@@ -104,7 +111,10 @@ export default function CustomCursor() {
     <div 
       ref={dotRef} 
       className="cursor-dot"
-      style={{ opacity: isVisible ? 1 : 0 }}
+      style={{ 
+        opacity: isVisible ? 1 : 0,
+        transform: 'translate(-50%, -50%)'
+      }}
     />
   )
 }
