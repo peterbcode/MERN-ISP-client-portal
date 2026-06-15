@@ -1,37 +1,44 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
+  const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    const cursor = cursorRef.current
-    if (!cursor) return
-
-    // Don't show on touch devices
-    if (window.matchMedia('(pointer: coarse)').matches) {
+    // Basic mobile/touch check
+    if (typeof window !== 'undefined' && 
+        (window.matchMedia('(pointer: coarse)').matches || 
+         'ontouchstart' in window)) {
       return
     }
 
-    cursor.classList.add('cursor--initialized')
-    document.documentElement.classList.add('cursor-active')
+    const cursor = cursorRef.current
+    if (!cursor) return
 
     let requestRef: number
+    let mouseX = 0
+    let mouseY = 0
+
+    const updatePosition = () => {
+      if (cursor) {
+        cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`
+      }
+      requestRef = requestAnimationFrame(updatePosition)
+    }
 
     const onMove = (e: MouseEvent) => {
-      if (requestRef) cancelAnimationFrame(requestRef)
-      
-      requestRef = requestAnimationFrame(() => {
-        if (cursor) {
-          cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`
-          cursor.classList.remove('cursor--off-screen')
-        }
-      })
+      mouseX = e.clientX
+      mouseY = e.clientY
+      if (!isInitialized) {
+        setIsInitialized(true)
+        document.documentElement.classList.add('cursor-active')
+      }
+      cursor.classList.remove('cursor--off-screen')
     }
 
     const onLeave = () => cursor.classList.add('cursor--off-screen')
-
     const onEnter = () => cursor.classList.add('cursor--focused')
     const onExit = () => cursor.classList.remove('cursor--focused')
 
@@ -46,24 +53,26 @@ export default function CustomCursor() {
     }
 
     addHoverListeners()
+    requestRef = requestAnimationFrame(updatePosition)
 
-    // Re-run on route changes so new links get listeners
-    const observer = new MutationObserver(() => {
-      addHoverListeners()
-    })
-    
+    const observer = new MutationObserver(() => addHoverListeners())
     observer.observe(document.body, { childList: true, subtree: true })
 
     return () => {
       document.removeEventListener('mousemove', onMove)
       document.removeEventListener('mouseleave', onLeave)
-      if (requestRef) cancelAnimationFrame(requestRef)
+      cancelAnimationFrame(requestRef)
       observer.disconnect()
+      document.documentElement.classList.remove('cursor-active')
     }
-  }, [])
+  }, [isInitialized])
 
   return (
-    <div ref={cursorRef} className="cursor">
+    <div 
+      ref={cursorRef} 
+      className={`cursor ${isInitialized ? 'cursor--initialized' : ''}`}
+      style={{ display: isInitialized ? 'block' : 'none' }}
+    >
       <div className="cursor-border">
         <span className="text">VIEW</span>
       </div>

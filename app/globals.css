@@ -1283,7 +1283,7 @@ html.cursor-active * {
   left: 0;
   position: fixed;
   will-change: transform;
-  z-index: 99999;
+  z-index: 999999;
   transition: opacity 0.3s ease;
 }
 
