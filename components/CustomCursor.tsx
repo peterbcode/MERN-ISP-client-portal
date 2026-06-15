@@ -1,11 +1,10 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null)
   const followerRef = useRef<HTMLDivElement>(null)
-  const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -14,12 +13,10 @@ export default function CustomCursor() {
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window
     if (isTouchDevice) return
 
-    // Position state
     const mouse = { x: -100, y: -100 }
     const dotPos = { x: -100, y: -100 }
     const followerPos = { x: -100, y: -100 }
-
-    let requestRef: number
+    let rafId: number
     let hasMoved = false
 
     const onMove = (e: MouseEvent) => {
@@ -28,7 +25,6 @@ export default function CustomCursor() {
       
       if (!hasMoved) {
         hasMoved = true
-        setIsInitialized(true)
         dotPos.x = mouse.x
         dotPos.y = mouse.y
         followerPos.x = mouse.x
@@ -38,13 +34,13 @@ export default function CustomCursor() {
     }
 
     const animate = () => {
-      // Access refs inside the loop to avoid targeting detached nodes after re-renders
       const dot = dotRef.current
       const follower = followerRef.current
 
       if (dot && follower && hasMoved) {
-        dotPos.x += (mouse.x - dotPos.x) * 0.8
-        dotPos.y += (mouse.y - dotPos.y) * 0.8
+        // Linear interpolation for smoothness
+        dotPos.x += (mouse.x - dotPos.x) * 0.4
+        dotPos.y += (mouse.y - dotPos.y) * 0.4
         followerPos.x += (mouse.x - followerPos.x) * 0.15
         followerPos.y += (mouse.y - followerPos.y) * 0.15
 
@@ -52,35 +48,37 @@ export default function CustomCursor() {
         follower.style.transform = `translate3d(${followerPos.x}px, ${followerPos.y}px, 0)`
       }
 
-      requestRef = requestAnimationFrame(animate)
+      rafId = requestAnimationFrame(animate)
     }
 
     const onEnter = () => {
       const dot = dotRef.current
       const follower = followerRef.current
-      if (follower) follower.classList.add('cursor-follower--focused')
-      if (dot) dot.classList.add('cursor-dot--focused')
+      if (follower) follower.classList.add('is-hovering')
+      if (dot) dot.classList.add('is-hovering')
     }
     const onExit = () => {
       const dot = dotRef.current
       const follower = followerRef.current
-      if (follower) follower.classList.remove('cursor-follower--focused')
-      if (dot) dot.classList.remove('cursor-dot--focused')
+      if (follower) follower.classList.remove('is-hovering')
+      if (dot) dot.classList.remove('is-hovering')
     }
 
-    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mousemove', onMove, { passive: true })
     window.addEventListener('mousedown', onEnter)
     window.addEventListener('mouseup', onExit)
     
     const addHoverListeners = () => {
       document.querySelectorAll('a, button, [role="button"], input[type="submit"], .cursor-pointer').forEach(el => {
+        el.removeEventListener('mouseenter', onEnter)
+        el.removeEventListener('mouseleave', onExit)
         el.addEventListener('mouseenter', onEnter)
         el.addEventListener('mouseleave', onExit)
       })
     }
 
     addHoverListeners()
-    requestRef = requestAnimationFrame(animate)
+    rafId = requestAnimationFrame(animate)
 
     const observer = new MutationObserver(() => addHoverListeners())
     observer.observe(document.body, { childList: true, subtree: true })
@@ -89,23 +87,16 @@ export default function CustomCursor() {
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mousedown', onEnter)
       window.removeEventListener('mouseup', onExit)
-      cancelAnimationFrame(requestRef)
+      cancelAnimationFrame(rafId)
       observer.disconnect()
       document.documentElement.classList.remove('cursor-active')
     }
   }, [])
 
-  // Early return for touch devices in the render phase
-  if (typeof window !== 'undefined' && (window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window)) {
-    return null
-  }
-
   return (
-    <div className={`cursor-wrapper ${isInitialized ? 'is-visible' : ''}`}>
+    <>
       <div ref={dotRef} className="cursor-dot" />
-      <div ref={followerRef} className="cursor-follower">
-        <div className="cursor-follower-inner" />
-      </div>
-    </div>
+      <div ref={followerRef} className="cursor-follower" />
+    </>
   )
 }

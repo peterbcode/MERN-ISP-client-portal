@@ -1269,92 +1269,65 @@ html, body, * {
   display: none;
 }
 
-/* ── Premium SaaS Custom Cursor ─────────────────────────── */
+/* ── Simple Bulletproof Custom Cursor ──────────────────── */
 html.cursor-active,
-html.cursor-active body,
-html.cursor-active * {
+html.cursor-active body {
   cursor: none !important;
 }
 
-.cursor-wrapper {
+/* Fallback: show system cursor if hovered on anything not explicitly hidden */
+html.cursor-active a,
+html.cursor-active button,
+html.cursor-active [role="button"] {
+  cursor: none !important;
+}
+
+.cursor-dot,
+.cursor-follower {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
-  z-index: 999999;
-  opacity: 0;
-  transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.cursor-wrapper.is-visible {
-  opacity: 1;
+  z-index: 2147483647; /* Maximum possible z-index */
+  border-radius: 50%;
+  will-change: transform;
+  transform: translate3d(-100px, -100px, 0);
 }
 
 .cursor-dot {
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   background-color: #f97316;
-  border-radius: 50%;
-  z-index: 2;
-  box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
-  transition: width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease, background-color 0.3s ease;
-}
-
-.cursor-dot.cursor-dot--focused {
-  width: 6px;
-  height: 6px;
-  top: -3px;
-  left: -3px;
-  background-color: #fff;
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.8);
+  transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
 }
 
 .cursor-follower {
-  position: absolute;
-  top: -20px;
-  left: -20px;
-  width: 40px;
-  height: 40px;
-  z-index: 1;
-  transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1), height 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1), left 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.cursor-follower-inner {
-  width: 100%;
-  height: 100%;
-  border: 1px solid rgba(249, 115, 22, 0.5);
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid rgba(249, 115, 22, 0.6);
   background-color: transparent;
-  transition: background-color 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+  transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1), 
+              height 0.3s cubic-bezier(0.23, 1, 0.32, 1), 
+              background-color 0.3s ease,
+              border-color 0.3s ease;
+  margin-left: -17px; /* Center align with dot */
+  margin-top: -17px;
 }
 
-.cursor-follower.cursor-follower--focused {
-  top: -30px;
-  left: -30px;
-  width: 60px;
-  height: 60px;
+/* Hovering states */
+.cursor-dot.is-hovering {
+  width: 6px;
+  height: 6px;
+  background-color: #fff;
 }
 
-.cursor-follower.cursor-follower--focused .cursor-follower-inner {
-  border-color: rgba(249, 115, 22, 0.8);
-  background-color: rgba(249, 115, 22, 0.1);
-  transform: scale(1.1);
+.cursor-follower.is-hovering {
+  width: 64px;
+  height: 64px;
+  border-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(249, 115, 22, 0.15);
+  margin-left: -27px;
+  margin-top: -27px;
 }
-
-/* Specific state for text - optional high-end touch */
-.cursor-text-active .cursor-dot {
-  width: 2px;
-  height: 20px;
-  border-radius: 1px;
-  top: -10px;
-  left: -1px;
-}
-
-.cursor-text-active .cursor-follower {
-  opacity: 0.2;
-}
-/* ── End Premium Custom Cursor ─────────────────────────── */
+/* ── End Simple Bulletproof Custom Cursor ──────────────── */
