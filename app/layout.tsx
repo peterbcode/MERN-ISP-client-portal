@@ -62,6 +62,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans")}>
       <body suppressHydrationWarning className="antialiased">
+        <div className="cursor">
+          <div className="cursor-border">
+            <span className="text">VIEW</span>
+          </div>
+        </div>
         <ConsentProvider>
           <PageLoader />
           <DevIndicatorRemover />
@@ -72,6 +77,38 @@ export default function RootLayout({
           <FloatingActions />
           <AnalyticsLoader />
         </ConsentProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (typeof window === 'undefined') return;
+                // Only run on non-touch devices
+                if (window.matchMedia('(hover: none)').matches) return;
+
+                var script = document.createElement('script');
+                script.src = '/node_modules/custom-cursor.js/dist/custom-cursor.min.js';
+                script.onload = function() {
+                  new CustomCursor('.cursor', {
+                    hideTrueCursor: true,
+                    focusElements: [
+                      {
+                        elements: 'a',
+                        focusClass: 'cursor--focused',
+                      },
+                      {
+                        elements: 'button',
+                        focusClass: 'cursor--focused',
+                      },
+                    ],
+                  })
+                  .setPosition(-30, -30)
+                  .initialize();
+                };
+                document.body.appendChild(script);
+              })();
+            `,
+          }}
+        />
       </body>
     </html>
   );
