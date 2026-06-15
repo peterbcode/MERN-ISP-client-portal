@@ -1270,6 +1270,8 @@ html, body, * {
 }
 
 /* ── Premium SaaS Custom Cursor ─────────────────────────── */
+html.cursor-active,
+html.cursor-active body,
 html.cursor-active * {
   cursor: none !important;
 }

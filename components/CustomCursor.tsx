@@ -19,33 +19,37 @@ export default function CustomCursor() {
     if (!dot || !follower) return
 
     // Position state
-    const mouse = { x: 0, y: 0 } // Actual mouse position
-    const dotPos = { x: 0, y: 0 } // Inner dot position
-    const followerPos = { x: 0, y: 0 } // Trailing circle position
+    const mouse = { x: 0, y: 0 }
+    const dotPos = { x: 0, y: 0 }
+    const followerPos = { x: 0, y: 0 }
 
     let requestRef: number
+    let hasMoved = false
 
     const onMove = (e: MouseEvent) => {
       mouse.x = e.clientX
       mouse.y = e.clientY
       
-      if (!isInitialized) {
+      if (!hasMoved) {
+        hasMoved = true
         setIsInitialized(true)
         dotPos.x = mouse.x
         dotPos.y = mouse.y
         followerPos.x = mouse.x
         followerPos.y = mouse.y
+        // Add class immediately on move
         document.documentElement.classList.add('cursor-active')
       }
     }
 
+    // Also add it if we are already initialized (though hasMoved covers this)
+    if (isInitialized) {
+      document.documentElement.classList.add('cursor-active')
+    }
+
     const animate = () => {
-      // Linear interpolation (Lerp) for smooth movement
-      // Dot follows mouse quickly
       dotPos.x += (mouse.x - dotPos.x) * 0.8
       dotPos.y += (mouse.y - dotPos.y) * 0.8
-
-      // Follower lags behind for that fluid feel
       followerPos.x += (mouse.x - followerPos.x) * 0.15
       followerPos.y += (mouse.y - followerPos.y) * 0.15
 
@@ -85,7 +89,7 @@ export default function CustomCursor() {
       observer.disconnect()
       document.documentElement.classList.remove('cursor-active')
     }
-  }, [isInitialized])
+  }, [])
 
   if (typeof window !== 'undefined' && (window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window)) {
     return null
