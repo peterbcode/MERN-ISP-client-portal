@@ -1123,25 +1123,6 @@ html {
   display: none !important;
 }
 
-/* Navbar link hover underline effect */
-.nav-link {
-  position: relative;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: #f97316;
-  transition: width 0.3s ease;
-}
-
-.nav-link:hover::after {
-  width: 100%;
-}
 
 /* Gallery card active state */
 .gallery-card.is-active {
