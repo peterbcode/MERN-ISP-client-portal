@@ -1,39 +1,40 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null)
   const followerRef = useRef<HTMLDivElement>(null)
-  const [active, setActive] = useState(false)
+  
+  // Use refs for values that shouldn't trigger re-renders or be reset by them
+  const mouseRef = useRef({ x: -100, y: -100 })
+  const dotPosRef = useRef({ x: -100, y: -100 })
+  const followerPosRef = useRef({ x: -100, y: -100 })
+  const moveCountRef = useRef(0)
+  const initializedRef = useRef(false)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    
-    // We'll detect mouse vs touch dynamically by movement
-    const mouse = { x: -100, y: -100 }
-    const dotPos = { x: -100, y: -100 }
-    const followerPos = { x: -100, y: -100 }
-    let rafId: number
-    let moveCount = 0
 
     const onMove = (e: MouseEvent) => {
-      // If we see mouse coordinates that aren't zero, it's a mouse/trackpad
+      // Basic validation for mouse movement
       if (e.clientX === 0 && e.clientY === 0) return
 
-      mouse.x = e.clientX
-      mouse.y = e.clientY
+      mouseRef.current.x = e.clientX
+      mouseRef.current.y = e.clientY
       
-      moveCount++
-      // Require a few movements to confirm it's not just a stray touch event
-      if (moveCount > 3 && !active) {
-        setActive(true)
-        dotPos.x = mouse.x
-        dotPos.y = mouse.y
-        followerPos.x = mouse.x
-        followerPos.y = mouse.y
+      moveCountRef.current++
+      
+      // Confirm it's a real mouse and activate
+      if (moveCountRef.current > 5 && !initializedRef.current) {
+        initializedRef.current = true
+        dotPosRef.current = { ...mouseRef.current }
+        followerPosRef.current = { ...mouseRef.current }
         document.documentElement.setAttribute('data-cursor-active', 'true')
-        console.log('Custom cursor initialized')
+        
+        // Show elements immediately
+        if (dotRef.current) dotRef.current.style.opacity = '1'
+        if (followerRef.current) followerRef.current.style.opacity = '1'
       }
     }
 
@@ -41,7 +42,11 @@ export default function CustomCursor() {
       const dot = dotRef.current
       const follower = followerRef.current
 
-      if (dot && follower && moveCount > 3) {
+      if (dot && follower && initializedRef.current) {
+        const mouse = mouseRef.current
+        const dotPos = dotPosRef.current
+        const followerPos = followerPosRef.current
+
         // Smooth interpolation
         dotPos.x += (mouse.x - dotPos.x) * 0.4
         dotPos.y += (mouse.y - dotPos.y) * 0.4
@@ -50,13 +55,9 @@ export default function CustomCursor() {
 
         dot.style.transform = `translate3d(${dotPos.x}px, ${dotPos.y}px, 0)`
         follower.style.transform = `translate3d(${followerPos.x}px, ${followerPos.y}px, 0)`
-        
-        // Ensure they are visible once active
-        dot.style.opacity = '1'
-        follower.style.opacity = '1'
       }
 
-      rafId = requestAnimationFrame(animate)
+      requestAnimationFrame(animate)
     }
 
     const onEnter = () => document.body.setAttribute('data-cursor-hover', 'true')
@@ -75,7 +76,7 @@ export default function CustomCursor() {
     }
 
     addHoverListeners()
-    rafId = requestAnimationFrame(animate)
+    const rafId = requestAnimationFrame(animate)
 
     const observer = new MutationObserver(() => addHoverListeners())
     observer.observe(document.body, { childList: true, subtree: true })
@@ -89,7 +90,7 @@ export default function CustomCursor() {
       document.documentElement.removeAttribute('data-cursor-active')
       document.body.removeAttribute('data-cursor-hover')
     }
-  }, [active]) // Using active as dependency to ensure state updates don't kill the loop
+  }, []) // Empty dependency array is critical - this effect must only run once
 
   return (
     <>
