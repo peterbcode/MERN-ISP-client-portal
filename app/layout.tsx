@@ -7,7 +7,6 @@ import { ConsentProvider } from "./components/consent-provider";
 import AnalyticsLoader from "./components/analytics-loader";
 import PageLoader from "./components/page-loader";
 import DevIndicatorRemover from "./components/dev-indicator-remover";
-import CustomCursor from "./components/custom-cursor";
 import SmoothScroll from "./components/SmoothScroll";
 
 export const metadata: Metadata = {
@@ -66,7 +65,6 @@ export default function RootLayout({
         <ConsentProvider>
           <PageLoader />
           <DevIndicatorRemover />
-          <CustomCursor />
           <SmoothScroll>
             {children}
           </SmoothScroll>
