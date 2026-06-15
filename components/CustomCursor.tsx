@@ -1,21 +1,22 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null)
   const followerRef = useRef<HTMLDivElement>(null)
+  const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
     
-    // Check for touch device
+    // Check for touch device - modern professional cursors usually hide on touch
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window
     if (isTouchDevice) return
 
-    const mouse = { x: -100, y: -100 }
-    const dotPos = { x: -100, y: -100 }
-    const followerPos = { x: -100, y: -100 }
+    const mouse = { x: 0, y: 0 }
+    const dotPos = { x: 0, y: 0 }
+    const followerPos = { x: 0, y: 0 }
     let rafId: number
     let hasMoved = false
 
@@ -29,6 +30,7 @@ export default function CustomCursor() {
         dotPos.y = mouse.y
         followerPos.x = mouse.x
         followerPos.y = mouse.y
+        setIsReady(true)
         document.documentElement.classList.add('cursor-active')
       }
     }
@@ -38,7 +40,7 @@ export default function CustomCursor() {
       const follower = followerRef.current
 
       if (dot && follower && hasMoved) {
-        // Linear interpolation for smoothness
+        // Smooth interpolation
         dotPos.x += (mouse.x - dotPos.x) * 0.4
         dotPos.y += (mouse.y - dotPos.y) * 0.4
         followerPos.x += (mouse.x - followerPos.x) * 0.15
@@ -52,16 +54,10 @@ export default function CustomCursor() {
     }
 
     const onEnter = () => {
-      const dot = dotRef.current
-      const follower = followerRef.current
-      if (follower) follower.classList.add('is-hovering')
-      if (dot) dot.classList.add('is-hovering')
+      document.body.classList.add('cursor-hover')
     }
     const onExit = () => {
-      const dot = dotRef.current
-      const follower = followerRef.current
-      if (follower) follower.classList.remove('is-hovering')
-      if (dot) dot.classList.remove('is-hovering')
+      document.body.classList.remove('cursor-hover')
     }
 
     window.addEventListener('mousemove', onMove, { passive: true })
@@ -69,9 +65,8 @@ export default function CustomCursor() {
     window.addEventListener('mouseup', onExit)
     
     const addHoverListeners = () => {
-      document.querySelectorAll('a, button, [role="button"], input[type="submit"], .cursor-pointer').forEach(el => {
-        el.removeEventListener('mouseenter', onEnter)
-        el.removeEventListener('mouseleave', onExit)
+      const targets = document.querySelectorAll('a, button, [role="button"], input[type="submit"], .cursor-pointer, .hover-target')
+      targets.forEach(el => {
         el.addEventListener('mouseenter', onEnter)
         el.addEventListener('mouseleave', onExit)
       })
@@ -90,13 +85,18 @@ export default function CustomCursor() {
       cancelAnimationFrame(rafId)
       observer.disconnect()
       document.documentElement.classList.remove('cursor-active')
+      document.body.classList.remove('cursor-hover')
     }
   }, [])
 
+  if (typeof window !== 'undefined' && (window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window)) {
+    return null
+  }
+
   return (
-    <>
-      <div ref={dotRef} className="cursor-dot" />
-      <div ref={followerRef} className="cursor-follower" />
-    </>
+    <div className={`cursor-container ${isReady ? 'is-ready' : ''}`}>
+      <div ref={dotRef} className="cursor-dot-v2" />
+      <div ref={followerRef} className="cursor-follower-v2" />
+    </div>
   )
 }

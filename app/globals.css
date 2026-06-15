@@ -1269,65 +1269,84 @@ html, body, * {
   display: none;
 }
 
-/* ── Simple Bulletproof Custom Cursor ──────────────────── */
+/* ── Final Professional Custom Cursor ──────────────────── */
+/* Use the most aggressive selector to hide default cursor globally */
 html.cursor-active,
+html.cursor-active *,
 html.cursor-active body {
   cursor: none !important;
 }
 
-/* Fallback: show system cursor if hovered on anything not explicitly hidden */
-html.cursor-active a,
-html.cursor-active button,
-html.cursor-active [role="button"] {
-  cursor: none !important;
-}
-
-.cursor-dot,
-.cursor-follower {
+.cursor-container {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
-  z-index: 2147483647; /* Maximum possible z-index */
-  border-radius: 50%;
-  will-change: transform;
-  transform: translate3d(-100px, -100px, 0);
+  z-index: 2147483647;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
-.cursor-dot {
+.cursor-container.is-ready {
+  opacity: 1;
+}
+
+.cursor-dot-v2,
+.cursor-follower-v2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.cursor-dot-v2 {
   width: 10px;
   height: 10px;
   background-color: #f97316;
-  box-shadow: 0 0 15px rgba(249, 115, 22, 0.8);
-  transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+  margin-top: -5px;
+  margin-left: -5px;
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.8);
 }
 
-.cursor-follower {
-  width: 44px;
-  height: 44px;
-  border: 1.5px solid rgba(249, 115, 22, 0.6);
-  background-color: transparent;
-  transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1), 
-              height 0.3s cubic-bezier(0.23, 1, 0.32, 1), 
-              background-color 0.3s ease,
-              border-color 0.3s ease;
-  margin-left: -17px; /* Center align with dot */
-  margin-top: -17px;
+.cursor-follower-v2 {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(249, 115, 22, 0.6);
+  margin-top: -20px;
+  margin-left: -20px;
+  z-index: 1;
+  transition: width 0.3s ease, height 0.3s ease, margin 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Hovering states */
-.cursor-dot.is-hovering {
+/* Hover States */
+body.cursor-hover .cursor-dot-v2 {
   width: 6px;
   height: 6px;
+  margin-top: -3px;
+  margin-left: -3px;
   background-color: #fff;
 }
 
-.cursor-follower.is-hovering {
-  width: 64px;
-  height: 64px;
-  border-color: rgba(255, 255, 255, 0.8);
-  background-color: rgba(249, 115, 22, 0.15);
-  margin-left: -27px;
-  margin-top: -27px;
+body.cursor-hover .cursor-follower-v2 {
+  width: 60px;
+  height: 60px;
+  margin-top: -30px;
+  margin-left: -30px;
+  background-color: rgba(249, 115, 22, 0.1);
+  border-color: rgba(249, 115, 22, 0.9);
 }
-/* ── End Simple Bulletproof Custom Cursor ──────────────── */
+
+/* Ensure no system cursor on specific elements */
+html.cursor-active a, 
+html.cursor-active button, 
+html.cursor-active input, 
+html.cursor-active [role="button"],
+html.cursor-active textarea {
+  cursor: none !important;
+}
+/* ── End Final Professional Custom Cursor ──────────────── */
