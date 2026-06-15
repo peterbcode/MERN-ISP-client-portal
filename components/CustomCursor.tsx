@@ -3,78 +3,99 @@
 import { useEffect, useRef, useState } from 'react'
 
 export default function CustomCursor() {
-  const cursorRef = useRef<HTMLDivElement>(null)
+  const dotRef = useRef<HTMLDivElement>(null)
+  const followerRef = useRef<HTMLDivElement>(null)
   const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    // Basic mobile/touch check
-    if (typeof window !== 'undefined' && 
-        (window.matchMedia('(pointer: coarse)').matches || 
-         'ontouchstart' in window)) {
-      return
-    }
+    if (typeof window === 'undefined') return
+    
+    // Check for touch device
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window
+    if (isTouchDevice) return
 
-    const cursor = cursorRef.current
-    if (!cursor) return
+    const dot = dotRef.current
+    const follower = followerRef.current
+    if (!dot || !follower) return
+
+    // Position state
+    const mouse = { x: 0, y: 0 } // Actual mouse position
+    const dotPos = { x: 0, y: 0 } // Inner dot position
+    const followerPos = { x: 0, y: 0 } // Trailing circle position
 
     let requestRef: number
-    let mouseX = 0
-    let mouseY = 0
-
-    const updatePosition = () => {
-      if (cursor) {
-        cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`
-      }
-      requestRef = requestAnimationFrame(updatePosition)
-    }
 
     const onMove = (e: MouseEvent) => {
-      mouseX = e.clientX
-      mouseY = e.clientY
+      mouse.x = e.clientX
+      mouse.y = e.clientY
+      
       if (!isInitialized) {
         setIsInitialized(true)
+        dotPos.x = mouse.x
+        dotPos.y = mouse.y
+        followerPos.x = mouse.x
+        followerPos.y = mouse.y
         document.documentElement.classList.add('cursor-active')
       }
-      cursor.classList.remove('cursor--off-screen')
     }
 
-    const onLeave = () => cursor.classList.add('cursor--off-screen')
-    const onEnter = () => cursor.classList.add('cursor--focused')
-    const onExit = () => cursor.classList.remove('cursor--focused')
+    const animate = () => {
+      // Linear interpolation (Lerp) for smooth movement
+      // Dot follows mouse quickly
+      dotPos.x += (mouse.x - dotPos.x) * 0.8
+      dotPos.y += (mouse.y - dotPos.y) * 0.8
 
-    document.addEventListener('mousemove', onMove)
-    document.addEventListener('mouseleave', onLeave)
+      // Follower lags behind for that fluid feel
+      followerPos.x += (mouse.x - followerPos.x) * 0.15
+      followerPos.y += (mouse.y - followerPos.y) * 0.15
 
+      dot.style.transform = `translate3d(${dotPos.x}px, ${dotPos.y}px, 0)`
+      follower.style.transform = `translate3d(${followerPos.x}px, ${followerPos.y}px, 0)`
+
+      requestRef = requestAnimationFrame(animate)
+    }
+
+    const onEnter = () => {
+      follower.classList.add('cursor-follower--focused')
+      dot.classList.add('cursor-dot--focused')
+    }
+    const onExit = () => {
+      follower.classList.remove('cursor-follower--focused')
+      dot.classList.remove('cursor-dot--focused')
+    }
+
+    window.addEventListener('mousemove', onMove)
+    
     const addHoverListeners = () => {
-      document.querySelectorAll('a, button, [role="button"], input[type="submit"], input[type="button"]').forEach(el => {
+      document.querySelectorAll('a, button, [role="button"], input[type="submit"], .cursor-pointer').forEach(el => {
         el.addEventListener('mouseenter', onEnter)
         el.addEventListener('mouseleave', onExit)
       })
     }
 
     addHoverListeners()
-    requestRef = requestAnimationFrame(updatePosition)
+    requestRef = requestAnimationFrame(animate)
 
     const observer = new MutationObserver(() => addHoverListeners())
     observer.observe(document.body, { childList: true, subtree: true })
 
     return () => {
-      document.removeEventListener('mousemove', onMove)
-      document.removeEventListener('mouseleave', onLeave)
+      window.removeEventListener('mousemove', onMove)
       cancelAnimationFrame(requestRef)
       observer.disconnect()
       document.documentElement.classList.remove('cursor-active')
     }
   }, [isInitialized])
 
+  if (typeof window !== 'undefined' && (window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window)) {
+    return null
+  }
+
   return (
-    <div 
-      ref={cursorRef} 
-      className={`cursor ${isInitialized ? 'cursor--initialized' : ''}`}
-      style={{ display: isInitialized ? 'block' : 'none' }}
-    >
-      <div className="cursor-border">
-        <span className="text">VIEW</span>
+    <div className={`cursor-wrapper ${isInitialized ? 'is-visible' : ''}`}>
+      <div ref={dotRef} className="cursor-dot" />
+      <div ref={followerRef} className="cursor-follower">
+        <div className="cursor-follower-inner" />
       </div>
     </div>
   )
