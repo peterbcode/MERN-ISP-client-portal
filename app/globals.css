@@ -1277,44 +1277,51 @@ html[data-cursor-active="true"] * {
   cursor: none !important;
 }
 
+.cursor-dot-v3,
+.cursor-follower-v3 {
+  opacity: 0;
+  pointer-events: none !important;
+  visibility: visible !important;
+}
+
 .cursor-dot-v3 {
   width: 12px;
   height: 12px;
-  background-color: #f97316;
-  border-radius: 50%;
+  background-color: #f97316 !important;
+  border-radius: 50% !important;
   margin-top: -6px;
   margin-left: -6px;
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.9);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.9) !important;
   transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
 }
 
 .cursor-follower-v3 {
   width: 46px;
   height: 46px;
-  border: 1.5px solid rgba(249, 115, 22, 0.7);
-  border-radius: 50%;
+  border: 1.5px solid rgba(249, 115, 22, 0.7) !important;
+  border-radius: 50% !important;
   margin-top: -23px;
   margin-left: -23px;
-  background-color: transparent;
+  background-color: transparent !important;
   transition: width 0.3s ease, height 0.3s ease, margin 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Hover States via data-attribute on body */
 body[data-cursor-hover="true"] .cursor-dot-v3 {
-  width: 6px;
-  height: 6px;
+  width: 6px !important;
+  height: 6px !important;
   margin-top: -3px;
   margin-left: -3px;
-  background-color: #fff;
+  background-color: #fff !important;
 }
 
 body[data-cursor-hover="true"] .cursor-follower-v3 {
-  width: 68px;
-  height: 68px;
+  width: 68px !important;
+  height: 68px !important;
   margin-top: -34px;
   margin-left: -34px;
-  background-color: rgba(249, 115, 22, 0.15);
-  border-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(249, 115, 22, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
 }
 
 /* Secondary override for interactive elements to ensure no system cursor overlap */

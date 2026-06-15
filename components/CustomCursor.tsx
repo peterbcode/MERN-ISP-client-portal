@@ -10,10 +10,7 @@ export default function CustomCursor() {
   useEffect(() => {
     if (typeof window === 'undefined') return
     
-    // Check for touch device
-    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window
-    if (isTouchDevice) return
-
+    // We'll detect mouse vs touch dynamically by movement
     const mouse = { x: -100, y: -100 }
     const dotPos = { x: -100, y: -100 }
     const followerPos = { x: -100, y: -100 }
@@ -21,17 +18,22 @@ export default function CustomCursor() {
     let moveCount = 0
 
     const onMove = (e: MouseEvent) => {
+      // If we see mouse coordinates that aren't zero, it's a mouse/trackpad
+      if (e.clientX === 0 && e.clientY === 0) return
+
       mouse.x = e.clientX
       mouse.y = e.clientY
       
       moveCount++
-      if (moveCount > 5 && !active) {
+      // Require a few movements to confirm it's not just a stray touch event
+      if (moveCount > 3 && !active) {
         setActive(true)
         dotPos.x = mouse.x
         dotPos.y = mouse.y
         followerPos.x = mouse.x
         followerPos.y = mouse.y
         document.documentElement.setAttribute('data-cursor-active', 'true')
+        console.log('Custom cursor initialized')
       }
     }
 
@@ -39,7 +41,7 @@ export default function CustomCursor() {
       const dot = dotRef.current
       const follower = followerRef.current
 
-      if (dot && follower && moveCount > 5) {
+      if (dot && follower && moveCount > 3) {
         // Smooth interpolation
         dotPos.x += (mouse.x - dotPos.x) * 0.4
         dotPos.y += (mouse.y - dotPos.y) * 0.4
@@ -49,7 +51,7 @@ export default function CustomCursor() {
         dot.style.transform = `translate3d(${dotPos.x}px, ${dotPos.y}px, 0)`
         follower.style.transform = `translate3d(${followerPos.x}px, ${followerPos.y}px, 0)`
         
-        // Ensure they are visible
+        // Ensure they are visible once active
         dot.style.opacity = '1'
         follower.style.opacity = '1'
       }
@@ -87,23 +89,35 @@ export default function CustomCursor() {
       document.documentElement.removeAttribute('data-cursor-active')
       document.body.removeAttribute('data-cursor-hover')
     }
-  }, [active])
-
-  if (typeof window !== 'undefined' && (window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window)) {
-    return null
-  }
+  }, [active]) // Using active as dependency to ensure state updates don't kill the loop
 
   return (
     <>
       <div 
         ref={dotRef} 
         className="cursor-dot-v3" 
-        style={{ opacity: 0, position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 2147483647 }} 
+        style={{ 
+          opacity: 0, 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          pointerEvents: 'none', 
+          zIndex: 2147483647,
+          willChange: 'transform'
+        }} 
       />
       <div 
         ref={followerRef} 
         className="cursor-follower-v3" 
-        style={{ opacity: 0, position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 2147483646 }} 
+        style={{ 
+          opacity: 0, 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          pointerEvents: 'none', 
+          zIndex: 2147483646,
+          willChange: 'transform'
+        }} 
       />
     </>
   )
