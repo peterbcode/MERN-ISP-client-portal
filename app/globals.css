@@ -67,34 +67,6 @@ body {
   background-color: #0a0a0b;
 }
 
-/* Only hide cursor when custom cursor is active */
-body.cursor-active {
-  cursor: none;
-}
-
-/* Custom Cursor System - Simple Orange Dot */
-.cursor-dot {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background: #FF7A00;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  transition: opacity 300ms ease-out;
-  will-change: transform;
-}
-
-/* Preserve native cursor for inputs and text areas */
-input,
-textarea,
-select,
-[contenteditable="true"],
-[data-cursor="native"] {
-  cursor: auto !important;
-}
 
 /* Texture System */
 /* Noise grain texture */
