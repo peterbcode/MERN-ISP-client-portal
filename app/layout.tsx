@@ -82,29 +82,35 @@ export default function RootLayout({
             __html: `
               (function() {
                 if (typeof window === 'undefined') return;
-                // Only run on non-touch devices
                 if (window.matchMedia('(hover: none)').matches) return;
 
-                var script = document.createElement('script');
-                script.src = '/node_modules/custom-cursor.js/dist/custom-cursor.min.js';
-                script.onload = function() {
-                  new CustomCursor('.cursor', {
-                    hideTrueCursor: true,
-                    focusElements: [
-                      {
-                        elements: 'a',
-                        focusClass: 'cursor--focused',
-                      },
-                      {
-                        elements: 'button',
-                        focusClass: 'cursor--focused',
-                      },
-                    ],
-                  })
-                  .setPosition(-30, -30)
-                  .initialize();
-                };
-                document.body.appendChild(script);
+                var cursor = document.querySelector('.cursor');
+                var border = document.querySelector('.cursor-border');
+                if (!cursor || !border) return;
+
+                cursor.classList.add('cursor--initialized');
+
+                var mouseX = -30, mouseY = -30;
+
+                document.addEventListener('mousemove', function(e) {
+                  mouseX = e.clientX;
+                  mouseY = e.clientY;
+                  cursor.style.transform = 'translate(' + mouseX + 'px, ' + mouseY + 'px)';
+                  cursor.classList.remove('cursor--off-screen');
+                });
+
+                document.addEventListener('mouseleave', function() {
+                  cursor.classList.add('cursor--off-screen');
+                });
+
+                document.querySelectorAll('a, button').forEach(function(el) {
+                  el.addEventListener('mouseenter', function() {
+                    cursor.classList.add('cursor--focused');
+                  });
+                  el.addEventListener('mouseleave', function() {
+                    cursor.classList.remove('cursor--focused');
+                  });
+                });
               })();
             `,
           }}
