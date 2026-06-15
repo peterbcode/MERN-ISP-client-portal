@@ -63,7 +63,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans")}>
       <body suppressHydrationWarning className="antialiased">
-        <CustomCursor />
         <ConsentProvider>
           <PageLoader />
           <DevIndicatorRemover />
@@ -74,6 +73,7 @@ export default function RootLayout({
           <FloatingActions />
           <AnalyticsLoader />
         </ConsentProvider>
+        <CustomCursor />
       </body>
     </html>
   );

@@ -1269,62 +1269,38 @@ html, body, * {
   display: none;
 }
 
-/* ── Final Professional Custom Cursor ──────────────────── */
-/* Use the most aggressive selector to hide default cursor globally */
-html.cursor-active,
-html.cursor-active *,
-html.cursor-active body {
+/* ── Professional Custom Cursor V3 ─────────────────────── */
+/* Hide system cursor ONLY when custom cursor is confirmed active and moving */
+html[data-cursor-active="true"],
+html[data-cursor-active="true"] body,
+html[data-cursor-active="true"] * {
   cursor: none !important;
 }
 
-.cursor-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 2147483647;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.cursor-container.is-ready {
-  opacity: 1;
-}
-
-.cursor-dot-v2,
-.cursor-follower-v2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 50%;
-  pointer-events: none;
-  will-change: transform;
-}
-
-.cursor-dot-v2 {
-  width: 10px;
-  height: 10px;
+.cursor-dot-v3 {
+  width: 12px;
+  height: 12px;
   background-color: #f97316;
-  margin-top: -5px;
-  margin-left: -5px;
-  z-index: 2;
-  box-shadow: 0 0 10px rgba(249, 115, 22, 0.8);
+  border-radius: 50%;
+  margin-top: -6px;
+  margin-left: -6px;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.9);
+  transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
 }
 
-.cursor-follower-v2 {
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(249, 115, 22, 0.6);
-  margin-top: -20px;
-  margin-left: -20px;
-  z-index: 1;
+.cursor-follower-v3 {
+  width: 46px;
+  height: 46px;
+  border: 1.5px solid rgba(249, 115, 22, 0.7);
+  border-radius: 50%;
+  margin-top: -23px;
+  margin-left: -23px;
+  background-color: transparent;
   transition: width 0.3s ease, height 0.3s ease, margin 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Hover States */
-body.cursor-hover .cursor-dot-v2 {
+/* Hover States via data-attribute on body */
+body[data-cursor-hover="true"] .cursor-dot-v3 {
   width: 6px;
   height: 6px;
   margin-top: -3px;
@@ -1332,21 +1308,20 @@ body.cursor-hover .cursor-dot-v2 {
   background-color: #fff;
 }
 
-body.cursor-hover .cursor-follower-v2 {
-  width: 60px;
-  height: 60px;
-  margin-top: -30px;
-  margin-left: -30px;
-  background-color: rgba(249, 115, 22, 0.1);
-  border-color: rgba(249, 115, 22, 0.9);
+body[data-cursor-hover="true"] .cursor-follower-v3 {
+  width: 68px;
+  height: 68px;
+  margin-top: -34px;
+  margin-left: -34px;
+  background-color: rgba(249, 115, 22, 0.15);
+  border-color: rgba(255, 255, 255, 0.9);
 }
 
-/* Ensure no system cursor on specific elements */
-html.cursor-active a, 
-html.cursor-active button, 
-html.cursor-active input, 
-html.cursor-active [role="button"],
-html.cursor-active textarea {
+/* Secondary override for interactive elements to ensure no system cursor overlap */
+html[data-cursor-active="true"] a, 
+html[data-cursor-active="true"] button, 
+html[data-cursor-active="true"] input, 
+html[data-cursor-active="true"] [role="button"] {
   cursor: none !important;
 }
-/* ── End Final Professional Custom Cursor ──────────────── */
+/* ── End Professional Custom Cursor V3 ─────────────────── */
