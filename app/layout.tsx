@@ -8,6 +8,7 @@ import AnalyticsLoader from "./components/analytics-loader";
 import PageLoader from "./components/page-loader";
 import DevIndicatorRemover from "./components/dev-indicator-remover";
 import SmoothScroll from "./components/SmoothScroll";
+import CustomCursor from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://valley-computers.co.za"),
@@ -62,11 +63,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans")}>
       <body suppressHydrationWarning className="antialiased">
-        <div className="cursor">
-          <div className="cursor-border">
-            <span className="text">VIEW</span>
-          </div>
-        </div>
+        <CustomCursor />
         <ConsentProvider>
           <PageLoader />
           <DevIndicatorRemover />
@@ -77,44 +74,6 @@ export default function RootLayout({
           <FloatingActions />
           <AnalyticsLoader />
         </ConsentProvider>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                if (typeof window === 'undefined') return;
-                if (window.matchMedia('(hover: none)').matches) return;
-
-                var cursor = document.querySelector('.cursor');
-                var border = document.querySelector('.cursor-border');
-                if (!cursor || !border) return;
-
-                cursor.classList.add('cursor--initialized');
-
-                var mouseX = -30, mouseY = -30;
-
-                document.addEventListener('mousemove', function(e) {
-                  mouseX = e.clientX;
-                  mouseY = e.clientY;
-                  cursor.style.transform = 'translate(' + mouseX + 'px, ' + mouseY + 'px)';
-                  cursor.classList.remove('cursor--off-screen');
-                });
-
-                document.addEventListener('mouseleave', function() {
-                  cursor.classList.add('cursor--off-screen');
-                });
-
-                document.querySelectorAll('a, button').forEach(function(el) {
-                  el.addEventListener('mouseenter', function() {
-                    cursor.classList.add('cursor--focused');
-                  });
-                  el.addEventListener('mouseleave', function() {
-                    cursor.classList.remove('cursor--focused');
-                  });
-                });
-              })();
-            `,
-          }}
-        />
       </body>
     </html>
   );
