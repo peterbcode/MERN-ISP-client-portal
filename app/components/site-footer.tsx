@@ -7,6 +7,7 @@ import { MapPinIcon, PhoneIcon, PaperAirplaneIcon, ChatBubbleLeftRightIcon } fro
 import { Facebook } from 'lucide-react'
 import ManageCookiesButton from './manage-cookies-button'
 import { useFooterReveal } from './animations/footerReveal'
+import DraggableLogoField from '@/components/DraggableLogoField'
 
 const services = [
   { label: 'Fibre to the Home', href: '/isp#plans' },
@@ -215,6 +216,12 @@ const SiteFooter = () => {
             </div>
           </div>
         </div>
+
+        <DraggableLogoField logos={[
+          'Afrihost', 'Vox', 'Openserve', 'Fibre Internet',
+          'CCTV', 'IT Support', 'Microsoft', 'Ubiquiti',
+          'MikroTik', 'Web Hosting', 'VOIP', 'Riebeek Valley'
+        ]} />
 
         <div ref={bottomBarRef} className="pt-7 text-sm text-zinc-500 sm:flex sm:items-center sm:justify-between">
           <p className="flex flex-wrap items-center gap-3">
