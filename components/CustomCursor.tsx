@@ -8,6 +8,12 @@ export default function CustomCursor() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    // Check if device is mobile/touch based on pointer capability
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches
+    const isSmallScreen = window.innerWidth <= 768
+    
+    if (isTouchDevice || isSmallScreen) return
+
     const cursor = cursorRef.current
     const dot = dotRef.current
     if (!cursor || !dot) return
