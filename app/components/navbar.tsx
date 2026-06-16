@@ -16,6 +16,7 @@ import { initNavbarScroll } from './animations/navbarScroll'
 
 const navigation = [
   { name: 'Services', href: '/#services' },
+  { name: 'Products', href: '/products' },
   { name: 'ISP', href: '/isp' },
   { name: 'Contact Us', href: '/contact' },
 ]
