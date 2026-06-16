@@ -45,8 +45,5 @@ function hashStringToUnit(value: string): number {
 }
 
 export function shouldShowEasterEggGames(): boolean {
-  const userKey = getUserKeyFromToken() ?? getOrCreateVisitorId()
-  if (!userKey) return false
-
-  return hashStringToUnit(userKey) < GAMES_SHOW_THRESHOLD
+  return true
 }
