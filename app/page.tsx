@@ -12,7 +12,6 @@ import ContactStrip from "./components/contact-strip"
 import EasterEggGames from "./components/easter-egg-games"
 import SiteFooter from "./components/site-footer"
 import WhatsAppButton from "./components/whatsapp-button"
-import DraggableLogoField from '@/components/DraggableLogoField'
 
 const Page = () => {
   useEffect(() => {
@@ -33,11 +32,6 @@ const Page = () => {
         <ContactStrip />
         <EasterEggGames />
       </section>
-      <DraggableLogoField logos={[
-        'Afrihost', 'Vox', 'Openserve', 'Fibre Internet',
-        'CCTV', 'IT Support', 'Microsoft', 'Ubiquiti',
-        'MikroTik', 'Web Hosting', 'VOIP', 'Riebeek Valley'
-      ]} />
       <SiteFooter />
       <WhatsAppButton />
     </>
