@@ -28,6 +28,12 @@ export default function DevIndicatorRemover() {
       const allElements = document.querySelectorAll('*');
       allElements.forEach(el => {
         const element = el as HTMLElement;
+        
+        // Skip our custom cursor
+        if (element.getAttribute('data-custom-cursor') === 'true') {
+          return;
+        }
+
         const style = window.getComputedStyle(element);
         const zIndex = parseInt(style.zIndex);
         

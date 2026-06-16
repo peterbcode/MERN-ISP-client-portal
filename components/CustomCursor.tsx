@@ -22,6 +22,7 @@ export default function CustomCursor() {
     <>
       {/* OUTER CIRCLE - High visibility Orange */}
       <div 
+        data-custom-cursor="true"
         style={{
           position: 'fixed',
           top: pos.y,
@@ -31,7 +32,7 @@ export default function CustomCursor() {
           border: '2px solid #f97316',
           borderRadius: '50%',
           pointerEvents: 'none',
-          zIndex: 9999999,
+          zIndex: 2147483646,
           transform: 'translate(-50%, -50%)',
           backgroundColor: 'rgba(249, 115, 22, 0.1)',
           display: 'block',
@@ -41,6 +42,7 @@ export default function CustomCursor() {
       />
       {/* INNER DOT - Solid Orange */}
       <div 
+        data-custom-cursor="true"
         style={{
           position: 'fixed',
           top: pos.y,
@@ -50,7 +52,7 @@ export default function CustomCursor() {
           backgroundColor: '#f97316',
           borderRadius: '50%',
           pointerEvents: 'none',
-          zIndex: 10000000,
+          zIndex: 2147483647,
           transform: 'translate(-50%, -50%)',
           display: 'block',
           visibility: 'visible',
