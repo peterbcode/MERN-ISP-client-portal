@@ -201,7 +201,7 @@ const IspPageColorful = () => {
             </p>
           </AnimatedSection>
         </div>
-      </AnimatedSection>
+      </section>
 
       {/* Technology Section */}
       <section className="relative py-32 overflow-hidden">
@@ -354,7 +354,5 @@ const IspPageColorful = () => {
     </main>
   );
 };
-
-export default IspPageColorful;
 
 export default IspPageColorful;

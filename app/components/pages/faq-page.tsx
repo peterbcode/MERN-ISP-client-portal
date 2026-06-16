@@ -8,6 +8,7 @@ import {
   LifebuoyIcon,
   SignalIcon,
 } from '@heroicons/react/24/solid'
+import AnimatedSection from '../ui/animated-section'
 
 const faqItems = [
   {
