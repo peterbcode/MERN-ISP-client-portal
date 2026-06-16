@@ -40,48 +40,7 @@ const rights = [
   'Opt out of marketing messages while still receiving important service notices',
 ]
 
-import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
-import Link from 'next/link'
-import Navbar from '../components/navbar'
-import SiteFooter from '../components/site-footer'
 import AnimatedSection from '../components/ui/animated-section'
-
-export const metadata: Metadata = {
-  title: 'Privacy Policy - Riebeek Valley Computers',
-  description: 'Privacy Policy for Riebeek Valley Computers internet, support, and IT services.',
-}
-
-const lastUpdated = '4 May 2026'
-
-const personalInformation = [
-  'Name, email address, phone number, and account details',
-  'Installation address, service address, and support location information',
-  'Billing, invoice, service plan, and payment status information',
-  'Support requests, repair notes, fault reports, and communication history',
-]
-
-const technicalInformation = [
-  'IP address, device information, browser type, and login activity',
-  'Service usage, speed-test results, connection status, and network diagnostics',
-  'Router, wireless, device, and installation information needed for support',
-  'Website analytics and cookie preferences where enabled',
-]
-
-const useCases = [
-  'Provide, activate, maintain, and troubleshoot internet and IT services',
-  'Manage customer accounts, billing, invoices, and service communications',
-  'Respond to support requests, faults, repairs, and coverage checks',
-  'Protect customers, systems, and networks against abuse, fraud, and security risks',
-  'Improve our services, website, client portal, and customer support processes',
-]
-
-const rights = [
-  'Ask us what personal information we hold about you',
-  'Ask us to correct inaccurate or outdated information',
-  'Ask us to delete information where we no longer have a lawful reason to keep it',
-  'Opt out of marketing messages while still receiving important service notices',
-]
 
 const Section = ({
   title,
@@ -286,11 +245,6 @@ export default function PrivacyPage() {
             </div>
           </AnimatedSection>
         </div>
-      </main>
-      <SiteFooter />
-    </>
-  )
-}
       </main>
       <SiteFooter />
     </>
