@@ -177,83 +177,87 @@ const FaqPage = () => {
 
   return (
     <main className="site-page text-white">
-      <section className="site-hero px-4 pb-14 pt-32 text-center sm:px-6 lg:pt-40">
+      <AnimatedSection direction="up" className="site-hero px-4 pb-20 pt-32 text-center sm:px-6 lg:pt-48">
         <div className="relative mx-auto max-w-4xl">
           <p className="site-eyebrow">Support Center</p>
-          <h1 className="mt-4 text-4xl font-black leading-none sm:text-5xl lg:text-7xl">Frequently Asked Questions</h1>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-zinc-300 sm:text-lg">
+          <h1 className="mt-6 text-5xl font-black leading-[0.9] tracking-[-0.03em] sm:text-6xl lg:text-8xl">
+            Common <span className="text-[#f97316]">Questions</span>
+          </h1>
+          <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
             Quick answers about our internet services, support process, billing, and technical assistance.
           </p>
-          <div className="mx-auto mt-8 grid max-w-5xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {faqStats.map((item) => (
-              <div key={item.label} className="site-card rounded-xl p-4 text-left">
-                <item.icon className="h-5 w-5 text-[#f97316]" />
-                <p className="mt-3 text-sm font-black text-white">{item.label}</p>
-                <p className="mt-1 text-xs leading-5 text-zinc-400">{item.value}</p>
+              <div key={item.label} className="site-card rounded-2xl p-5 text-left border-zinc-800/50 backdrop-blur-md">
+                <item.icon className="h-6 w-6 text-[#f97316]" />
+                <p className="mt-4 text-xs font-black uppercase tracking-[0.2em] text-white">{item.label}</p>
+                <p className="mt-1 text-[11px] leading-relaxed text-zinc-500 font-bold">{item.value}</p>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-16 sm:px-6 lg:grid-cols-[320px_1fr] lg:px-8">
-        <aside className="site-panel h-fit rounded-xl p-6 lg:sticky lg:top-28">
-          <p className="site-eyebrow">Need it faster?</p>
-          <h2 className="mt-3 text-2xl font-black text-white">Talk to support directly</h2>
-          <p className="mt-3 text-sm leading-7 text-zinc-300">
-            If your connection is down or you need urgent help, call or WhatsApp the team so we can start diagnostics immediately.
-          </p>
-          <div className="mt-6 grid gap-3">
-            <a className="rounded-lg bg-[#f97316] px-4 py-3 text-center text-sm font-bold text-white transition hover:brightness-110" href="tel:+27799381260">
-              Call Us
-            </a>
-            <a className="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-center text-sm font-bold text-zinc-100 transition hover:border-[#f97316]" href="https://wa.me/27799381260" target="_blank" rel="noopener noreferrer">
-              WhatsApp Support
-            </a>
-          </div>
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-20 sm:px-6 lg:grid-cols-[340px_1fr] lg:px-8">
+        <aside className="lg:sticky lg:top-32 h-fit">
+          <AnimatedSection direction="up" delay={200} className="site-panel rounded-2xl p-8 border-zinc-800/50 bg-zinc-900/30">
+            <p className="site-eyebrow">Need it faster?</p>
+            <h2 className="mt-4 text-3xl font-black text-white leading-tight">Talk to support directly</h2>
+            <p className="mt-4 text-base leading-relaxed text-zinc-400">
+              If your connection is down or you need urgent help, call or WhatsApp the team so we can start diagnostics immediately.
+            </p>
+            <div className="mt-8 grid gap-3">
+              <a className="rounded-xl bg-[#f97316] px-6 py-4 text-center text-sm font-black text-white transition-all duration-300 hover:brightness-110 shadow-lg shadow-[#f97316]/20" href="tel:+27799381260">
+                Call Us Now
+              </a>
+              <a className="rounded-xl border border-zinc-800 bg-zinc-900/50 px-6 py-4 text-center text-sm font-black text-zinc-300 transition-all duration-300 hover:border-[#f97316] hover:text-white" href="https://wa.me/27799381260" target="_blank" rel="noopener noreferrer">
+                WhatsApp Support
+              </a>
+            </div>
+          </AnimatedSection>
         </aside>
 
-        <div className="site-card rounded-xl p-2 sm:p-3">
+        <AnimatedSection direction="up" delay={300} className="site-card rounded-3xl p-4 sm:p-6 border-zinc-800/50 overflow-hidden">
           {faqItems.map((item, index) => {
             const isOpen = openItems.has(index)
             return (
               <div
                 key={item.question}
-                className="border-b border-zinc-800/80 px-4 py-4 last:border-b-0 sm:px-5"
+                className="border-b border-zinc-800/80 px-2 py-5 last:border-b-0 sm:px-4"
               >
                 <button
                   onClick={() => toggleItem(index)}
-                  className="group flex w-full items-center justify-between text-left transition-all duration-300 ease-out hover:bg-zinc-800/50 hover:pl-2 focus:outline-none focus:ring-2 focus:ring-[#f97316]/50 focus:ring-inset rounded-lg hover:shadow-lg hover:shadow-[#f97316]/10 transform hover:-translate-y-0.5"
+                  className="group flex w-full items-center justify-between text-left transition-all duration-500 ease-out hover:bg-zinc-800/30 p-3 rounded-2xl focus:outline-none"
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${index}`}
                 >
-                  <span className="text-base font-semibold text-zinc-100 pr-4 transition-colors duration-300 group-hover:text-[#f97316]">
-                    <span className="mr-3 text-sm font-black text-[#f97316]">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="text-lg font-bold text-zinc-100 pr-4 transition-colors duration-300 group-hover:text-[#f97316] flex items-start">
+                    <span className="mr-4 text-sm font-black text-[#f97316] opacity-50">{String(index + 1).padStart(2, '0')}</span>
                     {item.question}
                   </span>
-                  <div className="flex-shrink-0 transform transition-transform duration-300 group-hover:scale-110">
+                  <div className="flex-shrink-0 transform transition-transform duration-500 group-hover:scale-125">
                     {isOpen ? (
-                      <ChevronUpIcon className="h-5 w-5 text-[#f97316] transform transition-transform duration-300" />
+                      <ChevronUpIcon className="h-6 w-6 text-[#f97316]" />
                     ) : (
-                      <ChevronDownIcon className="h-5 w-5 text-zinc-400 transition-all duration-300 group-hover:text-[#f97316] group-hover:translate-x-1" />
+                      <ChevronDownIcon className="h-6 w-6 text-zinc-600 group-hover:text-[#f97316]" />
                     )}
                   </div>
                 </button>
                 <div
                   id={`faq-answer-${index}`}
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                    isOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
                   }`}
                 >
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-300 pr-8">
+                  <p className="px-14 text-base leading-relaxed text-zinc-400">
                     {item.answer}
                   </p>
                 </div>
               </div>
             )
           })}
-        </div>
-      </section>
+        </AnimatedSection>
+      </div>
     </main>
   )
 }

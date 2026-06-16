@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import AnimatedSection from "../ui/animated-section";
+import PremiumButton from "../ui/premium-button";
 import {
   BoltIcon,
   ChartBarIcon,
@@ -47,235 +49,176 @@ const IspPageColorful = () => {
 
   return (
     <main className="site-page text-white">
-      {/* Hero Section - Matching FAQ page style */}
-      <section className="site-hero text-white px-4 pb-14 pt-32 text-center sm:px-6 lg:pt-40">
-
+      {/* Hero Section */}
+      <AnimatedSection direction="up" className="site-hero px-4 pb-20 pt-32 text-center sm:px-6 lg:pt-48">
         <div className="relative mx-auto max-w-7xl">
-          <WifiIcon className="mx-auto h-6 w-6 text-[#f97316]" />
-          <h1 className="mx-auto mt-6 max-w-5xl text-4xl font-black leading-[0.9] tracking-[-0.02em] sm:text-5xl lg:text-7xl">
-            <span className="block text-[#f97316] drop-shadow-[0_0_24px_rgba(243,111,0,0.35)]">Professional Internet</span>
-            <span className="block text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]">Infrastructure</span>
+          <p className="site-eyebrow">Fiber & Wireless</p>
+          <h1 className="mx-auto mt-6 max-w-5xl text-5xl font-black leading-[0.9] tracking-[-0.03em] sm:text-7xl lg:text-9xl">
+            <span className="block text-[#f97316]">Professional</span>
+            <span className="block text-white">Infrastructure</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-zinc-300 sm:mt-8 sm:text-lg lg:text-xl">
+          <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
             Uncapped fibre & wireless internet with local support. Built for homes and businesses in Riebeek Valley.
           </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-            <a
-              href="#plans"
-              className="rounded-xl bg-[#f97316] px-7 py-3 text-sm font-bold text-white transition hover:brightness-110 shadow-lg"
-            >
+          <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <PremiumButton variant="primary" size="lg" href="#plans" className="min-w-[180px] py-4 text-base font-black shadow-2xl shadow-[#f97316]/20">
               View Plans
-            </a>
-            <a
-              href="tel:+27799381260"
-              className="rounded-xl border border-zinc-700 bg-zinc-900 px-7 py-3 text-sm font-bold text-zinc-100 transition hover:border-[#f97316]/70"
-            >
-              Call Us
-            </a>
+            </PremiumButton>
+            <PremiumButton variant="secondary" size="lg" href="/contact" className="min-w-[180px] py-4 text-base font-black border-zinc-800 bg-zinc-900/50">
+              Talk to Sales
+            </PremiumButton>
             <a
               href="https://wa.me/27799381260"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#f97316] px-7 py-3 text-sm font-bold text-white shadow-lg transition hover:brightness-110"
+              className="inline-flex items-center gap-3 rounded-2xl bg-[#f97316] px-8 py-4 text-base font-black text-white shadow-xl shadow-[#f97316]/20 transition-all duration-300 hover:brightness-110 hover:-translate-y-1"
             >
-              <ChatBubbleLeftRightIcon className="h-4 w-4" />
+              <ChatBubbleLeftRightIcon className="h-5 w-5" />
               WhatsApp
             </a>
-            <Link
-              href="/contact"
-              className="rounded-xl border border-zinc-700 bg-zinc-900 px-7 py-3 text-sm font-bold text-zinc-100 transition hover:border-[#f97316]/70"
-            >
-              Talk to Sales
-            </Link>
           </div>
-          <div className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto mt-16 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {serviceAreas.map((area) => (
-              <div key={area} className="site-card rounded-xl px-4 py-4">
-                <MapPinIcon className="mx-auto h-4 w-4 text-[#f97316]" />
-                <p className="mt-2 text-sm font-semibold text-zinc-200">{area}</p>
+              <div key={area} className="site-card rounded-2xl px-6 py-5 border-zinc-800/50 backdrop-blur-md">
+                <MapPinIcon className="mx-auto h-5 w-5 text-[#f97316]" />
+                <p className="mt-3 text-xs font-black uppercase tracking-[0.2em] text-zinc-200">{area}</p>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
-      {/* Value Section - Consistent background */}
-      <section className="py-16 sm:py-20">
+      {/* Value Section */}
+      <section className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316]">Why Valley Internet</p>
-            <h2 className="mt-3 text-4xl font-black text-zinc-100 sm:text-5xl">Built for dependable everyday performance</h2>
-          </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {valueCards.map((card) => (
-              <article
+          <AnimatedSection direction="up" className="mx-auto max-w-3xl text-center">
+            <p className="site-eyebrow">Why Valley Internet</p>
+            <h2 className="mt-4 text-4xl font-black text-white sm:text-6xl tracking-tight">Built for dependable performance</h2>
+          </AnimatedSection>
+          <div className="mt-16 grid gap-6 md:grid-cols-3">
+            {valueCards.map((card, i) => (
+              <AnimatedSection
                 key={card.title}
-                className="site-card rounded-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#f97316]/50"
+                direction="up"
+                delay={i * 100}
+                className="site-card rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 hover:border-[#f97316]/50 border-zinc-800/50"
               >
-                <card.icon className="h-8 w-8 text-[#f97316]" />
-                <h3 className="mt-5 text-xl font-extrabold text-zinc-100">{card.title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-zinc-300">{card.text}</p>
-              </article>
+                <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f97316]/10 border border-[#f97316]/20">
+                  <card.icon className="h-8 w-8 text-[#f97316]" />
+                </div>
+                <h3 className="mt-8 text-2xl font-black text-white">{card.title}</h3>
+                <p className="mt-4 text-base leading-relaxed text-zinc-400">{card.text}</p>
+              </AnimatedSection>
             ))}
           </div>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <AnimatedSection direction="up" delay={400} className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {["Uncapped data", "No throttling", "No lock-in contracts", "Professional install"].map((item) => (
-              <div key={item} className="rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-center text-sm font-bold text-zinc-100">
+              <div key={item} className="rounded-xl border border-zinc-800/60 bg-zinc-900/30 px-6 py-4 text-center text-xs font-black uppercase tracking-[0.2em] text-zinc-300">
                 {item}
               </div>
             ))}
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
-      {/* Plans Section - Black background */}
-      <section id="plans" className="py-16 sm:py-20">
+      {/* Plans Section */}
+      <section id="plans" className="py-24 sm:py-32 bg-black/40 border-y border-zinc-800/50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#f97316]">Transparent Pricing</p>
-            <h2 className="mt-3 text-4xl font-black text-zinc-100 sm:text-5xl">Choose your speed</h2>
-            <p className="mt-4 text-sm text-zinc-300 sm:text-base">
-              Simple monthly plans.
+          <AnimatedSection direction="up" className="mx-auto max-w-3xl text-center">
+            <p className="site-eyebrow">Transparent Pricing</p>
+            <h2 className="mt-4 text-4xl font-black text-white sm:text-6xl tracking-tight">Choose your speed</h2>
+            <p className="mt-6 text-lg text-zinc-400">
+              Simple monthly plans with no hidden costs.
             </p>
-          </div>
+          </AnimatedSection>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3 lg:grid-cols-5">
-            {plans.map((plan) => (
-              <article
+          <div className="mt-16 grid gap-8 md:grid-cols-3 lg:grid-cols-5">
+            {plans.map((plan, i) => (
+              <AnimatedSection
                 key={plan.speed}
-                className="site-card group relative cursor-pointer rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#f97316]/60 hover:shadow-2xl hover:shadow-[#f97316]/10"
+                direction="up"
+                delay={i * 100}
+                className="site-card group relative cursor-pointer rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 hover:border-[#f97316]/60 hover:shadow-2xl hover:shadow-[#f97316]/10 border-zinc-800/50"
                 onClick={() => setSelectedPlan(plan)}
               >
                 {plan.featured && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="inline-flex items-center rounded-full bg-gradient-to-r from-[#f97316] to-orange-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-lg">
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="inline-flex items-center rounded-full bg-[#f97316] px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-xl">
                       Most Popular
                     </span>
                   </div>
                 )}
 
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-white">
+                  <p className="text-3xl font-black text-white">
                     {plan.speed}
                   </p>
-                  <p className="mt-2 text-sm font-medium text-zinc-300">
+                  <p className="mt-3 text-xs font-black uppercase tracking-[0.2em] text-[#f97316]">
                     {plan.label}
                   </p>
                 </div>
 
-                <div className="mt-6 text-center border-t border-zinc-700 pt-6">
+                <div className="mt-8 text-center border-t border-zinc-800/80 pt-8">
                   <div className="flex items-baseline justify-center">
-                    <span className="text-4xl font-bold text-white">
+                    <span className="text-4xl font-black text-white">
                       {plan.price}
                     </span>
                   </div>
                 </div>
 
-                <ul className="mt-6 space-y-3 text-zinc-300">
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-[#f97316] flex-shrink-0" />
-                    <span className="text-sm">Uncapped data</span>
+                <ul className="mt-8 space-y-4 text-zinc-400">
+                  <li className="flex items-center gap-3">
+                    <CheckIcon className="h-5 w-5 text-[#f97316] flex-shrink-0" />
+                    <span className="text-sm font-bold">Uncapped data</span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-[#f97316] flex-shrink-0" />
-                    <span className="text-sm">Fibre & Wireless</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon className="h-4 w-4 text-[#f97316] flex-shrink-0" />
-                    <span className="text-sm">24/7 Local Support</span>
+                  <li className="flex items-center gap-3">
+                    <CheckIcon className="h-5 w-5 text-[#f97316] flex-shrink-0" />
+                    <span className="text-sm font-bold">Fibre & Wireless</span>
                   </li>
                 </ul>
 
-                <Link
-                  href="/contact"
-                  className="mt-8 block w-full rounded-xl bg-[#f97316] px-4 py-3 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-orange-600 shadow-lg"
-                  onClick={(e) => e.stopPropagation()}
+                <button
+                  className="mt-10 block w-full rounded-2xl bg-[#f97316] px-6 py-4 text-center text-sm font-black text-white transition-all duration-300 hover:brightness-110 shadow-lg shadow-[#f97316]/20"
                 >
-                  Get Started
-                </Link>
-              </article>
+                  Select Plan
+                </button>
+              </AnimatedSection>
             ))}
           </div>
 
-          <div className="site-card mt-7 grid gap-3 rounded-xl border-[#f97316]/50 p-5 sm:grid-cols-3">
-            <p className="text-center text-sm text-zinc-300">
-              <span className="font-black text-white">R1,000</span> one-time installation
+          <AnimatedSection direction="up" delay={500} className="site-panel mt-12 grid gap-6 rounded-3xl border-zinc-800/50 bg-zinc-900/20 p-8 sm:grid-cols-3">
+            <p className="text-center text-sm font-bold text-zinc-400">
+              <span className="block text-xs font-black uppercase tracking-[0.2em] text-[#f97316] mb-1">Installation</span>
+              <span className="text-xl text-white font-black">R1,000</span> one-time
             </p>
-            <p className="text-center text-sm text-zinc-300">
-              <span className="font-black text-white">R100/mo</span> optional UPS rental
+            <p className="text-center text-sm font-bold text-zinc-400">
+              <span className="block text-xs font-black uppercase tracking-[0.2em] text-[#f97316] mb-1">Backup Power</span>
+              <span className="text-xl text-white font-black">R100/mo</span> UPS rental
             </p>
-            <p className="text-center text-sm text-zinc-300">
-              <span className="font-black text-[#f97316]">R0</span> contract lock-in fee
+            <p className="text-center text-sm font-bold text-zinc-400">
+              <span className="block text-xs font-black uppercase tracking-[0.2em] text-[#f97316] mb-1">Commitment</span>
+              <span className="text-xl text-white font-black">Month-to-Month</span>
             </p>
-          </div>
-
-          {/* Custom Message Modal */}
-          {selectedPlan && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setSelectedPlan(null)}>
-              <div className="max-w-md rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900 to-black p-6 shadow-2xl shadow-[0_0_40px_rgba(249,115,22,0.2)]" onClick={(e) => e.stopPropagation()}>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-black text-white">{selectedPlan.speed}</h3>
-                  <button
-                    onClick={() => setSelectedPlan(null)}
-                    className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
-                  >
-                    <XMarkIcon className="h-5 w-5" />
-                  </button>
-                </div>
-                <p className="text-sm text-zinc-300 mb-3">{selectedPlan.label}</p>
-                <p className="text-3xl font-black text-white mb-4">{selectedPlan.price}</p>
-                <p className="text-zinc-300 leading-relaxed mb-6">{selectedPlan.message}</p>
-                <div className="flex gap-3">
-                  <Link
-                    href="/contact"
-                    className="flex-1 rounded-lg bg-[#f97316] px-6 py-3 text-sm font-bold text-white transition hover:bg-orange-600 shadow-lg flex items-center justify-center"
-                    onClick={() => setSelectedPlan(null)}
-                  >
-                    Get Started
-                  </Link>
-                  <button
-                    onClick={() => setSelectedPlan(null)}
-                    className="flex-1 rounded-lg border border-zinc-700 bg-zinc-800 px-6 py-3 text-center text-sm font-bold text-zinc-100 transition hover:bg-zinc-700 hover:border-zinc-600"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          </AnimatedSection>
         </div>
-      </section>
+      </AnimatedSection>
 
-      {/* Technology Section - Consistent background */}
-      <section className="relative py-20 overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950" />
-        <div className="absolute top-0 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-orange-500/10 blur-[120px]" />
+      {/* Technology Section */}
+      <section className="relative py-32 overflow-hidden">
+        <div className="absolute top-0 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-[#f97316]/5 blur-[120px]" />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-          {/* Header */}
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-orange-400">
-              Our Technology
-            </p>
-
-            <h2 className="mt-4 text-4xl font-black text-white sm:text-5xl">
-              Infrastructure Built for
-              <span className="block text-orange-400">
-                Speed, Security & Reliability
-              </span>
+          <AnimatedSection direction="up" className="mx-auto max-w-3xl text-center">
+            <p className="site-eyebrow">Our Technology</p>
+            <h2 className="mt-4 text-4xl font-black text-white sm:text-6xl tracking-tight">
+              Enterprise-grade <span className="text-[#f97316]">Infrastructure</span>
             </h2>
-
             <p className="mt-6 text-lg leading-relaxed text-zinc-400">
-              Enterprise-grade networking infrastructure engineered to deliver
-              exceptional uptime, ultra-fast connectivity, and scalable performance.
+              Engineered to deliver exceptional uptime, ultra-fast connectivity, and scalable performance across the Swartland.
             </p>
-          </div>
+          </AnimatedSection>
 
-          {/* Technology Cards */}
-          <div className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-
+          <div className="mt-20 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 icon: WifiIcon,
@@ -298,114 +241,120 @@ const IspPageColorful = () => {
                 desc: "Real-time system monitoring with proactive incident response.",
               },
             ].map((item, i) => (
-              <div
+              <AnimatedSection
                 key={i}
-                className="group relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 p-8 backdrop-blur-sm transition-all duration-300 hover:border-orange-500/50 hover:bg-zinc-900 hover:-translate-y-1"
+                direction="up"
+                delay={i * 100}
+                className="site-card rounded-3xl p-8 border-zinc-800/50 group transition-all duration-500 hover:border-[#f97316]/50"
               >
-                {/* Top accent line */}
-                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                {/* Icon */}
-                <div className="inline-flex rounded-2xl bg-orange-500/10 p-4 ring-1 ring-orange-500/20 transition-all duration-300 group-hover:bg-orange-500 group-hover:shadow-lg group-hover:shadow-orange-500/30">
-                  <item.icon className="h-7 w-7 text-orange-400 group-hover:text-white" />
+                <div className="h-14 w-14 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center transition-all duration-500 group-hover:bg-[#f97316]/10 group-hover:border-[#f97316]/30">
+                  <item.icon className="h-7 w-7 text-zinc-500 group-hover:text-[#f97316]" />
                 </div>
-
-                {/* Content */}
-                <h3 className="mt-6 text-xl font-bold text-white">
+                <h3 className="mt-8 text-xl font-black text-white">
                   {item.title}
                 </h3>
-
-                <p className="mt-4 leading-relaxed text-zinc-400">
+                <p className="mt-4 text-sm leading-relaxed text-zinc-500 font-bold group-hover:text-zinc-400 transition-colors">
                   {item.desc}
                 </p>
-              </div>
+              </AnimatedSection>
             ))}
           </div>
-
         </div>
       </section>
 
-      {/* CTA Section - Black background */}
-      {/* Premium CTA Section */}
-      <section className="relative py-24 overflow-hidden bg-black">
-
-        {/* Background Effects */}
-        <div className="absolute inset-0 bg-black" />
-
+      {/* CTA Section */}
+      <section className="relative py-32 overflow-hidden bg-black border-t border-zinc-800/50">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AnimatedSection direction="up" className="relative overflow-hidden rounded-[3rem] border border-zinc-800/50 bg-zinc-900/20 p-12 text-center sm:p-20">
+            <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[#f97316] via-orange-400 to-[#f97316]" />
+            
+            <p className="site-eyebrow">Next Step</p>
+            <h2 className="mt-6 text-5xl font-black text-white sm:text-7xl tracking-tight">
+              Ready to get <span className="text-[#f97316]">connected?</span>
+            </h2>
+            <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400">
+              Fast installations, reliable connectivity, and local support
+              you can depend on. Check coverage and get connected today.
+            </p>
 
-          <div className="relative overflow-hidden rounded-[2rem] border border-zinc-800 bg-black p-10 shadow-2xl sm:p-14">
-
-            {/* Accent gradient */}
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 via-orange-400 to-orange-500" />
-
-            <div className="relative text-center">
-
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-orange-400">
-                Next Step
-              </p>
-
-              <h2 className="mt-5 text-4xl font-black text-white sm:text-6xl">
-                Ready to get
-                <span className="block text-orange-400">
-                  connected?
-                </span>
-              </h2>
-
-              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400">
-                Fast installations, reliable connectivity, and local support
-                you can depend on. Check coverage and get connected today.
-              </p>
-
-              {/* CTA Buttons */}
-              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-
-                <a
-                  href="tel:+27799381260"
-                  className="group inline-flex items-center rounded-2xl bg-orange-500 px-8 py-4 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition-all duration-300 hover:-translate-y-1 hover:bg-orange-400"
-                >
-                  Call Us
-                </a>
-
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center rounded-2xl border border-zinc-700 bg-zinc-800/80 px-8 py-4 text-sm font-bold text-zinc-100 transition-all duration-300 hover:border-orange-500/60 hover:bg-zinc-800"
-                >
-                  Send Enquiry
-                </Link>
-
-              </div>
-
-              {/* Trust Metrics */}
-              <div className="mt-14 grid gap-6 sm:grid-cols-3">
-
-                {[
-                  ["500+", "Happy Customers"],
-                  ["99%", "Uptime Guarantee"],
-                  ["24/7", "Local Support"],
-                ].map(([value, label], i) => (
-                  <div
-                    key={i}
-                    className="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-6 transition duration-300 hover:border-orange-500/40"
-                  >
-                    <div className="text-4xl font-black text-orange-400">
-                      {value}
-                    </div>
-
-                    <div className="mt-2 text-sm text-zinc-400">
-                      {label}
-                    </div>
-                  </div>
-                ))}
-
-              </div>
-
+            <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <PremiumButton variant="primary" size="lg" href="/contact" className="min-w-[200px] py-4 text-base font-black shadow-2xl shadow-[#f97316]/20">
+                Check Coverage
+              </PremiumButton>
+              <a
+                href="tel:+27799381260"
+                className="inline-flex min-w-[200px] items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-900/50 px-8 py-4 text-base font-black text-zinc-300 transition-all duration-300 hover:border-[#f97316] hover:text-white"
+              >
+                Call the Team
+              </a>
             </div>
-          </div>
+
+            <div className="mt-16 grid gap-8 sm:grid-cols-3">
+              {[
+                ["500+", "Happy Customers"],
+                ["99%", "Uptime Guarantee"],
+                ["24/7", "Local Support"],
+              ].map(([value, label], i) => (
+                <div key={i} className="text-center">
+                  <div className="text-4xl font-black text-white mb-2">{value}</div>
+                  <div className="text-xs font-black uppercase tracking-[0.2em] text-[#f97316]">{label}</div>
+                </div>
+              ))}
+            </div>
+          </AnimatedSection>
         </div>
       </section>
+
+      {/* Plan Details Modal */}
+      {selectedPlan && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" onClick={() => setSelectedPlan(null)}>
+          <AnimatedSection direction="up" className="max-w-md w-full rounded-[2.5rem] border border-zinc-800/80 bg-zinc-950 p-10 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h3 className="text-3xl font-black text-white">{selectedPlan.speed}</h3>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#f97316] mt-1">{selectedPlan.label}</p>
+              </div>
+              <button
+                onClick={() => setSelectedPlan(null)}
+                className="rounded-xl p-3 text-zinc-500 hover:bg-zinc-900 hover:text-white transition-all"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+            
+            <div className="mb-8">
+              <p className="text-5xl font-black text-white">{selectedPlan.price}</p>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500 mt-2">Per Month Uncapped</p>
+            </div>
+
+            <div className="rounded-2xl bg-zinc-900/50 p-6 border border-zinc-800/50 mb-10">
+              <p className="text-base leading-relaxed text-zinc-300 font-medium">{selectedPlan.message}</p>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <PremiumButton
+                variant="primary"
+                size="lg"
+                href={`/contact?service=${selectedPlan.speed}`}
+                className="w-full py-4 text-base font-black shadow-xl shadow-[#f97316]/20"
+                onClick={() => setSelectedPlan(null)}
+              >
+                Get Connected Now
+              </PremiumButton>
+              <button
+                onClick={() => setSelectedPlan(null)}
+                className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/30 px-6 py-4 text-sm font-black text-zinc-500 transition-all hover:text-white"
+              >
+                Go Back
+              </button>
+            </div>
+          </AnimatedSection>
+        </div>
+      )}
     </main>
   );
 };
+
+export default IspPageColorful;
 
 export default IspPageColorful;
