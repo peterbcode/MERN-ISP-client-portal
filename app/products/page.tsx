@@ -18,14 +18,6 @@ const products = [
     image: '/images/N300 Wireless series Tenda.jpg'
   },
   {
-    id: 2,
-    name: 'MikroTik hAP ax³',
-    category: 'router' as Category,
-    spec: 'Wi-Fi 6 · Dual-band · 4-port · RouterOS',
-    price: 'R 2 850',
-    image: '/images/MikroTik hap ax.png'
-  },
-  {
     id: 3,
     name: 'Ubiquiti LiteBeam 5AC',
     category: 'radio' as Category,
