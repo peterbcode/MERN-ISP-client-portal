@@ -4,27 +4,22 @@ export function initNavbarScroll(navEl: HTMLElement) {
   const onScroll = () => {
     const y = window.scrollY;
 
-    if (y > 80) {
-      navEl.style.background = 'rgba(8,8,7,0.92)';
-      navEl.style.backdropFilter = 'blur(12px)';
-      (navEl.style as any).webkitBackdropFilter = 'blur(12px)';
-    } else {
-      navEl.style.background = 'transparent';
-      navEl.style.backdropFilter = 'none';
-      (navEl.style as any).webkitBackdropFilter = 'none';
-    }
-
     // Hide on scroll down, show on scroll up
+    // We only hide when scrolled down a bit (y > 200)
     if (y > lastY && y > 200) {
       navEl.style.transform = 'translateY(-100%)';
     } else {
-      navEl.style.transform = 'translateY(0)';
+      // CRITICAL: Using 'none' instead of 'translateY(0)' is essential.
+      // A transform value other than 'none' creates a new containing block,
+      // which causes any 'fixed' children to be positioned relative to this 
+      // element instead of the viewport.
+      navEl.style.transform = 'none';
     }
 
     lastY = y;
   };
 
-  navEl.style.transition = 'background 0.3s ease, backdrop-filter 0.3s ease, transform 0.3s ease';
+  navEl.style.transition = 'transform 0.3s ease';
 
   window.addEventListener('scroll', onScroll, { passive: true });
   return () => window.removeEventListener('scroll', onScroll);
