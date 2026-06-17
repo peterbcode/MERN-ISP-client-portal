@@ -65,14 +65,6 @@ const products = [
     price: 'R 1 200',
     image: '/images/DW Portable Mini UPS 8800mAh PoE.png'
   },
-  {
-    id: 10,
-    name: 'Portable DC Mini UPS',
-    category: 'accessory' as Category,
-    spec: '8800mAh · 9V/12V/15V/24V · Lithium battery',
-    price: 'R 1 100',
-    image: '/images/inastallation.jpeg'
-  },
 ]
 
 export default function ProductsPage() {
