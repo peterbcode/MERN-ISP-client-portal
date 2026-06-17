@@ -63,7 +63,7 @@ const products = [
     category: 'accessory' as Category,
     spec: '8800mAh · POE Port · 15V/24V',
     price: 'R 1 200',
-    image: '/images/DW Portable Mini UPS 8800mAh PoE.jpg'
+    image: '/images/DW Portable Mini UPS 8800mAh PoE.png'
   },
   {
     id: 10,
