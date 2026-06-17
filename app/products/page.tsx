@@ -11,19 +11,19 @@ type Category = 'all' | 'router' | 'radio' | 'cable' | 'accessory'
 const products = [
   {
     id: 1,
+    name: 'N300 Wireless Series',
+    category: 'router' as Category,
+    spec: '300 Mbps · 4-port · Wireless N',
+    price: 'R 850',
+    image: '/Images/N300 Wireless series Tenda.jpg'
+  },
+  {
+    id: 2,
     name: 'MikroTik hAP ax³',
     category: 'router' as Category,
     spec: 'Wi-Fi 6 · Dual-band · 4-port · RouterOS',
     price: 'R 2 850',
-    image: 'MIKROTIK · HAP AX3'
-  },
-  {
-    id: 2,
-    name: 'Tenda AC10',
-    category: 'router' as Category,
-    spec: 'AC1200 · Dual-band · Beamforming',
-    price: 'R 850',
-    image: 'TENDA · AC10'
+    image: '/Images/MikroTik hap ax.png'
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const products = [
     category: 'radio' as Category,
     spec: '5 GHz · 23 dBi · Point-to-point',
     price: 'R 1 450',
-    image: 'UBIQUITI · LITEBEAM 5AC'
+    image: '/Images/Ubiquiti LiteBeam 5AC.jpg'
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ const products = [
     category: 'radio' as Category,
     spec: '5 GHz · 16 dBi · Compact outdoor',
     price: 'R 1 200',
-    image: 'MIKROTIK · SXTSQ 5AC'
+    image: '/Images/MikroTik SXTsq 5 ac.webp'
   },
   {
     id: 5,
@@ -47,7 +47,7 @@ const products = [
     category: 'cable' as Category,
     spec: '305 m drum · UTP · CMR rated',
     price: 'R 1 100',
-    image: 'CAT6 · 305M DRUM'
+    image: '/Images/Cat6 Ethernet Cable.jpg'
   },
   {
     id: 6,
@@ -55,7 +55,7 @@ const products = [
     category: 'cable' as Category,
     spec: 'Cat6 · Booted · Various colours',
     price: 'R 65',
-    image: 'RJ45 · PATCH CABLE · 2M'
+    image: '/Images/RJ45 Patch Cable 2 m.jpg'
   },
   {
     id: 7,
@@ -63,7 +63,7 @@ const products = [
     category: 'accessory' as Category,
     spec: 'Gigabit · VLAN · PoE+ capable',
     price: 'R 1 650',
-    image: '8-PORT MANAGED SWITCH'
+    image: '/Images/8-Port Managed Switch.webp'
   },
   {
     id: 8,
@@ -71,7 +71,7 @@ const products = [
     category: 'accessory' as Category,
     spec: '802.3af · 15.4 W · Passive option avail.',
     price: 'R 320',
-    image: 'POE INJECTOR · 48V'
+    image: '/Images/PoE Injector 48V.avif'
   },
 ]
 
@@ -145,11 +145,12 @@ export default function ProductsPage() {
                   key={product.id}
                   className="site-card group relative rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-[#ff7e26]/50 border-zinc-800/50 bg-zinc-900/20"
                 >
-                  <div className="mb-4 flex aspect-[4/3] items-center justify-center rounded-2xl bg-zinc-950 border border-zinc-800">
-                    <div className="text-center">
-                      <div className="text-4xl mb-2">📦</div>
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">{product.image}</div>
-                    </div>
+                  <div className="mb-4 flex aspect-[4/3] items-center justify-center rounded-2xl bg-zinc-950 border border-zinc-800 overflow-hidden">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                   <div className="mb-3">
                     <span className="inline-block rounded-full bg-[#ff7e26]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#ff7e26]">
