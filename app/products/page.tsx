@@ -34,14 +34,6 @@ const products = [
     image: '/images/MikroTik SXTsq 5 ac.webp'
   },
   {
-    id: 5,
-    name: 'Cat6 Ethernet Cable',
-    category: 'cable' as Category,
-    spec: '305 m drum · UTP · CMR rated',
-    price: 'R 1 100',
-    image: '/images/Cat6 Ethernet Cable.jpg'
-  },
-  {
     id: 6,
     name: 'RJ45 Patch Cable 2 m',
     category: 'cable' as Category,
