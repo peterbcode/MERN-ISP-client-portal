@@ -57,6 +57,22 @@ const products = [
     price: 'R 320',
     image: '/images/PoE Injector 48V.avif'
   },
+  {
+    id: 9,
+    name: 'DW Portable Mini DC UPS',
+    category: 'accessory' as Category,
+    spec: '8800mAh · POE Port · 15V/24V',
+    price: 'R 1 200',
+    image: '/images/dish.jpeg'
+  },
+  {
+    id: 10,
+    name: 'Portable DC Mini UPS',
+    category: 'accessory' as Category,
+    spec: '8800mAh · 9V/12V/15V/24V · Lithium battery',
+    price: 'R 1 100',
+    image: '/images/inastallation.jpeg'
+  },
 ]
 
 export default function ProductsPage() {
