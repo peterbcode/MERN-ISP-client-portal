@@ -15,7 +15,7 @@ const products = [
     category: 'router' as Category,
     spec: '300 Mbps · 4-port · Wireless N',
     price: 'R 850',
-    image: '/Images/N300 Wireless series Tenda.jpg'
+    image: '/images/N300 Wireless Series Tenda.jpg'
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const products = [
     category: 'router' as Category,
     spec: 'Wi-Fi 6 · Dual-band · 4-port · RouterOS',
     price: 'R 2 850',
-    image: '/Images/MikroTik hap ax.png'
+    image: '/images/MikroTik hap ax.png'
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const products = [
     category: 'radio' as Category,
     spec: '5 GHz · 23 dBi · Point-to-point',
     price: 'R 1 450',
-    image: '/Images/Ubiquiti LiteBeam 5AC.jpg'
+    image: '/images/Ubiquiti LiteBeam 5AC.jpg'
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ const products = [
     category: 'radio' as Category,
     spec: '5 GHz · 16 dBi · Compact outdoor',
     price: 'R 1 200',
-    image: '/Images/MikroTik SXTsq 5 ac.webp'
+    image: '/images/MikroTik SXTsq 5 ac.webp'
   },
   {
     id: 5,
@@ -47,7 +47,7 @@ const products = [
     category: 'cable' as Category,
     spec: '305 m drum · UTP · CMR rated',
     price: 'R 1 100',
-    image: '/Images/Cat6 Ethernet Cable.jpg'
+    image: '/images/Cat6 Ethernet Cable.jpg'
   },
   {
     id: 6,
@@ -55,7 +55,7 @@ const products = [
     category: 'cable' as Category,
     spec: 'Cat6 · Booted · Various colours',
     price: 'R 65',
-    image: '/Images/RJ45 Patch Cable 2 m.jpg'
+    image: '/images/RJ45 Patch Cable 2 m.jpg'
   },
   {
     id: 7,
@@ -63,7 +63,7 @@ const products = [
     category: 'accessory' as Category,
     spec: 'Gigabit · VLAN · PoE+ capable',
     price: 'R 1 650',
-    image: '/Images/8-Port Managed Switch.webp'
+    image: '/images/8-Port Managed Switch.webp'
   },
   {
     id: 8,
@@ -71,7 +71,7 @@ const products = [
     category: 'accessory' as Category,
     spec: '802.3af · 15.4 W · Passive option avail.',
     price: 'R 320',
-    image: '/Images/PoE Injector 48V.avif'
+    image: '/images/PoE Injector 48V.avif'
   },
 ]
 
