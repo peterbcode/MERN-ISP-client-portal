@@ -65,14 +65,6 @@ const products = [
     price: 'R 1 200',
     image: '/images/DW Portable Mini UPS 8800mAh PoE.png'
   },
-  {
-    id: 11,
-    name: 'Ubiquiti airMAX Nanobeam M5 16dBi',
-    category: 'radio' as Category,
-    spec: '5 GHz · 16 dBi · Integrated PoE',
-    price: 'R 1 850',
-    image: '/images/Ubiquiti airMAX Nanobeam M5 16dBi.jpg'
-  },
 ]
 
 export default function ProductsPage() {
