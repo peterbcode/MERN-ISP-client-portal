@@ -65,6 +65,14 @@ const products = [
     price: 'R 1 200',
     image: '/images/DW Portable Mini UPS 8800mAh PoE.png'
   },
+  {
+    id: 11,
+    name: 'Canon PIXMA MG2541S Printer',
+    category: 'accessory' as Category,
+    spec: 'Print · Scan · Copy · FINE Cartridge',
+    price: 'R 850',
+    image: '/images/Canon PIXMA MG2541S.jpg'
+  },
 ]
 
 export default function ProductsPage() {
