@@ -189,7 +189,7 @@ export default function ProductsPage() {
             {/* Note */}
             <AnimatedSection direction="up" delay={400} className="mt-16 rounded-2xl border border-zinc-800/50 bg-zinc-900/30 p-6 text-center">
               <p className="text-sm text-zinc-400">
-                Prices are indicative and subject to stock. WhatsApp us for exact pricing, bulk orders, or a professional installation quote.
+                Prices are indicative and subject to stock. All items are subject to availability. Unavailable products can be pre-ordered. WhatsApp us for exact pricing, bulk orders, or a professional installation quote.
               </p>
             </AnimatedSection>
           </div>
