@@ -23,7 +23,7 @@ const products = [
     category: 'radio' as Category,
     spec: '5 GHz · 23 dBi · Point-to-point',
     price: 'R 1 450',
-    image: '/images/Ubiquiti LiteBeam 5AC.jpg'
+    image: '/images/Ubiquiti LiteBeam 5AC.png'
   },
   {
     id: 4,
@@ -67,11 +67,11 @@ const products = [
   },
   {
     id: 11,
-    name: 'Canon PIXMA MG2541S Printer',
+    name: 'Canon PIXMA MG2541S - Printers - Canon South Africa',
     category: 'accessory' as Category,
     spec: 'Print · Scan · Copy · FINE Cartridge',
     price: 'R 850',
-    image: '/images/Canon PIXMA MG2541S.jpg'
+    image: '/gallery/Canon-Printer.png'
   },
 ]
 
