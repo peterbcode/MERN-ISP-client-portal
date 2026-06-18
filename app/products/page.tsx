@@ -97,6 +97,22 @@ const products = [
     price: 'R 895',
     image: '/gallery/Canon-Printer.png'
   },
+  {
+    id: 14,
+    name: 'Printer Ink Cartridges',
+    category: 'printer' as Category,
+    spec: 'Tri-Colour · Black · Various models',
+    price: 'R 350',
+    image: '/gallery/canon-printer-ink-(800x502).png'
+  },
+  {
+    id: 15,
+    name: '2nd Hand Laptops',
+    category: 'accessory' as Category,
+    spec: 'Various brands · Refurbished · Warranty available',
+    price: 'Contact for pricing',
+    image: '/images/inastallation.jpeg'
+  },
 ]
 
 export default function ProductsPage() {

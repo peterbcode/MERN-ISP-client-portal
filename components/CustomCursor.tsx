@@ -11,8 +11,9 @@ export default function CustomCursor() {
     // Check if device is mobile/touch based on pointer capability
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches
     const isSmallScreen = window.innerWidth <= 768
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     
-    if (isTouchDevice || isSmallScreen) return
+    if (isTouchDevice || isSmallScreen || isMobile) return
 
     const cursor = cursorRef.current
     const dot = dotRef.current
