@@ -6,7 +6,7 @@ import SiteFooter from '../components/site-footer'
 import AnimatedSection from '../components/ui/animated-section'
 import PremiumButton from '../components/ui/premium-button'
 
-type Category = 'all' | 'router' | 'radio' | 'cable' | 'accessory'
+type Category = 'all' | 'router' | 'radio' | 'cable' | 'accessory' | 'printer'
 
 const products = [
   {
@@ -68,9 +68,9 @@ const products = [
   {
     id: 11,
     name: 'Canon PIXMA MG2541S - Printers - Canon South Africa',
-    category: 'accessory' as Category,
+    category: 'printer' as Category,
     spec: 'Print · Scan · Copy · FINE Cartridge',
-    price: 'R 850',
+    price: 'R 895',
     image: '/gallery/Canon-Printer.png'
   },
 ]
@@ -88,6 +88,7 @@ export default function ProductsPage() {
     { key: 'radio', label: 'Radios' },
     { key: 'cable', label: 'Cables' },
     { key: 'accessory', label: 'Accessories' },
+    { key: 'printer', label: 'Printers' },
   ]
 
   const whatsappMessage = (productName: string) => 
