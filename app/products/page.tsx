@@ -6,7 +6,7 @@ import SiteFooter from '../components/site-footer'
 import AnimatedSection from '../components/ui/animated-section'
 import PremiumButton from '../components/ui/premium-button'
 
-type Category = 'all' | 'router' | 'radio' | 'cable' | 'accessory' | 'printer'
+type Category = 'all' | 'router' | 'radio' | 'cable' | 'accessory' | 'printer' | 'peripherals'
 
 const products = [
   {
@@ -68,7 +68,7 @@ const products = [
     {
     id: 10,
     name: 'Gaming Headset',
-    category: 'accessory' as Category,
+    category: 'peripherals' as Category,
     spec: 'HS-G600V · Vibration Gaming Headset',
     price: 'R500',
     image: '/gallery/hs-g600v-vibration-gaming-headset-genius-original-imahfefdfwxd7fcp.png'
@@ -76,7 +76,7 @@ const products = [
   {
     id: 12,
     name: 'Genius Smart KB-100 Classic USB Keyboard',
-    category: 'accessory' as Category,
+    category: 'peripherals' as Category,
     spec: 'USB · Classic · Spill-resistant',
     price: 'R 250',
     image: '/gallery/Genius Smart KB-100 Classic USB Keyboard.png'
@@ -84,7 +84,7 @@ const products = [
   {
     id: 13,
     name: 'Genius DX-120 USB-C Wired Mouse',
-    category: 'accessory' as Category,
+    category: 'peripherals' as Category,
     spec: 'USB-C · Wired · Optical',
     price: 'R 95',
     image: '/gallery/genius-dx-120-usb-c-wired-mouse_1200x1200.png'
@@ -101,6 +101,7 @@ const products = [
 
 export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState<Category>('all')
+  const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set())
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
@@ -113,10 +114,30 @@ export default function ProductsPage() {
     { key: 'cable', label: 'Cables' },
     { key: 'accessory', label: 'Accessories' },
     { key: 'printer', label: 'Printers' },
+    { key: 'peripherals', label: 'PC Peripherals' },
   ]
 
   const whatsappMessage = (productName: string) => 
     `Hi, interested in ${encodeURIComponent(productName)}`
+
+  const toggleProductSelection = (productId: number) => {
+    setSelectedProducts(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(productId)) {
+        newSet.delete(productId)
+      } else {
+        newSet.add(productId)
+      }
+      return newSet
+    })
+  }
+
+  const bulkWhatsAppMessage = () => {
+    const selectedItems = products.filter(p => selectedProducts.has(p.id))
+    if (selectedItems.length === 0) return ''
+    const itemsList = selectedItems.map(p => `• ${p.name} - ${p.price}`).join('\n')
+    return `Hi, I'm interested in ordering multiple items:\n\n${itemsList}\n\nPlease confirm availability and total price.`
+  }
 
   return (
     <>
@@ -163,13 +184,54 @@ export default function ProductsPage() {
               ))}
             </AnimatedSection>
 
+            {/* Bulk Order Button */}
+            {selectedProducts.size > 0 && (
+              <AnimatedSection direction="up" delay={250} className="mt-8 text-center">
+                <div className="inline-flex items-center gap-4 rounded-2xl border border-[#ff7e26]/50 bg-zinc-900/50 px-6 py-3">
+                  <span className="text-sm text-zinc-300">{selectedProducts.size} item(s) selected</span>
+                  <a
+                    href={`https://wa.me/27799381260?text=${encodeURIComponent(bulkWhatsAppMessage())}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-xl bg-[#ff7e26] px-4 py-2 text-sm font-bold text-white transition-all duration-300 hover:brightness-110 shadow-lg shadow-[#ff7e26]/20"
+                  >
+                    Order Selected
+                  </a>
+                  <button
+                    onClick={() => setSelectedProducts(new Set())}
+                    className="text-sm text-zinc-400 hover:text-white transition-colors"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </AnimatedSection>
+            )}
+
             {/* Products Grid */}
             <AnimatedSection direction="up" delay={300} className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
-                  className="site-card group relative rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-[#ff7e26]/50 border-zinc-800/50 bg-zinc-900/20"
+                  className={`site-card group relative rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 border-zinc-800/50 bg-zinc-900/20 ${
+                    selectedProducts.has(product.id) ? 'border-[#ff7e26] bg-[#ff7e26]/5' : 'hover:border-[#ff7e26]/50'
+                  }`}
                 >
+                  {/* Checkbox */}
+                  <button
+                    onClick={() => toggleProductSelection(product.id)}
+                    className={`absolute top-4 right-4 z-10 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all duration-200 ${
+                      selectedProducts.has(product.id)
+                        ? 'bg-[#ff7e26] border-[#ff7e26] text-white'
+                        : 'border-zinc-600 bg-zinc-900/50 hover:border-[#ff7e26]'
+                    }`}
+                  >
+                    {selectedProducts.has(product.id) && (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+
                   <div className="mb-4 flex aspect-[4/3] items-center justify-center rounded-2xl bg-zinc-950 border border-zinc-800 overflow-hidden">
                     <img
                       src={product.image}
