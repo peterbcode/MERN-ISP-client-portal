@@ -71,7 +71,7 @@ const products = [
     category: 'accessory' as Category,
     spec: 'HS-G600V · Vibration Gaming Headset',
     price: 'R500',
-    image: '/images/hs-g600v-vibration-gaming-headset-genius-original-imahfefdfwxd7fcp.png'
+    image: '/gallery/hs-g600v-vibration-gaming-headset-genius-original-imahfefdfwxd7fcp.png'
   },
   {
     id: 11,
