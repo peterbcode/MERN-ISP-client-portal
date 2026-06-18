@@ -47,7 +47,7 @@ const products = [
     category: 'accessory' as Category,
     spec: 'Gigabit · VLAN · PoE+ capable',
     price: 'R 1 650',
-    image: '/images/8-Port Managed Switch.jpg'
+    image: '/images/8-Port Managed Switch.png'
   },
   {
     id: 8,
