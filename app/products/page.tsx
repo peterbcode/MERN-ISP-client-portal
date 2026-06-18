@@ -74,6 +74,22 @@ const products = [
     image: '/gallery/hs-g600v-vibration-gaming-headset-genius-original-imahfefdfwxd7fcp.png'
   },
   {
+    id: 12,
+    name: 'Genius Smart KB-100 Classic USB Keyboard',
+    category: 'accessory' as Category,
+    spec: 'USB · Classic · Spill-resistant',
+    price: 'R 250',
+    image: '/gallery/Genius Smart KB-100 Classic USB Keyboard.png'
+  },
+  {
+    id: 13,
+    name: 'Genius DX-120 USB-C Wired Mouse',
+    category: 'accessory' as Category,
+    spec: 'USB-C · Wired · Optical',
+    price: 'R 95',
+    image: '/gallery/genius-dx-120-usb-c-wired-mouse_1200x1200.png'
+  },
+  {
     id: 11,
     name: 'Canon PIXMA MG2541S - Printers - Canon South Africa',
     category: 'printer' as Category,
