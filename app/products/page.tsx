@@ -107,11 +107,11 @@ const products = [
   },
   {
     id: 15,
-    name: '2nd Hand Laptops',
+    name: 'Laptops',
     category: 'accessory' as Category,
-    spec: 'Various brands · Refurbished · Warranty available',
+    spec: 'New & 2nd Hand · Various brands · Warranty available',
     price: 'Contact for pricing',
-    image: '/images/inastallation.jpeg'
+    image: '/gallery/Laptops.png'
   },
 ]
 
