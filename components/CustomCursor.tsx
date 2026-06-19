@@ -6,14 +6,26 @@ export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
+  const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
     // Check if device is mobile/touch based on pointer capability
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches
     const isSmallScreen = window.innerWidth <= 768
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     
-    if (isTouchDevice || isSmallScreen || isMobile) return
+    // Low end device detection: 4 or fewer CPU cores, or 4GB or less RAM
+    const cores = navigator.hardwareConcurrency || 4
+    const memory = (navigator as any).deviceMemory || 8
+    const isLowEnd = cores <= 4 || memory <= 4
+    
+    if (isTouchDevice || isSmallScreen || isMobile || prefersReducedMotion || isLowEnd) {
+      setEnabled(false)
+      return
+    }
+
+    setEnabled(true)
 
     const cursor = cursorRef.current
     const dot = dotRef.current
@@ -54,6 +66,8 @@ export default function CustomCursor() {
       cancelAnimationFrame(rafId)
     }
   }, [visible])
+
+  if (!enabled) return null
 
   return (
     <>

@@ -558,207 +558,181 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Full-Screen Overlay Menu */}
+        {/* Mobile Menu Backdrop */}
+        <div
+          onClick={() => setIsMobileMenuOpen(false)}
+          className={`fixed inset-0 z-[999] bg-black/60 backdrop-blur-xs transition-opacity duration-300 md:hidden ${
+            isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        />
+
+        {/* Mobile Menu Slide-out Drawer */}
         <div
           ref={mobileOverlayRef}
-          className="fixed inset-0 z-[1000] bg-[#080807] flex flex-col justify-between px-8 py-24 sm:px-16 md:hidden overflow-y-auto"
-          style={{
-            transitionProperty: 'opacity, transform, visibility',
-            transitionDuration: '400ms',
-            transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
-            opacity: isMobileMenuOpen ? 1 : 0,
-            transform: isMobileMenuOpen ? 'scale(1)' : 'scale(0.98)',
-            visibility: isMobileMenuOpen ? 'visible' : 'hidden',
-          }}
+          className={`fixed right-0 top-0 bottom-0 z-[1000] w-[85vw] max-w-[380px] bg-[#0c0c0e] border-l border-zinc-800/80 shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col justify-between p-6 md:hidden transition-transform duration-300 ease-out ${
+            isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
         >
-          {/* Decorative background textures */}
-          <div className="absolute inset-0 pointer-events-none z-0">
-            {/* Faint dot grid */}
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(245,245,240,0.05) 1px, transparent 1px)',
-                backgroundSize: '22px 22px'
-              }}
-            />
-            {/* Soft orange radial glow */}
-            <div
-              className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full"
-              style={{
-                background: 'radial-gradient(circle, rgba(255,69,0,0.15), transparent 70%)',
-              }}
-            />
+          {/* Header inside drawer */}
+          <div className="flex items-center justify-between pb-4 border-b border-zinc-800/50">
+            <span className="text-sm font-black tracking-tight text-[#ff7e26]">
+              VALLEY <span className="text-white font-extrabold">COMPUTERS</span>
+            </span>
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="p-2 -mr-2 text-zinc-400 hover:text-white rounded-md hover:bg-zinc-800/50 cursor-pointer"
+              aria-label="Close menu"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
 
-          {/* Links content container */}
-          <div className="flex-1 flex flex-col justify-center relative z-10 my-auto">
-            <div className="flex flex-col gap-6 max-w-lg">
-              
-              {/* Products Item */}
-              <div className="overflow-hidden">
-                <div
-                  style={getTransitionStyle(0)}
-                  className={`transition-all duration-400 ${
-                    isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-[110%] opacity-0'
+          {/* Scrollable menu content */}
+          <div className="flex-1 overflow-y-auto py-6 flex flex-col gap-6 scrollbar-none">
+            {/* Quick Links */}
+            <div className="flex flex-col gap-2">
+              <Link
+                href="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-between py-2.5 px-4 rounded-xl bg-zinc-900/30 border border-zinc-800/30 text-sm font-semibold text-zinc-100 hover:bg-zinc-800/50 hover:text-[#ff7e26] transition-colors"
+              >
+                <span>Home</span>
+                <span className="text-zinc-600">&rarr;</span>
+              </Link>
+              <Link
+                href="/isp"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-between py-2.5 px-4 rounded-xl bg-zinc-900/30 border border-zinc-800/30 text-sm font-semibold text-zinc-100 hover:bg-zinc-800/50 hover:text-[#ff7e26] transition-colors"
+              >
+                <span>ISP Services</span>
+                <span className="text-zinc-600">&rarr;</span>
+              </Link>
+              <Link
+                href="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-between py-2.5 px-4 rounded-xl bg-zinc-900/30 border border-zinc-800/30 text-sm font-semibold text-zinc-100 hover:bg-zinc-800/50 hover:text-[#ff7e26] transition-colors"
+              >
+                <span>Contact Us</span>
+                <span className="text-zinc-600">&rarr;</span>
+              </Link>
+            </div>
+
+            {/* Products Accordion Section */}
+            <div className="flex flex-col border border-zinc-800/50 rounded-2xl bg-zinc-900/10 p-3">
+              <button
+                onClick={() => setIsMobileProductsOpen(!isMobileProductsOpen)}
+                className="flex items-center justify-between w-full py-1 px-1 text-sm font-bold text-zinc-100 hover:text-[#ff7e26] transition-colors cursor-pointer"
+              >
+                <span className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-[#ff7e26]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                  Products
+                </span>
+                <ChevronDownIcon
+                  className={`h-5 w-5 transition-transform duration-300 text-zinc-400 ${
+                    isMobileProductsOpen ? 'rotate-180' : ''
                   }`}
-                >
-                  <button
-                    onClick={() => setIsMobileProductsOpen(!isMobileProductsOpen)}
-                    className="flex items-center gap-3 text-left focus:outline-none text-[#F5F5F0] hover:text-[#ff7e26] transition-colors w-full cursor-pointer"
-                    style={{ fontSize: 'clamp(32px, 9vw, 44px)', fontWeight: 500 }}
-                  >
-                    Products
-                    <ChevronDownIcon
-                      className={`h-8 w-8 transition-transform duration-300 text-[#F5F5F0]/60 ${
-                        isMobileProductsOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
+                />
+              </button>
 
-                  {/* Accordion sub-links grouped by new categories */}
-                  <div
-                    className="transition-all duration-300 ease-in-out overflow-hidden"
-                    style={{
-                      maxHeight: isMobileProductsOpen ? '800px' : '0px',
-                      opacity: isMobileProductsOpen ? 1 : 0,
-                      marginTop: isMobileProductsOpen ? '1.5rem' : '0px',
-                      marginBottom: isMobileProductsOpen ? '0.5rem' : '0px',
-                    }}
-                  >
-                    <div className="pl-6 flex flex-col gap-6 border-l border-[#F5F5F0]/10 py-2">
-                      {/* Group 1: Wi-Fi */}
-                      <div>
-                        <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold block mb-2">Wi-Fi & Networking</span>
-                        <div className="flex flex-col gap-2.5">
-                          <Link href="/products?category=router&productId=1" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
-                            Routers
-                          </Link>
-                          <Link href="/products?category=radio&productId=3" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
-                            Radios & Access Points
-                          </Link>
-                          <Link href="/products?category=cable&productId=6" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
-                            Cables & Patch leads
-                          </Link>
-                        </div>
-                      </div>
-
-                      {/* Group 2: Computers */}
-                      <div>
-                        <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold block mb-2">Computers & Accessories</span>
-                        <div className="flex flex-col gap-2.5">
-                          <Link href="/products?category=accessory&productId=15" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
-                            Laptops & Computers
-                          </Link>
-                          <Link href="/products?category=peripherals&productId=10" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
-                            PC Peripherals
-                          </Link>
-                          <Link href="/products?category=accessory&productId=9" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
-                            Power UPS & Adaptors
-                          </Link>
-                        </div>
-                      </div>
-
-                      {/* Group 3: Printers */}
-                      <div>
-                        <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold block mb-2">Printers & Ink</span>
-                        <div className="flex flex-col gap-2.5">
-                          <Link href="/products?category=printer&productId=11" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
-                            Printers & Scanners
-                          </Link>
-                          <Link href="/products?category=printer&productId=14" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
-                            Ink Cartridges
-                          </Link>
-                        </div>
-                      </div>
-
-                      {/* Shop All */}
-                      <div className="border-t border-[#F5F5F0]/10 pt-4">
-                        <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-[#ff7e26] font-bold uppercase tracking-wider hover:underline block">
-                          Shop All Products &rarr;
-                        </Link>
-                      </div>
+              <div
+                className="transition-all duration-300 ease-in-out overflow-hidden"
+                style={{
+                  maxHeight: isMobileProductsOpen ? '600px' : '0px',
+                  opacity: isMobileProductsOpen ? 1 : 0,
+                  marginTop: isMobileProductsOpen ? '0.75rem' : '0px',
+                }}
+              >
+                <div className="flex flex-col gap-4 pl-2 border-l border-zinc-800/80">
+                  {/* Category 1 */}
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Wi-Fi & Networking</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <Link href="/products?category=router&productId=1" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Routers
+                      </Link>
+                      <Link href="/products?category=radio&productId=3" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Radios
+                      </Link>
+                      <Link href="/products?category=cable&productId=6" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Cables
+                      </Link>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              {/* ISP Item */}
-              <div className="overflow-hidden">
-                <div
-                  style={getTransitionStyle(1)}
-                  className={`transition-all duration-400 ${
-                    isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-[110%] opacity-0'
-                  }`}
-                >
-                  <Link
-                    href="/isp"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block font-medium text-[#F5F5F0] hover:text-[#ff7e26] transition-colors"
-                    style={{ fontSize: 'clamp(32px, 9vw, 44px)' }}
-                  >
-                    ISP
+                  {/* Category 2 */}
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Computers & Accessories</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <Link href="/products?category=accessory&productId=15" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Laptops
+                      </Link>
+                      <Link href="/products?category=peripherals&productId=10" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        PC Parts
+                      </Link>
+                      <Link href="/products?category=accessory&productId=9" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        UPS
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Category 3 */}
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Printers & Ink</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <Link href="/products?category=printer&productId=11" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Printers
+                      </Link>
+                      <Link href="/products?category=printer&productId=14" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Cartridges
+                      </Link>
+                    </div>
+                  </div>
+
+                  <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-xs text-[#ff7e26] hover:underline font-bold mt-1 block">
+                    Shop All Products &rarr;
                   </Link>
                 </div>
               </div>
+            </div>
 
-              {/* Contact Us Item */}
-              <div className="overflow-hidden">
-                <div
-                  style={getTransitionStyle(2)}
-                  className={`transition-all duration-400 ${
-                    isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-[110%] opacity-0'
-                  }`}
+            {/* Portal Actions */}
+            <div className="flex flex-col gap-2 border-t border-zinc-800/50 pt-4">
+              <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block px-1">Customer Portal</span>
+              <div className="grid grid-cols-2 gap-2">
+                <Link
+                  href="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="py-2.5 text-center text-xs font-bold text-zinc-300 bg-zinc-900/80 border border-zinc-800 rounded-xl hover:text-white transition-colors"
                 >
-                  <Link
-                    href="/contact"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block font-medium text-[#F5F5F0] hover:text-[#ff7e26] transition-colors"
-                    style={{ fontSize: 'clamp(32px, 9vw, 44px)' }}
-                  >
-                    Contact us
-                  </Link>
-                </div>
-              </div>
-
-              {/* Partner With Us Item */}
-              <div className="overflow-hidden mt-6">
-                <div
-                  style={getTransitionStyle(3)}
-                  className={`transition-all duration-400 ${
-                    isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-[110%] opacity-0'
-                  }`}
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="py-2.5 text-center text-xs font-bold text-white bg-[#ff7e26] rounded-xl hover:brightness-110 transition-all"
                 >
-                  <Link
-                    href="/signup"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block font-medium text-[#ff7e26] hover:brightness-110 transition-colors"
-                    style={{ fontSize: '18px' }}
-                  >
-                    Partner with us
-                  </Link>
-                </div>
+                  Sign Up
+                </Link>
               </div>
-
             </div>
           </div>
 
-          {/* Mobile Menu Footer */}
-          <div className="relative z-10 pt-6 border-t border-[#F5F5F0]/10">
-            <div
-              style={getTransitionStyle(4)}
-              className={`flex flex-col gap-1 transition-all duration-400 ${
-                isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-[110%] opacity-0'
-              }`}
+          {/* Drawer Footer / Contact Info */}
+          <div className="pt-4 border-t border-zinc-800/50 flex flex-col gap-3">
+            <a
+              href={phoneHref}
+              className="flex items-center justify-center gap-2 py-3 rounded-xl bg-zinc-900/60 border border-zinc-800 text-xs font-bold text-zinc-300 hover:text-white transition-colors cursor-pointer"
             >
-              <a
-                href={phoneHref}
-                className="text-[13px] text-[#F5F5F0]/50 hover:text-[#ff7e26] transition-colors"
-              >
-                079 938 1260
-              </a>
-              <span className="text-[13px] text-[#F5F5F0]/50">
-                Riebeek Kasteel, WC
-              </span>
+              <PhoneIcon className="h-4 w-4 text-[#ff7e26]" />
+              079 938 1260
+            </a>
+            <div className="text-center text-[10px] text-zinc-500 flex flex-col">
+              <span>6 Church Rd, Riebeek-Kasteel</span>
+              <span className="mt-0.5">info@valley-computers.co.za</span>
             </div>
           </div>
 

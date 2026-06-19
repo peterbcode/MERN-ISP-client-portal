@@ -40,9 +40,13 @@ export const AnimatedSection = ({
     const element = ref.current
     if (!element) return
 
-    // Check for reduced motion preference
+    // Check for reduced motion preference or low-end device
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) {
+    const cores = navigator.hardwareConcurrency || 4
+    const memory = (navigator as any).deviceMemory || 8
+    const isLowEnd = cores <= 4 || memory <= 4
+
+    if (prefersReducedMotion || isLowEnd) {
       setIsVisible(true)
       return
     }
