@@ -160,7 +160,7 @@ function drawPacketPreview(canvas: HTMLCanvasElement) {
   ctx.fillStyle = 'rgba(245,245,245,0.95)'; ctx.font = `bold ${26 * s}px Arial`
   ctx.fillText('Tap Start to Play', W / 2, H / 2 + 8 * s)
   ctx.fillStyle = 'rgba(161,161,170,0.85)'; ctx.font = `${14 * s}px Arial`
-  ctx.fillText('Dodge red walls — go through the green gap!', W / 2, H / 2 + 36 * s)
+  ctx.fillText('Click lanes or use Arrow keys to steer through the green gap!', W / 2, H / 2 + 36 * s)
   ctx.textAlign = 'left'
 }
 
