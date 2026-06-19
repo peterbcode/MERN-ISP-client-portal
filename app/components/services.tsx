@@ -26,7 +26,7 @@ const services = [
     title: 'PC Repairs',
     description:
       'Expert diagnostics, repairs, and upgrades. Data recovery, virus removal, hardware replacement, and performance optimization with same-day service available.',
-    cta: 'Get Support',
+    cta: 'Learn More',
     href: '/contact',
     icon: WrenchScrewdriverIcon,
   },
@@ -34,7 +34,7 @@ const services = [
     title: 'Network Engineering',
     description:
       'Custom network design and installation for businesses. Managed switches, access points, and enterprise-grade security for reliable operations.',
-    cta: 'Contact Us',
+    cta: 'Learn More',
     href: '/contact',
     icon: ServerStackIcon,
   },
@@ -75,7 +75,7 @@ const Services = () => {
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
           {services.map((service) => (
-            <div key={service.title} className="reveal-card">
+            <Link key={service.title} href={service.href} className="reveal-card block group h-full">
               <HoverCard hoverScale={1.03} shadowIntensity="heavy" className="h-full rounded-[10px] border border-white/8 bg-[#16181c] hover:border-[#ff7e26]/50 hover:shadow-[0_0_0_1px_rgba(255,126,38,0.15)]">
                 <div className="p-9 sm:p-10">
                   <div className="mb-7 inline-flex h-20 w-20 items-center justify-center rounded-2xl border border-[#ff7e26]/35 bg-[#ff7e26]/12 text-[#ff7e26] shadow-[0_14px_30px_rgba(255,126,38,0.14)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110 group-hover:bg-[#ff7e26] group-hover:text-black">
@@ -83,16 +83,15 @@ const Services = () => {
                   </div>
                   <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{service.title}</h3>
                   <p className="mt-5 text-base leading-relaxed text-zinc-300 sm:text-lg">{service.description}</p>
-                  <Link
-                    href={service.href}
+                  <div
                     className="mt-7 inline-flex items-center gap-2 text-lg font-bold text-[#ff7e26] transition hover:text-[#ff7e26] group-hover:translate-x-1 sm:text-xl"
                   >
                     {service.cta}
                     <ArrowRightIcon className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
+                  </div>
                 </div>
               </HoverCard>
-            </div>
+            </Link>
           ))}
         </div>
 
