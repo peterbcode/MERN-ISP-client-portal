@@ -12,9 +12,6 @@ export default function Nav() {
         {/* Menu */}
         <ul className="flex gap-6 text-gray-700 font-medium">
           <li>
-            <Link href="/#services">Services</Link>
-          </li>
-          <li>
             <Link href="/isp">ISP</Link>
           </li>
           <li>
