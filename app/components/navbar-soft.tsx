@@ -1,20 +1,17 @@
 'use client'
 
-import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import {
   Bars3Icon,
-  ChevronDownIcon,
   EnvelopeIcon,
   MapPinIcon,
   PhoneIcon,
-  XMarkIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const navigation = [
-  { name: 'Services', href: '/#services' },
   { name: 'ISP', href: '/isp' },
   { name: 'Contact', href: '/contact' },
   { name: 'Dashboard', href: '/dashboard' },
