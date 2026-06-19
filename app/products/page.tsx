@@ -25,14 +25,14 @@ const products = [
     price: 'R 1 450',
     image: '/images/Ubiquiti LiteBeam 5AC.png'
   },
-  {
-    id: 6,
-    name: 'RJ45 Patch Cable 2 m',
-    category: 'cable' as Category,
-    spec: 'Cat6 · Booted · Various colours',
-    price: 'R 65',
-    image: '/images/RJ45 Patch Cable 2 m.png'
-  },
+ { 
+  id: 6,
+  name: 'RJ45 Ethernet Cable',
+  category: 'cable' as Category,
+  spec: 'Cat6 · Custom Lengths Available · Various Colours',
+  price: 'R65',
+  image: '/images/RJ45 Patch Cable 2 m.png'
+ },
   {
     id: 7,
     name: '8-Port Managed Switch',
@@ -57,7 +57,7 @@ const products = [
     price: 'R 1 200',
     image: '/images/DW Portable Mini UPS 8800mAh PoE.png'
   },
-    {
+  {
     id: 10,
     name: 'Gaming Headset',
     category: 'peripherals' as Category,
@@ -111,8 +111,8 @@ export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState<Category>('all')
   const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set())
 
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
+  const filteredProducts = selectedCategory === 'all'
+    ? products
     : products.filter(p => p.category === selectedCategory)
 
   const categories: { key: Category; label: string }[] = [
@@ -125,7 +125,7 @@ export default function ProductsPage() {
     { key: 'peripherals', label: 'PC Peripherals' },
   ]
 
-  const whatsappMessage = (productName: string) => 
+  const whatsappMessage = (productName: string) =>
     `Hi, interested in ${encodeURIComponent(productName)}`
 
   const toggleProductSelection = (productId: number) => {
@@ -181,11 +181,10 @@ export default function ProductsPage() {
                 <button
                   key={cat.key}
                   onClick={() => setSelectedCategory(cat.key)}
-                  className={`rounded-full px-6 py-2.5 text-sm font-bold transition-all duration-300 min-w-[100px] ${
-                    selectedCategory === cat.key
+                  className={`rounded-full px-6 py-2.5 text-sm font-bold transition-all duration-300 min-w-[100px] ${selectedCategory === cat.key
                       ? 'bg-[#ff7e26] text-white shadow-lg shadow-[#ff7e26]/30'
                       : 'border border-zinc-700 bg-zinc-900/50 text-zinc-300 hover:border-[#ff7e26] hover:text-white'
-                  }`}
+                    }`}
                 >
                   {cat.label}
                 </button>
@@ -220,18 +219,16 @@ export default function ProductsPage() {
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
-                  className={`site-card group relative rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 border-zinc-800/50 bg-zinc-900/20 ${
-                    selectedProducts.has(product.id) ? 'border-[#ff7e26] bg-[#ff7e26]/5' : 'hover:border-[#ff7e26]/50'
-                  }`}
+                  className={`site-card group relative rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 border-zinc-800/50 bg-zinc-900/20 ${selectedProducts.has(product.id) ? 'border-[#ff7e26] bg-[#ff7e26]/5' : 'hover:border-[#ff7e26]/50'
+                    }`}
                 >
                   {/* Checkbox */}
                   <button
                     onClick={() => toggleProductSelection(product.id)}
-                    className={`absolute top-4 right-4 z-10 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all duration-200 ${
-                      selectedProducts.has(product.id)
+                    className={`absolute top-4 right-4 z-10 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all duration-200 ${selectedProducts.has(product.id)
                         ? 'bg-[#ff7e26] border-[#ff7e26] text-white'
                         : 'border-zinc-600 bg-zinc-900/50 hover:border-[#ff7e26]'
-                    }`}
+                      }`}
                   >
                     {selectedProducts.has(product.id) && (
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
