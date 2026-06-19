@@ -311,7 +311,7 @@ export default function Navbar() {
                           <Link
                             href="/products?category=router&productId=1"
                             onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
                             Routers
@@ -319,7 +319,7 @@ export default function Navbar() {
                           <Link
                             href="/products?category=radio&productId=3"
                             onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
                             Radios & Access Points
@@ -327,7 +327,7 @@ export default function Navbar() {
                           <Link
                             href="/products?category=cable&productId=6"
                             onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
                             Cables & Patch leads
@@ -362,7 +362,7 @@ export default function Navbar() {
                           <Link
                             href="/products?category=accessory&productId=15"
                             onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
                             Laptops & Hardware
@@ -370,7 +370,7 @@ export default function Navbar() {
                           <Link
                             href="/products?category=peripherals&productId=10"
                             onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
                             PC Peripherals
@@ -378,7 +378,7 @@ export default function Navbar() {
                           <Link
                             href="/products?category=accessory&productId=9"
                             onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
                             Power UPS & Adaptors
@@ -413,7 +413,7 @@ export default function Navbar() {
                           <Link
                             href="/products?category=printer&productId=11"
                             onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
                             Printers & Scanners
@@ -421,7 +421,7 @@ export default function Navbar() {
                           <Link
                             href="/products?category=printer&productId=14"
                             onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
                             Ink Cartridges
@@ -619,7 +619,7 @@ export default function Navbar() {
                   <div
                     className="transition-all duration-300 ease-in-out overflow-hidden"
                     style={{
-                      maxHeight: isMobileProductsOpen ? '500px' : '0px',
+                      maxHeight: isMobileProductsOpen ? '800px' : '0px',
                       opacity: isMobileProductsOpen ? 1 : 0,
                       marginTop: isMobileProductsOpen ? '1.5rem' : '0px',
                       marginBottom: isMobileProductsOpen ? '0.5rem' : '0px',
