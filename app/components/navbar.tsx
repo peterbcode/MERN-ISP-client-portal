@@ -287,7 +287,7 @@ export default function Navbar() {
                       {/* Column 1: Wi-Fi & Networking */}
                       <div className="flex flex-col gap-3">
                         <Link
-                          href="/products?category=router"
+                          href="/products?category=router&productId=1"
                           onClick={() => setIsDropdownOpen(false)}
                           className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
                         >
@@ -300,19 +300,16 @@ export default function Navbar() {
                         </Link>
                         <div className="flex flex-col">
                           <Link
-                            href="/products?category=router"
+                            href="/products?category=router&productId=1"
                             onClick={() => setIsDropdownOpen(false)}
                             className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
                           >
                             Wi-Fi & Networking
                           </Link>
-                          <span className="text-[11px] text-zinc-400 mt-1 font-medium leading-normal">
-                            High-speed routers, wireless radios, and ethernet cabling.
-                          </span>
                         </div>
                         <div className="flex flex-col gap-1 mt-1">
                           <Link
-                            href="/products?category=router"
+                            href="/products?category=router&productId=1"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
@@ -320,7 +317,7 @@ export default function Navbar() {
                             Routers
                           </Link>
                           <Link
-                            href="/products?category=radio"
+                            href="/products?category=radio&productId=3"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
@@ -328,7 +325,7 @@ export default function Navbar() {
                             Radios & Access Points
                           </Link>
                           <Link
-                            href="/products?category=cable"
+                            href="/products?category=cable&productId=6"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
@@ -341,7 +338,7 @@ export default function Navbar() {
                       {/* Column 2: Computers & Accessories */}
                       <div className="flex flex-col gap-3">
                         <Link
-                          href="/products?category=accessory"
+                          href="/products?category=accessory&productId=15"
                           onClick={() => setIsDropdownOpen(false)}
                           className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
                         >
@@ -354,19 +351,16 @@ export default function Navbar() {
                         </Link>
                         <div className="flex flex-col">
                           <Link
-                            href="/products?category=accessory"
+                            href="/products?category=accessory&productId=15"
                             onClick={() => setIsDropdownOpen(false)}
                             className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
                           >
                             Computers & Accessories
                           </Link>
-                          <span className="text-[11px] text-zinc-400 mt-1 font-medium leading-normal">
-                            Premium laptops, desktop setups, and key computing devices.
-                          </span>
                         </div>
                         <div className="flex flex-col gap-1 mt-1">
                           <Link
-                            href="/products?category=accessory"
+                            href="/products?category=accessory&productId=15"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
@@ -374,7 +368,7 @@ export default function Navbar() {
                             Laptops & Hardware
                           </Link>
                           <Link
-                            href="/products?category=peripherals"
+                            href="/products?category=peripherals&productId=10"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
@@ -382,7 +376,7 @@ export default function Navbar() {
                             PC Peripherals
                           </Link>
                           <Link
-                            href="/products?category=accessory"
+                            href="/products?category=accessory&productId=9"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
@@ -395,7 +389,7 @@ export default function Navbar() {
                       {/* Column 3: Printers & Ink */}
                       <div className="flex flex-col gap-3">
                         <Link
-                          href="/products?category=printer"
+                          href="/products?category=printer&productId=11"
                           onClick={() => setIsDropdownOpen(false)}
                           className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
                         >
@@ -408,19 +402,16 @@ export default function Navbar() {
                         </Link>
                         <div className="flex flex-col">
                           <Link
-                            href="/products?category=printer"
+                            href="/products?category=printer&productId=11"
                             onClick={() => setIsDropdownOpen(false)}
                             className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
                           >
                             Printers & Ink
                           </Link>
-                          <span className="text-[11px] text-zinc-400 mt-1 font-medium leading-normal">
-                            All-in-one printers, scanning units, and quality ink cartridges.
-                          </span>
                         </div>
                         <div className="flex flex-col gap-1 mt-1">
                           <Link
-                            href="/products?category=printer"
+                            href="/products?category=printer&productId=11"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
@@ -428,7 +419,7 @@ export default function Navbar() {
                             Printers & Scanners
                           </Link>
                           <Link
-                            href="/products?category=printer"
+                            href="/products?category=printer&productId=14"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
@@ -639,13 +630,13 @@ export default function Navbar() {
                       <div>
                         <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold block mb-2">Wi-Fi & Networking</span>
                         <div className="flex flex-col gap-2.5">
-                          <Link href="/products?category=router" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                          <Link href="/products?category=router&productId=1" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
                             Routers
                           </Link>
-                          <Link href="/products?category=radio" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                          <Link href="/products?category=radio&productId=3" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
                             Radios & Access Points
                           </Link>
-                          <Link href="/products?category=cable" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                          <Link href="/products?category=cable&productId=6" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
                             Cables & Patch leads
                           </Link>
                         </div>
@@ -655,13 +646,13 @@ export default function Navbar() {
                       <div>
                         <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold block mb-2">Computers & Accessories</span>
                         <div className="flex flex-col gap-2.5">
-                          <Link href="/products?category=accessory" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                          <Link href="/products?category=accessory&productId=15" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
                             Laptops & Computers
                           </Link>
-                          <Link href="/products?category=peripherals" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                          <Link href="/products?category=peripherals&productId=10" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
                             PC Peripherals
                           </Link>
-                          <Link href="/products?category=accessory" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                          <Link href="/products?category=accessory&productId=9" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
                             Power UPS & Adaptors
                           </Link>
                         </div>
@@ -671,10 +662,10 @@ export default function Navbar() {
                       <div>
                         <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold block mb-2">Printers & Ink</span>
                         <div className="flex flex-col gap-2.5">
-                          <Link href="/products?category=printer" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                          <Link href="/products?category=printer&productId=11" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
                             Printers & Scanners
                           </Link>
-                          <Link href="/products?category=printer" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                          <Link href="/products?category=printer&productId=14" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
                             Ink Cartridges
                           </Link>
                         </div>

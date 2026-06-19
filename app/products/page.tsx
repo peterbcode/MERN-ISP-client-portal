@@ -115,19 +115,29 @@ function ProductsContent() {
   const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set())
 
   const categoryParam = searchParams?.get('category')
+  const productIdParam = searchParams?.get('productId')
 
   useEffect(() => {
     if (categoryParam) {
       const validCategories: Category[] = ['router', 'radio', 'cable', 'accessory', 'printer', 'peripherals']
       if (validCategories.includes(categoryParam as Category)) {
         setSelectedCategory(categoryParam as Category)
+        
+        // Smoothly scroll to the specific product card if specified, otherwise display section
+        const targetId = productIdParam ? `product-${productIdParam}` : 'products-display'
+        const element = document.getElementById(targetId)
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth', block: productIdParam ? 'center' : 'start' })
+          }, 150)
+        }
       } else {
         setSelectedCategory('all')
       }
     } else {
       setSelectedCategory('all')
     }
-  }, [categoryParam])
+  }, [categoryParam, productIdParam])
 
   const handleCategoryChange = (key: Category) => {
     setSelectedCategory(key)
@@ -192,14 +202,11 @@ function ProductsContent() {
         </AnimatedSection>
 
         {/* Products Section */}
-        <section className="py-24 sm:py-32 bg-black/40">
+        <section id="products-display" className="py-24 sm:py-32 bg-black/40">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimatedSection direction="up" className="mx-auto max-w-3xl text-center">
               <p className="site-eyebrow">Our Products</p>
               <h2 className="mt-4 text-4xl font-black text-white sm:text-6xl tracking-tight">Browse Hardware</h2>
-              <p className="mt-6 text-lg text-zinc-400">
-                Routers, radios, cables, and accessories for your network setup.
-              </p>
             </AnimatedSection>
 
             {/* Category Filters */}
@@ -246,6 +253,7 @@ function ProductsContent() {
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
+                  id={`product-${product.id}`}
                   className={`site-card group relative rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 border-zinc-800/50 bg-zinc-900/20 ${selectedProducts.has(product.id) ? 'border-[#ff7e26] bg-[#ff7e26]/5' : 'hover:border-[#ff7e26]/50'
                     }`}
                 >
