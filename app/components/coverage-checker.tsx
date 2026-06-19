@@ -25,9 +25,11 @@ export default function CoverageChecker() {
   const [waitlistForm, setWaitlistForm] = useState({ name: "", email: "", phone: "" });
   const [isSubmittingWaitlist, setIsSubmittingWaitlist] = useState(false);
   const [waitlistSuccess, setWaitlistSuccess] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   // ─── Google Maps Autocomplete Setup ──────────────────────────────────────────
 
@@ -88,6 +90,34 @@ export default function CoverageChecker() {
       script.defer = true;
       document.head.appendChild(script);
     }
+  }, []);
+
+  // ─── Scroll Animation with Intersection Observer ───────────────────────────────
+
+  useEffect(() => {
+    const element = wrapperRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      }
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   // ─── Check Coverage Handler ───────────────────────────────────────────────────
@@ -196,7 +226,10 @@ export default function CoverageChecker() {
   // ─── Render ───────────────────────────────────────────────────────────────────
 
   return (
-    <div className="coverage-checker-wrapper">
+    <div 
+      ref={wrapperRef}
+      className={`coverage-checker-wrapper ${isVisible ? 'visible' : ''}`}
+    >
       <style>{`
         /* ─── Coverage Checker Styles ─── */
         .coverage-checker-wrapper {
@@ -204,6 +237,16 @@ export default function CoverageChecker() {
           width: 100%;
           max-width: 700px;
           margin: 0 auto;
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                      transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          will-change: opacity, transform;
+        }
+
+        .coverage-checker-wrapper.visible {
+          opacity: 1;
+          transform: translateY(0);
         }
 
         .coverage-search-container {
