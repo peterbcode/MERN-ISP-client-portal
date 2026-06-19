@@ -9,18 +9,18 @@ describe('FaqPage', () => {
 
   it('renders FAQ page with correct title and description', () => {
     expect(screen.getByText('Support Center')).toBeTruthy()
-    expect(screen.getByText('Frequently Asked Questions')).toBeTruthy()
+    expect(screen.getByRole('heading', { name: /Common Questions/i })).toBeTruthy()
     expect(
-      screen.getByText((content, element) => {
+      screen.getByText((content) => {
         return content.includes('Quick answers about our internet services')
       })
     ).toBeTruthy()
   })
 
   it('renders all FAQ items with numbered questions', () => {
-    const firstQuestion = screen.getByText((content) => content.includes('1. What services do you offer?'))
-    const secondQuestion = screen.getByText((content) => content.includes('2. Which areas do you cover?'))
-    const lastQuestion = screen.getByText((content) => content.includes('44. How do I contact you fastest?'))
+    const firstQuestion = screen.getByText('What services do you offer?')
+    const secondQuestion = screen.getByText('Which areas do you cover?')
+    const lastQuestion = screen.getByText('How do I contact you fastest?')
 
     expect(firstQuestion).toBeTruthy()
     expect(secondQuestion).toBeTruthy()
@@ -28,10 +28,10 @@ describe('FaqPage', () => {
   })
 
   it('opens and closes FAQ items when clicked', () => {
-    const firstFaqButton = screen.getByText((content) => content.includes('1. What services do you offer?')).closest('button')
+    const firstFaqButton = screen.getByRole('button', { name: /01\s*What services do you offer\?/i })
     
     // Initially first item should be open (index 0 is open by default)
-    expect(firstFaqButton?.getAttribute('aria-expanded')).toBe('true')
+    expect(firstFaqButton.getAttribute('aria-expanded')).toBe('true')
     
     // Find answer for first question
     const firstAnswer = screen.getByText((content) => {
@@ -40,12 +40,12 @@ describe('FaqPage', () => {
     expect(firstAnswer).toBeTruthy()
 
     // Click to close
-    fireEvent.click(firstFaqButton!)
-    expect(firstFaqButton?.getAttribute('aria-expanded')).toBe('false')
+    fireEvent.click(firstFaqButton)
+    expect(firstFaqButton.getAttribute('aria-expanded')).toBe('false')
 
     // Click to open again
-    fireEvent.click(firstFaqButton!)
-    expect(firstFaqButton?.getAttribute('aria-expanded')).toBe('true')
+    fireEvent.click(firstFaqButton)
+    expect(firstFaqButton.getAttribute('aria-expanded')).toBe('true')
   })
 
   it('has proper accessibility attributes', () => {

@@ -5,9 +5,9 @@ import { useConsent } from './consent-provider'
 
 const AnalyticsLoader = () => {
   const { consent } = useConsent()
-  const gaId = process.env.NEXT_PUBLIC_GA_ID
+  const gaId = process.env.NEXT_PUBLIC_GA_ID || 'G-8JD2TZ6FEF'
 
-  if (consent !== 'accepted' || !gaId) {
+  if (consent !== 'accepted') {
     return null
   }
 
@@ -19,7 +19,7 @@ const AnalyticsLoader = () => {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '${gaId}', { anonymize_ip: true });
+          gtag('config', '${gaId}');
         `}
       </Script>
     </>

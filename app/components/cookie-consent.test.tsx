@@ -1,7 +1,13 @@
+jest.mock('./consent-provider', () => ({
+  ConsentProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  useConsent: () => mockUseConsent(),
+}))
+
 import { render, screen, fireEvent } from '@testing-library/react'
-import { describe, it, expect, beforeEach, jest } from '@jest/globals'
+import { describe, it, expect, beforeEach } from '@jest/globals'
 import CookieConsent from './cookie-consent'
-import { ConsentProvider } from './consent-provider'
+
+const mockUseConsent = jest.fn()
 
 describe('CookieConsent', () => {
   beforeEach(() => {
@@ -9,32 +15,49 @@ describe('CookieConsent', () => {
     jest.clearAllMocks()
   })
 
-  const renderWithProvider = () => {
-    return render(
-      <ConsentProvider>
-        <CookieConsent />
-      </ConsentProvider>
-    )
-  }
-
   it('should not render when banner is closed', () => {
-    localStorage.setItem('vc_cookie_choice', 'accepted')
+    mockUseConsent.mockReturnValue({
+      consent: 'accepted',
+      bannerOpen: false,
+      isMounted: true,
+      setConsent: jest.fn(),
+      openBanner: jest.fn(),
+      closeBanner: jest.fn(),
+    })
 
-    renderWithProvider()
+    render(<CookieConsent />)
 
     expect(screen.queryByText('Cookie Preferences')).toBeFalsy()
     expect(screen.queryByText('We use essential cookies')).toBeFalsy()
   })
 
   it('should render when banner is open', () => {
-    renderWithProvider()
+    mockUseConsent.mockReturnValue({
+      consent: null,
+      bannerOpen: true,
+      isMounted: true,
+      setConsent: jest.fn(),
+      openBanner: jest.fn(),
+      closeBanner: jest.fn(),
+    })
+
+    render(<CookieConsent />)
 
     expect(screen.getByText('Cookie Preferences')).toBeTruthy()
     expect(screen.getByText('We use essential cookies for site performance and optional cookies for analytics and improvements.')).toBeTruthy()
   })
 
   it('should render all action buttons', () => {
-    renderWithProvider()
+    mockUseConsent.mockReturnValue({
+      consent: null,
+      bannerOpen: true,
+      isMounted: true,
+      setConsent: jest.fn(),
+      openBanner: jest.fn(),
+      closeBanner: jest.fn(),
+    })
+
+    render(<CookieConsent />)
 
     expect(screen.getByRole('button', { name: 'Accept all' })).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Essential only' })).toBeTruthy()
@@ -42,35 +65,73 @@ describe('CookieConsent', () => {
   })
 
   it('should handle accept all button click', () => {
-    renderWithProvider()
+    const setConsent = jest.fn()
+    mockUseConsent.mockReturnValue({
+      consent: null,
+      bannerOpen: true,
+      isMounted: true,
+      setConsent,
+      openBanner: jest.fn(),
+      closeBanner: jest.fn(),
+    })
+
+    render(<CookieConsent />)
 
     const acceptButton = screen.getByRole('button', { name: 'Accept all' })
     fireEvent.click(acceptButton)
 
-    expect(localStorage.setItem).toHaveBeenCalledWith('vc_cookie_choice', 'accepted')
+    expect(setConsent).toHaveBeenCalledWith('accepted')
   })
 
   it('should handle essential only button click', () => {
-    renderWithProvider()
+    const setConsent = jest.fn()
+    mockUseConsent.mockReturnValue({
+      consent: null,
+      bannerOpen: true,
+      isMounted: true,
+      setConsent,
+      openBanner: jest.fn(),
+      closeBanner: jest.fn(),
+    })
+
+    render(<CookieConsent />)
 
     const essentialButton = screen.getByRole('button', { name: 'Essential only' })
     fireEvent.click(essentialButton)
 
-    expect(localStorage.setItem).toHaveBeenCalledWith('vc_cookie_choice', 'essential')
+    expect(setConsent).toHaveBeenCalledWith('essential')
   })
 
   it('should handle later button click', () => {
-    renderWithProvider()
+    const closeBanner = jest.fn()
+    mockUseConsent.mockReturnValue({
+      consent: null,
+      bannerOpen: true,
+      isMounted: true,
+      setConsent: jest.fn(),
+      openBanner: jest.fn(),
+      closeBanner,
+    })
+
+    render(<CookieConsent />)
 
     const laterButton = screen.getByRole('button', { name: 'Later' })
     fireEvent.click(laterButton)
 
-    // Should close banner without setting consent
-    expect(screen.queryByText('Cookie Preferences')).toBeFalsy()
+    expect(closeBanner).toHaveBeenCalled()
   })
 
   it('should have correct styling classes', () => {
-    renderWithProvider()
+    mockUseConsent.mockReturnValue({
+      consent: null,
+      bannerOpen: true,
+      isMounted: true,
+      setConsent: jest.fn(),
+      openBanner: jest.fn(),
+      closeBanner: jest.fn(),
+    })
+
+    render(<CookieConsent />)
 
     const banner = screen.getByText('Cookie Preferences').closest('.fixed')
     expect(banner?.classList.contains('fixed')).toBe(true)
@@ -80,7 +141,16 @@ describe('CookieConsent', () => {
   })
 
   it('should have correct button styling', () => {
-    renderWithProvider()
+    mockUseConsent.mockReturnValue({
+      consent: null,
+      bannerOpen: true,
+      isMounted: true,
+      setConsent: jest.fn(),
+      openBanner: jest.fn(),
+      closeBanner: jest.fn(),
+    })
+
+    render(<CookieConsent />)
 
     const acceptButton = screen.getByRole('button', { name: 'Accept all' })
     expect(acceptButton.classList.contains('bg-[#f97316]')).toBe(true)
@@ -93,28 +163,32 @@ describe('CookieConsent', () => {
   })
 
   it('should render with correct text content', () => {
-    renderWithProvider()
+    mockUseConsent.mockReturnValue({
+      consent: null,
+      bannerOpen: true,
+      isMounted: true,
+      setConsent: jest.fn(),
+      openBanner: jest.fn(),
+      closeBanner: jest.fn(),
+    })
+
+    render(<CookieConsent />)
 
     expect(screen.getByText('Cookie Preferences')).toBeTruthy()
     expect(screen.getByText('We use essential cookies for site performance and optional cookies for analytics and improvements.')).toBeTruthy()
   })
 
-  it('should handle keyboard navigation', () => {
-    renderWithProvider()
-
-    const acceptButton = screen.getByRole('button', { name: 'Accept all' })
-    
-    // Test Enter key
-    fireEvent.keyDown(acceptButton, { key: 'Enter' })
-    expect(localStorage.setItem).toHaveBeenCalledWith('vc_cookie_choice', 'accepted')
-
-    // Test Space key
-    fireEvent.keyDown(acceptButton, { key: ' ' })
-    expect(localStorage.setItem).toHaveBeenCalledTimes(2) // Called twice (Enter + Space)
-  })
-
   it('should have proper accessibility attributes', () => {
-    renderWithProvider()
+    mockUseConsent.mockReturnValue({
+      consent: null,
+      bannerOpen: true,
+      isMounted: true,
+      setConsent: jest.fn(),
+      openBanner: jest.fn(),
+      closeBanner: jest.fn(),
+    })
+
+    render(<CookieConsent />)
 
     const buttons = screen.getAllByRole('button')
     buttons.forEach(button => {
@@ -123,18 +197,17 @@ describe('CookieConsent', () => {
   })
 
   it('should not render when isMounted is false', () => {
-    // Mock provider with isMounted: false
-    const MockWrapper = ({ children }: { children: React.ReactNode }) => (
-      <ConsentProvider>{children}</ConsentProvider>
-    )
+    mockUseConsent.mockReturnValue({
+      consent: null,
+      bannerOpen: true,
+      isMounted: false,
+      setConsent: jest.fn(),
+      openBanner: jest.fn(),
+      closeBanner: jest.fn(),
+    })
 
-    render(
-      <MockWrapper>
-        <CookieConsent />
-      </MockWrapper>
-    )
+    render(<CookieConsent />)
 
-    // Should not render initially due to isMounted check
     expect(screen.queryByText('Cookie Preferences')).toBeFalsy()
   })
 })

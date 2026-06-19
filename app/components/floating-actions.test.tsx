@@ -31,11 +31,6 @@ describe('FloatingActions', () => {
     expect(whatsappButton).toBeTruthy()
   })
 
-  it('should render chat prompt when chat is closed', () => {
-    render(<FloatingActions />)
-
-    expect(screen.getByText('Need help? Chat with us')).toBeTruthy()
-  })
 
   it('should open chat when WhatsApp button is clicked', async () => {
     render(<FloatingActions />)

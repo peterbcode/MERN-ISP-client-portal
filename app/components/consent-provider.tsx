@@ -22,8 +22,13 @@ export const ConsentProvider = ({ children }: { children: React.ReactNode }) => 
   // Initialize state from localStorage to avoid setState in useEffect
   const getInitialConsent = (): ConsentChoice => {
     if (typeof window === 'undefined') return null
-    const savedChoice = window.localStorage.getItem(COOKIE_CHOICE_KEY) as ConsentChoice
-    return (savedChoice === 'accepted' || savedChoice === 'essential') ? savedChoice : null
+    try {
+      const savedChoice = window.localStorage.getItem(COOKIE_CHOICE_KEY) as ConsentChoice
+      return (savedChoice === 'accepted' || savedChoice === 'essential') ? savedChoice : null
+    } catch (e) {
+      console.warn('Failed to read from localStorage:', e)
+      return null
+    }
   }
 
   const [consent, setConsentState] = useState<ConsentChoice>(getInitialConsent)
@@ -46,7 +51,11 @@ export const ConsentProvider = ({ children }: { children: React.ReactNode }) => 
   }, [])
 
   const setConsent = (choice: Exclude<ConsentChoice, null>) => {
-    window.localStorage.setItem(COOKIE_CHOICE_KEY, choice)
+    try {
+      window.localStorage.setItem(COOKIE_CHOICE_KEY, choice)
+    } catch (e) {
+      console.warn('Failed to write to localStorage:', e)
+    }
     setConsentState(choice)
     setBannerOpen(false)
   }

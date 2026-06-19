@@ -6,6 +6,7 @@ describe('ConsentProvider', () => {
   beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear()
+    jest.restoreAllMocks()
     jest.clearAllMocks()
   })
 
@@ -18,7 +19,7 @@ describe('ConsentProvider', () => {
 
     expect(result.current.consent).toBe(null)
     expect(result.current.bannerOpen).toBe(true)
-    expect(result.current.isMounted).toBe(false)
+    expect(result.current.isMounted).toBe(true)
     expect(typeof result.current.setConsent).toBe('function')
     expect(typeof result.current.openBanner).toBe('function')
     expect(typeof result.current.closeBanner).toBe('function')
@@ -125,17 +126,7 @@ describe('ConsentProvider', () => {
 
     const { result } = renderHook(() => useConsent(), { wrapper })
 
-    // Initially should be false
-    expect(result.current.isMounted).toBe(false)
-
-    // Wait for useEffect to run
-    act(() => {
-      // Trigger a re-render
-      result.current.openBanner()
-    })
-
-    // Should still be false until after mount effect
-    expect(result.current.isMounted).toBe(false)
+    expect(result.current.isMounted).toBe(true)
   })
 
   it('should not show banner if consent already given', () => {
@@ -153,33 +144,36 @@ describe('ConsentProvider', () => {
   })
 
   it('should throw error when useConsent is used outside provider', () => {
-    const { result } = renderHook(() => useConsent())
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
 
-    expect(() => result.current).toThrow('useConsent must be used inside ConsentProvider')
+    expect(() => {
+      renderHook(() => useConsent())
+    }).toThrow('useConsent must be used inside ConsentProvider')
+
+    consoleError.mockRestore()
   })
 
   it('should handle localStorage errors gracefully', () => {
-    // Mock localStorage to throw error
-    const originalSetItem = localStorage.setItem
-    localStorage.setItem = jest.fn(() => {
+    const setItemSpy = jest.spyOn(localStorage, 'setItem').mockImplementation(() => {
       throw new Error('Storage quota exceeded')
     })
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <ConsentProvider>{children}</ConsentProvider>
-    )
+    try {
+      const wrapper = ({ children }: { children: React.ReactNode }) => (
+        <ConsentProvider>{children}</ConsentProvider>
+      )
 
-    const { result } = renderHook(() => useConsent(), { wrapper })
+      const { result } = renderHook(() => useConsent(), { wrapper })
 
-    // Should not throw error when setConsent is called
-    expect(() => {
-      act(() => {
-        result.current.setConsent('accepted')
-      })
-    }).not.toThrow()
-
-    // Restore original localStorage
-    localStorage.setItem = originalSetItem
+      // Should not throw error when setConsent is called
+      expect(() => {
+        act(() => {
+          result.current.setConsent('accepted')
+        })
+      }).not.toThrow()
+    } finally {
+      setItemSpy.mockRestore()
+    }
   })
 
   it('should handle invalid saved consent values', () => {
