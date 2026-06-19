@@ -128,8 +128,17 @@ function ProductsContent() {
         const element = document.getElementById(targetId)
         if (element) {
           setTimeout(() => {
-            element.scrollIntoView({ behavior: 'smooth', block: productIdParam ? 'center' : 'start' })
-          }, 150)
+            const globalLenis = (window as any).lenis
+            if (globalLenis) {
+              globalLenis.scrollTo(element, {
+                offset: productIdParam ? -window.innerHeight / 4 : -80,
+                duration: 2.2, // Slow scroll duration of 2.2 seconds for a premium feel
+                easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential ease-out
+              })
+            } else {
+              element.scrollIntoView({ behavior: 'smooth', block: productIdParam ? 'center' : 'start' })
+            }
+          }, 180)
         }
       } else {
         setSelectedCategory('all')

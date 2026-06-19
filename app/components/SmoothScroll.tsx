@@ -14,13 +14,27 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       return;
     }
 
-    const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+    const lenis = new Lenis({
+      lerp: 0.04, // Lower value for a slower, lazier, and more luxurious follow/glide
+      duration: 1.8, // Slightly longer scroll duration for a premium, cinematic feel
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Premium exponential ease-out curve
+      wheelMultiplier: 0.8, // Controlled scroll distance per tick
+      smoothWheel: true,
+    });
+
+    // Expose lenis globally for programmatic slow scrolls
+    (window as any).lenis = lenis;
+
     const raf = (time: number) => {
       lenis.raf(time);
       requestAnimationFrame(raf);
     };
     requestAnimationFrame(raf);
-    return () => lenis.destroy();
+
+    return () => {
+      lenis.destroy();
+      (window as any).lenis = undefined;
+    };
   }, []);
   return <>{children}</>;
 }
