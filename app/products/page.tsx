@@ -30,7 +30,7 @@ const products = [
   name: 'RJ45 Ethernet Cable',
   category: 'cable' as Category,
   spec: 'Cat6 · Custom Lengths Available · Various Colours',
-  price: 'R65',
+  price: 'R35 per meter',
   image: '/images/RJ45 Patch Cable 2 m.png'
  },
   {
