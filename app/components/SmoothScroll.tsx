@@ -15,10 +15,8 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     }
 
     const lenis = new Lenis({
-      lerp: 0.04, // Lower value for a slower, lazier, and more luxurious follow/glide
-      duration: 1.8, // Slightly longer scroll duration for a premium, cinematic feel
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Premium exponential ease-out curve
-      wheelMultiplier: 0.8, // Controlled scroll distance per tick
+      lerp: 0.05, // Sweet spot for a slow, luxurious, and elegant glide
+      wheelMultiplier: 0.85, // Slightly dampened wheel distance for a controlled feel
       smoothWheel: true,
     });
 
