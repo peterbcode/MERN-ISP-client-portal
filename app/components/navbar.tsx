@@ -261,15 +261,15 @@ export default function Navbar() {
                 >
                   <span className="relative flex items-center gap-1">
                     Products
-                    <span className={`absolute bottom-0 left-0 h-0.5 bg-[#FF4500] transition-all duration-300 ${
+                    <span className={`absolute bottom-0 left-0 h-0.5 bg-[#ff7e26] transition-all duration-300 ${
                       isDropdownOpen ? 'w-full' : 'w-0 group-hover:w-full'
                     }`} />
                   </span>
                 </button>
 
-                {/* Dropdown Panel matching mindmarket.com structure */}
+                {/* Dropdown Panel matching mindmarket.com 3-column category structure */}
                 <div
-                  className={`absolute left-1/2 w-[480px] pt-2 transition-all duration-200 ease-out z-[1000] ${
+                  className={`absolute left-1/2 w-[760px] pt-2 transition-all duration-200 ease-out z-[1000] ${
                     isDropdownOpen
                       ? 'pointer-events-auto opacity-100'
                       : 'pointer-events-none opacity-0'
@@ -281,53 +281,172 @@ export default function Navbar() {
                       : 'translateX(-50%) translateY(-8px)',
                   }}
                 >
-                  <div className="border border-[#F5F5F0]/10 bg-[#080807] grid grid-cols-5 p-4 gap-4">
-                    {/* Left CTA Card */}
-                    <Link
-                      href="/products"
-                      onClick={() => setIsDropdownOpen(false)}
-                      className="col-span-2 relative group overflow-hidden border border-[#F5F5F0]/10 aspect-[4/5] flex flex-col justify-end p-4 bg-zinc-900"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
-                      <div 
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                        style={{ backgroundImage: "url('/images/N300 Wireless series Tenda.png')" }}
-                      />
-                      <div className="relative z-20 flex flex-col">
-                        <span className="text-[10px] uppercase tracking-widest text-[#FF4500] font-bold">Products</span>
-                        <span className="text-xs font-semibold text-[#F5F5F0] mt-0.5">Explore All Solutions</span>
-                      </div>
-                    </Link>
-
-                    {/* Right Links List */}
-                    <div className="col-span-3 flex flex-col justify-center pl-2">
-                      <span className="text-[10px] uppercase tracking-widest text-[#F5F5F0]/40 font-bold mb-2">Categories</span>
-                      <div className="flex flex-col gap-1">
+                  <div className="border border-zinc-800/80 bg-[#0c0c0e]/95 backdrop-blur-md p-6 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex flex-col gap-5">
+                    <div className="grid grid-cols-3 gap-6">
+                      
+                      {/* Column 1: Wi-Fi & Networking */}
+                      <div className="flex flex-col gap-3">
                         <Link
                           href="/products?category=router"
                           onClick={() => setIsDropdownOpen(false)}
-                          className="group flex flex-col py-2 px-3 rounded-md transition-colors hover:bg-white/5"
+                          className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
                         >
-                          <span className="text-sm font-semibold text-[#F5F5F0] group-hover:text-[#FF4500] transition-colors">Routers</span>
-                          <span className="text-[10px] text-[#F5F5F0]/50 mt-0.5">High-performance routers for home & business</span>
+                          <div 
+                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover/img:scale-105"
+                            style={{ backgroundImage: "url('/images/N300 Wireless series Tenda.png')" }}
+                          />
+                          <div className="absolute inset-0 bg-[#ff7e26]/5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300" />
                         </Link>
-                        <Link
-                          href="/products?category=radio"
-                          onClick={() => setIsDropdownOpen(false)}
-                          className="group flex flex-col py-2 px-3 rounded-md transition-colors hover:bg-white/5"
-                        >
-                          <span className="text-sm font-semibold text-[#F5F5F0] group-hover:text-[#FF4500] transition-colors">Access Points</span>
-                          <span className="text-[10px] text-[#F5F5F0]/50 mt-0.5">Extended wireless coverage & outdoor radios</span>
-                        </Link>
+                        <div className="flex flex-col">
+                          <Link
+                            href="/products?category=router"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
+                          >
+                            Wi-Fi & Networking
+                          </Link>
+                          <span className="text-[11px] text-zinc-400 mt-1 font-medium leading-normal">
+                            High-speed routers, wireless radios, and ethernet cabling.
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1 mt-1">
+                          <Link
+                            href="/products?category=router"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Routers
+                          </Link>
+                          <Link
+                            href="/products?category=radio"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Radios & Access Points
+                          </Link>
+                          <Link
+                            href="/products?category=cable"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Cables & Patch leads
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Column 2: Computers & Accessories */}
+                      <div className="flex flex-col gap-3">
                         <Link
                           href="/products?category=accessory"
                           onClick={() => setIsDropdownOpen(false)}
-                          className="group flex flex-col py-2 px-3 rounded-md transition-colors hover:bg-white/5"
+                          className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
                         >
-                          <span className="text-sm font-semibold text-[#F5F5F0] group-hover:text-[#FF4500] transition-colors">Switches</span>
-                          <span className="text-[10px] text-[#F5F5F0]/50 mt-0.5">Managed & unmanaged networking switches</span>
+                          <div 
+                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover/img:scale-105"
+                            style={{ backgroundImage: "url('/gallery/Laptops.png')" }}
+                          />
+                          <div className="absolute inset-0 bg-[#ff7e26]/5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300" />
                         </Link>
+                        <div className="flex flex-col">
+                          <Link
+                            href="/products?category=accessory"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
+                          >
+                            Computers & Accessories
+                          </Link>
+                          <span className="text-[11px] text-zinc-400 mt-1 font-medium leading-normal">
+                            Premium laptops, desktop setups, and key computing devices.
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1 mt-1">
+                          <Link
+                            href="/products?category=accessory"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Laptops & Hardware
+                          </Link>
+                          <Link
+                            href="/products?category=peripherals"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            PC Peripherals
+                          </Link>
+                          <Link
+                            href="/products?category=accessory"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Power UPS & Adaptors
+                          </Link>
+                        </div>
                       </div>
+
+                      {/* Column 3: Printers & Ink */}
+                      <div className="flex flex-col gap-3">
+                        <Link
+                          href="/products?category=printer"
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
+                        >
+                          <div 
+                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover/img:scale-105"
+                            style={{ backgroundImage: "url('/gallery/Canon-Printer.png')" }}
+                          />
+                          <div className="absolute inset-0 bg-[#ff7e26]/5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300" />
+                        </Link>
+                        <div className="flex flex-col">
+                          <Link
+                            href="/products?category=printer"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
+                          >
+                            Printers & Ink
+                          </Link>
+                          <span className="text-[11px] text-zinc-400 mt-1 font-medium leading-normal">
+                            All-in-one printers, scanning units, and quality ink cartridges.
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1 mt-1">
+                          <Link
+                            href="/products?category=printer"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Printers & Scanners
+                          </Link>
+                          <Link
+                            href="/products?category=printer"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-[12px] text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Ink Cartridges
+                          </Link>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    {/* Bottom bar */}
+                    <div className="border-t border-zinc-800/80 pt-4 flex justify-between items-center text-xs">
+                      <span className="text-zinc-500 font-medium">Looking for something else?</span>
+                      <Link
+                        href="/products"
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="text-[#ff7e26] hover:text-[#ff7e26]/80 hover:underline font-extrabold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        Shop All Products &rarr;
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -491,7 +610,7 @@ export default function Navbar() {
                 >
                   <button
                     onClick={() => setIsMobileProductsOpen(!isMobileProductsOpen)}
-                    className="flex items-center gap-3 text-left focus:outline-none text-[#F5F5F0] hover:text-[#FF4500] transition-colors w-full cursor-pointer"
+                    className="flex items-center gap-3 text-left focus:outline-none text-[#F5F5F0] hover:text-[#ff7e26] transition-colors w-full cursor-pointer"
                     style={{ fontSize: 'clamp(32px, 9vw, 44px)', fontWeight: 500 }}
                   >
                     Products
@@ -502,45 +621,68 @@ export default function Navbar() {
                     />
                   </button>
 
-                  {/* Accordion sub-links */}
+                  {/* Accordion sub-links grouped by new categories */}
                   <div
                     className="transition-all duration-300 ease-in-out overflow-hidden"
                     style={{
-                      maxHeight: isMobileProductsOpen ? '250px' : '0px',
+                      maxHeight: isMobileProductsOpen ? '500px' : '0px',
                       opacity: isMobileProductsOpen ? 1 : 0,
-                      marginTop: isMobileProductsOpen ? '1rem' : '0px',
+                      marginTop: isMobileProductsOpen ? '1.5rem' : '0px',
                       marginBottom: isMobileProductsOpen ? '0.5rem' : '0px',
                     }}
                   >
-                    <div className="pl-6 flex flex-col gap-4 border-l border-[#F5F5F0]/10 py-1">
-                      <Link
-                        href="/products?category=router"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-2xl font-medium text-[#F5F5F0]/80 hover:text-[#FF4500] transition-colors"
-                      >
-                        Routers
-                      </Link>
-                      <Link
-                        href="/products?category=radio"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-2xl font-medium text-[#F5F5F0]/80 hover:text-[#FF4500] transition-colors"
-                      >
-                        Access Points
-                      </Link>
-                      <Link
-                        href="/products?category=accessory"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-2xl font-medium text-[#F5F5F0]/80 hover:text-[#FF4500] transition-colors"
-                      >
-                        Switches
-                      </Link>
-                      <Link
-                        href="/products"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-2xl font-medium text-[#F5F5F0]/80 hover:text-[#FF4500] transition-colors"
-                      >
-                        Shop All
-                      </Link>
+                    <div className="pl-6 flex flex-col gap-6 border-l border-[#F5F5F0]/10 py-2">
+                      {/* Group 1: Wi-Fi */}
+                      <div>
+                        <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold block mb-2">Wi-Fi & Networking</span>
+                        <div className="flex flex-col gap-2.5">
+                          <Link href="/products?category=router" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                            Routers
+                          </Link>
+                          <Link href="/products?category=radio" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                            Radios & Access Points
+                          </Link>
+                          <Link href="/products?category=cable" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                            Network Cables
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Group 2: Computers */}
+                      <div>
+                        <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold block mb-2">Computers & Accessories</span>
+                        <div className="flex flex-col gap-2.5">
+                          <Link href="/products?category=accessory" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                            Laptops & Computers
+                          </Link>
+                          <Link href="/products?category=peripherals" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                            PC Peripherals
+                          </Link>
+                          <Link href="/products?category=accessory" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                            Power UPS & Adaptors
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Group 3: Printers */}
+                      <div>
+                        <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold block mb-2">Printers & Ink</span>
+                        <div className="flex flex-col gap-2.5">
+                          <Link href="/products?category=printer" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                            Printers & Scanners
+                          </Link>
+                          <Link href="/products?category=printer" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
+                            Ink Cartridges
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Shop All */}
+                      <div className="border-t border-[#F5F5F0]/10 pt-4">
+                        <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-[#ff7e26] font-bold uppercase tracking-wider hover:underline block">
+                          Shop All Products &rarr;
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -557,7 +699,7 @@ export default function Navbar() {
                   <Link
                     href="/isp"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block font-medium text-[#F5F5F0] hover:text-[#FF4500] transition-colors"
+                    className="block font-medium text-[#F5F5F0] hover:text-[#ff7e26] transition-colors"
                     style={{ fontSize: 'clamp(32px, 9vw, 44px)' }}
                   >
                     ISP
@@ -576,7 +718,7 @@ export default function Navbar() {
                   <Link
                     href="/contact"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block font-medium text-[#F5F5F0] hover:text-[#FF4500] transition-colors"
+                    className="block font-medium text-[#F5F5F0] hover:text-[#ff7e26] transition-colors"
                     style={{ fontSize: 'clamp(32px, 9vw, 44px)' }}
                   >
                     Contact us
@@ -595,7 +737,7 @@ export default function Navbar() {
                   <Link
                     href="/signup"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block font-medium text-[#FF4500] hover:brightness-110 transition-colors"
+                    className="block font-medium text-[#ff7e26] hover:brightness-110 transition-colors"
                     style={{ fontSize: '18px' }}
                   >
                     Partner with us
@@ -616,7 +758,7 @@ export default function Navbar() {
             >
               <a
                 href={phoneHref}
-                className="text-[13px] text-[#F5F5F0]/50 hover:text-[#FF4500] transition-colors"
+                className="text-[13px] text-[#F5F5F0]/50 hover:text-[#ff7e26] transition-colors"
               >
                 079 938 1260
               </a>

@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Navbar from '../components/navbar'
 import SiteFooter from '../components/site-footer'
 import AnimatedSection from '../components/ui/animated-section'
@@ -107,9 +108,34 @@ const products = [
   },
 ]
 
-export default function ProductsPage() {
+function ProductsContent() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [selectedCategory, setSelectedCategory] = useState<Category>('all')
   const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set())
+
+  useEffect(() => {
+    const categoryParam = searchParams?.get('category')
+    if (categoryParam) {
+      const validCategories: Category[] = ['router', 'radio', 'cable', 'accessory', 'printer', 'peripherals']
+      if (validCategories.includes(categoryParam as Category)) {
+        setSelectedCategory(categoryParam as Category)
+      } else {
+        setSelectedCategory('all')
+      }
+    } else {
+      setSelectedCategory('all')
+    }
+  }, [searchParams])
+
+  const handleCategoryChange = (key: Category) => {
+    setSelectedCategory(key)
+    if (key === 'all') {
+      router.push('/products', { scroll: false })
+    } else {
+      router.push(`/products?category=${key}`, { scroll: false })
+    }
+  }
 
   const filteredProducts = selectedCategory === 'all'
     ? products
@@ -180,7 +206,7 @@ export default function ProductsPage() {
               {categories.map((cat) => (
                 <button
                   key={cat.key}
-                  onClick={() => setSelectedCategory(cat.key)}
+                  onClick={() => handleCategoryChange(cat.key)}
                   className={`rounded-full px-6 py-2.5 text-sm font-bold transition-all duration-300 min-w-[100px] ${selectedCategory === cat.key
                       ? 'bg-[#ff7e26] text-white shadow-lg shadow-[#ff7e26]/30'
                       : 'border border-zinc-700 bg-zinc-900/50 text-zinc-300 hover:border-[#ff7e26] hover:text-white'
@@ -280,5 +306,21 @@ export default function ProductsPage() {
       </main>
       <SiteFooter />
     </>
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <>
+        <Navbar />
+        <main className="site-page text-white flex min-h-screen items-center justify-center">
+          <div className="text-[#ff7e26] font-bold text-lg animate-pulse">Loading products...</div>
+        </main>
+        <SiteFooter />
+      </>
+    }>
+      <ProductsContent />
+    </Suspense>
   )
 }
