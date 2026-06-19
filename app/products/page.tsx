@@ -15,7 +15,7 @@ const products = [
     category: 'router' as Category,
     spec: '300 Mbps · 4-port · Wireless N',
     price: 'R 850',
-    image: '/images/N300 Wireless series Tenda.jpg'
+    image: '/images/N300 Wireless series Tenda.png'
   },
   {
     id: 3,
