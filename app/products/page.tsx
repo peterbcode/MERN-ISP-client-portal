@@ -114,8 +114,9 @@ function ProductsContent() {
   const [selectedCategory, setSelectedCategory] = useState<Category>('all')
   const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set())
 
+  const categoryParam = searchParams?.get('category')
+
   useEffect(() => {
-    const categoryParam = searchParams?.get('category')
     if (categoryParam) {
       const validCategories: Category[] = ['router', 'radio', 'cable', 'accessory', 'printer', 'peripherals']
       if (validCategories.includes(categoryParam as Category)) {
@@ -126,7 +127,7 @@ function ProductsContent() {
     } else {
       setSelectedCategory('all')
     }
-  }, [searchParams])
+  }, [categoryParam])
 
   const handleCategoryChange = (key: Category) => {
     setSelectedCategory(key)

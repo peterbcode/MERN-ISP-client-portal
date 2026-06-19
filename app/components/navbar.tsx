@@ -291,9 +291,10 @@ export default function Navbar() {
                           onClick={() => setIsDropdownOpen(false)}
                           className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
                         >
-                          <div 
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover/img:scale-105"
-                            style={{ backgroundImage: "url('/images/N300 Wireless series Tenda.png')" }}
+                          <img
+                            src="/images/N300 Wireless series Tenda.png"
+                            alt="Wi-Fi & Networking"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105 [backface-visibility:hidden] [transform:translateZ(0)]"
                           />
                           <div className="absolute inset-0 bg-[#ff7e26]/5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300" />
                         </Link>
@@ -344,9 +345,10 @@ export default function Navbar() {
                           onClick={() => setIsDropdownOpen(false)}
                           className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
                         >
-                          <div 
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover/img:scale-105"
-                            style={{ backgroundImage: "url('/gallery/Laptops.png')" }}
+                          <img
+                            src="/gallery/Laptops.png"
+                            alt="Computers & Accessories"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105 [backface-visibility:hidden] [transform:translateZ(0)]"
                           />
                           <div className="absolute inset-0 bg-[#ff7e26]/5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300" />
                         </Link>
@@ -397,9 +399,10 @@ export default function Navbar() {
                           onClick={() => setIsDropdownOpen(false)}
                           className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
                         >
-                          <div 
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover/img:scale-105"
-                            style={{ backgroundImage: "url('/gallery/Canon-Printer.png')" }}
+                          <img
+                            src="/gallery/Canon-Printer.png"
+                            alt="Printers & Ink"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105 [backface-visibility:hidden] [transform:translateZ(0)]"
                           />
                           <div className="absolute inset-0 bg-[#ff7e26]/5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300" />
                         </Link>
@@ -643,7 +646,7 @@ export default function Navbar() {
                             Radios & Access Points
                           </Link>
                           <Link href="/products?category=cable" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-[#F5F5F0]/80 hover:text-[#ff7e26] transition-colors">
-                            Network Cables
+                            Cables & Patch leads
                           </Link>
                         </div>
                       </div>
