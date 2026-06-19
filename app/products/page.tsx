@@ -26,14 +26,6 @@ const products = [
     image: '/images/Ubiquiti LiteBeam 5AC.png'
   },
   {
-    id: 4,
-    name: 'MikroTik SXTsq 5 ac',
-    category: 'radio' as Category,
-    spec: '5 GHz · 16 dBi · Compact outdoor',
-    price: 'R 1 200',
-    image: '/images/MikroTik SXTsq 5 ac.webp'
-  },
-  {
     id: 6,
     name: 'RJ45 Patch Cable 2 m',
     category: 'cable' as Category,
