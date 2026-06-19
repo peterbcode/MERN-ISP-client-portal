@@ -172,7 +172,7 @@ export default function Navbar() {
   }
 
   return (
-    <header ref={navRef} className="relative z-50 w-full">
+    <header ref={navRef} className="relative z-[1000] w-full">
       {/* Orange top bar - will translate up and fade when mobile menu is open */}
       <div
         id="orange-top-bar"
@@ -221,7 +221,7 @@ export default function Navbar() {
       </div>
 
       <nav
-        className={`transition-all duration-300 ${
+        className={`transition-all duration-300 z-[1000] ${
           isScrolled
             ? 'fixed left-0 right-0 top-0 border-b border-white/6 metal-bg shadow-[0_8px_28px_rgba(0,0,0,0.55)] backdrop-blur supports-[backdrop-filter]:bg-[#111214]/86'
             : 'absolute inset-x-0 top-10 bg-gradient-to-b from-black/42 to-transparent'
@@ -231,7 +231,7 @@ export default function Navbar() {
           <div className="flex h-16 items-center justify-between sm:h-20">
             {/* Brand Logo */}
             <div
-              className="-ml-1 flex items-center gap-3 px-3 py-1.5 text-left leading-none transition-all duration-300 ease-out cursor-pointer sm:ml-0 sm:gap-4 sm:px-3.5 sm:py-2 z-[100]"
+              className="-ml-1 flex items-center gap-3 px-3 py-1.5 text-left leading-none transition-all duration-300 ease-out cursor-pointer sm:ml-0 sm:gap-4 sm:px-3.5 sm:py-2 z-[1010]"
               onClick={() => router.push('/')}
             >
               <span className="flex items-center transition-all duration-300 ease-out hover:scale-105">
@@ -267,49 +267,68 @@ export default function Navbar() {
                   </span>
                 </button>
 
-                {/* Dropdown Panel */}
+                {/* Dropdown Panel matching mindmarket.com structure */}
                 <div
-                  className={`absolute left-1/2 w-64 border-t border-[#F5F5F0]/10 bg-[#080807] transition-all duration-200 ease-out ${
+                  className={`absolute left-1/2 w-[480px] pt-2 transition-all duration-200 ease-out z-[1000] ${
                     isDropdownOpen
                       ? 'pointer-events-auto opacity-100'
                       : 'pointer-events-none opacity-0'
                   }`}
                   style={{
+                    top: '100%',
                     transform: isDropdownOpen
-                      ? 'translateX(-50%) translateY(4px)'
-                      : 'translateX(-50%) translateY(-4px)',
+                      ? 'translateX(-50%) translateY(0px)'
+                      : 'translateX(-50%) translateY(-8px)',
                   }}
                 >
-                  <div className="flex flex-col py-2">
-                    <Link
-                      href="/products?category=router"
-                      onClick={() => setIsDropdownOpen(false)}
-                      className="block px-6 py-4 text-sm font-semibold text-[#F5F5F0] transition-colors duration-200 hover:text-[#FF4500] hover:bg-white/5"
-                    >
-                      Routers
-                    </Link>
-                    <Link
-                      href="/products?category=radio"
-                      onClick={() => setIsDropdownOpen(false)}
-                      className="block px-6 py-4 text-sm font-semibold text-[#F5F5F0] transition-colors duration-200 hover:text-[#FF4500] hover:bg-white/5"
-                    >
-                      Access Points
-                    </Link>
-                    <Link
-                      href="/products?category=accessory"
-                      onClick={() => setIsDropdownOpen(false)}
-                      className="block px-6 py-4 text-sm font-semibold text-[#F5F5F0] transition-colors duration-200 hover:text-[#FF4500] hover:bg-white/5"
-                    >
-                      Switches
-                    </Link>
-                    <div className="border-t border-[#F5F5F0]/10 my-1" />
+                  <div className="border border-[#F5F5F0]/10 bg-[#080807] grid grid-cols-5 p-4 gap-4">
+                    {/* Left CTA Card */}
                     <Link
                       href="/products"
                       onClick={() => setIsDropdownOpen(false)}
-                      className="block px-6 py-4 text-sm font-semibold text-[#F5F5F0] transition-colors duration-200 hover:text-[#FF4500] hover:bg-white/5"
+                      className="col-span-2 relative group overflow-hidden border border-[#F5F5F0]/10 aspect-[4/5] flex flex-col justify-end p-4 bg-zinc-900"
                     >
-                      Shop All
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                        style={{ backgroundImage: "url('/images/N300 Wireless series Tenda.png')" }}
+                      />
+                      <div className="relative z-20 flex flex-col">
+                        <span className="text-[10px] uppercase tracking-widest text-[#FF4500] font-bold">Products</span>
+                        <span className="text-xs font-semibold text-[#F5F5F0] mt-0.5">Explore All Solutions</span>
+                      </div>
                     </Link>
+
+                    {/* Right Links List */}
+                    <div className="col-span-3 flex flex-col justify-center pl-2">
+                      <span className="text-[10px] uppercase tracking-widest text-[#F5F5F0]/40 font-bold mb-2">Categories</span>
+                      <div className="flex flex-col gap-1">
+                        <Link
+                          href="/products?category=router"
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="group flex flex-col py-2 px-3 rounded-md transition-colors hover:bg-white/5"
+                        >
+                          <span className="text-sm font-semibold text-[#F5F5F0] group-hover:text-[#FF4500] transition-colors">Routers</span>
+                          <span className="text-[10px] text-[#F5F5F0]/50 mt-0.5">High-performance routers for home & business</span>
+                        </Link>
+                        <Link
+                          href="/products?category=radio"
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="group flex flex-col py-2 px-3 rounded-md transition-colors hover:bg-white/5"
+                        >
+                          <span className="text-sm font-semibold text-[#F5F5F0] group-hover:text-[#FF4500] transition-colors">Access Points</span>
+                          <span className="text-[10px] text-[#F5F5F0]/50 mt-0.5">Extended wireless coverage & outdoor radios</span>
+                        </Link>
+                        <Link
+                          href="/products?category=accessory"
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="group flex flex-col py-2 px-3 rounded-md transition-colors hover:bg-white/5"
+                        >
+                          <span className="text-sm font-semibold text-[#F5F5F0] group-hover:text-[#FF4500] transition-colors">Switches</span>
+                          <span className="text-[10px] text-[#F5F5F0]/50 mt-0.5">Managed & unmanaged networking switches</span>
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -406,7 +425,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Hamburger menu morph button */}
-            <div className="md:hidden z-[100] flex items-center">
+            <div className="md:hidden z-[1010] flex items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="relative flex h-10 w-10 flex-col justify-center items-center gap-1.5 focus:outline-none rounded-md p-2 text-white hover:bg-white/10 cursor-pointer"
@@ -429,7 +448,7 @@ export default function Navbar() {
         {/* Mobile Full-Screen Overlay Menu */}
         <div
           ref={mobileOverlayRef}
-          className="fixed inset-0 z-[90] bg-[#080807] flex flex-col justify-between px-8 py-24 sm:px-16 md:hidden overflow-y-auto"
+          className="fixed inset-0 z-[1000] bg-[#080807] flex flex-col justify-between px-8 py-24 sm:px-16 md:hidden overflow-y-auto"
           style={{
             transitionProperty: 'opacity, transform, visibility',
             transitionDuration: '400ms',

@@ -19,15 +19,7 @@ const navigation = [
 
 export default function NavbarSoft() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [copied, setCopied] = useState(false)
   const pathname = usePathname()
-
-  const handleEmailClick = () => {
-    navigator.clipboard.writeText('info@valley-computers.co.za').then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }).catch(() => {})
-  }
 
   useEffect(() => {
     const onScroll = () => {
@@ -59,19 +51,12 @@ export default function NavbarSoft() {
               <div className="relative flex items-center">
                 <a 
                   href="mailto:info@valley-computers.co.za?subject=Inquiry&body=Hi%20Valley%20Computers" 
-                  onClick={handleEmailClick}
                   aria-label="Send email to info@valley-computers.co.za"
-                  title="Send email to info@valley-computers.co.za (copies to clipboard)"
                   className="no-accent-hover flex items-center gap-1.5 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-105 cursor-pointer"
                 >
                   <EnvelopeIcon className="h-3.5 w-3.5" />
                   info@valley-computers.co.za
                 </a>
-                {copied && (
-                  <span className="absolute left-1/2 -bottom-8 z-[70] -translate-x-1/2 rounded bg-zinc-950 px-2 py-1 text-[10px] font-bold text-white shadow-lg ring-1 ring-white/10 whitespace-nowrap">
-                    Email copied!
-                  </span>
-                )}
               </div>
             </div>
             <div className="flex items-center gap-4">
