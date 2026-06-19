@@ -31,7 +31,7 @@ const products = [
     category: 'cable' as Category,
     spec: 'Cat6 · Booted · Various colours',
     price: 'R 65',
-    image: '/images/RJ45 Patch Cable 2 m.jpg'
+    image: '/images/RJ45 Patch Cable 2 m.png'
   },
   {
     id: 7,
