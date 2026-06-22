@@ -114,6 +114,14 @@ const products = [
     price: 'Contact for pricing',
     image: '/gallery/Desktop-Pc.png'
   },
+  {
+    id: 17,
+    name: 'Mecer 2000VA Line Interactive UPS',
+    category: 'accessory' as Category,
+    spec: '2000VA / 1200W · AVR · Monitoring Software · Surge Protection',
+    price: 'R 2 800',
+    image: '/gallery/DW Portable Mini UPS 8800mAh PoE.jpg'
+  },
 ]
 
 function ProductsContent() {
