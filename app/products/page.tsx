@@ -120,7 +120,7 @@ const products = [
     category: 'accessory' as Category,
     spec: '2000VA / 1200W · AVR · Monitoring Software · Surge Protection',
     price: 'R 2 800',
-    image: '/gallery/DW Portable Mini UPS 8800mAh PoE.jpg'
+    image: '/gallery/UPS.png'
   },
 ]
 
