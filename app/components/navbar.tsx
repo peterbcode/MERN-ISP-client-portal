@@ -6,6 +6,7 @@ import {
   EnvelopeIcon,
   MapPinIcon,
   PhoneIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -255,8 +256,8 @@ export default function Navbar() {
                 onMouseLeave={handleMouseLeave}
                 ref={dropdownRef}
               >
-                <button
-                  onClick={() => router.push('/products')}
+                <Link
+                  href="/products"
                   className="nav-link relative text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-200 inline-flex items-center gap-1 group py-2 text-[#F5F5F0] focus:outline-none cursor-pointer text-left"
                 >
                   <span className="relative flex items-center gap-1">
@@ -265,7 +266,7 @@ export default function Navbar() {
                       isDropdownOpen ? 'w-full' : 'w-0 group-hover:w-full'
                     }`} />
                   </span>
-                </button>
+                </Link>
 
                 {/* Dropdown Panel matching mindmarket.com 3-column category structure */}
                 <div
@@ -547,10 +548,13 @@ export default function Navbar() {
               >
                 <div className="relative w-6 h-5">
                   <span className={`absolute left-0 right-0 h-0.5 bg-[#F5F5F0] transition-all duration-300 ${
-                    isMobileMenuOpen ? 'top-[9px] rotate-45' : 'top-1'
+                    isMobileMenuOpen ? 'top-[9px] rotate-45' : 'top-0'
                   }`} />
                   <span className={`absolute left-0 right-0 h-0.5 bg-[#F5F5F0] transition-all duration-300 ${
-                    isMobileMenuOpen ? 'top-[9px] -rotate-45' : 'top-3.5'
+                    isMobileMenuOpen ? 'opacity-0' : 'top-2'
+                  }`} />
+                  <span className={`absolute left-0 right-0 h-0.5 bg-[#F5F5F0] transition-all duration-300 ${
+                    isMobileMenuOpen ? 'top-[9px] -rotate-45' : 'top-4'
                   }`} />
                 </div>
               </button>

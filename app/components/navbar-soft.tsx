@@ -12,6 +12,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const navigation = [
+  { name: 'Products', href: '/products' },
   { name: 'ISP', href: '/isp' },
   { name: 'Contact', href: '/contact' },
   { name: 'Dashboard', href: '/dashboard' },
@@ -123,10 +124,10 @@ export default function NavbarSoft() {
             {/* Mobile menu button */}
             <div className="flex lg:hidden">
               <Menu>
-                <MenuButton className="btn-soft-ghost p-2">
+                <MenuButton className="btn-soft-ghost p-2" aria-label="Open menu">
                   <Bars3Icon className="h-5 w-5" />
                 </MenuButton>
-                <MenuItems className="absolute right-0 top-full mt-2 w-48 rounded-lg bg-bg-card shadow-lg border border-border-light">
+                <MenuItems className="absolute right-0 top-full mt-2 w-48 rounded-lg bg-bg-card shadow-lg border border-border-light z-50">
                   {navigation.map((item) => (
                     <MenuItem key={item.name}>
                       <Link
