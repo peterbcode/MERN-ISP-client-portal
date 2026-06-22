@@ -301,7 +301,7 @@ function ProductsContent() {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="h-full w-full object-cover"
+                      className={`h-full w-full ${[14, 16, 17].includes(product.id) ? 'object-contain p-4' : 'object-cover'}`}
                     />
                   </div>
                   <div className="mb-3">
