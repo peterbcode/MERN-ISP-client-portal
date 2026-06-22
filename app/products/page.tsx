@@ -112,7 +112,7 @@ const products = [
     category: 'accessory' as Category,
     spec: 'New & 2nd Hand · Custom builds',
     price: 'Contact for pricing',
-    image: '/gallery/tower-view.jpeg'
+    image: '/gallery/Desktop-Pc.png'
   },
 ]
 
