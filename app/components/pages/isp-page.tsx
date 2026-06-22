@@ -8,7 +8,7 @@ import {
   WifiIcon,
 } from "@heroicons/react/24/solid";
 
-const serviceAreas = ["Riebeek Kasteel", "Riebeek West", "Malmesbury", "Swartland Region"];
+const serviceAreas = ["Riebeek Kasteel", "Riebeek West", "Malmesbury", "Moorreesburg", "Swartland Region"];
 
 const valueCards = [
   {
