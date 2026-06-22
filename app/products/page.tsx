@@ -110,9 +110,9 @@ const products = [
     id: 16,
     name: 'Desktop PCs',
     category: 'accessory' as Category,
-    spec: 'New & 2nd Hand · Custom builds · Warranty available',
+    spec: 'New & 2nd Hand · Custom builds',
     price: 'Contact for pricing',
-    image: '/gallery/Laptops.png'
+    image: '/gallery/tower-view.jpeg'
   },
 ]
 
