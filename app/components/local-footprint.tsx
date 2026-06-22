@@ -58,7 +58,7 @@ const LocalFootprint = () => {
           <div className="rounded-3xl border border-white/8 bg-[#0d0e10] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
             <p className="text-sm font-bold uppercase tracking-wide text-[#ff7e26]">Active Service Area</p>
             <p className="mt-4 text-base leading-relaxed text-zinc-300">
-              Coverage: Riebeek Kasteel, Malmesbury, Gouda, Riebeek West, Hermon, Abbotsdale, Chatsworth and Swartland region
+              Coverage: Riebeek Kasteel, Malmesbury, Gouda, Riebeek West, Hermon, Abbotsdale, Chatsworth, Moorreesburg and Swartland region
             </p>
             <div className="mt-6 rounded-2xl border border-[rgba(255,126,38,0.25)] bg-[rgba(255,126,38,0.1)] p-4">
               <p className="text-sm font-semibold text-zinc-100">
