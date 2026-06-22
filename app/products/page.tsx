@@ -106,6 +106,14 @@ const products = [
     price: 'Contact for pricing',
     image: '/gallery/Laptops.png'
   },
+  {
+    id: 16,
+    name: 'Desktop PCs',
+    category: 'accessory' as Category,
+    spec: 'New & 2nd Hand · Custom builds · Warranty available',
+    price: 'Contact for pricing',
+    image: '/gallery/Laptops.png'
+  },
 ]
 
 function ProductsContent() {
