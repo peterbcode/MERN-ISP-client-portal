@@ -298,12 +298,20 @@ export default function Navbar() {
                         </div>
                         <div className="flex flex-col gap-1 mt-1">
                           <Link
+                            href="/contact?service=Network Installation"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Network Installation
+                          </Link>
+                          <Link
                             href="/products?category=cable"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            Cables & Patch leads
+                            Cables & Equipment
                           </Link>
                         </div>
                       </div>
@@ -511,7 +519,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Hamburger menu morph button */}
-            <div className="md:hidden flex items-center relative z-[1050]">
+            <div className="md:hidden flex items-center relative z-[1030]">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="relative flex h-10 w-10 flex-col justify-center items-center gap-1.5 focus:outline-none rounded-md p-2 text-white hover:bg-white/10 cursor-pointer"
@@ -537,7 +545,7 @@ export default function Navbar() {
         {/* Mobile Menu Backdrop */}
         <div
           onClick={() => setIsMobileMenuOpen(false)}
-          className={`fixed inset-0 z-[999] bg-black/60 backdrop-blur-xs transition-opacity duration-300 md:hidden ${
+          className={`fixed inset-0 z-[1040] bg-black/60 backdrop-blur-xs transition-opacity duration-300 md:hidden ${
             isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
         />
@@ -545,7 +553,7 @@ export default function Navbar() {
         {/* Mobile Menu Slide-out Drawer */}
         <div
           ref={mobileOverlayRef}
-          className={`fixed right-0 top-0 bottom-0 z-[1000] w-[85vw] max-w-[380px] bg-[#0c0c0e] border-l border-zinc-800/80 shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col justify-between p-6 md:hidden transition-transform duration-300 ease-out ${
+          className={`fixed right-0 top-0 bottom-0 z-[1050] w-[85vw] max-w-[380px] bg-[#0c0c0e] border-l border-zinc-800/80 shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col justify-between p-6 md:hidden transition-transform duration-300 ease-out ${
             isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
