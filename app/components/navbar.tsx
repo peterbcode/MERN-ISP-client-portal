@@ -511,7 +511,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Hamburger menu morph button */}
-            <div className="md:hidden z-[9999] flex items-center">
+            <div className="md:hidden flex items-center relative z-[1050]">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="relative flex h-10 w-10 flex-col justify-center items-center gap-1.5 focus:outline-none rounded-md p-2 text-white hover:bg-white/10 cursor-pointer"
