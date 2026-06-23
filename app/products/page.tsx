@@ -11,52 +11,12 @@ type Category = 'all' | 'router' | 'radio' | 'cable' | 'accessory' | 'printer' |
 
 const products = [
   {
-    id: 1,
-    name: 'N300 Wireless Series',
-    category: 'router' as Category,
-    spec: '300 Mbps · 4-port · Wireless N',
-    price: 'R 850',
-    image: '/images/N300 Wireless series Tenda.png'
-  },
-  {
-    id: 3,
-    name: 'Ubiquiti LiteBeam 5AC',
-    category: 'radio' as Category,
-    spec: '5 GHz · 23 dBi · Point-to-point',
-    price: 'R 1 450',
-    image: '/images/Ubiquiti LiteBeam 5AC.png'
-  },
- { 
-  id: 6,
-  name: 'RJ45 Ethernet Cable',
-  category: 'cable' as Category,
-  spec: 'Cat6 · Custom Lengths Available · Various Colours',
-  price: 'R35 per meter',
-  image: '/images/RJ45 Patch Cable 2 m.png'
- },
-  {
-    id: 7,
-    name: '8-Port Managed Switch',
-    category: 'accessory' as Category,
-    spec: 'Gigabit · VLAN · PoE+ capable',
-    price: 'R 1 650',
-    image: '/images/8-Port Managed Switch.png'
-  },
-  {
-    id: 8,
-    name: 'PoE Injector 48V',
-    category: 'accessory' as Category,
-    spec: '802.3af · 15.4 W · Passive option avail.',
-    price: 'R 320',
-    image: '/images/PoE Injector 48V.avif'
-  },
-  {
-    id: 9,
-    name: 'DW Portable Mini DC UPS',
-    category: 'accessory' as Category,
-    spec: '8800mAh · POE Port · 15V/24V',
-    price: 'R 1 200',
-    image: '/images/DW Portable Mini UPS 8800mAh PoE.png'
+    id: 6,
+    name: 'RJ45 Ethernet Cable',
+    category: 'cable' as Category,
+    spec: 'Cat6 · Custom Lengths Available · Various Colours',
+    price: 'R35 per meter',
+    image: '/images/RJ45 Patch Cable 2 m.png'
   },
   {
     id: 10,

@@ -287,21 +287,9 @@ export default function Navbar() {
                       
                       {/* Column 1: Wi-Fi & Networking */}
                       <div className="flex flex-col gap-3">
-                        <Link
-                          href="/products?category=router&productId=1"
-                          onClick={() => setIsDropdownOpen(false)}
-                          className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
-                        >
-                          <img
-                            src="/images/N300 Wireless series Tenda.png"
-                            alt="Wi-Fi & Networking"
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105 [backface-visibility:hidden] [transform:translateZ(0)]"
-                          />
-                          <div className="absolute inset-0 bg-[#ff7e26]/5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300" />
-                        </Link>
                         <div className="flex flex-col">
                           <Link
-                            href="/products?category=router&productId=1"
+                            href="/products?category=cable"
                             onClick={() => setIsDropdownOpen(false)}
                             className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
                           >
@@ -310,23 +298,7 @@ export default function Navbar() {
                         </div>
                         <div className="flex flex-col gap-1 mt-1">
                           <Link
-                            href="/products?category=router&productId=1"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
-                          >
-                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            Routers
-                          </Link>
-                          <Link
-                            href="/products?category=radio&productId=3"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
-                          >
-                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            Radios & Access Points
-                          </Link>
-                          <Link
-                            href="/products?category=cable&productId=6"
+                            href="/products?category=cable"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
@@ -377,12 +349,12 @@ export default function Navbar() {
                             PC Peripherals
                           </Link>
                           <Link
-                            href="/products?category=accessory&productId=9"
+                            href="/products?category=accessory&productId=17"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            Power UPS & Adaptors
+                            Power UPS
                           </Link>
                         </div>
                       </div>
@@ -539,7 +511,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Hamburger menu morph button */}
-            <div className="md:hidden z-[1010] flex items-center">
+            <div className="md:hidden z-[9999] flex items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="relative flex h-10 w-10 flex-col justify-center items-center gap-1.5 focus:outline-none rounded-md p-2 text-white hover:bg-white/10 cursor-pointer"
@@ -677,7 +649,7 @@ export default function Navbar() {
                       <Link href="/products?category=peripherals&productId=10" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
                         PC Parts
                       </Link>
-                      <Link href="/products?category=accessory&productId=9" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                      <Link href="/products?category=accessory&productId=17" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
                         UPS
                       </Link>
                     </div>
