@@ -9,6 +9,7 @@ import PageLoader from "./components/page-loader";
 import DevIndicatorRemover from "./components/dev-indicator-remover";
 import SmoothScroll from "./components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
+import ShapeCursor from "@/components/ShapeCursor";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://valley-computers.co.za"),
@@ -74,6 +75,7 @@ export default function RootLayout({
           <AnalyticsLoader />
         </ConsentProvider>
         <CustomCursor />
+        <ShapeCursor />
       </body>
     </html>
   );

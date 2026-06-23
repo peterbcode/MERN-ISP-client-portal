@@ -1275,3 +1275,48 @@ html, body, * {
   /* cursor: none !important; */
 }
 /* ── End Debugging Custom Cursor ──────────────────────── */
+
+/* Shape Cursor Effect Styles */
+.shape-cursor-body {
+  font-family: Montserrat, sans-serif;
+  font-weight: 900;
+}
+
+.shape-cursor-body,
+.shape-cursor-body * {
+  cursor: none !important;
+}
+
+.shapes-container {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background: #000;
+  overflow: hidden;
+}
+
+.shape-cursor-content {
+  top: 0;
+  left: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background: #fff;
+  mix-blend-mode: screen;
+}
+
+.shape-cursor-content h1 {
+  color: #000;
+  margin: 0;
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 900;
+}
+
+.shape-cursor-content ::selection {
+  color: #000;
+  background: #ff6600;
+}

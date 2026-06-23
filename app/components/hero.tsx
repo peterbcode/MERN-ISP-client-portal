@@ -88,118 +88,40 @@ const Hero = () => {
   return (
     <section
       ref={containerRef}
-      className="hero-section metal-bg relative min-h-[76vh] overflow-hidden text-white lg:min-h-[84vh]"
-      onMouseMove={(event) => {
-        const rect = event.currentTarget.getBoundingClientRect()
-        const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2
-        const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2
-        setPointer({ x, y })
-      }}
-      onMouseLeave={() => setPointer({ x: 0, y: 0 })}
+      className="shapes-container shape-cursor-body relative min-h-[76vh] overflow-hidden lg:min-h-[84vh]"
     >
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url('${heroImageUrl}')` }}
-      />
-      <div className="absolute inset-0 bg-black/60" />
-      <div className="hero-glow absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.85)_100%)]" />
-      <div className="hero-grid absolute inset-0 opacity-10" />
+        <div className="shape-cursor-content">
+          <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-12 pt-40 text-center sm:px-6 lg:px-8 lg:pb-16 lg:pt-48">
+            <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#ff7e26]" />
+            <h1 ref={headlineRef} className="hero-headline mt-10 max-w-5xl font-black leading-[0.9] tracking-[-0.03em] text-black" style={{ fontSize: 'clamp(4.5rem, 9vw, 7rem)' }}>
+              <span className="word">Riebeek</span>{' '}
+              <span className="word">Valley's</span>{' '}
+              <span className="word">Local</span>{' '}
+              <span className="word">ISP</span>{' '}
+              <span className="word">&amp;</span>{' '}
+              <span className="word">IT</span>{' '}
+              <span className="word">Experts</span>
+              <span className="block min-h-[1.05em]">
+                {displayText}
+              </span>
+            </h1>
 
-      <div
-        className="pointer-events-none absolute inset-0 transition-transform duration-300 ease-out"
-        style={{
-          transform: `translate3d(${pointer.x * 4}px, ${pointer.y * 4}px, 0)`,
-        }}
-      >
-        <div className="absolute left-[10%] top-[20%] h-56 w-56 rounded-full bg-[#22c55e]/10 blur-3xl" />
-        <div className="absolute bottom-[14%] right-[12%] h-72 w-72 rounded-full bg-[#3b82f6]/8 blur-3xl" />
-      </div>
+            <p className="hero-subtitle mx-auto mt-10 max-w-3xl text-base leading-relaxed text-black sm:mt-12 sm:text-lg lg:text-xl">
+              High-speed internet and expert IT support for homes and businesses across the Riebeek Valley.
+            </p>
 
-      <div
-        className="pointer-events-none absolute inset-0 transition-transform duration-500 ease-out"
-        style={{
-          transform: `translate3d(${pointer.x * -6}px, ${pointer.y * -6}px, 0)`,
-        }}
-      >
-        {/* Simplified network connection lines */}
-        {connections.map((connection, index) => {
-          const fromNode = nodes.find(n => n.id === connection.from)
-          const toNode = nodes.find(n => n.id === connection.to)
-          if (!fromNode || !toNode) return null
-          
-          return (
-            <div
-              key={`connection-${index}`}
-              className="absolute h-px bg-gradient-to-r from-transparent via-[#22c55e]/30 to-transparent"
-              style={{
-                left: fromNode.x,
-                top: fromNode.y,
-                width: '100px',
-                transform: `rotate(${Math.atan2(
-                  parseFloat(toNode.y) - parseFloat(fromNode.y),
-                  parseFloat(toNode.x) - parseFloat(fromNode.x)
-                ) * 180 / Math.PI}deg)`,
-                transformOrigin: '0 50%',
-              }}
-            />
-          )
-        })}
-        
-        {/* Simplified network nodes */}
-        {nodes.map((node) => (
-          <span
-            key={node.id}
-            className={`node-pulse absolute rounded-full border shadow-lg ${
-              node.type === 'core' 
-                ? 'border-[#ff7e26]/40 bg-[#ff7e26]/50 shadow-[0_0_12px_rgba(255,126,38,0.4)]' 
-                : node.type === 'router'
-                ? 'border-[#22c55e]/30 bg-[#22c55e]/40 shadow-[0_0_8px_rgba(34,197,94,0.3)]'
-                : node.type === 'server'
-                ? 'border-[#3b82f6]/30 bg-[#3b82f6]/40 shadow-[0_0_8px_rgba(59,130,246,0.3)]'
-                : 'border-[#f8a258]/25 bg-[#ff7e26]/30 shadow-[0_0_6px_rgba(255,126,38,0.2)]'
-            } ${node.size}`}
-            style={{ left: node.x, top: node.y, animationDelay: node.delay }}
-          >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className={`h-1 w-1 rounded-full bg-white ${
-                node.type === 'core' ? 'animate-pulse' : ''
-              }`} />
+            <div className="mt-8 flex w-full max-w-2xl justify-center sm:mt-10">
+              <PremiumButton
+                variant="primary" className="hero-cta cta-highlight"
+                size="lg"
+                onClick={() => router.push('/isp#plans')}
+              >
+                Get Connected
+              </PremiumButton>
             </div>
-          </span>
-        ))}
-      </div>
-
-      <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-12 pt-40 text-center sm:px-6 lg:px-8 lg:pb-16 lg:pt-48">
-        <WifiIcon className="hero-wifi-flash h-6 w-6 text-[#ff7e26]" />
-        <h1 ref={headlineRef} className="hero-headline mt-10 max-w-5xl font-black leading-[0.9] tracking-[-0.03em] text-white [text-shadow:0_0_26px_rgba(255,255,255,0.12)]" style={{ fontSize: 'clamp(4.5rem, 9vw, 7rem)' }}>
-          <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Riebeek</span>{' '}
-          <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Valley's</span>{' '}
-          <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Local</span>{' '}
-          <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">ISP</span>{' '}
-          <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">&amp;</span>{' '}
-          <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">IT</span>{' '}
-          <span className="word text-[#ff7e26] drop-shadow-[0_0_24px_rgba(255,126,38,0.35)]">Experts</span>
-          <span className="block min-h-[1.05em]">
-            {displayText}
-          </span>
-        </h1>
-
-        <p className="hero-subtitle mx-auto mt-10 max-w-3xl text-base leading-relaxed text-[#9ca3af] sm:mt-12 sm:text-lg lg:text-xl">
-          High-speed internet and expert IT support for homes and businesses across the Riebeek Valley.
-        </p>
-
-        <div className="mt-8 flex w-full max-w-2xl justify-center sm:mt-10">
-          <PremiumButton
-            variant="primary" className="hero-cta cta-highlight"
-            size="lg"
-            onClick={() => router.push('/isp#plans')}
-          >
-            Get Connected
-          </PremiumButton>
+          </div>
         </div>
-
-      </div>
-    </section>
+      </section>
   )
 }
 

@@ -99,6 +99,14 @@ const products = [
     image: '/gallery/canon-printer-ink-(800x502).png'
   },
   {
+    id: 18,
+    name: 'Toner Ink Cartridge',
+    category: 'printer' as Category,
+    spec: 'High Yield · Compatible · Various Models',
+    price: 'R 450',
+    image: '/gallery/Toner Ink Cartridgr.png'
+  },
+  {
     id: 15,
     name: 'Laptops',
     category: 'accessory' as Category,
@@ -301,7 +309,7 @@ function ProductsContent() {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className={`h-full w-full ${[14, 16, 17].includes(product.id) ? 'object-contain p-4' : 'object-cover'}`}
+                      className={`h-full w-full ${product.id === 17 ? 'object-contain p-8' : [14, 16].includes(product.id) ? 'object-contain p-4' : 'object-cover'}`}
                     />
                   </div>
                   <div className="mb-3">
