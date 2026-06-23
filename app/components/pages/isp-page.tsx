@@ -151,7 +151,7 @@ const IspPage = () => {
                   </li>
                 </ul>
                 <Link
-                  href="/contact"
+                  href={`/contact?service=ISP Plan - ${plan.speed} (${plan.price})`}
                   className={`mt-5 block w-full rounded-lg px-4 py-2 text-center text-sm font-bold ${
                     plan.featured ? "bg-white text-black" : "bg-[#f97316] text-white"
                   }`}

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AnimatedSection from "../ui/animated-section";
 import PremiumButton from "../ui/premium-button";
 import {
@@ -47,6 +47,14 @@ const plans = [
 const IspPageColorful = () => {
   const [selectedPlan, setSelectedPlan] = useState<typeof plans[0] | null>(null);
 
+  // Smooth scroll to plans section
+  const scrollToPlans = () => {
+    const plansSection = document.getElementById('plans');
+    if (plansSection) {
+      plansSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <main className="site-page text-white">
       {/* Hero Section */}
@@ -61,12 +69,15 @@ const IspPageColorful = () => {
             Uncapped fibre & wireless internet with local support. Built for homes and businesses in Riebeek Valley.
           </p>
           <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <PremiumButton variant="primary" size="lg" href="#plans" className="min-w-[180px] py-4 text-base font-black shadow-2xl shadow-[#f97316]/20">
+            <button
+              onClick={scrollToPlans}
+              className="min-w-[180px] inline-flex items-center justify-center rounded-full bg-[#f97316] px-8 py-4 text-base font-black text-white shadow-2xl shadow-[#f97316]/20 transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5 cursor-pointer"
+            >
               View Plans
-            </PremiumButton>
-            <PremiumButton variant="secondary" size="lg" href="/contact" className="min-w-[180px] py-4 text-base font-black border-zinc-800 bg-zinc-900/50">
+            </button>
+            <Link href="/contact" className="min-w-[180px] inline-flex items-center justify-center rounded-full border border-zinc-800 bg-zinc-900/50 px-8 py-4 text-base font-black text-[#ff7e26] transition-all duration-300 hover:border-[#f97316] hover:text-[#f97316]">
               Talk to Sales
-            </PremiumButton>
+            </Link>
             <a
               href="https://wa.me/27799381260"
               target="_blank"
@@ -138,50 +149,54 @@ const IspPageColorful = () => {
                 key={plan.speed}
                 direction="up"
                 delay={i * 100}
-                className="site-card group relative cursor-pointer rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 hover:border-[#f97316]/60 hover:shadow-2xl hover:shadow-[#f97316]/10 border-zinc-800/50"
-                onClick={() => setSelectedPlan(plan)}
               >
-                {plan.featured && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="inline-flex items-center rounded-full bg-[#f97316] px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-xl">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-
-                <div className="text-center">
-                  <p className="text-3xl font-black text-white">
-                    {plan.speed}
-                  </p>
-                  <p className="mt-3 text-xs font-black uppercase tracking-[0.2em] text-[#f97316]">
-                    {plan.label}
-                  </p>
-                </div>
-
-                <div className="mt-8 text-center border-t border-zinc-800/80 pt-8">
-                  <div className="flex items-baseline justify-center">
-                    <span className="text-4xl font-black text-white">
-                      {plan.price}
-                    </span>
-                  </div>
-                </div>
-
-                <ul className="mt-8 space-y-4 text-zinc-400">
-                  <li className="flex items-center gap-3">
-                    <CheckIcon className="h-5 w-5 text-[#f97316] flex-shrink-0" />
-                    <span className="text-sm font-bold">Uncapped data</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckIcon className="h-5 w-5 text-[#f97316] flex-shrink-0" />
-                    <span className="text-sm font-bold">Fibre & Wireless</span>
-                  </li>
-                </ul>
-
-                <button
-                  className="mt-10 block w-full rounded-2xl bg-[#f97316] px-6 py-4 text-center text-sm font-black text-white transition-all duration-300 hover:brightness-110 shadow-lg shadow-[#f97316]/20"
+                <div
+                  className="site-card group relative cursor-pointer rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 hover:border-[#f97316]/60 hover:shadow-2xl hover:shadow-[#f97316]/10 border-zinc-800/50"
+                  onClick={() => setSelectedPlan(plan)}
                 >
-                  Select Plan
-                </button>
+                  {plan.featured && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                      <span className="inline-flex items-center rounded-full bg-[#f97316] px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-xl">
+                        Most Popular
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="text-center">
+                    <p className="text-3xl font-black text-white">
+                      {plan.speed}
+                    </p>
+                    <p className="mt-3 text-xs font-black uppercase tracking-[0.2em] text-[#f97316]">
+                      {plan.label}
+                    </p>
+                  </div>
+
+                  <div className="mt-8 text-center border-t border-zinc-800/80 pt-8">
+                    <div className="flex items-baseline justify-center">
+                      <span className="text-4xl font-black text-white">
+                        {plan.price}
+                      </span>
+                    </div>
+                  </div>
+
+                  <ul className="mt-8 space-y-4 text-zinc-400">
+                    <li className="flex items-center gap-3">
+                      <CheckIcon className="h-5 w-5 text-[#f97316] flex-shrink-0" />
+                      <span className="text-sm font-bold">Uncapped data</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckIcon className="h-5 w-5 text-[#f97316] flex-shrink-0" />
+                      <span className="text-sm font-bold">Fibre & Wireless</span>
+                    </li>
+                  </ul>
+
+                  <Link
+                    href={`/contact?service=ISP Plan - ${plan.speed} (${plan.price})`}
+                    className="mt-10 block w-full rounded-2xl bg-[#f97316] px-6 py-4 text-center text-sm font-black text-white transition-all duration-300 hover:brightness-110 shadow-lg shadow-[#f97316]/20"
+                  >
+                    Select Plan
+                  </Link>
+                </div>
               </AnimatedSection>
             ))}
           </div>
@@ -278,9 +293,9 @@ const IspPageColorful = () => {
             </p>
 
             <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <PremiumButton variant="primary" size="lg" href="/contact" className="min-w-[200px] py-4 text-base font-black shadow-2xl shadow-[#f97316]/20">
+              <Link href="/contact" className="min-w-[200px] inline-flex items-center justify-center rounded-full bg-[#f97316] px-8 py-4 text-base font-black text-white shadow-2xl shadow-[#f97316]/20 transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5">
                 Check Coverage
-              </PremiumButton>
+              </Link>
               <a
                 href="tel:+27799381260"
                 className="inline-flex min-w-[200px] items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-900/50 px-8 py-4 text-base font-black text-zinc-300 transition-all duration-300 hover:border-[#f97316] hover:text-white"
@@ -308,7 +323,7 @@ const IspPageColorful = () => {
       {/* Plan Details Modal */}
       {selectedPlan && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" onClick={() => setSelectedPlan(null)}>
-          <AnimatedSection direction="up" className="max-w-md w-full rounded-[2.5rem] border border-zinc-800/80 bg-zinc-950 p-10 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="max-w-md w-full rounded-[2.5rem] border border-zinc-800/80 bg-zinc-950 p-10 shadow-2xl" onClick={(e: React.MouseEvent) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h3 className="text-3xl font-black text-white">{selectedPlan.speed}</h3>
@@ -332,15 +347,13 @@ const IspPageColorful = () => {
             </div>
 
             <div className="flex flex-col gap-3">
-              <PremiumButton
-                variant="primary"
-                size="lg"
-                href={`/contact?service=${selectedPlan.speed}`}
-                className="w-full py-4 text-base font-black shadow-xl shadow-[#f97316]/20"
+              <Link
+                href={`/contact?service=ISP Plan - ${selectedPlan.speed} (${selectedPlan.price})`}
+                className="w-full inline-flex items-center justify-center rounded-2xl bg-[#f97316] px-6 py-4 text-center text-base font-black text-white transition-all duration-300 hover:brightness-110 shadow-xl shadow-[#f97316]/20"
                 onClick={() => setSelectedPlan(null)}
               >
                 Get Connected Now
-              </PremiumButton>
+              </Link>
               <button
                 onClick={() => setSelectedPlan(null)}
                 className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/30 px-6 py-4 text-sm font-black text-zinc-500 transition-all hover:text-white"
@@ -348,7 +361,7 @@ const IspPageColorful = () => {
                 Go Back
               </button>
             </div>
-          </AnimatedSection>
+          </div>
         </div>
       )}
     </main>

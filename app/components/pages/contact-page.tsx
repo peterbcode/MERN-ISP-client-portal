@@ -44,7 +44,17 @@ const ContactPage = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const service = urlParams.get('service');
       if (service) {
-        setServiceType(service === 'it-support' ? 'IT Support' : service);
+        // Handle ISP plan format: "ISP Plan - X Mbps (RXXX/mo)"
+        if (service.startsWith('ISP Plan -')) {
+          setServiceType(service);
+          // Pre-fill message with plan information
+          setFormData(prev => ({
+            ...prev,
+            message: `I'm interested in the ${service} plan. Please provide more information about availability and installation.`
+          }));
+        } else {
+          setServiceType(service === 'it-support' ? 'IT Support' : service);
+        }
       }
     }
   }, []);
