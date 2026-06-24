@@ -283,18 +283,14 @@ export default function Navbar() {
                   }}
                 >
                   <div className="border border-zinc-800/80 bg-[#0c0c0e]/95 backdrop-blur-md p-6 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex flex-col gap-5">
-                    <div className="grid grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 gap-6">
                       
-                      {/* Column 1: Wi-Fi & Networking */}
+                      {/* Column 1: Network Installation Services */}
                       <div className="flex flex-col gap-3">
                         <div className="flex flex-col">
-                          <Link
-                            href="/products?category=cable"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
-                          >
-                            Wi-Fi & Networking
-                          </Link>
+                          <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold">
+                            Services
+                          </span>
                         </div>
                         <div className="flex flex-col gap-1 mt-1">
                           <Link
@@ -306,106 +302,43 @@ export default function Navbar() {
                             Network Installation
                           </Link>
                           <Link
+                            href="/contact?service=WiFi Setup"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            WiFi Setup
+                          </Link>
+                          <Link
+                            href="/contact?service=Network Troubleshooting"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Network Troubleshooting
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Column 2: Cables */}
+                      <div className="flex flex-col gap-3">
+                        <div className="flex flex-col">
+                          <Link
+                            href="/products?category=cable"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
+                          >
+                            Products
+                          </Link>
+                        </div>
+                        <div className="flex flex-col gap-1 mt-1">
+                          <Link
                             href="/products?category=cable"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            Cables & Equipment
-                          </Link>
-                        </div>
-                      </div>
-
-                      {/* Column 2: Computers & Accessories */}
-                      <div className="flex flex-col gap-3">
-                        <Link
-                          href="/products?category=accessory&productId=15"
-                          onClick={() => setIsDropdownOpen(false)}
-                          className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
-                        >
-                          <img
-                            src="/gallery/Laptops.png"
-                            alt="Computers & Accessories"
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105 [backface-visibility:hidden] [transform:translateZ(0)]"
-                          />
-                          <div className="absolute inset-0 bg-[#ff7e26]/5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300" />
-                        </Link>
-                        <div className="flex flex-col">
-                          <Link
-                            href="/products?category=accessory&productId=15"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
-                          >
-                            Computers & Accessories
-                          </Link>
-                        </div>
-                        <div className="flex flex-col gap-1 mt-1">
-                          <Link
-                            href="/products?category=accessory&productId=15"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
-                          >
-                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            Laptops & Hardware
-                          </Link>
-                          <Link
-                            href="/products?category=peripherals&productId=10"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
-                          >
-                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            PC Peripherals
-                          </Link>
-                          <Link
-                            href="/products?category=accessory&productId=17"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
-                          >
-                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            Power UPS
-                          </Link>
-                        </div>
-                      </div>
-
-                      {/* Column 3: Printers & Ink */}
-                      <div className="flex flex-col gap-3">
-                        <Link
-                          href="/products?category=printer&productId=11"
-                          onClick={() => setIsDropdownOpen(false)}
-                          className="group/img block relative overflow-hidden aspect-[16/10] w-full border border-zinc-800/80 bg-zinc-900 rounded-xl transition-all duration-300 hover:border-[#ff7e26]/50"
-                        >
-                          <img
-                            src="/gallery/Canon-Printer.png"
-                            alt="Printers & Ink"
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105 [backface-visibility:hidden] [transform:translateZ(0)]"
-                          />
-                          <div className="absolute inset-0 bg-[#ff7e26]/5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300" />
-                        </Link>
-                        <div className="flex flex-col">
-                          <Link
-                            href="/products?category=printer&productId=11"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
-                          >
-                            Printers & Ink
-                          </Link>
-                        </div>
-                        <div className="flex flex-col gap-1 mt-1">
-                          <Link
-                            href="/products?category=printer&productId=11"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
-                          >
-                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            Printers & Scanners
-                          </Link>
-                          <Link
-                            href="/products?category=printer&productId=14"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
-                          >
-                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            Ink Cartridges
+                            Ethernet Cables
                           </Link>
                         </div>
                       </div>
@@ -577,14 +510,16 @@ export default function Navbar() {
           <div className="flex-1 overflow-y-auto py-6 flex flex-col gap-6 scrollbar-none">
             {/* Quick Links */}
             <div className="flex flex-col gap-2">
-              <Link
-                href="/"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center justify-between py-2.5 px-4 rounded-xl bg-zinc-900/30 border border-zinc-800/30 text-sm font-semibold text-zinc-100 hover:bg-zinc-800/50 hover:text-[#ff7e26] transition-colors"
-              >
-                <span>Home</span>
-                <span className="text-zinc-600">&rarr;</span>
-              </Link>
+              {pathname !== '/' && (
+                <Link
+                  href="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center justify-between py-2.5 px-4 rounded-xl bg-zinc-900/30 border border-zinc-800/30 text-sm font-semibold text-zinc-100 hover:bg-zinc-800/50 hover:text-[#ff7e26] transition-colors"
+                >
+                  <span>Home</span>
+                  <span className="text-zinc-600">&rarr;</span>
+                </Link>
+              )}
               <Link
                 href="/isp"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -633,51 +568,32 @@ export default function Navbar() {
                 <div className="flex flex-col gap-4 pl-2 border-l border-zinc-800/80">
                   {/* Category 1 */}
                   <div>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Wi-Fi & Networking</span>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Services</span>
                     <div className="flex flex-wrap gap-1.5">
-                      <Link href="/products?category=router&productId=1" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
-                        Routers
+                      <Link href="/contact?service=Network Installation" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Network Installation
                       </Link>
-                      <Link href="/products?category=radio&productId=3" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
-                        Radios
+                      <Link href="/contact?service=WiFi Setup" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        WiFi Setup
                       </Link>
-                      <Link href="/products?category=cable&productId=6" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
-                        Cables
+                      <Link href="/contact?service=Network Troubleshooting" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Troubleshooting
                       </Link>
                     </div>
                   </div>
 
                   {/* Category 2 */}
                   <div>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Computers & Accessories</span>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Products</span>
                     <div className="flex flex-wrap gap-1.5">
-                      <Link href="/products?category=accessory&productId=15" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
-                        Laptops
-                      </Link>
-                      <Link href="/products?category=peripherals&productId=10" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
-                        PC Parts
-                      </Link>
-                      <Link href="/products?category=accessory&productId=17" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
-                        UPS
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Category 3 */}
-                  <div>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Printers & Ink</span>
-                    <div className="flex flex-wrap gap-1.5">
-                      <Link href="/products?category=printer&productId=11" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
-                        Printers
-                      </Link>
-                      <Link href="/products?category=printer&productId=14" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
-                        Cartridges
+                      <Link href="/products?category=cable" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Ethernet Cables
                       </Link>
                     </div>
                   </div>
 
                   <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-xs text-[#ff7e26] hover:underline font-bold mt-1 block">
-                    Shop All Products &rarr;
+                    View Products &rarr;
                   </Link>
                 </div>
               </div>
