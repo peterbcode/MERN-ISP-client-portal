@@ -44,6 +44,15 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Brand color system tokens */
+  --color-brand-bg-primary: #000000;
+  --color-brand-bg-secondary: #0A0A0A;
+  --color-brand-card: rgba(255, 255, 255, 0.05);
+  --color-brand-accent: #FF6B00;
+  --color-brand-text-primary: #FFFFFF;
+  --color-brand-text-secondary: #B3B3B3;
+  --color-brand-border: rgba(255, 255, 255, 0.08);
 }
 
 @keyframes scan {
