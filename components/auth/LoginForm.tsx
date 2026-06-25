@@ -28,8 +28,8 @@ export default function LoginForm() {
   const router = useRouter();
 
   const inputClass = (hasError?: boolean) =>
-    `w-full px-4 py-3 bg-zinc-800 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
-      hasError ? 'border-red-500' : 'border-zinc-700'
+    `w-full px-4 py-3 bg-zinc-800/50 border rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent focus:bg-zinc-800 transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-60 ${
+      hasError ? 'border-red-500/50 bg-red-500/5' : 'border-zinc-700 hover:border-zinc-600'
     }`;
 
   const getErrorMessage = (error: any, fallback: string) => {
@@ -209,7 +209,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 px-6 py-3 font-medium text-white transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3.5 font-bold text-white transition-all duration-300 hover:from-orange-600 hover:to-orange-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-500/25 disabled:cursor-not-allowed disabled:opacity-50 disabled:from-zinc-700 disabled:to-zinc-700"
         >
           {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
           {isLoading ? 'Signing in...' : 'Sign In'}

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { AlertCircle, CheckCircle2, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Eye, EyeOff, Loader2, Check, X } from 'lucide-react';
 import { auth } from '@/lib/auth';
 
 interface FormData {
@@ -42,11 +42,12 @@ export default function RegisterForm() {
   const [successMessage, setSuccessMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const router = useRouter();
 
   const inputClass = (hasError?: boolean) =>
-    `w-full rounded-lg border bg-zinc-800 px-4 py-3 text-white placeholder-zinc-500 transition-colors focus:border-transparent focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:cursor-not-allowed disabled:opacity-60 ${
-      hasError ? 'border-red-500' : 'border-zinc-700'
+    `w-full rounded-xl border bg-zinc-800/50 px-4 py-3 text-white placeholder-zinc-500 transition-all duration-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 ${
+      hasError ? 'border-red-500/50 bg-red-500/5' : 'border-zinc-700 hover:border-zinc-600'
     }`;
 
   const getErrorMessage = (error: any, fallback: string) => {
@@ -141,6 +142,12 @@ export default function RegisterForm() {
 
     setFormData(prev => ({ ...prev, [name]: fieldValue }));
 
+    // Calculate password strength in real-time
+    if (name === 'password') {
+      const strength = calculatePasswordStrength(value);
+      setPasswordStrength(strength);
+    }
+
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
@@ -150,6 +157,35 @@ export default function RegisterForm() {
     if (successMessage) {
       setSuccessMessage('');
     }
+  };
+
+  const calculatePasswordStrength = (password: string): number => {
+    if (!password) return 0;
+    let strength = 0;
+    if (password.length >= 12) strength += 20;
+    if (password.length >= 16) strength += 10;
+    if (/[A-Z]/.test(password)) strength += 15;
+    if (/[a-z]/.test(password)) strength += 15;
+    if (/\d/.test(password)) strength += 15;
+    if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) strength += 15;
+    if (password.length >= 20) strength += 10;
+    return Math.min(strength, 100);
+  };
+
+  const getStrengthColor = (strength: number): string => {
+    if (strength < 30) return 'bg-red-500';
+    if (strength < 50) return 'bg-orange-500';
+    if (strength < 70) return 'bg-yellow-500';
+    if (strength < 90) return 'bg-green-500';
+    return 'bg-emerald-500';
+  };
+
+  const getStrengthLabel = (strength: number): string => {
+    if (strength < 30) return 'Weak';
+    if (strength < 50) return 'Fair';
+    if (strength < 70) return 'Good';
+    if (strength < 90) return 'Strong';
+    return 'Excellent';
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -315,6 +351,44 @@ export default function RegisterForm() {
               {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>
           </div>
+          {/* Password Strength Indicator */}
+          {formData.password && !errors.password && (
+            <div className="mt-2 space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="flex-1 h-1.5 bg-zinc-700 rounded-full overflow-hidden">
+                  <div 
+                    className={`h-full transition-all duration-300 ${getStrengthColor(passwordStrength)}`}
+                    style={{ width: `${passwordStrength}%` }}
+                  />
+                </div>
+                <span className={`text-xs font-semibold ${getStrengthColor(passwordStrength).replace('bg-', 'text-')}`}>
+                  {getStrengthLabel(passwordStrength)}
+                </span>
+              </div>
+              <div className="flex gap-3 text-xs">
+                <span className={`flex items-center gap-1 ${formData.password.length >= 12 ? 'text-green-400' : 'text-zinc-500'}`}>
+                  {formData.password.length >= 12 ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
+                  12+ chars
+                </span>
+                <span className={`flex items-center gap-1 ${/[A-Z]/.test(formData.password) ? 'text-green-400' : 'text-zinc-500'}`}>
+                  {/[A-Z]/.test(formData.password) ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
+                  Uppercase
+                </span>
+                <span className={`flex items-center gap-1 ${/[a-z]/.test(formData.password) ? 'text-green-400' : 'text-zinc-500'}`}>
+                  {/[a-z]/.test(formData.password) ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
+                  Lowercase
+                </span>
+                <span className={`flex items-center gap-1 ${/\d/.test(formData.password) ? 'text-green-400' : 'text-zinc-500'}`}>
+                  {/\d/.test(formData.password) ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
+                  Numbers
+                </span>
+                <span className={`flex items-center gap-1 ${/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? 'text-green-400' : 'text-zinc-500'}`}>
+                  {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
+                  Symbols
+                </span>
+              </div>
+            </div>
+          )}
           {errors.password ? (
             <p id="password-error" className="mt-1 whitespace-pre-line text-sm text-red-400">{errors.password}</p>
           ) : (
@@ -403,7 +477,7 @@ export default function RegisterForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 px-6 py-3 font-medium text-white transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3.5 font-bold text-white transition-all duration-300 hover:from-orange-600 hover:to-orange-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-500/25 disabled:cursor-not-allowed disabled:opacity-50 disabled:from-zinc-700 disabled:to-zinc-700"
         >
           {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
           {isLoading ? 'Creating account...' : 'Create Account'}

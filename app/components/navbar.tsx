@@ -155,17 +155,17 @@ export default function Navbar() {
   // Stagger delays calculation for mobile menu links
   const getTransitionStyle = (index: number) => {
     if (isMobileMenuOpen) {
-      const delay = 90 + index * 80
+      const delay = 90 + index * 60
       return {
         transitionProperty: 'transform, opacity',
-        transitionDuration: '400ms',
-        transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        transitionDuration: '350ms',
+        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
         transitionDelay: `${delay}ms`,
       }
     } else {
       return {
         transitionProperty: 'transform, opacity',
-        transitionDuration: '200ms',
+        transitionDuration: '180ms',
         transitionTimingFunction: 'ease-in',
         transitionDelay: '0ms',
       }
