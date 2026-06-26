@@ -18,16 +18,20 @@ const phoneHref = 'tel:+27799381260'
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isIspDropdownOpen, setIsIspDropdownOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false)
+  const [isMobileIspOpen, setIsMobileIspOpen] = useState(false)
   
   const router = useRouter()
   const pathname = usePathname()
   const orangeTopBarRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const ispDropdownRef = useRef<HTMLDivElement>(null)
   const mobileOverlayRef = useRef<HTMLDivElement>(null)
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const ispDropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Scroll listener for standard animations/scroll styling
   useEffect(() => {
@@ -49,6 +53,7 @@ export default function Navbar() {
   // Close menus when route/pathname changes
   useEffect(() => {
     setIsDropdownOpen(false)
+    setIsIspDropdownOpen(false)
     setIsMobileMenuOpen(false)
   }, [pathname])
 
@@ -64,10 +69,11 @@ export default function Navbar() {
     }
   }, [isMobileMenuOpen])
 
-  // Reset mobile products accordion state when mobile menu closes
+  // Reset mobile products and ISP accordion state when mobile menu closes
   useEffect(() => {
     if (!isMobileMenuOpen) {
       setIsMobileProductsOpen(false)
+      setIsMobileIspOpen(false)
     }
   }, [isMobileMenuOpen])
 
@@ -83,11 +89,24 @@ export default function Navbar() {
     }, 150)
   }
 
+  // Event handlers for ISP dropdown hover
+  const handleIspMouseEnter = () => {
+    if (ispDropdownTimeoutRef.current) clearTimeout(ispDropdownTimeoutRef.current)
+    setIsIspDropdownOpen(true)
+  }
+
+  const handleIspMouseLeave = () => {
+    ispDropdownTimeoutRef.current = setTimeout(() => {
+      setIsIspDropdownOpen(false)
+    }, 150)
+  }
+
   // Handle outside clicks and Escape key to close menus
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsDropdownOpen(false)
+        setIsIspDropdownOpen(false)
         setIsMobileMenuOpen(false)
       }
     }
@@ -99,6 +118,12 @@ export default function Navbar() {
       ) {
         setIsDropdownOpen(false)
       }
+      if (
+        ispDropdownRef.current &&
+        !ispDropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsIspDropdownOpen(false)
+      }
     }
 
     window.addEventListener('keydown', handleKeyDown)
@@ -108,6 +133,7 @@ export default function Navbar() {
       window.removeEventListener('keydown', handleKeyDown)
       document.removeEventListener('mousedown', handleOutsideClick)
       if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current)
+      if (ispDropdownTimeoutRef.current) clearTimeout(ispDropdownTimeoutRef.current)
     }
   }, [])
 
@@ -360,20 +386,136 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* ISP */}
-              <Link
-                href="/isp"
-                className={`nav-link relative text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 inline-block group ${
-                  pathname === '/isp'
-                    ? 'text-[#ff7e26]'
-                    : 'text-[#d1d5db] hover:text-[#ff7e26]'
-                }`}
+              {/* ISP Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={handleIspMouseEnter}
+                onMouseLeave={handleIspMouseLeave}
+                ref={ispDropdownRef}
               >
-                <span className="relative">
-                  ISP
-                  <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#ff7e26] transition-all duration-300 group-hover:w-full"></span>
-                </span>
-              </Link>
+                <Link
+                  href="/isp"
+                  className="nav-link relative text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-200 inline-flex items-center gap-1 group py-2 text-[#F5F5F0] focus:outline-none cursor-pointer text-left"
+                >
+                  <span className="relative flex items-center gap-1">
+                    ISP
+                    <span className={`absolute bottom-0 left-0 h-0.5 bg-[#ff7e26] transition-all duration-300 ${
+                      isIspDropdownOpen ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`} />
+                  </span>
+                </Link>
+
+                {/* ISP Dropdown Panel */}
+                <div
+                  className={`absolute left-1/2 w-[600px] pt-2 transition-all duration-200 ease-out z-[1000] ${
+                    isIspDropdownOpen
+                      ? 'pointer-events-auto opacity-100'
+                      : 'pointer-events-none opacity-0'
+                  }`}
+                  style={{
+                    top: '100%',
+                    transform: isIspDropdownOpen
+                      ? 'translateX(-50%) translateY(0px)'
+                      : 'translateX(-50%) translateY(-8px)',
+                  }}
+                >
+                  <div className="border border-zinc-800/80 bg-[#0c0c0e]/95 backdrop-blur-md p-6 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex flex-col gap-5">
+                    <div className="grid grid-cols-2 gap-6">
+                      
+                      {/* Column 1: Internet Plans */}
+                      <div className="flex flex-col gap-3">
+                        <div className="flex flex-col">
+                          <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold">
+                            Plans
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1 mt-1">
+                          <Link
+                            href="/isp#plans"
+                            onClick={() => setIsIspDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            View All Plans
+                          </Link>
+                          <Link
+                            href="/contact?service=ISP Plan - 2 Mbps (R350/mo)"
+                            onClick={() => setIsIspDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Basic (2 Mbps)
+                          </Link>
+                          <Link
+                            href="/contact?service=ISP Plan - 6 Mbps (R650/mo)"
+                            onClick={() => setIsIspDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Family (6 Mbps)
+                          </Link>
+                          <Link
+                            href="/contact?service=ISP Plan - 10 Mbps (R1050/mo)"
+                            onClick={() => setIsIspDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Premium (10 Mbps)
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Column 2: Services & Info */}
+                      <div className="flex flex-col gap-3">
+                        <div className="flex flex-col">
+                          <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold">
+                            Services
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1 mt-1">
+                          <Link
+                            href="/contact?service=Fibre Installation"
+                            onClick={() => setIsIspDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Fibre Installation
+                          </Link>
+                          <Link
+                            href="/contact?service=Wireless Internet"
+                            onClick={() => setIsIspDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Wireless Internet
+                          </Link>
+                          <Link
+                            href="/contact?service=Coverage Check"
+                            onClick={() => setIsIspDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Coverage Check
+                          </Link>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    {/* Bottom bar */}
+                    <div className="border-t border-zinc-800/80 pt-4 flex justify-between items-center text-xs">
+                      <span className="text-zinc-500 font-medium">Need help choosing?</span>
+                      <Link
+                        href="/contact"
+                        onClick={() => setIsIspDropdownOpen(false)}
+                        className="text-[#ff7e26] hover:text-[#ff7e26]/80 hover:underline font-extrabold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        Talk to Sales &rarr;
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* Contact Us */}
               <Link
@@ -594,6 +736,76 @@ export default function Navbar() {
 
                   <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-xs text-[#ff7e26] hover:underline font-bold mt-1 block">
                     View Products &rarr;
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* ISP Accordion Section */}
+            <div className="flex flex-col border border-zinc-800/50 rounded-2xl bg-zinc-900/10 p-3">
+              <button
+                onClick={() => setIsMobileIspOpen(!isMobileIspOpen)}
+                className="flex items-center justify-between w-full py-1 px-1 text-sm font-bold text-zinc-100 hover:text-[#ff7e26] transition-colors cursor-pointer"
+              >
+                <span className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-[#ff7e26]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                  </svg>
+                  ISP Services
+                </span>
+                <ChevronDownIcon
+                  className={`h-5 w-5 transition-transform duration-300 text-zinc-400 ${
+                    isMobileIspOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              <div
+                className="transition-all duration-300 ease-in-out overflow-hidden"
+                style={{
+                  maxHeight: isMobileIspOpen ? '600px' : '0px',
+                  opacity: isMobileIspOpen ? 1 : 0,
+                  marginTop: isMobileIspOpen ? '0.75rem' : '0px',
+                }}
+              >
+                <div className="flex flex-col gap-4 pl-2 border-l border-zinc-800/80">
+                  {/* Category 1 */}
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Plans</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <Link href="/isp#plans" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        View All Plans
+                      </Link>
+                      <Link href="/contact?service=ISP Plan - 2 Mbps (R350/mo)" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Basic (2 Mbps)
+                      </Link>
+                      <Link href="/contact?service=ISP Plan - 6 Mbps (R650/mo)" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Family (6 Mbps)
+                      </Link>
+                      <Link href="/contact?service=ISP Plan - 10 Mbps (R1050/mo)" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Premium (10 Mbps)
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Category 2 */}
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Services</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <Link href="/contact?service=Fibre Installation" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Fibre Installation
+                      </Link>
+                      <Link href="/contact?service=Wireless Internet" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Wireless Internet
+                      </Link>
+                      <Link href="/contact?service=Coverage Check" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Coverage Check
+                      </Link>
+                    </div>
+                  </div>
+
+                  <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-xs text-[#ff7e26] hover:underline font-bold mt-1 block">
+                    Talk to Sales &rarr;
                   </Link>
                 </div>
               </div>
