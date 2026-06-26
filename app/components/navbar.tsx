@@ -309,7 +309,7 @@ export default function Navbar() {
                   }}
                 >
                   <div className="border border-zinc-800/80 bg-[#0c0c0e]/95 backdrop-blur-md p-6 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex flex-col gap-5">
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-3 gap-6">
                       
                       {/* Column 1: Network Installation Services */}
                       <div className="flex flex-col gap-3">
@@ -346,16 +346,12 @@ export default function Navbar() {
                         </div>
                       </div>
 
-                      {/* Column 2: Cables */}
+                      {/* Column 2: Cables & Power */}
                       <div className="flex flex-col gap-3">
                         <div className="flex flex-col">
-                          <Link
-                            href="/products?category=cable"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold hover:text-white transition-colors"
-                          >
-                            Products
-                          </Link>
+                          <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold">
+                            Cables &amp; Power
+                          </span>
                         </div>
                         <div className="flex flex-col gap-1 mt-1">
                           <Link
@@ -365,6 +361,57 @@ export default function Navbar() {
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
                             Ethernet Cables
+                          </Link>
+                          <Link
+                            href="/products?category=accessory"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Power UPS
+                          </Link>
+                          <Link
+                            href="/products?category=accessory"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Switches &amp; PoE
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Column 3: Hardware & Printers */}
+                      <div className="flex flex-col gap-3">
+                        <div className="flex flex-col">
+                          <span className="text-xs uppercase tracking-widest text-[#ff7e26] font-bold">
+                            Hardware &amp; Printers
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1 mt-1">
+                          <Link
+                            href="/products?category=accessory"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Laptops &amp; PCs
+                          </Link>
+                          <Link
+                            href="/products?category=peripherals"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            PC Peripherals
+                          </Link>
+                          <Link
+                            href="/products?category=printer"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
+                          >
+                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
+                            Printers &amp; Ink
                           </Link>
                         </div>
                       </div>
@@ -729,7 +776,16 @@ export default function Navbar() {
                     <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold block mb-1.5">Products</span>
                     <div className="flex flex-wrap gap-1.5">
                       <Link href="/products?category=cable" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
-                        Ethernet Cables
+                        Cables
+                      </Link>
+                      <Link href="/products?category=accessory" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Accessories
+                      </Link>
+                      <Link href="/products?category=printer" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Printers
+                      </Link>
+                      <Link href="/products?category=peripherals" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        PC Parts
                       </Link>
                     </div>
                   </div>
