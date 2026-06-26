@@ -7,24 +7,16 @@ import SiteFooter from '../components/site-footer'
 import AnimatedSection from '../components/ui/animated-section'
 import PremiumButton from '../components/ui/premium-button'
 
-type Category = 'all' | 'router' | 'radio' | 'cable' | 'accessory' | 'printer' | 'peripherals'
+type Category = 'all' | 'cable'
 
 const products = [
   {
-    id: 1,
-    name: 'N300 Wireless Series',
-    category: 'router' as Category,
-    spec: '300 Mbps · 4-port · Wireless N',
-    price: 'R 850',
-    image: '/images/N300 Wireless series Tenda.png'
-  },
-  {
-    id: 3,
-    name: 'Ubiquiti LiteBeam 5AC',
-    category: 'radio' as Category,
-    spec: '5 GHz · 23 dBi · Point-to-point',
-    price: 'R 1 450',
-    image: '/images/Ubiquiti LiteBeam 5AC.png'
+    id: 5,
+    name: 'Cat6 Ethernet Cable',
+    category: 'cable' as Category,
+    spec: '305 m drum · UTP · CMR rated',
+    price: 'R 1 100',
+    image: '/images/Cat6 Ethernet Cable.jpg'
   },
   {
     id: 6,
@@ -33,102 +25,6 @@ const products = [
     spec: 'Cat6 · Custom Lengths Available · Various Colours',
     price: 'R35 per meter',
     image: '/images/RJ45 Patch Cable 2 m.png'
-  },
-  {
-    id: 7,
-    name: '8-Port Managed Switch',
-    category: 'accessory' as Category,
-    spec: 'Gigabit · VLAN · PoE+ capable',
-    price: 'R 1 650',
-    image: '/images/8-Port Managed Switch.png'
-  },
-  {
-    id: 8,
-    name: 'PoE Injector 48V',
-    category: 'accessory' as Category,
-    spec: '802.3af · 15.4 W · Passive option avail.',
-    price: 'R 320',
-    image: '/images/PoE Injector 48V.avif'
-  },
-  {
-    id: 9,
-    name: 'DW Portable Mini DC UPS',
-    category: 'accessory' as Category,
-    spec: '8800mAh · POE Port · 15V/24V',
-    price: 'R 1 200',
-    image: '/images/DW Portable Mini UPS 8800mAh PoE.png'
-  },
-  {
-    id: 10,
-    name: 'Gaming Headset',
-    category: 'peripherals' as Category,
-    spec: 'HS-G600V · Vibration Gaming Headset',
-    price: 'R500',
-    image: '/gallery/hs-g600v-vibration-gaming-headset-genius-original-imahfefdfwxd7fcp.png'
-  },
-  {
-    id: 12,
-    name: 'Genius Smart KB-100 Classic USB Keyboard',
-    category: 'peripherals' as Category,
-    spec: 'USB · Classic · Spill-resistant',
-    price: 'R 250',
-    image: '/gallery/Genius Smart KB-100 Classic USB Keyboard.png'
-  },
-  {
-    id: 13,
-    name: 'Genius DX-120 USB-C Wired Mouse',
-    category: 'peripherals' as Category,
-    spec: 'USB-C · Wired · Optical',
-    price: 'R 95',
-    image: '/gallery/genius-dx-120-usb-c-wired-mouse_1200x1200.png'
-  },
-  {
-    id: 11,
-    name: 'Canon PIXMA MG2541S - Printers - Canon South Africa',
-    category: 'printer' as Category,
-    spec: 'Print · Scan · Copy · FINE Cartridge',
-    price: 'R 895',
-    image: '/gallery/Canon-Printer.png'
-  },
-  {
-    id: 14,
-    name: 'Printer Ink Cartridges',
-    category: 'printer' as Category,
-    spec: 'Tri-Colour · Black · Various models',
-    price: 'R 350',
-    image: '/gallery/canon-printer-ink-(800x502).png'
-  },
-  {
-    id: 18,
-    name: 'Toner Ink Cartridge',
-    category: 'printer' as Category,
-    spec: 'High Yield · Compatible · Various Models',
-    price: 'R 450',
-    image: '/gallery/Toner Ink Cartridgr.png'
-  },
-  {
-    id: 15,
-    name: 'Laptops',
-    category: 'accessory' as Category,
-    spec: 'New & 2nd Hand · Various brands · Warranty available',
-    price: 'Contact for pricing',
-    image: '/gallery/Laptops.png'
-  },
-  {
-    id: 16,
-    name: 'Desktop PCs',
-    category: 'accessory' as Category,
-    spec: 'New & 2nd Hand · Custom builds',
-    price: 'Contact for pricing',
-    image: '/gallery/Desktop-Pc.png'
-  },
-  {
-    id: 17,
-    name: 'Mecer 2000VA Line Interactive UPS',
-    category: 'accessory' as Category,
-    spec: '2000VA / 1200W · AVR · Monitoring Software · Surge Protection',
-    price: 'R 2 800',
-    image: '/gallery/UPS.png'
   },
 ]
 
@@ -143,7 +39,7 @@ function ProductsContent() {
 
   useEffect(() => {
     if (categoryParam) {
-      const validCategories: Category[] = ['router', 'radio', 'cable', 'accessory', 'printer', 'peripherals']
+      const validCategories: Category[] = ['cable']
       if (validCategories.includes(categoryParam as Category)) {
         setSelectedCategory(categoryParam as Category)
 
@@ -187,12 +83,7 @@ function ProductsContent() {
 
   const categories: { key: Category; label: string }[] = [
     { key: 'all', label: 'All items' },
-    { key: 'router', label: 'Routers' },
-    { key: 'radio', label: 'Radios' },
     { key: 'cable', label: 'Cables' },
-    { key: 'accessory', label: 'Accessories' },
-    { key: 'printer', label: 'Printers' },
-    { key: 'peripherals', label: 'PC Peripherals' },
   ]
 
   const whatsappMessage = (productName: string) =>
