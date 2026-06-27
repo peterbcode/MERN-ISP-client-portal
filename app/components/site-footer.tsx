@@ -176,7 +176,7 @@ const SiteFooter = () => {
               </button>
             </form>
             <p className="mt-3 max-w-sm text-xs text-zinc-400">
-              Request a free coverage or network survey — no obligation.
+              Request a free coverage or network survey - no obligation.
             </p>
             {message && (
               <p

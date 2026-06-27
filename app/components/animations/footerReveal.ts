@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 interface FooterRevealOptions {
   footerRef: React.RefObject<HTMLElement | null>;
   logoTextRef: React.RefObject<HTMLElement | null>;
-  columnRefs: React.RefObject<HTMLElement | null>[];
+  columnRefs: Array<HTMLElement | null>;
   bottomBarRef: React.RefObject<HTMLElement | null>;
 }
 
@@ -20,7 +20,8 @@ export function useFooterReveal({
   bottomBarRef,
 }: FooterRevealOptions) {
   useEffect(() => {
-    if (!footerRef.current) return;
+    const footerElement = footerRef.current;
+    if (!footerElement) return;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
@@ -45,17 +46,17 @@ export function useFooterReveal({
           stagger: 0.05,
           ease: 'power3.out',
           scrollTrigger: {
-            trigger: footerRef.current,
+            trigger: footerElement,
             start: 'top 80%',
           }
         });
       }
 
       // Footer columns: slide up + fade in, staggered 0.12s per column
-      const validColumnRefs = columnRefs.filter(ref => ref.current);
+      const validColumnRefs = columnRefs.filter((element): element is HTMLElement => Boolean(element));
       if (validColumnRefs.length > 0) {
         gsap.fromTo(
-          validColumnRefs.map(ref => ref.current),
+          validColumnRefs,
           {
             y: 40,
             opacity: 0
@@ -67,7 +68,7 @@ export function useFooterReveal({
             stagger: 0.12,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: footerRef.current,
+              trigger: footerElement,
               start: 'top 80%',
             }
           }
@@ -89,19 +90,19 @@ export function useFooterReveal({
             delay: 0.2,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: footerRef.current,
+              trigger: footerElement,
               start: 'top 80%',
             }
           }
         );
       }
 
-    }, footerRef);
+    }, footerElement);
 
     return () => {
       ctx.revert();
       ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger === footerRef.current) {
+        if (trigger.trigger === footerElement) {
           trigger.kill();
         }
       });

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | Valley Computers",
   },
   description:
-    "Valley Computers — Riebeek Valley's local ISP and IT support shop. Fibre & wireless internet, PC repairs, and network engineering across the Swartland, Western Cape.",
+    "Valley Computers - Riebeek Valley's local ISP and IT support shop. Fibre & wireless internet, PC repairs, and network engineering across the Swartland, Western Cape.",
   keywords: [
     "ISP",
     "fibre internet",

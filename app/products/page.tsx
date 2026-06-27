@@ -2,19 +2,19 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 import Navbar from '../components/navbar'
 import SiteFooter from '../components/site-footer'
 import AnimatedSection from '../components/ui/animated-section'
-import PremiumButton from '../components/ui/premium-button'
 
-type Category = 'all' | 'cable' | 'accessory' | 'printer' | 'peripherals'
+type Category = 'all' | 'cable' | 'power' | 'computer' | 'peripherals' | 'printer'
 
 const products = [
   {
     id: 5,
     name: 'Cat6 Ethernet Cable',
     category: 'cable' as Category,
-    spec: '305 m drum · UTP · CMR rated',
+    spec: '305 m drum | UTP | CMR rated',
     price: 'R 1 100',
     image: '/images/Cat6 Ethernet Cable.jpg'
   },
@@ -22,31 +22,15 @@ const products = [
     id: 6,
     name: 'RJ45 Ethernet Cable',
     category: 'cable' as Category,
-    spec: 'Cat6 · Custom Lengths Available · Various Colours',
+    spec: 'Cat6 | Custom lengths available | Various colours',
     price: 'R35 per meter',
     image: '/images/RJ45 Patch Cable 2 m.png'
   },
   {
-    id: 7,
-    name: '8-Port Managed Switch',
-    category: 'accessory' as Category,
-    spec: 'Gigabit · VLAN · PoE+ capable',
-    price: 'R 1 650',
-    image: '/images/8-Port Managed Switch.png'
-  },
-  {
-    id: 8,
-    name: 'PoE Injector 48V',
-    category: 'accessory' as Category,
-    spec: '802.3af · 15.4 W · Passive option avail.',
-    price: 'R 320',
-    image: '/images/PoE Injector 48V.avif'
-  },
-  {
     id: 9,
     name: 'DW Portable Mini DC UPS',
-    category: 'accessory' as Category,
-    spec: '8800mAh · POE Port · 15V/24V',
+    category: 'power' as Category,
+    spec: '8800mAh | PoE port | 15V/24V',
     price: 'R 1 200',
     image: '/images/DW Portable Mini UPS 8800mAh PoE.png'
   },
@@ -54,7 +38,7 @@ const products = [
     id: 10,
     name: 'Gaming Headset',
     category: 'peripherals' as Category,
-    spec: 'HS-G600V · Vibration Gaming Headset',
+    spec: 'HS-G600V | Vibration gaming headset',
     price: 'R500',
     image: '/gallery/hs-g600v-vibration-gaming-headset-genius-original-imahfefdfwxd7fcp.png'
   },
@@ -62,7 +46,7 @@ const products = [
     id: 12,
     name: 'Genius Smart KB-100 Classic USB Keyboard',
     category: 'peripherals' as Category,
-    spec: 'USB · Classic · Spill-resistant',
+    spec: 'USB | Classic | Spill-resistant',
     price: 'R 250',
     image: '/gallery/Genius Smart KB-100 Classic USB Keyboard.png'
   },
@@ -70,15 +54,15 @@ const products = [
     id: 13,
     name: 'Genius DX-120 USB-C Wired Mouse',
     category: 'peripherals' as Category,
-    spec: 'USB-C · Wired · Optical',
+    spec: 'USB-C | Wired | Optical',
     price: 'R 95',
     image: '/gallery/genius-dx-120-usb-c-wired-mouse_1200x1200.png'
   },
   {
     id: 11,
-    name: 'Canon PIXMA MG2541S - Printers - Canon South Africa',
+    name: 'Canon PIXMA MG2541S Printer',
     category: 'printer' as Category,
-    spec: 'Print · Scan · Copy · FINE Cartridge',
+    spec: 'Print | Scan | Copy | FINE cartridge',
     price: 'R 895',
     image: '/gallery/Canon-Printer.png'
   },
@@ -86,7 +70,7 @@ const products = [
     id: 14,
     name: 'Printer Ink Cartridges',
     category: 'printer' as Category,
-    spec: 'Tri-Colour · Black · Various models',
+    spec: 'Tri-colour | Black | Various models',
     price: 'R 350',
     image: '/gallery/canon-printer-ink-(800x502).png'
   },
@@ -94,31 +78,31 @@ const products = [
     id: 18,
     name: 'Toner Ink Cartridge',
     category: 'printer' as Category,
-    spec: 'High Yield · Compatible · Various Models',
+    spec: 'High yield | Compatible | Various models',
     price: 'R 450',
     image: '/gallery/Toner Ink Cartridgr.png'
   },
   {
     id: 15,
     name: 'Laptops',
-    category: 'accessory' as Category,
-    spec: 'New & 2nd Hand · Various brands · Warranty available',
+    category: 'computer' as Category,
+    spec: 'New and pre-owned | Various brands | Warranty available',
     price: 'Contact for pricing',
     image: '/gallery/Laptops.png'
   },
   {
     id: 16,
     name: 'Desktop PCs',
-    category: 'accessory' as Category,
-    spec: 'New & 2nd Hand · Custom builds',
+    category: 'computer' as Category,
+    spec: 'New and pre-owned | Custom builds',
     price: 'Contact for pricing',
     image: '/gallery/Desktop-Pc.png'
   },
   {
     id: 17,
     name: 'Mecer 2000VA Line Interactive UPS',
-    category: 'accessory' as Category,
-    spec: '2000VA / 1200W · AVR · Monitoring Software · Surge Protection',
+    category: 'power' as Category,
+    spec: '2000VA / 1200W | AVR | Monitoring software | Surge protection',
     price: 'R 2 800',
     image: '/gallery/UPS.png'
   },
@@ -135,7 +119,7 @@ function ProductsContent() {
 
   useEffect(() => {
     if (categoryParam) {
-      const validCategories: Category[] = ['cable', 'accessory', 'printer', 'peripherals']
+      const validCategories: Category[] = ['cable', 'power', 'computer', 'peripherals', 'printer']
       if (validCategories.includes(categoryParam as Category)) {
         setSelectedCategory(categoryParam as Category)
 
@@ -180,9 +164,10 @@ function ProductsContent() {
   const categories: { key: Category; label: string }[] = [
     { key: 'all', label: 'All items' },
     { key: 'cable', label: 'Cables' },
-    { key: 'accessory', label: 'Accessories' },
-    { key: 'printer', label: 'Printers' },
+    { key: 'power', label: 'Power & UPS' },
+    { key: 'computer', label: 'Computers' },
     { key: 'peripherals', label: 'PC Peripherals' },
+    { key: 'printer', label: 'Printers & Ink' },
   ]
 
   const whatsappMessage = (productName: string) =>
@@ -203,7 +188,7 @@ function ProductsContent() {
   const bulkWhatsAppMessage = () => {
     const selectedItems = products.filter(p => selectedProducts.has(p.id))
     if (selectedItems.length === 0) return ''
-    const itemsList = selectedItems.map(p => `• ${p.name} - ${p.price}`).join('\n')
+    const itemsList = selectedItems.map(p => `- ${p.name} - ${p.price}`).join('\n')
     return `Hi, I'm interested in ordering multiple items:\n\n${itemsList}\n\nPlease confirm availability and total price.`
   }
 
@@ -219,7 +204,7 @@ function ProductsContent() {
               Equipment &amp; <span className="text-[#ff7e26]">Accessories</span>
             </h1>
             <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
-              Quality hardware — sold over the counter or professionally installed. <a href="https://wa.me/27799381260" target="_blank" rel="noopener noreferrer" className="text-[#ff7e26] hover:underline">WhatsApp us</a> to order.
+              Quality hardware for connectivity, power backup, computers, peripherals, and printing. <a href="https://wa.me/27799381260" target="_blank" rel="noopener noreferrer" className="text-[#ff7e26] hover:underline">WhatsApp us</a> to order.
             </p>
           </div>
         </AnimatedSection>
@@ -296,9 +281,12 @@ function ProductsContent() {
                   </button>
 
                   <div className="mb-4 flex aspect-[4/3] items-center justify-center rounded-2xl bg-zinc-950 border border-zinc-800 overflow-hidden">
-                    <img
+                    <Image
                       src={product.image}
                       alt={product.name}
+                      width={420}
+                      height={315}
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                       className={`h-full w-full ${product.id === 17 ? 'object-contain p-8' : [14, 16].includes(product.id) ? 'object-contain p-4' : 'object-cover'}`}
                     />
                   </div>

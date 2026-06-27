@@ -61,9 +61,15 @@ const isOption = <T extends string>(value: unknown, options: readonly T[]): valu
 
 const sanitizeSettings = (value: unknown): SettingsState => {
   const raw = value && typeof value === 'object' ? value as Partial<SettingsState> : {};
-  const notifications = raw.notifications || {};
-  const privacy = raw.privacy || {};
-  const preferences = raw.preferences || {};
+  const notifications = (
+    raw.notifications && typeof raw.notifications === 'object' ? raw.notifications : {}
+  ) as Partial<Notifications>;
+  const privacy = (
+    raw.privacy && typeof raw.privacy === 'object' ? raw.privacy : {}
+  ) as Partial<Privacy>;
+  const preferences = (
+    raw.preferences && typeof raw.preferences === 'object' ? raw.preferences : {}
+  ) as Partial<Preferences>;
 
   return {
     notifications: {

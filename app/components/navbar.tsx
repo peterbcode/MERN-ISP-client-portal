@@ -6,7 +6,6 @@ import {
   EnvelopeIcon,
   MapPinIcon,
   PhoneIcon,
-  XMarkIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -178,26 +177,6 @@ export default function Navbar() {
     }
   }, [isMobileMenuOpen])
 
-  // Stagger delays calculation for mobile menu links
-  const getTransitionStyle = (index: number) => {
-    if (isMobileMenuOpen) {
-      const delay = 90 + index * 80
-      return {
-        transitionProperty: 'transform, opacity',
-        transitionDuration: '400ms',
-        transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
-        transitionDelay: `${delay}ms`,
-      }
-    } else {
-      return {
-        transitionProperty: 'transform, opacity',
-        transitionDuration: '200ms',
-        transitionTimingFunction: 'ease-in',
-        transitionDelay: '0ms',
-      }
-    }
-  }
-
   return (
     <header ref={navRef} className="relative z-[1000] w-full">
       {/* Orange top bar - will translate up and fade when mobile menu is open */}
@@ -363,20 +342,12 @@ export default function Navbar() {
                             Ethernet Cables
                           </Link>
                           <Link
-                            href="/products?category=accessory"
+                            href="/products?category=power"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
                             <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
                             Power UPS
-                          </Link>
-                          <Link
-                            href="/products?category=accessory"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
-                          >
-                            <span className="h-1 w-1 rounded-full bg-zinc-600 transition-all group-hover:w-1.5 group-hover:h-1.5 group-hover:bg-[#ff7e26]" />
-                            Switches &amp; PoE
                           </Link>
                         </div>
                       </div>
@@ -390,7 +361,7 @@ export default function Navbar() {
                         </div>
                         <div className="flex flex-col gap-1 mt-1">
                           <Link
-                            href="/products?category=accessory"
+                            href="/products?category=computer"
                             onClick={() => setIsDropdownOpen(false)}
                             className="group flex items-center gap-2.5 py-1 text-sm text-zinc-300 hover:text-[#ff7e26] transition-colors font-medium"
                           >
@@ -778,8 +749,11 @@ export default function Navbar() {
                       <Link href="/products?category=cable" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
                         Cables
                       </Link>
-                      <Link href="/products?category=accessory" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
-                        Accessories
+                      <Link href="/products?category=power" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Power &amp; UPS
+                      </Link>
+                      <Link href="/products?category=computer" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
+                        Computers
                       </Link>
                       <Link href="/products?category=printer" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] bg-zinc-900/60 border border-zinc-800 hover:border-[#ff7e26]/30 text-zinc-300 hover:text-[#ff7e26] px-2.5 py-1.5 rounded-lg transition-colors">
                         Printers
