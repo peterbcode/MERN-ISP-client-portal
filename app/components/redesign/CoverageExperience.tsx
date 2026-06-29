@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Loader2, MapPin, CheckCircle, Wifi, AlertCircle, Bell, ArrowRight, X, Cpu, Activity, ShieldCheck, HelpCircle } from 'lucide-react'
+import { Loader2, MapPin, CheckCircle, Wifi, AlertCircle, Bell, ArrowRight } from 'lucide-react'
 
 type CoverageResult = 'high' | 'wireless-only' | 'no-coverage' | null
 
@@ -30,7 +30,7 @@ export default function CoverageExperience() {
     if (typeof window === 'undefined') return
 
     const initAutocomplete = () => {
-      if (!window.google || !inputRef.current) return
+      if (!window.google?.maps?.places || !inputRef.current) return
 
       const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
         componentRestrictions: { country: 'za' },
@@ -50,16 +50,21 @@ export default function CoverageExperience() {
       })
     }
 
-    if (window.google) {
+    let script: HTMLScriptElement | null = null
+
+    if (window.google?.maps?.places) {
       initAutocomplete()
     } else {
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+      if (!apiKey) return
+
       // Load script if not already present
       const scriptId = 'google-maps-api-script'
-      let script = document.getElementById(scriptId) as HTMLScriptElement
+      script = document.getElementById(scriptId) as HTMLScriptElement | null
       if (!script) {
         script = document.createElement('script')
         script.id = scriptId
-        script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places`
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places`
         script.async = true;
         script.defer = true;
         document.head.appendChild(script)
@@ -71,6 +76,7 @@ export default function CoverageExperience() {
       if (autocompleteRef.current && window.google) {
         google.maps.event.clearInstanceListeners(autocompleteRef.current)
       }
+      script?.removeEventListener('load', initAutocomplete)
     }
   }, [])
 
@@ -112,6 +118,10 @@ export default function CoverageExperience() {
         body: JSON.stringify({ lat, lng, address, suburb, postalCode }),
       })
 
+      if (!response.ok) {
+        throw new Error(`Coverage request failed with ${response.status}`)
+      }
+
       const data = await response.json()
       setCoverageResult({
         result: data.result,
@@ -146,7 +156,7 @@ export default function CoverageExperience() {
     setIsSubmittingWaitlist(true)
 
     try {
-      await fetch('/api/waitlist', {
+      const response = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -154,6 +164,11 @@ export default function CoverageExperience() {
           address: coverageResult?.address,
         }),
       })
+
+      if (!response.ok) {
+        throw new Error(`Waitlist request failed with ${response.status}`)
+      }
+
       setWaitlistSuccess(true)
     } catch (error) {
       console.error('Error submitting waitlist:', error)
@@ -175,15 +190,15 @@ export default function CoverageExperience() {
       className="relative py-24 md:py-36 bg-brand-bg-primary text-brand-text-primary"
       id="coverage"
     >
-      {/* Visual glowing ring backdrop */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-brand-accent/5 blur-3xl pointer-events-none z-0" />
+      {/* Coverage signal backdrop */}
+      <div className="absolute inset-x-0 top-1/3 h-px bg-gradient-to-r from-transparent via-brand-accent/30 to-transparent pointer-events-none z-0" />
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 md:mb-24">
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-brand-accent mb-4 block">Deployment Center</span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6">
+          <span className="text-xs font-bold uppercase tracking-normal text-brand-accent mb-4 block">Deployment Center</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-normal text-white mb-6">
             MISSION CONTROL
           </h2>
           <div className="h-1 w-20 bg-brand-accent mx-auto mb-6" />
@@ -196,19 +211,19 @@ export default function CoverageExperience() {
         <div className="grid lg:grid-cols-12 gap-8 items-stretch max-w-5xl mx-auto">
           
           {/* Left panel: Query Terminal */}
-          <div className="lg:col-span-7 flex flex-col justify-between border border-brand-border bg-brand-bg-secondary/70 backdrop-blur-lg rounded-3xl p-6 md:p-8">
+          <div className="lg:col-span-7 flex flex-col justify-between border border-brand-border bg-brand-bg-secondary/70 backdrop-blur-lg rounded-xl p-5 md:p-8">
             <div>
               {/* Terminal Title */}
               <div className="flex items-center justify-between border-b border-brand-border pb-4 mb-6">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-brand-accent animate-pulse" />
-                  <span className="text-xs font-bold uppercase tracking-wider text-white">Coverage Query Terminal</span>
+                  <span className="text-xs font-bold uppercase tracking-normal text-white">Coverage Query Terminal</span>
                 </div>
                 <span className="text-[10px] font-mono text-brand-text-secondary">SECURE_LINK // ACTIVE</span>
               </div>
 
               {/* Status Header */}
-              <div className="grid grid-cols-3 gap-4 mb-8 bg-black/40 border border-brand-border/60 p-4 rounded-2xl">
+              <div className="grid grid-cols-3 gap-3 mb-8 bg-black/40 border border-brand-border/60 p-3 md:p-4 rounded-xl">
                 <div className="text-center">
                   <div className="text-[10px] text-brand-text-secondary uppercase font-semibold">Base Status</div>
                   <div className="text-sm font-bold text-green-500 mt-0.5">ONLINE</div>
@@ -238,7 +253,7 @@ export default function CoverageExperience() {
                       value={searchValue}
                       onChange={(e) => setSearchValue(e.target.value)}
                       placeholder="Search Address (e.g. 6 Church Rd, Riebeek-Kasteel)"
-                      className="w-full h-14 pl-12 pr-6 rounded-2xl border border-brand-border bg-brand-bg-primary text-white text-sm focus:border-brand-accent focus:outline-none transition-all duration-300 placeholder:text-brand-text-secondary/50 font-medium"
+                      className="w-full h-14 pl-12 pr-4 md:pr-6 rounded-xl border border-brand-border bg-brand-bg-primary text-white text-sm focus:border-brand-accent focus:outline-none transition-all duration-300 placeholder:text-brand-text-secondary/50 font-medium"
                     />
                     <MapPin className="absolute left-4 top-4.5 w-5 h-5 text-brand-text-secondary" />
                   </div>
@@ -246,7 +261,7 @@ export default function CoverageExperience() {
                   <button 
                     onClick={handleCheckCoverage}
                     disabled={!searchValue.trim()}
-                    className="group w-full h-14 flex items-center justify-center gap-2 bg-brand-accent hover:bg-orange-600 disabled:opacity-50 disabled:hover:bg-brand-accent text-white rounded-2xl font-bold tracking-wide transition-all duration-300 cursor-pointer"
+                    className="group w-full h-14 flex items-center justify-center gap-2 bg-brand-accent hover:bg-orange-600 disabled:opacity-50 disabled:hover:bg-brand-accent text-white rounded-lg font-bold tracking-normal transition-all duration-300 cursor-pointer"
                   >
                     Check System Grid
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -285,13 +300,13 @@ export default function CoverageExperience() {
                   <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-brand-border">
                     <a 
                       href="/isp#plans"
-                      className="flex-1 h-12 flex items-center justify-center bg-brand-accent hover:bg-orange-600 text-white rounded-xl text-sm font-bold tracking-wide transition-all duration-300 text-center"
+                      className="flex-1 h-12 flex items-center justify-center bg-brand-accent hover:bg-orange-600 text-white rounded-lg text-sm font-bold tracking-normal transition-all duration-300 text-center"
                     >
                       View Packages
                     </a>
                     <button 
                       onClick={handleReset}
-                      className="h-12 px-6 border border-brand-border bg-brand-card hover:bg-white/[0.02] text-white rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 cursor-pointer"
+                      className="h-12 px-6 border border-brand-border bg-brand-card hover:bg-white/[0.02] text-white rounded-lg text-sm font-semibold tracking-normal transition-all duration-300 cursor-pointer"
                     >
                       Search Another
                     </button>
@@ -319,13 +334,13 @@ export default function CoverageExperience() {
                   <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-brand-border">
                     <a 
                       href="/isp#plans"
-                      className="flex-1 h-12 flex items-center justify-center bg-brand-accent hover:bg-orange-600 text-white rounded-xl text-sm font-bold tracking-wide transition-all duration-300 text-center"
+                      className="flex-1 h-12 flex items-center justify-center bg-brand-accent hover:bg-orange-600 text-white rounded-lg text-sm font-bold tracking-normal transition-all duration-300 text-center"
                     >
                       View Wireless Packages
                     </a>
                     <button 
                       onClick={handleReset}
-                      className="h-12 px-6 border border-brand-border bg-brand-card hover:bg-white/[0.02] text-white rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 cursor-pointer"
+                      className="h-12 px-6 border border-brand-border bg-brand-card hover:bg-white/[0.02] text-white rounded-lg text-sm font-semibold tracking-normal transition-all duration-300 cursor-pointer"
                     >
                       Search Another
                     </button>
@@ -385,7 +400,7 @@ export default function CoverageExperience() {
                       <button 
                         type="submit"
                         disabled={isSubmittingWaitlist}
-                        className="w-full h-12 flex items-center justify-center gap-2 bg-brand-accent hover:bg-orange-600 disabled:opacity-50 text-white rounded-xl text-sm font-bold tracking-wide transition-all duration-300 cursor-pointer"
+                        className="w-full h-12 flex items-center justify-center gap-2 bg-brand-accent hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg text-sm font-bold tracking-normal transition-all duration-300 cursor-pointer"
                       >
                         {isSubmittingWaitlist ? (
                           <>
@@ -402,13 +417,13 @@ export default function CoverageExperience() {
                     </form>
                   ) : (
                     <div className="p-4 border border-green-500/30 bg-green-500/10 rounded-2xl text-center text-green-400 text-sm font-semibold">
-                      ✓ Waitlist entry successful. We will notify you when deployment rolls out.
+                      Waitlist entry successful. We will notify you when deployment rolls out.
                     </div>
                   )}
 
                   <button 
                     onClick={handleReset}
-                    className="w-full h-12 border border-brand-border bg-brand-card hover:bg-white/[0.02] text-white rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 cursor-pointer"
+                    className="w-full h-12 border border-brand-border bg-brand-card hover:bg-white/[0.02] text-white rounded-lg text-sm font-semibold tracking-normal transition-all duration-300 cursor-pointer"
                   >
                     Check Another Address
                   </button>
@@ -423,12 +438,12 @@ export default function CoverageExperience() {
           </div>
 
           {/* Right panel: Live Telemetry Map (Visual indicator) */}
-          <div className="lg:col-span-5 border border-brand-border bg-brand-bg-secondary/70 backdrop-blur-lg rounded-3xl p-6 md:p-8 flex flex-col justify-between overflow-hidden relative">
+          <div className="lg:col-span-5 border border-brand-border bg-brand-bg-secondary/70 backdrop-blur-lg rounded-xl p-5 md:p-8 flex flex-col justify-between overflow-hidden relative">
             {/* Visual radar animation */}
             <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(255,107,0,0.02)_0%,transparent_70%)] pointer-events-none" />
 
             <div className="relative z-10">
-              <span className="text-[10px] font-mono text-brand-accent uppercase tracking-wider font-bold">GRID STATUS MONITOR</span>
+              <span className="text-[10px] font-mono text-brand-accent uppercase tracking-normal font-bold">GRID STATUS MONITOR</span>
               <h3 className="text-xl font-bold text-white mt-1 mb-4">LIVE RADAR TARGET</h3>
             </div>
 

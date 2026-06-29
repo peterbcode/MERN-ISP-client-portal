@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, Network, Activity } from 'lucide-react'
+import { MapPin, Activity } from 'lucide-react'
 
 // Register ScrollTrigger
 if (typeof window !== 'undefined') {
@@ -49,17 +48,19 @@ export default function ConnectedValley() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Pin the map section on desktop
-      const pinTrigger = ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        pin: leftPinRef.current,
-        pinSpacing: false,
-        id: 'valley-pin',
+      const mm = gsap.matchMedia()
+
+      mm.add('(min-width: 1024px)', () => {
+        ScrollTrigger.create({
+          trigger: containerRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          pin: leftPinRef.current,
+          pinSpacing: false,
+          id: 'valley-pin',
+        })
       })
 
-      // Setup ScrollTrigger for each story step to activate map points
       const sections = gsap.utils.toArray('.valley-story-step') as HTMLElement[]
       sections.forEach((section) => {
         const locId = section.getAttribute('data-location-id') || 'rk'
@@ -78,6 +79,8 @@ export default function ConnectedValley() {
           }
         })
       })
+
+      return () => mm.revert()
     }, containerRef)
 
     return () => ctx.revert()
@@ -116,7 +119,7 @@ export default function ConnectedValley() {
         ref={leftPinRef} 
         className="hidden lg:flex absolute left-0 top-0 w-1/2 h-screen items-center justify-center p-12 z-10 border-r border-brand-border bg-brand-bg-primary"
       >
-        <div className="relative w-full h-[80%] rounded-3xl border border-brand-border bg-brand-bg-secondary overflow-hidden flex flex-col justify-between p-8">
+        <div className="relative w-full h-[80%] rounded-xl border border-brand-border bg-brand-bg-secondary overflow-hidden flex flex-col justify-between p-8">
           {/* Subtle Grid overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#000_100%),linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:30px_30px] pointer-events-none" />
 
@@ -209,8 +212,8 @@ export default function ConnectedValley() {
           </div>
 
           {/* Node detail display panel */}
-          <div className="relative z-10 min-h-[90px] border border-brand-border bg-brand-bg-primary/90 rounded-2xl p-4 flex gap-4 items-center backdrop-blur-md">
-            <div className="w-10 h-10 rounded-xl bg-brand-accent/10 border border-brand-accent/30 flex items-center justify-center text-brand-accent shrink-0">
+          <div className="relative z-10 min-h-[90px] border border-brand-border bg-brand-bg-primary/90 rounded-lg p-4 flex gap-4 items-center backdrop-blur-md">
+            <div className="w-10 h-10 rounded-lg bg-brand-accent/10 border border-brand-accent/30 flex items-center justify-center text-brand-accent shrink-0">
               <MapPin className="w-5 h-5" />
             </div>
             <div>
@@ -229,8 +232,8 @@ export default function ConnectedValley() {
       <div className="relative z-0 w-full lg:w-1/2 lg:ml-[50%] flex flex-col px-6 md:px-16 pt-[20vh] pb-[20vh] gap-[40vh] md:gap-[60vh]">
         {/* Intro Story Section */}
         <div className="flex flex-col justify-center min-h-[50vh] valley-story-step" data-location-id="rk">
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-accent mb-4 block">Connected Valley</span>
-          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-6">
+          <span className="text-xs font-bold uppercase tracking-normal text-brand-accent mb-4 block">Connected Valley</span>
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-normal text-white mb-6">
             BUILT FOR THE VALLEY
           </h2>
           <div className="h-1 w-20 bg-brand-accent mb-8" />
@@ -246,9 +249,9 @@ export default function ConnectedValley() {
         <div className="flex flex-col justify-center min-h-[50vh] valley-story-step" data-location-id="rw">
           <div className="flex items-center gap-3 text-brand-accent mb-4">
             <MapPin className="w-5 h-5" />
-            <span className="text-xs font-bold uppercase tracking-[0.2em]">Riebeek West Hub</span>
+            <span className="text-xs font-bold uppercase tracking-normal">Riebeek West Hub</span>
           </div>
-          <h3 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">
+          <h3 className="text-3xl md:text-5xl font-bold tracking-normal text-white mb-6">
             We connect homes.
           </h3>
           <p className="text-base md:text-lg text-brand-text-secondary leading-relaxed max-w-lg mb-4">
@@ -260,9 +263,9 @@ export default function ConnectedValley() {
         <div className="flex flex-col justify-center min-h-[50vh] valley-story-step" data-location-id="mb">
           <div className="flex items-center gap-3 text-brand-accent mb-4">
             <MapPin className="w-5 h-5" />
-            <span className="text-xs font-bold uppercase tracking-[0.2em]">Malmesbury Link</span>
+            <span className="text-xs font-bold uppercase tracking-normal">Malmesbury Link</span>
           </div>
-          <h3 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">
+          <h3 className="text-3xl md:text-5xl font-bold tracking-normal text-white mb-6">
             We connect businesses.
           </h3>
           <p className="text-base md:text-lg text-brand-text-secondary leading-relaxed max-w-lg mb-4">
@@ -274,9 +277,9 @@ export default function ConnectedValley() {
         <div className="flex flex-col justify-center min-h-[50vh] valley-story-step" data-location-id="sl">
           <div className="flex items-center gap-3 text-brand-accent mb-4">
             <MapPin className="w-5 h-5" />
-            <span className="text-xs font-bold uppercase tracking-[0.2em]">Swartland Outpost</span>
+            <span className="text-xs font-bold uppercase tracking-normal">Swartland Outpost</span>
           </div>
-          <h3 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">
+          <h3 className="text-3xl md:text-5xl font-bold tracking-normal text-white mb-6">
             We connect farms & communities.
           </h3>
           <p className="text-base md:text-lg text-brand-text-secondary leading-relaxed max-w-lg mb-4">

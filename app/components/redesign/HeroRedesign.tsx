@@ -4,7 +4,12 @@ import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
-import { ArrowRight, Cpu, Radio, Shield, HelpCircle } from 'lucide-react'
+import { MotionPathPlugin } from 'gsap/dist/MotionPathPlugin'
+import { ArrowRight, Radio } from 'lucide-react'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(MotionPathPlugin)
+}
 
 export default function HeroRedesign() {
   const router = useRouter()
@@ -95,8 +100,9 @@ export default function HeroRedesign() {
 
   return (
     <div 
+      id="hero-section"
       ref={containerRef} 
-      className="relative min-h-screen w-full flex flex-col justify-between bg-brand-bg-primary text-brand-text-primary overflow-hidden pt-28 pb-12 px-6 md:px-12 lg:px-24"
+      className="relative min-h-screen w-full flex flex-col justify-between bg-brand-bg-primary text-brand-text-primary overflow-hidden pt-28 pb-8 px-5 md:px-12 lg:px-24"
     >
       {/* Background Graphic: Styled Digital Valley */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none opacity-40">
@@ -186,13 +192,13 @@ export default function HeroRedesign() {
       <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)] pointer-events-none" />
 
       {/* Hero Content */}
-      <div className="relative z-10 flex-1 flex flex-col justify-center items-center text-center max-w-4xl mx-auto select-none mt-12 md:mt-20">
+      <div className="relative z-10 flex-1 flex flex-col justify-center items-center text-center max-w-4xl mx-auto select-none mt-8 md:mt-20">
         {/* Subhead Badge */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-3 py-1 border border-brand-border bg-brand-card rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-brand-accent mb-8 shadow-sm backdrop-blur-md"
+          className="inline-flex items-center gap-2 px-3 py-1 border border-brand-border bg-brand-card rounded-md text-xs font-semibold uppercase tracking-normal text-brand-accent mb-8 shadow-sm backdrop-blur-md"
         >
           <Radio className="w-3.5 h-3.5 animate-pulse text-brand-accent" />
           The Digital Backbone of Swartland
@@ -201,7 +207,7 @@ export default function HeroRedesign() {
         {/* Headline */}
         <h1 
           ref={headlineRef} 
-          className="opacity-0 font-extrabold text-white leading-[0.95] tracking-[-0.04em] mb-6 text-5xl md:text-7xl lg:text-8xl select-none"
+          className="opacity-0 font-extrabold text-white leading-[0.95] tracking-normal mb-6 text-[clamp(3.2rem,14vw,5.5rem)] md:text-7xl lg:text-8xl select-none"
           style={{ textShadow: '0 0 40px rgba(255,255,255,0.05)' }}
         >
           TECHNOLOGY<br />
@@ -213,16 +219,16 @@ export default function HeroRedesign() {
         {/* Subheadline */}
         <p 
           ref={subheadlineRef} 
-          className="opacity-0 text-brand-text-secondary text-lg md:text-2xl font-light tracking-wide max-w-2xl mb-12"
+          className="opacity-0 text-brand-text-secondary text-lg md:text-2xl font-light tracking-normal max-w-2xl mb-10 md:mb-12"
         >
           Premium Internet. &bull; Expert IT. &bull; Local Support.
         </p>
 
         {/* Actions Buttons */}
-        <div ref={buttonsRef} className="opacity-0 flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-16">
+        <div ref={buttonsRef} className="opacity-0 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto mb-10 md:mb-16">
           <button 
             onClick={scrollToCoverage}
-            className="group flex items-center justify-center gap-2 px-8 py-4 bg-brand-accent hover:bg-orange-600 text-white rounded-full font-bold tracking-wide transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(255,107,0,0.4)] cursor-pointer"
+            className="group flex min-h-14 items-center justify-center gap-2 px-8 py-3.5 bg-brand-accent hover:bg-orange-600 text-white rounded-lg font-bold tracking-normal transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(255,107,0,0.4)] cursor-pointer"
           >
             Check Coverage
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -230,7 +236,7 @@ export default function HeroRedesign() {
           
           <button 
             onClick={() => router.push('/contact')}
-            className="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-brand-border hover:border-brand-accent bg-brand-card hover:bg-white/[0.02] text-white rounded-full font-semibold tracking-wide transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+            className="flex min-h-14 items-center justify-center gap-2 px-8 py-3.5 bg-transparent border border-brand-border hover:border-brand-accent bg-brand-card hover:bg-white/[0.02] text-white rounded-lg font-semibold tracking-normal transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
           >
             Get Support
           </button>
@@ -240,23 +246,23 @@ export default function HeroRedesign() {
       {/* Stats Summary Bar */}
       <div 
         ref={statsRef}
-        className="opacity-0 relative z-10 w-full grid grid-cols-2 md:grid-cols-4 gap-6 py-6 border-t border-brand-border bg-black/40 backdrop-blur-md max-w-6xl mx-auto rounded-2xl"
+        className="opacity-0 relative z-10 w-full grid grid-cols-2 md:grid-cols-4 gap-0 border border-brand-border bg-black/45 backdrop-blur-md max-w-6xl mx-auto rounded-lg overflow-hidden"
       >
-        <div className="flex flex-col items-center justify-center text-center px-4 border-r border-brand-border/40 last:border-0">
-          <span className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">99%</span>
-          <span className="text-xs md:text-sm text-brand-text-secondary uppercase tracking-[0.1em] mt-1 font-semibold">Uptime</span>
+        <div className="flex min-h-24 flex-col items-center justify-center text-center px-4 border-r border-b md:border-b-0 border-brand-border/40 last:border-0">
+          <span className="text-3xl md:text-4xl font-extrabold text-white tracking-normal">99%</span>
+          <span className="text-xs md:text-sm text-brand-text-secondary uppercase tracking-normal mt-1 font-semibold">Uptime</span>
         </div>
-        <div className="flex flex-col items-center justify-center text-center px-4 md:border-r border-brand-border/40 last:border-0">
-          <span className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">5000+</span>
-          <span className="text-xs md:text-sm text-brand-text-secondary uppercase tracking-[0.1em] mt-1 font-semibold">Devices Managed</span>
+        <div className="flex min-h-24 flex-col items-center justify-center text-center px-4 border-b md:border-b-0 md:border-r border-brand-border/40 last:border-0">
+          <span className="text-3xl md:text-4xl font-extrabold text-white tracking-normal">5000+</span>
+          <span className="text-xs md:text-sm text-brand-text-secondary uppercase tracking-normal mt-1 font-semibold">Devices Managed</span>
         </div>
-        <div className="flex flex-col items-center justify-center text-center px-4 border-r border-brand-border/40 last:border-0">
-          <span className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">24/7</span>
-          <span className="text-xs md:text-sm text-brand-text-secondary uppercase tracking-[0.1em] mt-1 font-semibold">Monitoring</span>
+        <div className="flex min-h-24 flex-col items-center justify-center text-center px-4 border-r border-brand-border/40 last:border-0">
+          <span className="text-3xl md:text-4xl font-extrabold text-white tracking-normal">24/7</span>
+          <span className="text-xs md:text-sm text-brand-text-secondary uppercase tracking-normal mt-1 font-semibold">Monitoring</span>
         </div>
-        <div className="flex flex-col items-center justify-center text-center px-4 last:border-0">
-          <span className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Same-Day</span>
-          <span className="text-xs md:text-sm text-brand-text-secondary uppercase tracking-[0.1em] mt-1 font-semibold">Support</span>
+        <div className="flex min-h-24 flex-col items-center justify-center text-center px-4 last:border-0">
+          <span className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white tracking-normal">Same-Day</span>
+          <span className="text-xs md:text-sm text-brand-text-secondary uppercase tracking-normal mt-1 font-semibold">Support</span>
         </div>
       </div>
     </div>

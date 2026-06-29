@@ -59,17 +59,19 @@ export default function ServicesJourney() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Desktop ScrollTrigger: Pin the visual column while scrolling content on the right
-      const pinTrigger = ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        pin: leftVisualRef.current,
-        pinSpacing: false,
-        id: 'services-pin',
+      const mm = gsap.matchMedia()
+
+      mm.add('(min-width: 1024px)', () => {
+        ScrollTrigger.create({
+          trigger: containerRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          pin: leftVisualRef.current,
+          pinSpacing: false,
+          id: 'services-pin',
+        })
       })
 
-      // Setup ScrollTriggers for right-side text steps
       const steps = gsap.utils.toArray('.service-step-trigger') as HTMLElement[]
       steps.forEach((step, idx) => {
         ScrollTrigger.create({
@@ -80,6 +82,8 @@ export default function ServicesJourney() {
           onEnterBack: () => setActiveIdx(idx),
         })
       })
+
+      return () => mm.revert()
     }, containerRef)
 
     return () => ctx.revert()
@@ -96,7 +100,7 @@ export default function ServicesJourney() {
         ref={leftVisualRef}
         className="hidden lg:flex absolute left-0 top-0 w-1/2 h-screen items-center justify-center p-16 z-10 bg-brand-bg-primary border-r border-brand-border"
       >
-        <div className="relative w-full h-[85%] rounded-3xl border border-brand-border bg-brand-bg-secondary overflow-hidden flex items-center justify-center">
+        <div className="relative w-full h-[85%] rounded-xl border border-brand-border bg-brand-bg-secondary overflow-hidden flex items-center justify-center">
           {/* Animated Matrix grid backing */}
           <div className="absolute inset-0 bg-[radial-gradient(rgba(255,107,0,0.015)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
@@ -219,7 +223,7 @@ export default function ServicesJourney() {
 
       {/* RIGHT: Story scroll sections */}
       <div className="relative z-0 w-full lg:w-1/2 lg:ml-[50%] flex flex-col">
-        {services.map((service, index) => {
+        {services.map((service) => {
           const ServiceIcon = service.icon
 
           return (
@@ -228,12 +232,12 @@ export default function ServicesJourney() {
               className="service-step-trigger w-full min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-16"
             >
               {/* Standalone card style visible on mobile, simple container on desktop */}
-              <div className="p-6 md:p-12 border border-transparent lg:border-none bg-brand-bg-secondary lg:bg-transparent rounded-3xl border-brand-border/40">
+              <div className="p-6 md:p-12 border border-transparent lg:border-none bg-brand-bg-secondary lg:bg-transparent rounded-xl border-brand-border/40">
                 
                 {/* Mobile visual backdrop (hidden on desktop) */}
-                <div className="lg:hidden flex items-center justify-center p-6 border border-brand-border bg-brand-bg-primary rounded-2xl mb-8 relative overflow-hidden h-[180px]">
+                <div className="lg:hidden flex items-center justify-center p-6 border border-brand-border bg-brand-bg-primary rounded-lg mb-8 relative overflow-hidden h-[180px]">
                   {ServiceIcon && (
-                    <div className="w-16 h-16 rounded-2xl bg-brand-accent/10 border border-brand-accent/30 text-brand-accent flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-lg bg-brand-accent/10 border border-brand-accent/30 text-brand-accent flex items-center justify-center">
                       <ServiceIcon className="w-8 h-8" />
                     </div>
                   )}
@@ -242,13 +246,13 @@ export default function ServicesJourney() {
                 </div>
 
                 <div className="flex items-center gap-3 text-brand-accent mb-4">
-                  <div className="hidden lg:flex p-2 bg-brand-accent/10 border border-brand-accent/20 text-brand-accent rounded-xl">
+                  <div className="hidden lg:flex p-2 bg-brand-accent/10 border border-brand-accent/20 text-brand-accent rounded-lg">
                     <ServiceIcon className="w-4 h-4" />
                   </div>
-                  <span className="text-xs font-bold uppercase tracking-[0.2em]">{service.subtitle}</span>
+                  <span className="text-xs font-bold uppercase tracking-normal">{service.subtitle}</span>
                 </div>
                 
-                <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6">
+                <h2 className="text-4xl md:text-5xl font-extrabold tracking-normal text-white mb-6">
                   {service.title}
                 </h2>
                 
@@ -261,7 +265,7 @@ export default function ServicesJourney() {
                   {service.stats.map((stat, sIdx) => (
                     <div key={sIdx} className="flex items-center gap-3">
                       <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
-                      <span className="text-sm font-semibold text-white tracking-wide">{stat}</span>
+                      <span className="text-sm font-semibold text-white tracking-normal">{stat}</span>
                     </div>
                   ))}
                 </div>

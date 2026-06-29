@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { Network, Server, Radio, Building, Home, ArrowDown } from 'lucide-react'
+import { Network, Server, Radio, Building, Home } from 'lucide-react'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -13,9 +13,11 @@ const networkLayers = [
   {
     id: 'backbone',
     name: 'Internet Backbone',
-    description: 'High-capacity dark fibre circuits linking to global tier-1 network exchanges.',
+    description: 'High-capacity dark fibre circuits linking to global tier-1 network exchanges with 99.9% uptime SLA.',
     icon: Network,
     delay: 0,
+    stat: '10Gbps',
+    statLabel: 'Capacity',
   },
   {
     id: 'core',
@@ -23,6 +25,8 @@ const networkLayers = [
     description: 'Riebeek-Kasteel HQ regional routing hub running high-performance carrier routers with redundant failover pathways.',
     icon: Server,
     delay: 0.2,
+    stat: 'N+1',
+    statLabel: 'Redundancy',
   },
   {
     id: 'towers',
@@ -30,6 +34,8 @@ const networkLayers = [
     description: 'Strategically positioned high-elevation wireless masts providing broad, direct line-of-sight coverage over valleys.',
     icon: Radio,
     delay: 0.4,
+    stat: '5GHz/60GHz',
+    statLabel: 'Frequency',
   },
   {
     id: 'businesses',
@@ -37,6 +43,8 @@ const networkLayers = [
     description: 'High-availability connections customized with service level agreements (SLAs) for vital community entities.',
     icon: Building,
     delay: 0.6,
+    stat: '24/7',
+    statLabel: 'Support',
   },
   {
     id: 'homes',
@@ -44,6 +52,8 @@ const networkLayers = [
     description: 'Lightning-fast uncapped home connections enabling 4K streaming, remote employment, and smart homes.',
     icon: Home,
     delay: 0.8,
+    stat: '1Gbps',
+    statLabel: 'Max Speed',
   }
 ]
 
@@ -99,15 +109,35 @@ export default function InfrastructureShowcase() {
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         {/* Title */}
-        <div className="text-center max-w-2xl mx-auto mb-20 md:mb-28">
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-brand-accent mb-4 block">Our Architecture</span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6">
+        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
+          <span className="text-xs font-bold uppercase tracking-normal text-brand-accent mb-4 block">Our Architecture</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-normal text-white mb-6">
             ENGINEERED FOR RELIABILITY
           </h2>
           <div className="h-1 w-24 bg-brand-accent mx-auto mb-6" />
-          <p className="text-brand-text-secondary md:text-lg font-light leading-relaxed">
+          <p className="text-brand-text-secondary md:text-lg font-light leading-relaxed mb-8">
             From tier-1 fiber backbone loops to regional high-altitude wireless relays and home connections, see how data moves through our custom stack.
           </p>
+          
+          {/* Reliability Stats Bar */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-2xl mx-auto">
+            <div className="p-4 border border-brand-border/50 bg-brand-card/50 rounded-lg backdrop-blur-sm">
+              <div className="text-2xl md:text-3xl font-extrabold text-brand-accent">99.9%</div>
+              <div className="text-xs text-brand-text-secondary mt-1 uppercase tracking-normal">Uptime SLA</div>
+            </div>
+            <div className="p-4 border border-brand-border/50 bg-brand-card/50 rounded-lg backdrop-blur-sm">
+              <div className="text-2xl md:text-3xl font-extrabold text-brand-accent">&lt;15ms</div>
+              <div className="text-xs text-brand-text-secondary mt-1 uppercase tracking-normal">Latency</div>
+            </div>
+            <div className="p-4 border border-brand-border/50 bg-brand-card/50 rounded-lg backdrop-blur-sm">
+              <div className="text-2xl md:text-3xl font-extrabold text-brand-accent">N+1</div>
+              <div className="text-xs text-brand-text-secondary mt-1 uppercase tracking-normal">Redundancy</div>
+            </div>
+            <div className="p-4 border border-brand-border/50 bg-brand-card/50 rounded-lg backdrop-blur-sm">
+              <div className="text-2xl md:text-3xl font-extrabold text-brand-accent">24/7</div>
+              <div className="text-xs text-brand-text-secondary mt-1 uppercase tracking-normal">Monitoring</div>
+            </div>
+          </div>
         </div>
 
         {/* Network pipeline visualization */}
@@ -145,14 +175,24 @@ export default function InfrastructureShowcase() {
               >
                 {/* Text Side */}
                 <div className={`w-full ${isLeft ? 'md:text-right md:order-1' : 'md:text-left md:order-3'}`}>
-                  <div className={`p-6 border border-brand-border bg-brand-card rounded-2xl transition-all duration-300 group-hover:border-brand-accent/30 group-hover:shadow-[0_4px_24px_rgba(255,107,0,0.08)] backdrop-blur-md`}>
-                    <div className={`inline-flex p-3 rounded-xl bg-brand-accent/5 border border-brand-accent/20 text-brand-accent mb-4 group-hover:bg-brand-accent group-hover:text-black transition-colors duration-300`}>
-                      <LayerIcon className="w-5 h-5" />
+                  <div className={`p-6 border border-brand-border bg-brand-card rounded-lg transition-all duration-300 group-hover:border-brand-accent/30 group-hover:shadow-[0_4px_24px_rgba(255,107,0,0.08)] backdrop-blur-md relative overflow-hidden`}>
+                    {/* Glow effect on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/0 via-brand-accent/0 to-brand-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    
+                    <div className="relative z-10">
+                      <div className={`inline-flex p-3 rounded-lg bg-brand-accent/5 border border-brand-accent/20 text-brand-accent mb-4 group-hover:bg-brand-accent group-hover:text-black transition-colors duration-300`}>
+                        <LayerIcon className="w-5 h-5" />
+                      </div>
+                      <h3 className="text-xl font-bold text-white mb-2">{layer.name}</h3>
+                      <p className="text-sm text-brand-text-secondary leading-relaxed mb-4">
+                        {layer.description}
+                      </p>
+                      {/* Stat Badge */}
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-brand-accent/10 border border-brand-accent/20">
+                        <span className="text-xs font-bold text-brand-accent uppercase tracking-normal">{layer.statLabel}</span>
+                        <span className="text-sm font-bold text-white">{layer.stat}</span>
+                      </div>
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">{layer.name}</h3>
-                    <p className="text-sm text-brand-text-secondary leading-relaxed">
-                      {layer.description}
-                    </p>
                   </div>
                 </div>
 
